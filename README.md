@@ -20,3 +20,5 @@ dotnet build
 dotnet run
 
 
+# Coding conventions
+https://github.com/blstream/TOZ_dotnet/wiki/Coding-conventions
