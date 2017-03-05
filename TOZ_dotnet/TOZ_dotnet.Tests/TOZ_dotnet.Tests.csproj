@@ -20,6 +20,6 @@
 
   <!--Project references -->
   <ItemGroup>
-    <ProjectReference Include="..\TOZ_dotnet.Core\TOZ_dotnet.Core.csproj">
+    <ProjectReference Include="..\TOZ_dotnet.Core\TOZ_dotnet.Core.csproj"/>
   </ItemGroup>
 </Project>
