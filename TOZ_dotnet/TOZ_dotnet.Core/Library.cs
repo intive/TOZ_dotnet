@@ -1,8 +1,7 @@
-﻿using System;
-
-namespace ClassLibrary
+﻿namespace TOZ_dotnet.Core
 {
-    public class Class1
+    public class TestClass
     {
+        public static string TestMessage = "Greetings from Test Class";
     }
 }

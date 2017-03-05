@@ -9,7 +9,8 @@
     <Compile Include="**\*.cs" />
     <EmbeddedResource Include="**\*.resx" />
   </ItemGroup>
-
+  
+  <!--Libs references -->
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.App" Version="1.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0-preview-20161123-03" />
@@ -17,4 +18,8 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0-beta4-build1194" />
   </ItemGroup>
 
+  <!--Project references -->
+  <ItemGroup>
+    <ProjectReference Include="..\TOZ_dotnet.Core\TOZ_dotnet.Core.csproj">
+  </ItemGroup>
 </Project>

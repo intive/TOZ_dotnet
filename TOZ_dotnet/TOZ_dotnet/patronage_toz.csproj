@@ -8,7 +8,7 @@
   <PropertyGroup>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
   </PropertyGroup>
-
+  <!--Libs references -->
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.App" Version="1.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="1.0.0" />
@@ -25,5 +25,9 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink.Loader" Version="14.0.0" />
+  </ItemGroup>
+  <!--Project references -->
+  <ItemGroup>
+    <ProjectReference Include="..\TOZ_dotnet.Core\TOZ_dotnet.Core.csproj"/>
   </ItemGroup>
 </Project>
