@@ -4,12 +4,12 @@ using TOZ_dotnet.Tests.Helpers;
 
 namespace TOZ_dotnet.Tests.Tests
 {
-    public class AnimalsManagementTest
+    public class PetsManagementTest
     {
-        private IAnimalsManagementService _animalsManagementService;
-        public AnimalsManagementTest()
+        private IPetsManagementService _animalsManagementService;
+        public PetsManagementTest()
         {
-            _animalsManagementService = ServiceProvider.Instance.Resolve<IAnimalsManagementService>();
+            _animalsManagementService = ServiceProvider.Instance.Resolve<IPetsManagementService>();
         }
         
         [Fact]

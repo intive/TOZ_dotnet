@@ -33,7 +33,7 @@ namespace MvcApp
             services.AddMvc();
 
             services.AddTransient<IFilesManagementService, FilesManagementService>();
-            services.AddTransient<IAnimalsManagementService, AnimalsManagementService>();
+            services.AddTransient<IPetsManagementService, PetsManagementService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

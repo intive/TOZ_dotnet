@@ -10,8 +10,8 @@ namespace MvcApp.Controllers
 {
     public class HomeController : Controller
     {
-        private IAnimalsManagementService _animalsManagementService;
-        public HomeController(IAnimalsManagementService animalsManagementService)
+        private IPetsManagementService _animalsManagementService;
+        public HomeController(IPetsManagementService animalsManagementService)
         {
             _animalsManagementService = animalsManagementService;
         }
