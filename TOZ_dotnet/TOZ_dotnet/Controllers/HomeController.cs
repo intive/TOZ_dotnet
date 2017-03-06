@@ -16,9 +16,6 @@ namespace MvcApp.Controllers
             _animalsManagementService = animalsManagementService;
         }
 
-        
-
-
         public IActionResult Index()
         {
             return View();
