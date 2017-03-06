@@ -1,4 +1,4 @@
-﻿namespace TOZ_dotnet.Core
+﻿namespace Toz.Dotnet.Core
 {
     public class TestClass
     {

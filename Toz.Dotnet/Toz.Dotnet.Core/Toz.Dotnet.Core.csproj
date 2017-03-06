@@ -13,4 +13,8 @@
     <PackageReference Include="NETStandard.Library" Version="1.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="../Toz.Dotnet.Models/Toz.Dotnet.Models.csproj"/>
+  </ItemGroup>
+
 </Project>

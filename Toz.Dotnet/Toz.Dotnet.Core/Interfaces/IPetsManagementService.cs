@@ -1,7 +1,8 @@
-namespace TOZ_dotnet.Core.Interfaces
+namespace Toz.Dotnet.Core.Interfaces
 {
-    public interface IFilesManagementService
+    public interface IPetsManagementService
     {
+        
          string GetTestString(); //todo delete while implementing its real functionality (it's just for test purpose)
     }
 }

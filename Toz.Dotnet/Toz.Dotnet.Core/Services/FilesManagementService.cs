@@ -1,7 +1,7 @@
 using System;
-using TOZ_dotnet.Core.Interfaces;
+using Toz.Dotnet.Core.Interfaces;
 
-namespace TOZ_dotnet.Core.Services
+namespace Toz.Dotnet.Core.Services
 {
     public class FilesManagementService : IFilesManagementService
     {

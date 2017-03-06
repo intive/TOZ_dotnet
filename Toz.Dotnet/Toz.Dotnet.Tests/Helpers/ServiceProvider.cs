@@ -1,9 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
-using MvcApp;
+using Toz.Dotnet;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.AspNetCore.Hosting;
 
-namespace TOZ_dotnet.Tests.Helpers
+namespace Toz.Dotnet.Tests.Helpers
 {
     public class ServiceProvider
     {

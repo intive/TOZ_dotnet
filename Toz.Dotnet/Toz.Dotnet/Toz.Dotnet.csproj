@@ -28,6 +28,7 @@
   </ItemGroup>
   <!--Project references -->
   <ItemGroup>
-    <ProjectReference Include="..\TOZ_dotnet.Core\TOZ_dotnet.Core.csproj"/>
+    <ProjectReference Include="../Toz.Dotnet.Core/Toz.Dotnet.Core.csproj"/>
+    <ProjectReference Include="../Toz.Dotnet.Models/Toz.Dotnet.Models.csproj"/>
   </ItemGroup>
 </Project>
