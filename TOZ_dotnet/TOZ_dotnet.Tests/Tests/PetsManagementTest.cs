@@ -6,17 +6,17 @@ namespace TOZ_dotnet.Tests.Tests
 {
     public class PetsManagementTest
     {
-        private IPetsManagementService _animalsManagementService;
+        private IPetsManagementService _petsManagementService;
         public PetsManagementTest()
         {
-            _animalsManagementService = ServiceProvider.Instance.Resolve<IPetsManagementService>();
+            _petsManagementService = ServiceProvider.Instance.Resolve<IPetsManagementService>();
         }
         
         [Fact]
         public void TestDependencyInjectionFromAnimalsManagementService()
         {
-            Assert.NotNull(_animalsManagementService);
-            Assert.NotEmpty(_animalsManagementService.GetTestString());
+            Assert.NotNull(_petsManagementService);
+            Assert.NotEmpty(_petsManagementService.GetTestString());
         }
     }
 }
