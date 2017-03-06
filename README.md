@@ -1,4 +1,4 @@
-# TOZ_dotnet
+# Toz.Dotnet
 
 Aplikacja wspomagająca (backoffice) dla aplikacji poświęconej obsłudze TOZ.
 
@@ -21,4 +21,4 @@ dotnet run
 
 
 # Coding conventions
-https://github.com/blstream/TOZ_dotnet/wiki/Coding-conventions
+https://github.com/blstream/Toz.Dotnet/wiki/Coding-conventions

@@ -1,8 +1,8 @@
 using Xunit;
-using TOZ_dotnet.Core.Interfaces;
-using TOZ_dotnet.Tests.Helpers;
+using Toz.Dotnet.Core.Interfaces;
+using Toz.Dotnet.Tests.Helpers;
 
-namespace TOZ_dotnet.Tests.Tests
+namespace Toz.Dotnet.Tests.Tests
 {
     public class PetsManagementTest
     {

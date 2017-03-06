@@ -1,5 +1,3 @@
-
-
 using System;
 
 using Toz.Dotnet.Models.EnumTypes;

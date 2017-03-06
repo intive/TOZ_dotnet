@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TOZ_dotnet.Core.Interfaces;
+using Toz.Dotnet.Core.Interfaces;
 
-namespace MvcApp.Controllers
+namespace Toz.Dotnet.Controllers
 {
     public class HomeController : Controller
     {

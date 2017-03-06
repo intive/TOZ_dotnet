@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using TOZ_dotnet.Core.Services;
-using TOZ_dotnet.Core.Interfaces;
+using Toz.Dotnet.Core.Services;
+using Toz.Dotnet.Core.Interfaces;
 
-namespace MvcApp
+namespace Toz.Dotnet
 {
     public class Startup
     {
