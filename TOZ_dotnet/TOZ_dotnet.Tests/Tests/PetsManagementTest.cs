@@ -13,7 +13,7 @@ namespace TOZ_dotnet.Tests.Tests
         }
         
         [Fact]
-        public void TestDependencyInjectionFromAnimalsManagementService()
+        public void TestDependencyInjectionFromPetsManagementService()
         {
             Assert.NotNull(_petsManagementService);
             Assert.NotEmpty(_petsManagementService.GetTestString());
