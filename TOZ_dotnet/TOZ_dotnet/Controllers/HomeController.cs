@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using TOZ_dotnet.Core;
+﻿using Microsoft.AspNetCore.Mvc;
+using TOZ_dotnet.Core.Interfaces;
 
 namespace MvcApp.Controllers
 {
     public class HomeController : Controller
     {
+        private IPetsManagementService _petsManagementService;
+        public HomeController(IPetsManagementService petsManagementService)
+        {
+            _petsManagementService = petsManagementService;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -16,7 +18,7 @@ namespace MvcApp.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Hello Patronage 2017 .NET Team! " + TestClass.TestMessage;
+            ViewData["Message"] = "Hello Patronage 2017 .NET Team! " + _petsManagementService.GetTestString();
 
             return View();
         }
