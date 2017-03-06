@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using TOZ_dotnet.Core.Services;
+using TOZ_dotnet.Core.Interfaces;
 
 namespace MvcApp
 {
@@ -29,6 +31,9 @@ namespace MvcApp
         {
             // Add framework services.
             services.AddMvc();
+
+            services.AddTransient<IFilesManagementService, FilesManagementService>();
+            services.AddTransient<IAnimalsManagementService, AnimalsManagementService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
