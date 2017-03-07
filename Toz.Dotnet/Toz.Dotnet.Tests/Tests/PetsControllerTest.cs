@@ -17,16 +17,24 @@ namespace Toz.Dotnet.Tests.Tests {
         }
 
         [Fact]
-        public void Index_ReturnsAViewResult_WithAListOfPets()
+        public void IndexReturnsAViewResult()
         {
             var controller = new PetsController(_petsManagementService);
 
             var result = controller.Index();
 
             var viewResult = Assert.IsType<ViewResult>(result);
-             var model = Assert.IsAssignableFrom<List<Pet>>(
-                viewResult.ViewData.Model);
-            Assert.Equal(3, model.Count);
+        }
+
+        [Fact]
+        public void IndexReturnsAListWithExpectedAmountOfModels()
+        {
+            var controller = new PetsController(_petsManagementService);
+
+            var result = controller.Index();
+
+            var models = (List<Pet>)((ViewResult)result).ViewData.Model;
+            Assert.Equal(3, models.Count);
         }
     }
 }
