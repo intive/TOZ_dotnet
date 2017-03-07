@@ -18,7 +18,7 @@ namespace Toz.Dotnet.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Hello Patronage 2017 .NET Team! " + _petsManagementService.GetTestString();
+            ViewData["Message"] = "Hello Patronage 2017 .NET Team! ";
 
             return View();
         }
