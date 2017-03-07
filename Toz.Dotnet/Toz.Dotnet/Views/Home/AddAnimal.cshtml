@@ -1,0 +1,61 @@
+﻿<head>
+    <link rel="stylesheet" href="~/css/style.css" />
+</head>
+
+<body>
+    @{
+        ViewData["Title"] = "Dodaj zwierzaka";
+    }
+    <h2>@ViewData["Title"]</h2>
+    <hr>
+
+    <div class="AddingAnAnimal">
+        <form action="" method="POST">
+            <table id="AddAnimalTable" align="center">
+                <tr>
+                    <td><label for="AnimalName">Imię:</label></td>
+                    <td><input type="text" name="AnimalName" id="AnimalName" maxlength="20"></td>
+                </tr>
+                <tr>
+                    <td><label for="AnimalType">Gatunek:</label></td>
+                    <td>
+                        <select name="AnimalType" id="AnimalType">
+                            <option value="UnidentifiedType"></option>
+                            <option value="Cat">Kot</option>
+                            <option value="Dog">Pies</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="AnimalSex">Płeć:</label></td>
+                    <td>
+                        <select name="AnimalSex" id="AnimalSex">
+                            <option value="UnidentifiedSex"></option>
+                            <option value="Male">Samiec</option>
+                            <option value="Female">Samica</option>
+                        </select>
+                    </td>
+                </tr>
+                    <td colspan="2" style="width:64px;height:64px;text-align: center;">
+                        <img src="http://www.hbhud.com/wp-content/uploads/2011/06/awesome_smiley-300x300.png" style="width:64px;height:64px;"/>
+                        <br>
+                        <input type="image" name="AnimalImage" id="AnimalImage" style="padding-top: 5px">
+                    </td>
+                <tr>
+                    <td><label for="AnimalDescription">Opis:</label></td>
+                    <td><input type="text" name="AnimalDescription" id="AnimalDescription" maxlength="200"></td>
+                </tr>
+                <tr>
+                    <td><label for="AnimalAddress">Adres:</label></td>
+                    <td><input type="text" name="AnimalAddress" id="AnimalAddress"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <input type="submit" name="AnimalSave" id="AnimalSave" value="Zapisz">
+                        <input type="submit" name="AnimalCancel" id="AnimalCancel" value="Anuluj">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
