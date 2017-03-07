@@ -1,58 +1,59 @@
-﻿<head>
+﻿@inject IViewLocalizer Localizer
+@using Toz.Dotnet.Models.EnumTypes
+@using Microsoft.AspNetCore.Mvc.Localization
+
+<head>
     <link rel="stylesheet" href="~/css/style.css" />
 </head>
 
 <body>
-    @{
-        ViewData["Title"] = "Dodaj zwierzaka";
-    }
-    <h2>@ViewData["Title"]</h2>
+    <h2>@Localizer["Title"]</h2>
     <hr>
 
     <div class="AddingAnAnimal">
         <form action="" method="POST">
             <table id="AddAnimalTable" align="center">
                 <tr>
-                    <td><label for="AnimalName">Imię:</label></td>
+                    <td><label for="AnimalName">@Localizer["Name"]:</label></td>
                     <td><input type="text" name="AnimalName" id="AnimalName" maxlength="20"></td>
                 </tr>
                 <tr>
-                    <td><label for="AnimalType">Gatunek:</label></td>
+                    <td><label for="AnimalType">@Localizer["Type"]:</label></td>
                     <td>
                         <select name="AnimalType" id="AnimalType">
                             <option value="UnidentifiedType"></option>
-                            <option value="Cat">Kot</option>
-                            <option value="Dog">Pies</option>
+                            <option value="Cat">@Localizer["Cat"]</option>
+                            <option value="Dog">@Localizer["Dog"]</option>
                         </select>
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="AnimalSex">Płeć:</label></td>
+                    <td><label for="AnimalSex">@Localizer["Sex"]:</label></td>
                     <td>
                         <select name="AnimalSex" id="AnimalSex">
                             <option value="UnidentifiedSex"></option>
-                            <option value="Male">Samiec</option>
-                            <option value="Female">Samica</option>
+                            <option value="Male">@Localizer["Male"]</option>
+                            <option value="Female">@Localizer["Female"]</option>
                         </select>
                     </td>
                 </tr>
                     <td colspan="2" style="width:64px;height:64px;text-align: center;">
                         <img src="http://www.hbhud.com/wp-content/uploads/2011/06/awesome_smiley-300x300.png" style="width:64px;height:64px;"/>
                         <br>
-                        <input type="image" name="AnimalImage" id="AnimalImage" style="padding-top: 5px">
+                        <input type="image" name="AnimalPhoto" id="AnimalPhoto" style="padding-top: 5px">
                     </td>
                 <tr>
-                    <td><label for="AnimalDescription">Opis:</label></td>
+                    <td><label for="AnimalDescription">@Localizer["Description"]:</label></td>
                     <td><input type="text" name="AnimalDescription" id="AnimalDescription" maxlength="200"></td>
                 </tr>
                 <tr>
-                    <td><label for="AnimalAddress">Adres:</label></td>
+                    <td><label for="AnimalAddress">@Localizer["Address"]:</label></td>
                     <td><input type="text" name="AnimalAddress" id="AnimalAddress"></td>
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center;">
-                        <input type="submit" name="AnimalSave" id="AnimalSave" value="Zapisz">
-                        <input type="submit" name="AnimalCancel" id="AnimalCancel" value="Anuluj">
+                        <input type="submit" name="AnimalSave" id="AnimalSave" value=@Localizer["Save"]>
+                        <input type="submit" name="AnimalCancel" id="AnimalCancel" value=@Localizer["Cancel"]>
                     </td>
                 </tr>
             </table>

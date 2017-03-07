@@ -16,17 +16,8 @@ namespace Toz.Dotnet.Controllers
             return View();
         }
 
-        public IActionResult About()
+        public IActionResult AddAnimal()
         {
-            ViewData["Message"] = "Hello Patronage 2017 .NET Team! ";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
             return View();
         }
 
