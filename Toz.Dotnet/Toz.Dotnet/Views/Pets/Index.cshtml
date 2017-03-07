@@ -1,0 +1,12 @@
+@model IEnumerable<Toz.Dotnet.Models.Pet>
+
+@{
+     ViewData["Title"] = "Lista zwierzaków";
+}
+
+<h2>Lista zwierzaków</h2>
+
+@foreach (var item in Model)
+{
+    <p>@item.Name</p><br/>
+}
