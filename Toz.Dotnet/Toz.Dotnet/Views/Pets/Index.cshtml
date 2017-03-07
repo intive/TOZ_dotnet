@@ -1,12 +1,58 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Toz.Dotnet.Models.EnumTypes
 @model IEnumerable<Toz.Dotnet.Models.Pet>
+@inject IViewLocalizer Localizer
 
-@{
-     ViewData["Title"] = "Lista zwierzaków";
-}
+<h2>@Localizer["Title"]</h2>
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>@Localizer["Id"]</th>
+            <th>@Localizer["Name"]</th>
+            <th>@Localizer["Type"]</th>
+            <th>@Localizer["Sex"]</th>
+            <th>@Localizer["Photo"]</th>
+            <th>@Localizer["Description"]</th>
+            <th>@Localizer["Address"]</th>
+            <th>@Localizer["AddingTime"]</th>
+            <th>@Localizer["LastEditTime"]</th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
 
-<h2>Lista zwierzaków</h2>
+                @if(@item.Type == PetType.Dog)
+                {
+                    <td>@Localizer["Dog"]</td>
+                }
+                else
+                {
+                    <td>@Localizer["Cat"]</td>
+                }
 
-@foreach (var item in Model)
-{
-    <p>@item.Name</p><br/>
-}
+                @if(@item.Sex == PetSex.Male)
+                {
+                    <td>@Localizer["Male"]</td>
+                }
+                else if(@item.Sex == PetSex.Female)
+                {
+                    <td>@Localizer["Female"]</td>
+                }
+                else
+                {
+                    <td>@Localizer["Unidentified"]</td>
+                }
+
+                <td style="width:64px;height:64px;"><img src="http://www.hbhud.com/wp-content/uploads/2011/06/awesome_smiley-300x300.png" style="width:64px;height:64px;"/></td>
+                <td>@item.Description</td>
+                <td>@item.Address</td>
+                <td>@item.AddingTime</td>
+                <td>@item.LastEditTime</td>
+                <td></td>
+            </tr>
+        }
+    </table>
+</div>
