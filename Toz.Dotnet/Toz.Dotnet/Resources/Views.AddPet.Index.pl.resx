@@ -4,7 +4,7 @@
         <value>Dodaj zwierzaka</value>
     </data>
     <data name="Name" xml:space="preserve">
-        <value>Imie</value>
+        <value>Imię</value>
     </data>
     <data name="Type" xml:space="preserve">
         <value>Typ</value>
