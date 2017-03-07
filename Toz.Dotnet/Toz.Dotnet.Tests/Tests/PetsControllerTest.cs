@@ -29,7 +29,7 @@ namespace Toz.Dotnet.Tests.Tests {
         [Fact]
         public void IndexReturnsAListWithPets()
         {
-            var controller = new PetsController(new PetsManagementService(new FilesManagementService()));
+            var controller = new PetsController(_petsManagementService);
 
             var result = controller.Index();
 
