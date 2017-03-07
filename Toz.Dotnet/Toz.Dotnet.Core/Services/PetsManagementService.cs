@@ -25,5 +25,59 @@ namespace Toz.Dotnet.Core.Services
             
             return petsList;
         }
+
+        public bool UpdatePet(Pet pet)
+        {
+            if(pet != null)
+            {
+                //todo add all the backend magic to update our pet
+                return true;
+            }
+            return false;
+        }
+
+        
+        public bool AddPet(Pet pet)
+        {
+            if(pet != null)
+            {
+                //todo add all the backend magic to add our pet
+                return true;
+            }
+            return false;
+        }
+
+        public bool DeletePet(Pet pet)
+        {
+            if(pet != null)
+            {
+                //todo add all the backend magic to delete our pet
+                return true;
+            }
+            return false;
+        }
+
+        public Pet GetPet(int id)
+        {
+            if(id >= 0)
+            {
+                //todo replace example pet with real functionality that asks backend
+                var pet = new Pet()
+                {
+                    Id = 123,
+                    Name = "TestDog",
+                    Type = PetType.Dog,
+                    Sex = PetSex.Male,
+                    Photo = new byte[10],
+                    Description = "Dog that eats tigers",
+                    Address = "Found in jungle",
+                    AddingTime = DateTime.Now,
+                    LastEditTime = DateTime.Now
+                };
+                return pet; 
+            }
+            return null;
+        }
+
     }
 }

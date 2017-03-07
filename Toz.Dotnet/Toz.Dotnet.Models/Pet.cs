@@ -29,5 +29,6 @@ namespace Toz.Dotnet.Models
                     LastEditTime = lastEditTime;
                         
                 }
+        public Pet() {}
     }
 }
