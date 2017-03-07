@@ -55,7 +55,7 @@
                 <td>@item.Address</td>
                 <td>@item.AddingTime</td>
                 <td>@item.LastEditTime</td>
-                <td></td>
+                <td>@Html.ActionLink(@Localizer["Edit"].Value, "Edit", "Pets", new{ id = item.Id }, new { @class = "btn btn-primary btn-block"}) </td>
             </tr>
         }
     </table>
