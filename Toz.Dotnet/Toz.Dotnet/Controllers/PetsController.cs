@@ -14,7 +14,8 @@ namespace Toz.Dotnet.Controllers {
             _localizer = localizer;
         }  
 
-        public ActionResult Index() {
+        public ActionResult Index() 
+        {
             return View(_petsManagementService.GetPetsList());
         }
     }

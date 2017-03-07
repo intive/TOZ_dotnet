@@ -34,8 +34,6 @@ namespace Toz.Dotnet
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
-            services.AddLocalization(opts => { opts.ResourcesPath = "Resources"; });
             services.AddTransient<IFilesManagementService, FilesManagementService>();
             services.AddTransient<IPetsManagementService, PetsManagementService>();
 
