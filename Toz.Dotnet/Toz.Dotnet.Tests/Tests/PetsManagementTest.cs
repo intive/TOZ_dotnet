@@ -16,7 +16,6 @@ namespace Toz.Dotnet.Tests.Tests
         public void TestDependencyInjectionFromPetsManagementService()
         {
             Assert.NotNull(_petsManagementService);
-            Assert.NotEmpty(_petsManagementService.GetTestString());
         }
     }
 }
