@@ -27,6 +27,17 @@ namespace Toz.Dotnet.Tests.Tests {
         }
 
         [Fact]
+        public void IndexReturnsAListWithPets()
+        {
+            var controller = new PetsController(new PetsManagementService(new FilesManagementService()));
+
+            var result = controller.Index();
+
+            var viewResult = (ViewResult)result;
+            var model = Assert.IsAssignableFrom<List<Pet>>(viewResult.ViewData.Model);
+        }
+
+        [Fact]
         public void IndexReturnsAListWithExpectedAmountOfModels()
         {
             var controller = new PetsController(_petsManagementService);
