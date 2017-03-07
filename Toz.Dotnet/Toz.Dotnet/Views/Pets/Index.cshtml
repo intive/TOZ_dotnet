@@ -5,8 +5,34 @@
 }
 
 <h2>Lista zwierzaków</h2>
-
-@foreach (var item in Model)
-{
-    <p>@item.Name</p><br/>
-}
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>ID</th>
+            <th>Imie</th>
+            <th>Typ</th>
+            <th>Płeć</th>
+            <th>Zdjęcie</th>
+            <th>Opis</th>
+            <th>Adres</th>
+            <th>Data dodania</th>
+            <th>Data edycji</th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Type</td>
+                <td>@item.Sex</td>
+                <td style="width:64px;height:64px;"><img src="http://www.hbhud.com/wp-content/uploads/2011/06/awesome_smiley-300x300.png" style="width:64px;height:64px;"/></td>
+                <td>@item.Description</td>
+                <td>@item.Address</td>
+                <td>@item.AddingTime</td>
+                <td>@item.LastEditTime</td>
+                <td></td>
+            </tr>
+        }
+    </table>
+</div>
