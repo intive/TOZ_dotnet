@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="NETStandard.Library" Version="1.6" />
+    <PackageReference Include="CoreCompat.System.Drawing" Version="1.0.0-beta006"/>
   </ItemGroup>
 
   <ItemGroup>

@@ -25,6 +25,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink.Loader" Version="14.0.0" />
+    <PackageReference Include="CoreCompat.System.Drawing" Version="1.0.0-beta006"/>
   </ItemGroup>
   <!--Project references -->
   <ItemGroup>
