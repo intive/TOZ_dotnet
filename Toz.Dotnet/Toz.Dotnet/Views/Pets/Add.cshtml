@@ -7,11 +7,6 @@
     ViewData["Title"] = "Dodawanie";
 }
 
-<head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="~/css/style.css"/>
-</head>
-
 <body>
     <h2>@Localizer["Title"]</h2>
     <hr>
@@ -43,11 +38,22 @@
                         </select>
                     </td>
                 </tr>
-                    <td colspan="2" style="width:64px;height:64px;text-align: center;">
-                        <img src="http://www.hbhud.com/wp-content/uploads/2011/06/awesome_smiley-300x300.png" style="width:64px;height:64px;"/>
-                        <br>
-                        <input class="form-control" type="image" name="PetPhoto" id="PetPhoto" style="padding-top: 5px">
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <div class="form-group">
+                            <label>@Localizer["Photo"]</label>
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <span class="btn btn-default btn-file">
+                                        @Localizer["Browse"] <input type="file" id="imgInp">
+                                    </span>
+                                </span>
+                                <input type="text" class="form-control" readonly>
+                            </div>
+                            <img id='img-upload'/>
+                        </div>
                     </td>
+                </tr>
                 <tr>
                     <td><label for="PetDescription">@Localizer["Description"]:</label></td>
                     <td><input class="form-control" type="text" name="PetDescription" id="PetDescription"></td>

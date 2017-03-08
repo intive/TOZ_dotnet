@@ -42,4 +42,7 @@
     <data name="Cancel" xml:space="preserve">
         <value>Cancel</value>
     </data>
+    <data name="Browse" xml:space="preserve">
+        <value>Browse...</value>
+    </data>
 </root>

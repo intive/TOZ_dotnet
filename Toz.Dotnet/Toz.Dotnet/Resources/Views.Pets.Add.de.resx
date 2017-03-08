@@ -42,4 +42,7 @@
     <data name="Cancel" xml:space="preserve">
         <value>Stornieren</value>
     </data>
+    <data name="Browse" xml:space="preserve">
+        <value>Durchsuchen...</value>
+    </data>
 </root>
