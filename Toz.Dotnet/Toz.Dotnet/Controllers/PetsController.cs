@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Toz.Dotnet.Core.Interfaces;
 using Microsoft.Extensions.Localization;
 
-namespace Toz.Dotnet.Controllers {
+namespace Toz.Dotnet.Controllers
+{
     public class PetsController : Controller
     {
         private IPetsManagementService _petsManagementService;
@@ -26,7 +27,6 @@ namespace Toz.Dotnet.Controllers {
 
         public ActionResult Add() 
         {
-            //TODO
             return View();
         }
     }
