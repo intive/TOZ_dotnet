@@ -16,11 +16,6 @@ namespace Toz.Dotnet.Controllers
             return View();
         }
 
-        public IActionResult AddAnimal()
-        {
-            return View();
-        }
-
         public IActionResult Error()
         {
             return View();
