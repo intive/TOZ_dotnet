@@ -3,6 +3,7 @@ using Toz.Dotnet.Core.Interfaces;
 using System.Collections.Generic;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.EnumTypes;
+using System.Linq;
 
 namespace Toz.Dotnet.Core.Services
 {
@@ -48,6 +49,9 @@ namespace Toz.Dotnet.Core.Services
         {
             if(pet != null)
             {
+                pet.Id = getFirstAvailableID();
+                pet.AddingTime = DateTime.Now;
+                pet.LastEditTime = DateTime.Now;          
                 _mockupPetsDatabase.Add(pet);
                 return true;
             }
@@ -84,6 +88,14 @@ namespace Toz.Dotnet.Core.Services
                 return pet; 
             }
             return null;
+        }
+
+        private int getFirstAvailableID()
+        {
+            var ids = _mockupPetsDatabase.Select(p => p.Id).ToList();
+            return Enumerable.Range(0, int.MaxValue)
+                             .Except(ids)
+                             .FirstOrDefault();
         }
     }
 }

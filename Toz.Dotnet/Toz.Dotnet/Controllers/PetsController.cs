@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models;
 using Microsoft.Extensions.Localization;
-
+using System;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -19,15 +19,36 @@ namespace Toz.Dotnet.Controllers
 
         public IActionResult Index()
         {
-            return View(_petsManagementService.GetSamplePets());
+            return View(_petsManagementService.GetAllPets());
         }
 
         [HttpPost]
-        public IActionResult Add([FromForm] Pet pet)
+        public IActionResult Add(
+            [Bind("Name, Type, Sex, Description, Address")] 
+            Pet pet)
         {
-            _petsManagementService.AddPet(pet);
-            return Index(); 
+            if (pet != null && ModelState.IsValid)
+            {
+                if (_petsManagementService.AddPet(pet)) 
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return NotFound();
+                } 
+            } 
+            else
+            {
+                return NotFound();
+            }      
+            
         } 
+
+        public IActionResult Add()
+        {
+            return View(new Pet());
+        }
 
         public ActionResult Edit(int id) 
         {

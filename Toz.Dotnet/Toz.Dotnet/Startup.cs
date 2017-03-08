@@ -34,8 +34,8 @@ namespace Toz.Dotnet
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddTransient<IFilesManagementService, FilesManagementService>();
-            services.AddTransient<IPetsManagementService, PetsManagementService>();
+            services.AddSingleton<IFilesManagementService, FilesManagementService>();
+            services.AddSingleton<IPetsManagementService, PetsManagementService>();
 
             services.AddMvc()
                 .AddViewLocalization(
