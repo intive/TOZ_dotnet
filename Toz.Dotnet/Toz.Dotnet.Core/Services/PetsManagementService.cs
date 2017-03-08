@@ -56,9 +56,9 @@ namespace Toz.Dotnet.Core.Services
 
         public bool DeletePet(Pet pet)
         {
-            if(pet != null && _mockupPetsDatabase.contains(pet))
+            if(pet != null && _mockupPetsDatabase.Contains(pet))
             {
-                _mockupPetsDatabase.remove(pet);
+                _mockupPetsDatabase.Remove(pet);
                 return true;
             }
             return false;
