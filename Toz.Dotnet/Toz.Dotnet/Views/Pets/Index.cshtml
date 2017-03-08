@@ -9,6 +9,12 @@
 
 <h2>@Localizer["Title"]</h2>
 <div class="table-responsive">
+    <div class="panel panel-default">
+        <div class="panel-heading">@Localizer["ListPanelTitle"]</div> <!-- Jak ktoś będzie miał lepszy pomysł na tę nazwę to poprawię -->
+        <div class="panel-body">
+            <td>@Html.ActionLink(@Localizer["Add"].Value, "Add", "Pets", null, new { @style = "width: 120px;", @class = "btn btn-primary btn-block"}) </td>
+        </div>
+    </div>
     <table class="table">
         <tr>
             <th>@Localizer["Id"]</th>
