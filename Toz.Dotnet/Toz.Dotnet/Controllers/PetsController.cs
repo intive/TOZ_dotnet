@@ -18,5 +18,10 @@ namespace Toz.Dotnet.Controllers {
         {
             return View(_petsManagementService.GetPetsList());
         }
+
+        public ActionResult Edit(int id) 
+        {
+            return View(_petsManagementService.GetPet(id));
+        }
     }
 }
