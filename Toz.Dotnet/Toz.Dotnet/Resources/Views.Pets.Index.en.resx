@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="Id" xml:space="preserve">
+        <value>ID</value>
+    </data>
+    <data name="Title" xml:space="preserve">
+        <value>Pets list</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Name</value>
+    </data>
+    <data name="Type" xml:space="preserve">
+        <value>Type</value>
+    </data>
+    <data name="Sex" xml:space="preserve">
+        <value>Sex</value>
+    </data>
+    <data name="Photo" xml:space="preserve">
+        <value>Photo</value>
+    </data>
+    <data name="Description" xml:space="preserve">
+        <value>Description</value>
+    </data>
+    <data name="Address" xml:space="preserve">
+        <value>Address</value>
+    </data>
+    <data name="AddingTime" xml:space="preserve">
+        <value>Adding time</value>
+    </data>
+    <data name="LastEditTime" xml:space="preserve">
+        <value>Last modification time</value>
+    </data>
+    <data name="Cat" xml:space="preserve">
+        <value>Cat</value>
+    </data>
+    <data name="Dog" xml:space="preserve">
+        <value>Dog</value>
+    </data>
+    <data name="Male" xml:space="preserve">
+        <value>Male</value>
+    </data>
+    <data name="Female" xml:space="preserve">
+        <value>Female</value>
+    </data>
+    <data name="Unidentified" xml:space="preserve">
+        <value>Unidentified</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Edit</value>
+    </data>
+    <data name="Add" xml:space="preserve">
+        <value>Add</value>
+    </data>
+    <data name="ListPanelTitle" xml:space="preserve">
+        <value>Buttons</value>
+    </data>
+</root>

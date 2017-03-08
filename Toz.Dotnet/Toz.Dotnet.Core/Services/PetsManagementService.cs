@@ -17,7 +17,12 @@ namespace Toz.Dotnet.Core.Services
             _mockupPetsDatabase = new List<Pet>();
         }
 
-        public List<Pet> GetSamplePetsList()
+		public List<Pet> GetAllPets()
+        {
+            return _mockupPetsDatabase;
+        }
+		
+        public List<Pet> GetSamplePets()
         {
             List<Pet> petsList = new List<Pet>(){
                 new Pet(0,"Tofik",PetType.Dog,PetSex.Female,new byte[0],"Przyjacielski piesek","Znaleziono na Bohaterow Warszawy",DateTime.Parse("2017-03-06 13:26"),DateTime.Parse("2017-03-07 13:55")),
@@ -28,14 +33,57 @@ namespace Toz.Dotnet.Core.Services
             return petsList;
         }
 
-        public void AddPet(Pet pet)
+        public bool UpdatePet(Pet pet)
         {
-            _mockupPetsDatabase.Add(pet);
+            if(pet != null)
+            {
+                //todo add all the backend magic to update our pet
+                return true;
+            }
+            return false;
         }
 
-        public List<Pet> GetPetsList()
+        
+        public bool AddPet(Pet pet)
         {
-            return _mockupPetsDatabase;
+            if(pet != null)
+            {
+                _mockupPetsDatabase.Add(pet);
+                return true;
+            }
+            return false;
+        }
+
+        public bool DeletePet(Pet pet)
+        {
+            if(pet != null && _mockupPetsDatabase.contains(pet))
+            {
+                _mockupPetsDatabase.remove(pet);
+                return true;
+            }
+            return false;
+        }
+
+        public Pet GetPet(int id)
+        {
+            if(id >= 0)
+            {
+                //todo replace example pet with real functionality that asks backend
+                var pet = new Pet()
+                {
+                    Id = 123,
+                    Name = "TestDog",
+                    Type = PetType.Dog,
+                    Sex = PetSex.Male,
+                    Photo = new byte[10],
+                    Description = "Dog that eats tigers",
+                    Address = "Found in jungle",
+                    AddingTime = DateTime.Now,
+                    LastEditTime = DateTime.Now
+                };
+                return pet; 
+            }
+            return null;
         }
     }
 }
