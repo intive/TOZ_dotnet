@@ -9,13 +9,15 @@ namespace Toz.Dotnet.Core.Services
     public class PetsManagementService : IPetsManagementService
     {
         private IFilesManagementService _filesManagementService;
-        
+        private List<Pet> _mockupPetsDatabase;
+
         public PetsManagementService(IFilesManagementService filesManagementService)
         {
             _filesManagementService = filesManagementService;
+            _mockupPetsDatabase = new List<Pet>();
         }
 
-        public List<Pet> GetPetsList()
+        public List<Pet> GetSamplePetsList()
         {
             List<Pet> petsList = new List<Pet>(){
                 new Pet(0,"Tofik",PetType.Dog,PetSex.Female,new byte[0],"Przyjacielski piesek","Znaleziono na Bohaterow Warszawy",DateTime.Parse("2017-03-06 13:26"),DateTime.Parse("2017-03-07 13:55")),
@@ -24,6 +26,16 @@ namespace Toz.Dotnet.Core.Services
             };
             
             return petsList;
+        }
+
+        public void AddPet(Pet pet)
+        {
+            _mockupPetsDatabase.Add(pet);
+        }
+
+        public List<Pet> GetPetsList()
+        {
+            return _mockupPetsDatabase;
         }
     }
 }
