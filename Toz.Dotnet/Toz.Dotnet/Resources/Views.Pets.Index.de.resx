@@ -48,4 +48,10 @@
     <data name="Edit" xml:space="preserve">
         <value>Bearbeiten</value>
     </data>
+    <data name="Add" xml:space="preserve">
+        <value>Hinzufügen</value>
+    </data>
+    <data name="ListPanelTitle" xml:space="preserve">
+        <value>Schaltflächen</value>
+    </data>
 </root>

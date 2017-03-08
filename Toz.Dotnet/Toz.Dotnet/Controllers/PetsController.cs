@@ -23,5 +23,11 @@ namespace Toz.Dotnet.Controllers {
         {
             return View(_petsManagementService.GetPet(id));
         }
+
+        public ActionResult Add() 
+        {
+            //TODO
+            return View();
+        }
     }
 }
