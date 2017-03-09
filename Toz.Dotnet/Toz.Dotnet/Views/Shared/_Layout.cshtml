@@ -1,6 +1,7 @@
-﻿@inject IViewLocalizer Localizer
-@using Toz.Dotnet.Models.EnumTypes
+﻿@using Toz.Dotnet.Models.EnumTypes
 @using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
 
 <!DOCTYPE html>
 <html>
@@ -45,7 +46,9 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2017 - TOZ.Dotnet</p>
+            <div class="col-md-6 text-right">
+                @await Html.PartialAsync("_SelectLanguagePartial")
+            </div>
         </footer>
     </div>
 

@@ -53,7 +53,7 @@ namespace Toz.Dotnet
                     new CultureInfo("de"),
                 };
 
-                opts.DefaultRequestCulture = new RequestCulture("pl");
+                opts.DefaultRequestCulture = new RequestCulture(culture: "pl", uiCulture: "pl");
                 opts.SupportedCultures = supportedCultures;
                 opts.SupportedUICultures = supportedCultures;
             });

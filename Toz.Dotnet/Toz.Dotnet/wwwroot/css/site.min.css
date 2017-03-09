@@ -23,3 +23,5 @@ body{padding-top:50px;padding-bottom:20px}.body-content{padding-left:15px;paddin
 #img-upload{
     width: 256px;
 }
+#AddPetTable td { padding: 3px; }
+#EditPetTable td { padding: 3px; }
