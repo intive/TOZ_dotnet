@@ -45,11 +45,13 @@ namespace Toz.Dotnet.Core.Services
         }
 
         
-        public bool AddPet(Pet pet)
+        public bool CreatePet(Pet pet)
         {
-            if(pet != null)
+            int? newId;
+
+            if(pet != null && (newId = GetFirstAvailableId()) != null )
             {
-                pet.Id = getFirstAvailableID();
+                pet.Id = (int)newId;
                 pet.AddingTime = DateTime.Now;
                 pet.LastEditTime = DateTime.Now;          
                 _mockupPetsDatabase.Add(pet);
@@ -72,30 +74,26 @@ namespace Toz.Dotnet.Core.Services
         {
             if(id >= 0)
             {
-                //todo replace example pet with real functionality that asks backend
-                var pet = new Pet()
-                {
-                    Id = 123,
-                    Name = "TestDog",
-                    Type = PetType.Dog,
-                    Sex = PetSex.Male,
-                    Photo = new byte[10],
-                    Description = "Dog that eats tigers",
-                    Address = "Found in jungle",
-                    AddingTime = DateTime.Now,
-                    LastEditTime = DateTime.Now
-                };
-                return pet; 
+                return _mockupPetsDatabase[id]; 
             }
             return null;
         }
 
-        private int getFirstAvailableID()
-        {
-            var ids = _mockupPetsDatabase.Select(p => p.Id).ToList();
-            return Enumerable.Range(0, int.MaxValue)
-                             .Except(ids)
-                             .FirstOrDefault();
+        private int? GetFirstAvailableId()
+        {           
+            IEnumerable<int> takenIds = _mockupPetsDatabase.Select(p => p.Id).ToList();
+            int? availableId;
+
+            try
+            {
+                availableId = Enumerable.Range(0, int.MaxValue).Except(takenIds).First();
+            }
+            catch (InvalidOperationException)
+            {
+                availableId = null;
+            }
+
+            return availableId;
         }
     }
 }

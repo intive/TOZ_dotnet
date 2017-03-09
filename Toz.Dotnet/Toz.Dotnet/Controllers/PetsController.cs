@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models;
 using Microsoft.Extensions.Localization;
-using System;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -24,18 +23,18 @@ namespace Toz.Dotnet.Controllers
 
         [HttpPost]
         public IActionResult Add(
-            [Bind("Name, Type, Sex, Description, Address")] 
+            [Bind("Name, Type, sex, Description, Address")] 
             Pet pet)
         {
             if (pet != null && ModelState.IsValid)
             {
-                if (_petsManagementService.AddPet(pet)) 
+                if (_petsManagementService.CreatePet(pet)) 
                 {
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    return NotFound();
+                    return BadRequest();
                 } 
             } 
             else

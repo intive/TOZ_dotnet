@@ -10,6 +10,6 @@ namespace Toz.Dotnet.Core.Interfaces
         List<Pet> GetSamplePets();
         bool UpdatePet(Pet pet);
         bool DeletePet(Pet pet);
-        bool AddPet(Pet pet);      
+        bool CreatePet(Pet pet);      
     }
 }

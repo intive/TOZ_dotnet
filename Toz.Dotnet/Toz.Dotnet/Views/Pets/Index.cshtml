@@ -38,9 +38,13 @@
                 {
                     <td>@Localizer["Dog"]</td>
                 }
-                else
+                else if(@item.Type == PetType.Cat)
                 {
                     <td>@Localizer["Cat"]</td>
+                }
+                else
+                {
+                    <td>@Localizer["Unknown"]</td>
                 }
 
                 @if(@item.Sex == PetSex.Male)
