@@ -26,9 +26,9 @@
                     <td><label for="PetType">@Localizer["Type"]:</label></td>
                     <td>
                         <select class="form-control" name="PetType" id="PetType">
-                            <option value="UnidentifiedType"></option>
-                            <option value="Cat">@Localizer["Cat"]</option>
-                            <option value="Dog">@Localizer["Dog"]</option>
+                            <option value="0">@Localizer["Unknown"]</option>
+                            <option value="1">@Localizer["Dog"]</option>
+                            <option value="2">@Localizer["Cat"]</option>
                         </select>
                     </td>
                 </tr>
@@ -36,9 +36,9 @@
                     <td><label for="PetSex">@Localizer["Sex"]:</label></td>
                     <td>
                         <select class="form-control" name="PetSex" id="PetSex">
-                            <option value="UnidentifiedSex"></option>
-                            <option value="Male">@Localizer["Male"]</option>
-                            <option value="Female">@Localizer["Female"]</option>
+                            <option value="0">@Localizer["Unidentified"]</option>
+                            <option value="1">@Localizer["Male"]</option>
+                            <option value="2">@Localizer["Female"]</option>
                         </select>
                     </td>
                 </tr>

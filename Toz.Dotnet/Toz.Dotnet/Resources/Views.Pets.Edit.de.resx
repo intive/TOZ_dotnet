@@ -36,6 +36,9 @@
     <data name="Female" xml:space="preserve">
         <value>Weiblich</value>
     </data>
+    <data name="Unknown" xml:space="preserve">
+        <value>Unbekannt</value>
+    </data>
     <data name="Unidentified" xml:space="preserve">
         <value>Unbekannt</value>
     </data>
