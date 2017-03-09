@@ -36,6 +36,9 @@
     <data name="Unidentified" xml:space="preserve">
         <value>Nieokreślona</value>
     </data>
+    <data name="Unknown" xml:space="preserve">
+        <value>Nieznany</value>
+    </data>
     <data name="Save" xml:space="preserve">
         <value>Zapisz</value>
     </data>

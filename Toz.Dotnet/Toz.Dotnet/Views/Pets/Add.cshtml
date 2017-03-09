@@ -11,30 +11,30 @@
     <h2>@Localizer["Title"]</h2>
     <hr>
 
-    <div class="AddingAnPet">
-        <form action="" method="POST">
+    <div class="AddingPet">
+        <form asp-controller="Pets" asp-action="Add" method="POST">
             <table id="AddPetTable" align="center">
                 <tr>
-                    <td><label for="PetName">@Localizer["Name"]:</label></td>
-                    <td><input class="form-control" type="text" name="PetName" id="PetName"></td>
+                    <td><label>@Localizer["Name"]:</label></td>
+                    <td><input asp-for="Name" class="form-control" id="PetName"></td>
                 </tr>
                 <tr>
-                    <td><label for="PetType">@Localizer["Type"]:</label></td>
+                    <td><label>@Localizer["Type"]:</label></td>
                     <td>
-                        <select class="form-control" name="PetType" id="PetType">
-                            <option value="UnidentifiedType"></option>
-                            <option value="Cat">@Localizer["Cat"]</option>
-                            <option value="Dog">@Localizer["Dog"]</option>
+                        <select asp-for="Type" class="form-control" id="PetType">
+                            <option value="0">@Localizer["Unknown"]</option>
+                            <option value="1">@Localizer["Dog"]</option>
+                            <option value="2">@Localizer["Cat"]</option>
                         </select>
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="PetSex">@Localizer["Sex"]:</label></td>
+                    <td><label>@Localizer["Sex"]:</label></td>
                     <td>
-                        <select class="form-control" name="PetSex" id="PetSex">
-                            <option value="UnidentifiedSex"></option>
-                            <option value="Male">@Localizer["Male"]</option>
-                            <option value="Female">@Localizer["Female"]</option>
+                        <select asp-for="Sex" class="form-control" id="PetSex">
+                            <option value="0">@Localizer["Unidentified"]</option>
+                            <option value="1">@Localizer["Male"]</option>
+                            <option value="2">@Localizer["Female"]</option>
                         </select>
                     </td>
                 </tr>
@@ -55,19 +55,19 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="PetDescription">@Localizer["Description"]:</label></td>
-                    <td><input class="form-control" type="text" name="PetDescription" id="PetDescription"></td>
+                    <td><label>@Localizer["Description"]:</label></td>
+                    <td><input asp-for="Description" type="text" class="form-control" id="PetDescription"></td>
                 </tr>
                 <tr>
-                    <td><label for="PetAddress">@Localizer["Address"]:</label></td>
-                    <td><input class="form-control" type="text" name="PetAddress" id="PetAddress"></td>
+                    <td><label asp-for="Address">@Localizer["Address"]:</label></td>
+                    <td><input asp-for="Address" type="text" class="form-control" id="PetAddress"></td>
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center;">
                         <br>
-                        <input class="form-control" type="submit" name="PetSave" id="PetSave" value=@Localizer["Save"]>
+                        <input class="form-control" type="submit" id="PetSave" value=@Localizer["Save"]>
                         <br>
-                        <input class="form-control" type="submit" name="PetCancel" id="PetCancel" value=@Localizer["Cancel"]>
+                        <input class="form-control" type="submit" id="PetCancel" value=@Localizer["Cancel"]>
                     </td>
                 </tr>
             </table>
