@@ -7,7 +7,7 @@
         <value>Lista zwierzaków</value>
     </data>
     <data name="Name" xml:space="preserve">
-        <value>Imię</value>
+        <value>Imie</value>
     </data>
     <data name="Type" xml:space="preserve">
         <value>Typ</value>
@@ -44,6 +44,9 @@
     </data>
     <data name="Unidentified" xml:space="preserve">
         <value>Nieokreślona</value>
+    </data>
+    <data name="Unknown" xml:space="preserve">
+        <value>Nieznany</value>
     </data>
     <data name="Edit" xml:space="preserve">
         <value>Edytuj</value>

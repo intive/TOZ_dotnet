@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
+    <data name="Id" xml:space="preserve">
+        <value>ID</value>
+    </data>
     <data name="Title" xml:space="preserve">
-        <value>Tier hinzufüg</value>
+        <value>Tier bearbeiten</value>
     </data>
     <data name="Name" xml:space="preserve">
         <value>Name</value>
@@ -33,10 +36,10 @@
     <data name="Female" xml:space="preserve">
         <value>Weiblich</value>
     </data>
-    <data name="Unidentified" xml:space="preserve">
+    <data name="Unknown" xml:space="preserve">
         <value>Unbekannt</value>
     </data>
-    <data name="Unknown" xml:space="preserve">
+    <data name="Unidentified" xml:space="preserve">
         <value>Unbekannt</value>
     </data>
     <data name="Save" xml:space="preserve">

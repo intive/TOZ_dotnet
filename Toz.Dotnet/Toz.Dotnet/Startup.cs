@@ -34,8 +34,8 @@ namespace Toz.Dotnet
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddTransient<IFilesManagementService, FilesManagementService>();
-            services.AddTransient<IPetsManagementService, PetsManagementService>();
+            services.AddSingleton<IFilesManagementService, FilesManagementService>();
+            services.AddSingleton<IPetsManagementService, PetsManagementService>();
 
             services.AddMvc()
                 .AddViewLocalization(
@@ -53,7 +53,7 @@ namespace Toz.Dotnet
                     new CultureInfo("de"),
                 };
 
-                opts.DefaultRequestCulture = new RequestCulture("pl");
+                opts.DefaultRequestCulture = new RequestCulture(culture: "pl", uiCulture: "pl");
                 opts.SupportedCultures = supportedCultures;
                 opts.SupportedUICultures = supportedCultures;
             });

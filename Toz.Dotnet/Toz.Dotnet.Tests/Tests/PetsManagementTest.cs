@@ -3,7 +3,6 @@ using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Tests.Helpers;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.EnumTypes;
-using System.Linq;
 using System;
 
 namespace Toz.Dotnet.Tests.Tests
@@ -38,27 +37,27 @@ namespace Toz.Dotnet.Tests.Tests
         [Fact]
         public void TestIfGetAllPetsIsNotNull()
         {
-            Assert.NotNull(_petsManagementService.GetPetsList());
+            Assert.NotNull(_petsManagementService.GetAllPets());
         }
 
         [Fact]
         public void TestNewPetAdding()
         {
-            Assert.True(_petsManagementService.AddPet(_testingPet));
+            Assert.True(_petsManagementService.CreatePet(_testingPet));
             _petsManagementService.DeletePet(_testingPet);
         }
 
         [Fact]
         public void TestPetDeleting()
         {
-            _petsManagementService.AddPet(_testingPet);
+            _petsManagementService.CreatePet(_testingPet);
             Assert.True(_petsManagementService.DeletePet(_testingPet));
         }
 
         [Fact]
         public void TestGetSpecifiedPet()
         {
-            _petsManagementService.AddPet(_testingPet);
+            _petsManagementService.CreatePet(_testingPet);
             var pet = _petsManagementService.GetPet(_testingPet.Id);
 
             Assert.NotNull(pet);
@@ -69,7 +68,7 @@ namespace Toz.Dotnet.Tests.Tests
         [Fact]
         public void CheckPetUpdate()
         {
-            _petsManagementService.AddPet(_testingPet);
+            _petsManagementService.CreatePet(_testingPet);
             var pet = _petsManagementService.GetPet(_testingPet.Id);
             pet.Name = "UpdatedName";
             Assert.True(_petsManagementService.UpdatePet(pet));

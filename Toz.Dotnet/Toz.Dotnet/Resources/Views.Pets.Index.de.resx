@@ -45,6 +45,9 @@
     <data name="Unidentified" xml:space="preserve">
         <value>Unbekannt</value>
     </data>
+    <data name="Unknown" xml:space="preserve">
+        <value>Unbekannt</value>
+    </data>
     <data name="Edit" xml:space="preserve">
         <value>Bearbeiten</value>
     </data>

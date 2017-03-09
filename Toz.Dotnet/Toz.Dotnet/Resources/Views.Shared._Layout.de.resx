@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-        <data name="ListAnimal" xml:space="preserve">
+    <data name="ListAnimal" xml:space="preserve">
         <value>Tierliste</value>
     </data>
     <data name="AddAnimal" xml:space="preserve">
