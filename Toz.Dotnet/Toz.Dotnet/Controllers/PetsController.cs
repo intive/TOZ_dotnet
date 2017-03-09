@@ -23,7 +23,7 @@ namespace Toz.Dotnet.Controllers
 
         [HttpPost]
         public IActionResult Add(
-            [Bind("Name, Type, sex, Description, Address")] 
+            [Bind("Name, Type, Sex, Description, Address")] 
             Pet pet)
         {
             if (pet != null && ModelState.IsValid)
