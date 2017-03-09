@@ -4,7 +4,79 @@
 @inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = "Edycja";
+    ViewData["Title"] = @Localizer["Title"];
 }
 
-<p>@Model.Id</p>
+<body>
+    <h2>@Localizer["Title"]</h2>
+    <hr>
+
+    <div class="EditingAnPet">
+        <form action="" method="POST">
+            <table id="EditPetTable" align="center">
+                <tr>
+                    <td><label for="PetId">@Localizer["Id"]:</label></td>
+                    <td><input class="form-control" type="text" name="PetId" id="PetId" disabled></td>
+                </tr>
+                <tr>
+                    <td><label for="PetName">@Localizer["Name"]:</label></td>
+                    <td><input class="form-control" type="text" name="PetName" id="PetName"></td>
+                </tr>
+                <tr>
+                    <td><label for="PetType">@Localizer["Type"]:</label></td>
+                    <td>
+                        <select class="form-control" name="PetType" id="PetType">
+                            <option value="0">@Localizer["Unknown"]</option>
+                            <option value="1">@Localizer["Dog"]</option>
+                            <option value="2">@Localizer["Cat"]</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="PetSex">@Localizer["Sex"]:</label></td>
+                    <td>
+                        <select class="form-control" name="PetSex" id="PetSex">
+                            <option value="0">@Localizer["Unidentified"]</option>
+                            <option value="1">@Localizer["Male"]</option>
+                            <option value="2">@Localizer["Female"]</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <div class="form-group">
+                            <label>@Localizer["Photo"]</label>
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <span class="btn btn-default btn-file">
+                                        @Localizer["Browse"] <input type="file" id="imgInp" accept="image/x-png,image/gif,image/jpeg" >
+                                    </span>
+                                </span>
+                                <input type="text" class="form-control" readonly>
+                            </div>
+                            <img id='img-upload'/>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="PetDescription">@Localizer["Description"]:</label></td>
+                    <td><input class="form-control" type="text" name="PetDescription" id="PetDescription"></td>
+                </tr>
+                <tr>
+                    <td><label for="PetAddress">@Localizer["Address"]:</label></td>
+                    <td><input class="form-control" type="text" name="PetAddress" id="PetAddress"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <input class="form-control" type="submit" name="PetSave" id="PetSave" value=@Localizer["Save"]>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <input class="form-control" type="submit" name="PetCancel" id="PetCancel" value=@Localizer["Cancel"]>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
