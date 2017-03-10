@@ -49,6 +49,29 @@ namespace Toz.Dotnet.Controllers
             return View(new Pet());
         }
 
+        [HttpPost]
+        public IActionResult Edit(
+            [Bind("Id, Name, Type, Sex, Description, Address, AddingTime")] 
+            Pet pet)
+        {
+            if (pet != null && ModelState.IsValid)
+            {
+                if (_petsManagementService.UpdatePet(pet)) 
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return BadRequest();
+                } 
+            } 
+            else
+            {
+                return NotFound();
+            }      
+            
+        } 
+
         public ActionResult Edit(int id) 
         {
             return View(_petsManagementService.GetPet(id));

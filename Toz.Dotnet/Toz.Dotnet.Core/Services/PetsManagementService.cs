@@ -28,7 +28,8 @@ namespace Toz.Dotnet.Core.Services
         {
             if(pet != null)
             {
-                //todo add all the backend magic to update our pet
+                pet.LastEditTime = DateTime.Now;
+                _mockupPetsDatabase[pet.Id] = pet;
                 return true;
             }
             return false;
