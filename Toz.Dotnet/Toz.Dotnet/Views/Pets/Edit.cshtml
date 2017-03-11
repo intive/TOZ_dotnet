@@ -13,7 +13,7 @@
 
     <div class="EditingPet">
         <form asp-controller="Pets" asp-action="Edit" method="POST">
-            <table id="PetEditTable" align="center">
+            <table class="forms" align="center">
                 <input asp-for="AddingTime" class="form-control" id="PetAddingTime" type="hidden">
 
                 <tr>
@@ -71,12 +71,12 @@
                 <tr>
                     <td colspan="2" style="text-align: center;">
                         <br>
-                        <input type="submit" class="form-control" id="PetSave" value=@Localizer["Save"]>
+                        <input type="submit" class="btn btn-primary btn-block" id="PetSave" value=@Localizer["Save"]>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center;">
-                        <input type="button" class="form-control" id="PetCancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "Pets") + "'");">
+                        <input type="button" class="btn btn-primary btn-block" id="PetCancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "Pets") + "'");">
                     </td>
                 </tr>
             </table>
