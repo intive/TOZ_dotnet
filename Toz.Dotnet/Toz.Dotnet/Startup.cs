@@ -48,7 +48,7 @@ namespace Toz.Dotnet
                 {
                 var supportedCultures = new List<CultureInfo>
                 {
-                    new CultureInfo("en"),
+                    new CultureInfo("en-US"),
                     new CultureInfo("pl"),
                     new CultureInfo("de"),
                 };
