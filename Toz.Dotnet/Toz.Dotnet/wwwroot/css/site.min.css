@@ -1,9 +1,24 @@
-body{padding-top:50px;padding-bottom:20px}.body-content{padding-left:15px;padding-right:15px}input,select,textarea{max-width:280px}.carousel-caption p{font-size:20px;line-height:1.4}.carousel-inner .item img[src$=".svg"]{width:100%}@media screen and (max-width:767px){.carousel-caption{display:none}}
+body {
+    padding-top: 50px;
+    padding-bottom: 20px
+}
+
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px
+}
+
+input,
+select,
+textarea {
+    max-width: 280px
+}
 
 .btn-file {
     position: relative;
     overflow: hidden;
 }
+
 .btn-file input[type=file] {
     position: absolute;
     top: 0;
@@ -20,8 +35,14 @@ body{padding-top:50px;padding-bottom:20px}.body-content{padding-left:15px;paddin
     display: block;
 }
 
-#img-upload{
+#img-upload {
     width: 256px;
 }
-#AddPetTable td { padding: 3px; }
-#EditPetTable td { padding: 3px; }
+
+#PetAddTable td {
+    padding: 3px;
+}
+
+#PetEditTable td {
+    padding: 3px;
+}

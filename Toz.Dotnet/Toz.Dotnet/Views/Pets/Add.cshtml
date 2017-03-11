@@ -13,10 +13,10 @@
 
     <div class="AddingPet">
         <form asp-controller="Pets" asp-action="Add" method="POST">
-            <table id="AddPetTable" align="center">
+            <table id="PetAddTable" align="center">
                 <tr>
                     <td><label>@Localizer["Name"]:</label></td>
-                    <td><input asp-for="Name" class="form-control" id="PetName"></td>
+                    <td><input type="text" asp-for="Name" class="form-control" id="PetName"></td>
                 </tr>
                 <tr>
                     <td><label>@Localizer["Type"]:</label></td>
@@ -56,20 +56,21 @@
                 </tr>
                 <tr>
                     <td><label>@Localizer["Description"]:</label></td>
-                    <td><input asp-for="Description" type="text" class="form-control" id="PetDescription"></td>
+                    <td><textarea asp-for="Description" class="form-control" id="PetDescription" cols="10" rows="4" style="resize: vertical"></textarea></td>
                 </tr>
                 <tr>
-                    <td><label asp-for="Address">@Localizer["Address"]:</label></td>
-                    <td><input asp-for="Address" type="text" class="form-control" id="PetAddress"></td>
+                    <td><label>@Localizer["Address"]:</label></td>
+                    <td><input type="text" asp-for="Address" class="form-control" id="PetAddress"></td>
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center;">
-                        <input class="form-control" type="submit" id="PetSave" value=@Localizer["Save"]>
+                        <br>
+                        <input type="submit" class="form-control" id="PetSave" value=@Localizer["Save"]>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center;">
-                        <input class="form-control" type="button" id="PetCancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "Pets") + "'");">
+                        <input type="button" class="form-control" id="PetCancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "Pets") + "'");">
                     </td>
                 </tr>
             </table>
