@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
     <data name="ListAnimal" xml:space="preserve">
-        <value>List of animals</value>
+        <value>List of pets</value>
     </data>
     <data name="AddAnimal" xml:space="preserve">
-        <value>Add an animal</value>
+        <value>Add a pet</value>
     </data>
 </root>
