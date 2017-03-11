@@ -13,16 +13,16 @@
 
     <div class="EditingPet">
         <form asp-controller="Pets" asp-action="Edit" method="POST">
-            <table id="EditPetTable" align="center">
+            <table id="PetEditTable" align="center">
                 <input asp-for="AddingTime" class="form-control" id="PetAddingTime" type="hidden">
 
                 <tr>
-                    <td><label for="PetId">@Localizer["Id"]:</label></td>
-                    <td><input asp-for="Id" class="form-control" id="PetId" disabled></td>
+                    <td><label>@Localizer["Id"]:</label></td>
+                    <td><input type="text" asp-for="Id" class="form-control" id="PetId" disabled></td>
                 </tr>
                 <tr>
-                    <td><label for="PetName">@Localizer["Name"]:</label></td>
-                    <td><input asp-for="Name" class="form-control" id="PetName"></td>
+                    <td><label>@Localizer["Name"]:</label></td>
+                    <td><input type="text" asp-for="Name" class="form-control" id="PetName"></td>
                 </tr>
                 <tr>
                     <td><label>@Localizer["Type"]:</label></td>
@@ -35,7 +35,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="PetSex">@Localizer["Sex"]:</label></td>
+                    <td><label>@Localizer["Sex"]:</label></td>
                     <td>
                         <select asp-for="Sex" class="form-control" id="PetSex">
                             <option value="0">@Localizer["Unidentified"]</option>
@@ -61,21 +61,22 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="PetDescription">@Localizer["Description"]:</label></td>
-                    <td><input asp-for="Description" class="form-control" type="text" id="PetDescription"></td>
+                    <td><label>@Localizer["Description"]:</label></td>
+                    <td><textarea asp-for="Description" class="form-control" id="PetDescription" cols="10" rows="4" style="resize: vertical"></textarea></td>
                 </tr>
                 <tr>
-                    <td><label for="PetAddress">@Localizer["Address"]:</label></td>
-                    <td><input asp-for="Address" class="form-control" type="text" id="PetAddress"></td>
+                    <td><label>@Localizer["Address"]:</label></td>
+                    <td><input type="text" asp-for="Address" class="form-control" id="PetAddress"></td>
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center;">
-                        <input class="form-control" type="submit" id="PetSave" value=@Localizer["Save"]>
+                        <br>
+                        <input type="submit" class="form-control" id="PetSave" value=@Localizer["Save"]>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center;">
-                        <input class="form-control" type="button" id="PetCancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "Pets") + "'");">
+                        <input type="button" class="form-control" id="PetCancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "Pets") + "'");">
                     </td>
                 </tr>
             </table>
