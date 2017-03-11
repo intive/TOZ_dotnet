@@ -9,7 +9,7 @@
     <data name="Type" xml:space="preserve">
         <value>Typ</value>
     </data>
-    <data name="Gender" xml:space="preserve">
+    <data name="Sex" xml:space="preserve">
         <value>Geschlecht</value>
     </data>
     <data name="Photo" xml:space="preserve">

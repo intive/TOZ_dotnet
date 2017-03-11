@@ -64,10 +64,12 @@
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center;">
-                        <br>
                         <input class="form-control" type="submit" id="PetSave" value=@Localizer["Save"]>
-                        <br>
-                        <input class="form-control" type="submit" id="PetCancel" value=@Localizer["Cancel"]>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <input class="form-control" type="button" id="PetCancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "Pets") + "'");">
                     </td>
                 </tr>
             </table>
