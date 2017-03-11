@@ -13,7 +13,7 @@
 
     <div class="AddingPet">
         <form asp-controller="Pets" asp-action="Add" method="POST">
-            <table id="PetAddTable" align="center">
+            <table class="forms" align="center">
                 <tr>
                     <td><label>@Localizer["Name"]:</label></td>
                     <td><input type="text" asp-for="Name" class="form-control" id="PetName"></td>

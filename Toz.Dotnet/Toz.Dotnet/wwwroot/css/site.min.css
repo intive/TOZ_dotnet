@@ -33,10 +33,6 @@ body {
     width: 256px;
 }
 
-#PetAddTable td {
-    padding: 3px;
-}
-
-#PetEditTable td {
+.forms td {
     padding: 3px;
 }

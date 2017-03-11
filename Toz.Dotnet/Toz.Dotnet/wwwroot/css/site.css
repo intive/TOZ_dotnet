@@ -3,8 +3,6 @@
     padding-bottom: 20px;
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
@@ -32,13 +30,9 @@
 }
 
 #img-upload{
-    width: 100%;
+    width: 256px;
 }
 
-#PetAddTable td {
-    padding: 3px;
-}
-
-#PetEditTable td {
+.forms td {
     padding: 3px;
 }
