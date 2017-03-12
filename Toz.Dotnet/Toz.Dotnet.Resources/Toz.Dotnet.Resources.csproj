@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="**\*.cs" />
+    <EmbeddedResource Include="**\*.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NETStandard.Library" Version="1.6" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="NewPetDataValidation.de.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

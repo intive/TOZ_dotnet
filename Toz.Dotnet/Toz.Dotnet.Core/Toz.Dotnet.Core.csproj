@@ -5,15 +5,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="**\*.cs" />
     <EmbeddedResource Include="**\*.resx" />
   </ItemGroup>
 
   <ItemGroup>
-      <PackageReference Include="CoreCompat.System.Drawing" Version="1.0.0-beta006"/>
+    <PackageReference Include="NETStandard.Library" Version="1.6" />
+    <PackageReference Include="CoreCompat.System.Drawing" Version="1.0.0-beta006"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="**\*.resx" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="../Toz.Dotnet.Models/Toz.Dotnet.Models.csproj"/>
+    <ProjectReference Include="../Toz.Dotnet.Resources/Toz.Dotnet.Resources.csproj"/>
   </ItemGroup>
 
 </Project>

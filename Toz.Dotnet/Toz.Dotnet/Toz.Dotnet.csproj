@@ -10,6 +10,7 @@
   </PropertyGroup>
   <!--Libs references -->
   <ItemGroup>
+    <PackageReference Include="Microsoft.NETCore.App" Version="1.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Tools" Version="1.0.0-preview2-final" />
@@ -30,5 +31,6 @@
   <ItemGroup>
     <ProjectReference Include="../Toz.Dotnet.Core/Toz.Dotnet.Core.csproj"/>
     <ProjectReference Include="../Toz.Dotnet.Models/Toz.Dotnet.Models.csproj"/>
+    <ProjectReference Include="../Toz.Dotnet.Resources/Toz.Dotnet.Resources.csproj"/>
   </ItemGroup>
 </Project>
