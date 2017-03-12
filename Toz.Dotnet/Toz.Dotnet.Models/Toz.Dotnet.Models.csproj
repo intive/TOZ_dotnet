@@ -11,6 +11,16 @@
 
   <ItemGroup>
     <PackageReference Include="NETStandard.Library" Version="1.6" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="**\*.resx" />
+  </ItemGroup>
+
+  <!--Project references -->
+  <ItemGroup>
+    <ProjectReference Include="../Toz.Dotnet.Resources/Toz.Dotnet.Resources.csproj"/>
   </ItemGroup>
 
 </Project>
