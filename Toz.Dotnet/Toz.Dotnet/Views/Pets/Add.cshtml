@@ -17,6 +17,7 @@
                 <tr>
                     <td><label>@Localizer["Name"]:</label></td>
                     <td><input type="text" asp-for="Name" class="form-control" id="PetName"></td>
+                    <td>@Html.ValidationMessageFor(Model => Model.Name, null, new { @style = "color:red; margin-left:10px"})</td>
                 </tr>
                 <tr>
                     <td><label>@Localizer["Type"]:</label></td>
@@ -27,6 +28,7 @@
                             <option value="2">@Localizer["Cat"]</option>
                         </select>
                     </td>
+                    <td>@Html.ValidationMessageFor(Model => Model.Type, null, new { @style = "color:red; margin-left:10px" })</td>
                 </tr>
                 <tr>
                     <td><label>@Localizer["Sex"]:</label></td>
@@ -57,10 +59,12 @@
                 <tr>
                     <td><label>@Localizer["Description"]:</label></td>
                     <td><textarea asp-for="Description" class="form-control" id="PetDescription" cols="10" rows="4" style="resize: vertical"></textarea></td>
+                    <td>@Html.ValidationMessageFor(Model => Model.Description, null, new { @style = "color:red; margin-left:10px" })</td>
                 </tr>
                 <tr>
                     <td><label>@Localizer["Address"]:</label></td>
                     <td><input type="text" asp-for="Address" class="form-control" id="PetAddress"></td>
+                    <td>@Html.ValidationMessageFor(Model => Model.Address, null, new { @style = "color:red; margin-left:10px" })</td>
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center;">

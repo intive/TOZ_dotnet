@@ -22,6 +22,7 @@ namespace Toz.Dotnet.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Add(
             [Bind("Name, Type, Sex, Description, Address")] 
             Pet pet)
@@ -36,12 +37,11 @@ namespace Toz.Dotnet.Controllers
                 {
                     return BadRequest();
                 } 
-            } 
+            }
             else
             {
-                return NotFound();
-            }      
-            
+                return View(pet);
+            }
         } 
 
         public IActionResult Add()
