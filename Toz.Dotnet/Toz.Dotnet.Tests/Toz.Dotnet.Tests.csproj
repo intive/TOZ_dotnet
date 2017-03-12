@@ -25,5 +25,6 @@
     <ProjectReference Include="../Toz.Dotnet.Core/Toz.Dotnet.Core.csproj"/>
     <ProjectReference Include="../Toz.Dotnet/Toz.Dotnet.csproj"/>
     <ProjectReference Include="../Toz.Dotnet.Models/Toz.Dotnet.Models.csproj"/>
+    <ProjectReference Include="../Toz.Dotnet.Resources/Toz.Dotnet.Resources.csproj"/>
   </ItemGroup>
 </Project>
