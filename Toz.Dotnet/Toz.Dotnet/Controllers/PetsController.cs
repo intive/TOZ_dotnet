@@ -50,6 +50,7 @@ namespace Toz.Dotnet.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit(
             [Bind("Id, Name, Type, Sex, Description, Address, AddingTime")] 
             Pet pet)
@@ -67,7 +68,7 @@ namespace Toz.Dotnet.Controllers
             } 
             else
             {
-                return NotFound();
+                return View(pet);
             }      
             
         } 
