@@ -19,6 +19,10 @@ dotnet build
 
 dotnet run
 
+# Docker usage
+How to use our application as a docker image explained
+https://github.com/blstream/TOZ_dotnet/wiki/Docker
+
 
 # Coding conventions
 https://github.com/blstream/TOZ_dotnet/wiki/Coding-conventions
