@@ -4,6 +4,9 @@ using Toz.Dotnet.Tests.Helpers;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.EnumTypes;
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using Xunit.Extensions;
 
 namespace Toz.Dotnet.Tests.Tests
 {
@@ -74,6 +77,113 @@ namespace Toz.Dotnet.Tests.Tests
             Assert.True(_petsManagementService.UpdatePet(pet));
         }
 
+        [Fact]
+        public void TestPetValidationIfCorrectData()
+        {
+            // Arrange
+            var context = new ValidationContext(_testingPet, null, null);
+            var result = new List<ValidationResult>();
 
+            // Act
+            bool valid = Validator.TryValidateObject(_testingPet, context, result, true);
+
+            Assert.True(valid);
+        }
+
+        [Theory]
+        [InlineData("Name")]
+        [InlineData("Address")]
+        [InlineData("Type")]
+        public void TestPetValidationIfRequiredPropertyIsNotInitialized(string property)
+        {
+            // Arrange
+            Pet pet = ClonePet(_testingPet);
+
+            if (property.Equals("Name")) 
+            { 
+                pet.Name = "";
+            }
+            else if (property.Equals("Address"))
+            {
+                pet.Address = "";
+            }
+            else if (property.Equals("Type"))
+            {
+                pet.Type = PetType.Unidentified;
+            }
+           
+            var context = new ValidationContext(pet, null, null);
+            var result = new List<ValidationResult>();
+
+            // Act
+            bool valid = Validator.TryValidateObject(pet, context, result, true);
+
+            Assert.False(valid);
+        }
+
+        [Theory]
+        [InlineData("Name")]
+        [InlineData("Address")]
+        [InlineData("Description")]
+        public void TestPetValidationIfStringIsTooLong(string property)
+        {
+            // Arrange
+            Pet pet = ClonePet(_testingPet);
+
+            if (property.Equals("Name")) 
+            { 
+                pet.Name = new string('x', 40);
+            }
+            else if (property.Equals("Address"))
+            {
+                pet.Address = new string('x', 101);
+            }
+            else if (property.Equals("Description"))
+            {
+                pet.Description = new string('x', 310);
+            }
+
+            var context = new ValidationContext(pet, null, null);
+            var result = new List<ValidationResult>();
+
+            //Act
+            bool valid = Validator.TryValidateObject(pet, context, result, true);
+
+            Assert.False(valid);                      
+        }
+
+        [Theory]
+        [InlineData("CR7")]
+        [InlineData("     ")]
+        public void TestPetValidationIfRegexNotMatch(string value)
+        {
+            //Arrange
+            Pet pet = ClonePet(_testingPet);
+            pet.Name = value;
+
+            var context = new ValidationContext(pet, null, null);
+            var result = new List<ValidationResult>();
+
+            //Act
+            bool valid = Validator.TryValidateObject(pet, context, result, true);
+
+            Assert.False(valid);
+        }
+
+        private Pet ClonePet(Pet pet)
+        {
+            return new Pet()
+            {
+                Id = pet.Id,
+                Name = pet.Name,
+                Type = pet.Type,
+                Sex = pet.Sex,
+                Photo = (byte[])pet.Photo.Clone(),
+                Description = pet.Description,
+                Address = pet.Address,
+                AddingTime = pet.AddingTime,
+                LastEditTime = pet.LastEditTime
+            };
+        }
     }
 }
