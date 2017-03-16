@@ -36,3 +36,24 @@ body {
 .forms td {
     padding: 3px;
 }
+
+/* Validation styles*/
+.field-validation-error {
+    color: red;
+}
+
+input.input-validation-error {
+    border: 1px solid red;
+}
+
+select.input-validation-error {
+    border: 1px solid red;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+textarea.input-validation-error {
+      border-color: red;
+ }
