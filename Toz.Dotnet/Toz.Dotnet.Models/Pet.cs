@@ -8,13 +8,9 @@ namespace Toz.Dotnet.Models
     public class Pet
     {
         public int Id {get; set;}
-
-        [Required(AllowEmptyStrings = false, ErrorMessageResourceType = typeof(Resources.NewPetDataValidation),
-                  ErrorMessageResourceName = "EmptyField")]
+        
         [StringLength(30, ErrorMessageResourceType = typeof(Resources.NewPetDataValidation),
                   ErrorMessageResourceName = "MaxLength")]
-        [RegularExpression("^[a-zA-Z]+$", ErrorMessageResourceType = typeof(Resources.NewPetDataValidation),
-                  ErrorMessageResourceName = "NameLetters")]
         public string Name {get; set;}
 
         [RegularExpression("^(Cat|Dog)$", ErrorMessageResourceType = typeof(Resources.NewPetDataValidation),
@@ -28,9 +24,7 @@ namespace Toz.Dotnet.Models
         [StringLength(300, ErrorMessageResourceType = typeof(Resources.NewPetDataValidation),
                   ErrorMessageResourceName = "MaxLength")]
         public string Description {get; set;}
-
-        [Required(AllowEmptyStrings = false, ErrorMessageResourceType = typeof(Resources.NewPetDataValidation),
-                  ErrorMessageResourceName = "EmptyField")]
+        
         [StringLength(100, ErrorMessageResourceType = typeof(Resources.NewPetDataValidation),
                   ErrorMessageResourceName = "MaxLength")]
         public string Address {get; set;}

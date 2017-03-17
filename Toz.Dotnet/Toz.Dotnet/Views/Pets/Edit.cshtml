@@ -20,13 +20,17 @@
                     <td><label>@Localizer["Id"]:</label></td>
                     <td><input type="text" asp-for="Id" class="form-control" id="PetId" disabled></td>
                 </tr>
+                <tr align="left">
+                    <td></td>
+                    <td>@Html.ValidationMessageFor(Model => Model.Name, null, null)</td>
+                </tr>
                 <tr>
                     <td><label>@Localizer["Name"]:</label></td>
                     <td><input type="text" asp-for="Name" class="form-control" id="PetName"></td>
                 </tr>
                 <tr align="left">
                     <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Name, null, null)</td>
+                    <td>@Html.ValidationMessageFor(Model => Model.Type, null, null)</td>
                 </tr>
                 <tr>
                     <td><label>@Localizer["Type"]:</label></td>
@@ -37,10 +41,6 @@
                             <option value="2">@Localizer["Cat"]</option>
                         </select>
                     </td>
-                </tr>
-                <tr align="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Type, null, null)</td>
                 </tr>
                 <tr>
                     <td><label>@Localizer["Sex"]:</label></td>
@@ -68,21 +68,21 @@
                         </div>
                     </td>
                 </tr>
+                <tr align="left">
+                    <td></td>
+                    <td>@Html.ValidationMessageFor(Model => Model.Description, null, null)</td>
+                </tr>
                 <tr>
                     <td><label>@Localizer["Description"]:</label></td>
                     <td><textarea asp-for="Description" class="form-control" id="PetDescription" cols="10" rows="4" style="resize: vertical"></textarea></td>
                 </tr>
                 <tr align="left">
                     <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Description, null, null)</td>
+                    <td>@Html.ValidationMessageFor(Model => Model.Address, null, null)</td>
                 </tr>
                 <tr>
                     <td><label>@Localizer["Address"]:</label></td>
                     <td><input type="text" asp-for="Address" class="form-control" id="PetAddress"></td>
-                </tr>
-                <tr align="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Address, null, null)</td>
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center;">
