@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.EnumTypes;
 using System.Linq;
+using System.IO;
 
 namespace Toz.Dotnet.Core.Services
 {
@@ -28,6 +29,10 @@ namespace Toz.Dotnet.Core.Services
         {
             if(pet != null)
             {
+                if(pet.Photo == null)
+                {
+                    pet.Photo = _mockupPetsDatabase[pet.Id].Photo;
+                }
                 pet.LastEditTime = DateTime.Now;
                 _mockupPetsDatabase[pet.Id] = pet;
                 return true;
@@ -68,6 +73,15 @@ namespace Toz.Dotnet.Core.Services
                 return _mockupPetsDatabase[id]; 
             }
             return null;
+        }
+
+        public byte[] ConvertPhotoToByteArray(Stream fileStream)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                fileStream.CopyTo(memoryStream);
+                return memoryStream.ToArray();
+            }
         }
 
         private int? GetFirstAvailableId()
