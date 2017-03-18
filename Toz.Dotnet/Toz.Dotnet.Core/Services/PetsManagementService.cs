@@ -1,12 +1,10 @@
 using Toz.Dotnet.Core.Interfaces;
 using System.Collections.Generic;
 using Toz.Dotnet.Models;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.IO;
 using Microsoft.Extensions.Options;
 using Toz.Dotnet.Resources.Configuration;
-using System.Text;
 
 namespace Toz.Dotnet.Core.Services
 {

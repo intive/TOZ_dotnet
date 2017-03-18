@@ -16,7 +16,6 @@ namespace Toz.Dotnet.Core.Services
                 return false;
             }
 
-
             using (var client = new HttpClient())
             {
                 try
