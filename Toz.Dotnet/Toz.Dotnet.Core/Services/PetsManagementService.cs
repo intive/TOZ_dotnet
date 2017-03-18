@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using Microsoft.Extensions.Options;
 using Toz.Dotnet.Resources.Configuration;
+using System.Text;
 
 namespace Toz.Dotnet.Core.Services
 {
@@ -35,8 +36,8 @@ namespace Toz.Dotnet.Core.Services
                     var response = await client.GetAsync(address);
                     response.EnsureSuccessStatusCode();
                     var stringResponse = await response.Content.ReadAsStringAsync();
-                    List<Pet> output = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Pet>>(stringResponse);
 
+                    List<Pet> output = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Pet>>(stringResponse);
                     return output;
                 }
                 catch(HttpRequestException ex)
@@ -44,20 +45,57 @@ namespace Toz.Dotnet.Core.Services
                     return new List<Pet>();
                 }
             }
-            
-
         }
 		
 
-        public bool UpdatePet(Pet pet)
+        public async Task<bool> UpdatePet(Pet pet)
         {
-            return true;
+           string address = $"{_appSettings.BackendPetsUrl}/{pet.Id}";
+           var serializedPet = Newtonsoft.Json.JsonConvert.SerializeObject(pet);
+           var httpContent = new StringContent(serializedPet, Encoding.UTF8, "application/json");
+            
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    var response = await client.PutAsync(address, httpContent);
+                    response.EnsureSuccessStatusCode();
+                    var stringResponse = await response.Content.ReadAsStringAsync();
+                    
+                    return true;
+                }
+                catch(HttpRequestException ex)
+                {
+                    return false;
+                }
+            }
         }
 
         
-        public bool CreatePet(Pet pet)
+        public async Task<bool> CreatePet(Pet pet)
         {
-            return true;
+            if(pet == null)
+            {
+                return false;
+            }
+
+            var address = _appSettings.BackendPetsUrl;
+            var serializedPet = Newtonsoft.Json.JsonConvert.SerializeObject(pet);
+            var httpContent = new StringContent(serializedPet, Encoding.UTF8, "application/json");
+
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    var response = await client.PostAsync(address, httpContent);
+                    response.EnsureSuccessStatusCode();
+                    return true;
+                }
+                catch(HttpRequestException ex)
+                {
+                    return false;
+                }
+            }
         }
 
         public bool DeletePet(Pet pet)
@@ -65,9 +103,26 @@ namespace Toz.Dotnet.Core.Services
             return true;
         }
 
-        public Pet GetPet(int id)
+        public async Task<Pet> GetPet(string id)
         {
-            return null;
+            string address = $"{_appSettings.BackendPetsUrl}/{id}";
+            
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    var response = await client.GetAsync(address);
+                    response.EnsureSuccessStatusCode();
+                    var stringResponse = await response.Content.ReadAsStringAsync();
+
+                    Pet output = Newtonsoft.Json.JsonConvert.DeserializeObject<Pet>(stringResponse);
+                    return output;
+                }
+                catch(HttpRequestException ex)
+                {
+                    return new Pet();
+                }
+            }
         }
 
         public byte[] ConvertPhotoToByteArray(Stream fileStream)

@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Toz.Dotnet.Models.EnumTypes;
 using Toz.Dotnet.Models.JsonConventers;
 
@@ -22,13 +23,16 @@ namespace Toz.Dotnet.Models
         public string Name {get; set;}
 
         [JsonProperty("type")]
+        [JsonConverter(typeof(StringEnumConverter))]
         [RegularExpression("^(Cat|Dog)$", ErrorMessageResourceType = typeof(Resources.NewPetDataValidation),
                   ErrorMessageResourceName = "TypeUndefined")]
         public PetType Type {get; set;}
         
         [JsonProperty("sex")]
+        [JsonConverter(typeof(StringEnumConverter))]
         public PetSex Sex {get; set;}
 
+        [JsonIgnore]
         public byte [] Photo {get; set;}
 
 

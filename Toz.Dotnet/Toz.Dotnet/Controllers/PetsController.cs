@@ -56,7 +56,7 @@ namespace Toz.Dotnet.Controllers
 
             if (pet != null && ModelState.IsValid)
             {
-                if (_petsManagementService.CreatePet(pet)) 
+                if (_petsManagementService.CreatePet(pet).Result) 
                 {
                     lastAcceptPhoto = null;
                     return RedirectToAction("Index");
@@ -105,7 +105,7 @@ namespace Toz.Dotnet.Controllers
 
             if (pet != null && ModelState.IsValid)
             {
-                if (_petsManagementService.UpdatePet(pet)) 
+                if (_petsManagementService.UpdatePet(pet).Result) 
                 {
                     lastAcceptPhoto = null;
                     return RedirectToAction("Index");
@@ -122,9 +122,9 @@ namespace Toz.Dotnet.Controllers
             
         } 
 
-        public ActionResult Edit(int id) 
+        public ActionResult Edit(string id) 
         {
-            return View(_petsManagementService.GetPet(id));
+            return View(_petsManagementService.GetPet(id).Result);
         }
 
         private bool IsAcceptPhotoType(string photoType, string[] acceptTypes)
