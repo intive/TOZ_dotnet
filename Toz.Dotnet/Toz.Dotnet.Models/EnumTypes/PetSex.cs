@@ -2,7 +2,7 @@ namespace Toz.Dotnet.Models.EnumTypes
 {
     public enum PetSex
     {
-        Unidentified,
+        Unknown,
         Male,
         Female
     };

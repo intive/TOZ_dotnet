@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.EnumTypes;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Toz.Dotnet.Models.JsonConventers;
 
 namespace Toz.Dotnet.Core.Services
 {
@@ -18,9 +21,27 @@ namespace Toz.Dotnet.Core.Services
             _mockupPetsDatabase = new List<Pet>();
         }
 
-		public List<Pet> GetAllPets()
+		public async Task<List<Pet>> GetAllPets()
         {
-            return _mockupPetsDatabase;
+            string address = "http://dev.patronage2017.intive-projects.com/pets";
+            
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    var response = await client.GetAsync(address);
+                    response.EnsureSuccessStatusCode();
+                    var stringResponse = await response.Content.ReadAsStringAsync();
+                    List<Pet> output = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Pet>>(stringResponse);
+                    return output;
+                }
+                catch(HttpRequestException ex)
+                {
+                    throw;
+                }
+            }
+            
+
         }
 		
 
@@ -29,7 +50,7 @@ namespace Toz.Dotnet.Core.Services
             if(pet != null)
             {
                 pet.LastEditTime = DateTime.Now;
-                _mockupPetsDatabase[pet.Id] = pet;
+
                 return true;
             }
             return false;
@@ -42,10 +63,6 @@ namespace Toz.Dotnet.Core.Services
 
             if(pet != null && (newId = GetFirstAvailableId()) != null )
             {
-                pet.Id = (int)newId;
-                pet.AddingTime = DateTime.Now;
-                pet.LastEditTime = DateTime.Now;          
-                _mockupPetsDatabase.Add(pet);
                 return true;
             }
             return false;
@@ -65,26 +82,16 @@ namespace Toz.Dotnet.Core.Services
         {
             if(id >= 0)
             {
-                return _mockupPetsDatabase[id]; 
+                return null; 
             }
             return null;
         }
 
         private int? GetFirstAvailableId()
         {           
-            IEnumerable<int> takenIds = _mockupPetsDatabase.Select(p => p.Id).ToList();
-            int? availableId;
 
-            try
-            {
-                availableId = Enumerable.Range(0, int.MaxValue).Except(takenIds).First();
-            }
-            catch (InvalidOperationException)
-            {
-                availableId = null;
-            }
 
-            return availableId;
+            return 1;
         }
     }
 }

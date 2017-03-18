@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models;
 using Microsoft.Extensions.Localization;
+using System.Collections.Generic;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -18,7 +19,8 @@ namespace Toz.Dotnet.Controllers
 
         public IActionResult Index()
         {
-            return View(_petsManagementService.GetAllPets());
+            List<Pet> pets = _petsManagementService.GetAllPets().Result; 
+            return View(pets);
         }
 
         [HttpPost]
