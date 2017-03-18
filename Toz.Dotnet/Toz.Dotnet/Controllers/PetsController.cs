@@ -127,6 +127,17 @@ namespace Toz.Dotnet.Controllers
             return View(_petsManagementService.GetPet(id).Result);
         }
 
+        public ActionResult Delete(string id)
+        {
+            var pet = _petsManagementService.GetPet(id).Result;
+            if(pet != null)
+            {
+                _petsManagementService.DeletePet(pet).Wait();
+            }
+
+            return RedirectToAction("Index");
+        }
+
         private bool IsAcceptPhotoType(string photoType, string[] acceptTypes)
         {
             foreach(var type in acceptTypes)

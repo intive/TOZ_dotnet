@@ -54,6 +54,9 @@
     <data name="Add" xml:space="preserve">
         <value>Add</value>
     </data>
+    <data name="Delete" xml:space="preserve">
+        <value>Delete</value>
+    </data>
     <data name="ListPanelTitle" xml:space="preserve">
         <value>Buttons</value>
     </data>

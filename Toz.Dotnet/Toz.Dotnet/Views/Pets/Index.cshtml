@@ -26,6 +26,7 @@
             <th>@Localizer["AddingTime"]</th>
             <th>@Localizer["LastEditTime"]</th>
             <th></th>
+            <th></th>
         </tr>
         @foreach (var item in Model)
         {
@@ -63,6 +64,7 @@
                 <td>@item.Address</td>
                 <td>@item.AddingTime</td>
                 <td>@item.LastEditTime</td>
+                <td>@Html.ActionLink(@Localizer["Delete"].Value, "Delete", "Pets", new {id = item.Id}, new { @class = "btn btn-primary btn-block"}) </td>
                 <td>@Html.ActionLink(@Localizer["Edit"].Value, "Edit", "Pets", new{ id = item.Id }, new { @class = "btn btn-primary btn-block"}) </td>
             </tr>
         }
