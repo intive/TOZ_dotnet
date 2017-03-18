@@ -20,13 +20,17 @@
                     <td><label>@Localizer["Id"]:</label></td>
                     <td><input type="text" asp-for="Id" class="form-control" id="PetId" disabled></td>
                 </tr>
+                <tr align="left">
+                    <td></td>
+                    <td>@Html.ValidationMessageFor(Model => Model.Name, null, null)</td>
+                </tr>
                 <tr>
                     <td><label>@Localizer["Name"]:</label></td>
                     <td><input type="text" asp-for="Name" class="form-control" id="PetName"></td>
                 </tr>
                 <tr align="left">
                     <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Name, null, null)</td>
+                    <td>@Html.ValidationMessageFor(Model => Model.Type, null, null)</td>
                 </tr>
                 <tr>
                     <td><label>@Localizer["Type"]:</label></td>
@@ -37,10 +41,6 @@
                             <option value="2">@Localizer["Cat"]</option>
                         </select>
                     </td>
-                </tr>
-                <tr align="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Type, null, null)</td>
                 </tr>
                 <tr>
                     <td><label>@Localizer["Sex"]:</label></td>
@@ -78,16 +78,18 @@
                     </td>
                 </tr>
                 <tr align="left">
-                    <td></td>
-                    <td>
                         @{
                             if(ViewData["ValidationPhotoAlert"] != null)
                             {
                                 var temp = Convert.ToString(ViewData["ValidationPhotoAlert"]);
-                                @Html.Label("PhotoAlert", @Localizer[temp].Value, new {@style = "color:red;font-weight:normal"})
+                                <td></td>
+                                <td>@Html.Label("PhotoAlert", @Localizer[temp].Value, new {@style = "color:red;font-weight:bold"})</td>
                             }
                         }
-                    </td>
+                </tr>
+                <tr align="left">
+                    <td></td>
+                    <td>@Html.ValidationMessageFor(Model => Model.Description, null, null)</td>
                 </tr>
                 <tr>
                     <td><label>@Localizer["Description"]:</label></td>
@@ -95,15 +97,11 @@
                 </tr>
                 <tr align="left">
                     <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Description, null, null)</td>
+                    <td>@Html.ValidationMessageFor(Model => Model.Address, null, null)</td>
                 </tr>
                 <tr>
                     <td><label>@Localizer["Address"]:</label></td>
                     <td><input type="text" asp-for="Address" class="form-control" id="PetAddress"></td>
-                </tr>
-                <tr align="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Address, null, null)</td>
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center;">
