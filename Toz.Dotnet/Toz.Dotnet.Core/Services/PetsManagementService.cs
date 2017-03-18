@@ -12,20 +12,21 @@ namespace Toz.Dotnet.Core.Services
     {
         private IRestService _restService;
         private IFilesManagementService _filesManagementService;
-        private readonly AppSettings _appSettings;
         private List<Pet> _mockupPetsDatabase;
+        public string RequestUri { get; set; }
 
         public PetsManagementService(IFilesManagementService filesManagementService, IRestService restService, IOptions<AppSettings> appSettings)
         {
             _filesManagementService = filesManagementService;
             _mockupPetsDatabase = new List<Pet>();
-            _appSettings = appSettings.Value;
             _restService = restService;
+
+            RequestUri = appSettings.Value.BackendPetsUrl;
         }
 
 		public async Task<List<Pet>> GetAllPets()
         {
-            string address = _appSettings.BackendPetsUrl;
+            string address = RequestUri;
             
             return await _restService.ExecuteGetAction<List<Pet>>(address);
         }
@@ -33,26 +34,26 @@ namespace Toz.Dotnet.Core.Services
         
         public async Task<bool> UpdatePet(Pet pet)
         {
-           var address = $"{_appSettings.BackendPetsUrl}/{pet.Id}";
+           var address = $"{RequestUri}/{pet.Id}";
            return await _restService.ExecutePutAction(address, pet);
         }
 
         
         public async Task<bool> CreatePet(Pet pet)
         {
-            var address = _appSettings.BackendPetsUrl;
+            var address = RequestUri;
             return await _restService.ExecutePostAction(address, pet);
         }
 
         public async Task<bool> DeletePet(Pet pet)
         {
-            var address = $"{_appSettings.BackendPetsUrl}/{pet.Id}";
+            var address = $"{RequestUri}/{pet.Id}";
             return await _restService.ExecuteDeleteAction(address, pet);
         }
 
         public async Task<Pet> GetPet(string id)
         {
-            string address = $"{_appSettings.BackendPetsUrl}/{id}";
+            string address = $"{RequestUri}/{id}";
             return await _restService.ExecuteGetAction<Pet>(address);
         }
 

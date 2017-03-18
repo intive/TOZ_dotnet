@@ -1,5 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using Toz.Dotnet;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.AspNetCore.Hosting;
 
@@ -19,7 +18,7 @@ namespace Toz.Dotnet.Tests.Helpers
 
         private ServiceProvider()
         {
-            _server = new TestServer(new WebHostBuilder().UseStartup<Startup>());
+            _server = new TestServer(new WebHostBuilder().UseEnvironment("Development").UseStartup<Startup>());           
         }
 
         public T Resolve<T>() where T : class

@@ -4,9 +4,11 @@ using Toz.Dotnet.Tests.Helpers;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.EnumTypes;
 using System;
-using System.ComponentModel.DataAnnotations;
+using Microsoft.Extensions.Options;
+using Toz.Dotnet.Resources.Configuration;
+using System.Linq;
 using System.Collections.Generic;
-using Xunit.Extensions;
+using System.ComponentModel.DataAnnotations;
 
 namespace Toz.Dotnet.Tests.Tests
 {
@@ -19,16 +21,18 @@ namespace Toz.Dotnet.Tests.Tests
             _petsManagementService = ServiceProvider.Instance.Resolve<IPetsManagementService>();
             _testingPet = new Pet()
             {
-                Id = 9999,
+                Id = System.Guid.NewGuid().ToString(),
                 Name = "TestDog",
                 Type = PetType.Dog,
                 Sex = PetSex.Male,
                 Photo = new byte[10],
                 Description = "Dog that eats tigers",
-                Address = "Found in jungle",
+                Address = "Found in the jungle",
                 AddingTime = DateTime.Now,
                 LastEditTime = DateTime.Now
             };
+
+            _petsManagementService.RequestUri = RequestUriHelper.PetsUri;
         }
         
         [Fact]
@@ -38,45 +42,66 @@ namespace Toz.Dotnet.Tests.Tests
         }
 
         [Fact]
-        public void TestIfGetAllPetsIsNotNull()
+        public void TestRequestedUriNotEmpty()
         {
-            Assert.NotNull(_petsManagementService.GetAllPets());
+            Assert.True(!string.IsNullOrEmpty(_petsManagementService.RequestUri));
         }
 
         [Fact]
-        public void TestNewPetAdding()
+        public void TestOfGettingAllPets()
         {
-            Assert.True(_petsManagementService.CreatePet(_testingPet));
-            _petsManagementService.DeletePet(_testingPet);
+            Assert.NotNull(_petsManagementService.GetAllPets().Result);
+        }
+         
+        [Fact]
+        public void TestOfCreatingNewPet()
+        {
+            Assert.True(_petsManagementService.CreatePet(_testingPet).Result);
+            _petsManagementService.DeletePet(_testingPet).Wait();
         }
 
         [Fact]
-        public void TestPetDeleting()
+        public void TestOfDeletingSpecifiedPet()
         {
-            _petsManagementService.CreatePet(_testingPet);
-            Assert.True(_petsManagementService.DeletePet(_testingPet));
+            var pets = _petsManagementService.GetAllPets().Result;
+            if(pets.Any())
+            {
+                var firstPet = pets.FirstOrDefault();
+                Assert.True(_petsManagementService.DeletePet(firstPet).Result);
+                Assert.True(_petsManagementService.CreatePet(firstPet).Result);
+            }
         }
 
         [Fact]
-        public void TestGetSpecifiedPet()
+        public void TestOfGettingSpecifiedPet()
         {
-            _petsManagementService.CreatePet(_testingPet);
-            var pet = _petsManagementService.GetPet(_testingPet.Id);
-
-            Assert.NotNull(pet);
-            //Assert.Equal(_testingPet.Id, pet.Id);
+            var pets = _petsManagementService.GetAllPets().Result;
+            if(pets.Any())
+            {
+                var firstPet = pets.FirstOrDefault();
+                var pet = _petsManagementService.GetPet(firstPet.Id).Result;
+                Assert.NotNull(pet);
+            }
+                       
+            Assert.Null(_petsManagementService.GetPet("notExistingIDThatIsNotID--1").Result);           
         }
 
         
         [Fact]
-        public void CheckPetUpdate()
+        public void TestOfPetUpdating()
         {
-            _petsManagementService.CreatePet(_testingPet);
-            var pet = _petsManagementService.GetPet(_testingPet.Id);
-            pet.Name = "UpdatedName";
-            Assert.True(_petsManagementService.UpdatePet(pet));
+            var pets = _petsManagementService.GetAllPets().Result;
+            if(pets.Any())
+            {
+                var firstPet = pets.FirstOrDefault();
+                string petName = firstPet.Name;
+                firstPet.Name = "Test";
+                Assert.True(_petsManagementService.UpdatePet(firstPet).Result);
+                firstPet.Name = petName;
+                Assert.True(_petsManagementService.UpdatePet(firstPet).Result);
+            }
         }
-
+        
         [Fact]
         public void TestPetValidationIfCorrectData()
         {
@@ -185,5 +210,6 @@ namespace Toz.Dotnet.Tests.Tests
                 LastEditTime = pet.LastEditTime
             };
         }
+        
     }
 }

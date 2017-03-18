@@ -78,7 +78,6 @@ namespace Toz.Dotnet
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                app.UseDeveloperExceptionPage();
             }
 
             app.UseStaticFiles();
