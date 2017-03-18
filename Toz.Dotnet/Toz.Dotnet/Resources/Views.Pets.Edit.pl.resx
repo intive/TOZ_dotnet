@@ -51,4 +51,13 @@
     <data name="Browse" xml:space="preserve">
         <value>Wybierz...</value>
     </data>
+    <data name="WrongFileType" xml:space="preserve">
+        <value>Zły typ pliku.</value>
+    </data>
+    <data name="EmptyFile" xml:space="preserve">
+        <value>Plik jest pusty.</value>
+    </data>
+    <data name="NoFileSelected" xml:space="preserve">
+        <value>Nie wybrano pliku.</value>
+    </data>
 </root>

@@ -60,7 +60,7 @@
                     <td>@Localizer["Unidentified"]</td>
                 }
 
-                <td style="width:64px;height:64px;"><img src="http://www.hbhud.com/wp-content/uploads/2011/06/awesome_smiley-300x300.png" style="width:64px;height:64px;"/></td>
+                <td style="width:64px;height:64px;"><img src="data:image;base64,@System.Convert.ToBase64String(item.Photo)" style="width:64px;height:64px;"/></td>
                 <td>@item.Description</td>
                 <td>@item.Address</td>
                 <td>@item.AddingTime</td>
