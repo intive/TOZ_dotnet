@@ -3,9 +3,9 @@ using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models;
 using Microsoft.Extensions.Localization;
 using System.Collections.Generic;
-using Toz.Dotnet.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Http;
+using Toz.Dotnet.Resources.Configuration;
 
 namespace Toz.Dotnet.Controllers
 {

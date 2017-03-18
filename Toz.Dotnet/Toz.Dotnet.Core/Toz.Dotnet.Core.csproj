@@ -14,6 +14,7 @@
     <PackageReference Include="CoreCompat.System.Drawing" Version="1.0.0-beta006"/>
     <PackageReference Include="System.Net.Http" Version="4.3.1"/>
     <PackageReference Include="CoreCompat.Newtonsoft.Json" Version="9.0.2-beta001"/>
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
