@@ -17,7 +17,6 @@
     </div>
     <table class="table">
         <tr>
-            <th>@Localizer["Id"]</th>
             <th>@Localizer["Name"]</th>
             <th>@Localizer["Type"]</th>
             <th>@Localizer["Sex"]</th>
@@ -31,7 +30,6 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.Id</td>
                 <td>@item.Name</td>
 
                 @if(@item.Type == PetType.Dog)
