@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Toz.Dotnet.Core.Services;
 using Toz.Dotnet.Core.Interfaces;
+using Toz.Dotnet.Configuration;
 
 namespace Toz.Dotnet
 {
@@ -57,6 +58,10 @@ namespace Toz.Dotnet
                 opts.SupportedCultures = supportedCultures;
                 opts.SupportedUICultures = supportedCultures;
             });
+
+            var appSettings = Configuration.GetSection("AppSettings");
+
+            services.Configure<AppSettings>(appSettings);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

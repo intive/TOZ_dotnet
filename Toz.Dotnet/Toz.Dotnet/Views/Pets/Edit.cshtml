@@ -12,7 +12,7 @@
     <hr>
 
     <div class="EditingPet">
-        <form asp-controller="Pets" asp-action="Edit" method="POST">
+        <form asp-controller="Pets" asp-action="Edit" method="POST" enctype="multipart/form-data">
             <table class="forms" align="center">
                 <input asp-for="AddingTime" class="form-control" id="PetAddingTime" type="hidden">
 
@@ -59,14 +59,33 @@
                             <div class="input-group">
                                 <span class="input-group-btn">
                                     <span class="btn btn-default btn-file">
-                                        @Localizer["Browse"] <input type="file" id="imgInp" accept="image/x-png,image/gif,image/jpeg" >
+                                        @Localizer["Browse"] <input type="file" id="imgInp" asp-for="Photo" accept="image/jpeg,image/png">
                                     </span>
                                 </span>
                                 <input type="text" class="form-control" readonly>
                             </div>
-                            <img id='img-upload'/>
+                            @{
+                                if(Model.Photo != null)
+                                {
+                                    <img id='img-upload' src="data:image;base64,@System.Convert.ToBase64String(Model.Photo)" />
+                                }
+                                else
+                                {
+                                    <img id='img-upload'/>
+                                }
+                            }
                         </div>
                     </td>
+                </tr>
+                <tr align="left">
+                        @{
+                            if(ViewData["ValidationPhotoAlert"] != null)
+                            {
+                                var temp = Convert.ToString(ViewData["ValidationPhotoAlert"]);
+                                <td></td>
+                                <td>@Html.Label("PhotoAlert", @Localizer[temp].Value, new {@style = "color:red;font-weight:bold"})</td>
+                            }
+                        }
                 </tr>
                 <tr align="left">
                     <td></td>

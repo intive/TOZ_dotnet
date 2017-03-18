@@ -12,7 +12,7 @@
     <hr>
 
     <div class="AddingPet">
-        <form asp-controller="Pets" asp-action="Add" method="POST">
+        <form asp-controller="Pets" asp-action="Add" method="POST" enctype="multipart/form-data">
             <table class="forms" align="center">
                 <tr align="left">
                     <td></td>
@@ -46,23 +46,42 @@
                         </select>
                     </td>
                 </tr>
-                <tr>
+                <tr>   
                     <td colspan="2" style="text-align: center;">
                         <div class="form-group">
                             <label>@Localizer["Photo"]</label>
                             <div class="input-group">
                                 <span class="input-group-btn">
                                     <span class="btn btn-default btn-file">
-                                        @Localizer["Browse"] <input type="file" id="imgInp">
+                                        @Localizer["Browse"] <input type="file" id="imgInp" asp-for="Photo" accept="image/jpeg,image/png">
                                     </span>
                                 </span>
                                 <input type="text" class="form-control" readonly>
                             </div>
-                            <img id='img-upload'/>
+                            @{
+                                if(Model.Photo != null)
+                                {
+                                    <img id='img-upload' src="data:image;base64,@System.Convert.ToBase64String(Model.Photo)" />
+                                }
+                                else
+                                {
+                                    <img id='img-upload'/>
+                                }
+                            }
                         </div>
                     </td>
                 </tr>
                 <tr align="left">
+                        @{
+                            if(ViewData["ValidationPhotoAlert"] != null)
+                            {
+                                var temp = Convert.ToString(ViewData["ValidationPhotoAlert"]);
+                                <td></td>
+                                <td>@Html.Label("PhotoAlert", @Localizer[temp].Value, new {@style = "color:red;font-weight:bold"})</td>
+                            }
+                        }
+                </tr>
+                <tr>
                     <td></td>
                     <td>@Html.ValidationMessageFor(Model => Model.Description, null, null)</td>
                 </tr>
