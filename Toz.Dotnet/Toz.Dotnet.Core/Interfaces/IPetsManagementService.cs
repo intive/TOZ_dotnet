@@ -11,7 +11,7 @@ namespace Toz.Dotnet.Core.Interfaces
 		Task<Pet> GetPet(string id);
         Task<List<Pet>> GetAllPets();
         Task<bool> UpdatePet(Pet pet);
-        bool DeletePet(Pet pet);
+        Task<bool> DeletePet(Pet pet);
         Task<bool> CreatePet(Pet pet);
         byte[] ConvertPhotoToByteArray(Stream fileStream);
     }

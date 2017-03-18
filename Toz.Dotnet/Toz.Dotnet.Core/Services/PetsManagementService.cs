@@ -12,117 +12,50 @@ namespace Toz.Dotnet.Core.Services
 {
     public class PetsManagementService : IPetsManagementService
     {
+        private IRestService _restService;
         private IFilesManagementService _filesManagementService;
         private readonly AppSettings _appSettings;
         private List<Pet> _mockupPetsDatabase;
 
-
-
-        public PetsManagementService(IFilesManagementService filesManagementService, IOptions<AppSettings> appSettings)
+        public PetsManagementService(IFilesManagementService filesManagementService, IRestService restService, IOptions<AppSettings> appSettings)
         {
             _filesManagementService = filesManagementService;
             _mockupPetsDatabase = new List<Pet>();
             _appSettings = appSettings.Value;
+            _restService = restService;
         }
 
 		public async Task<List<Pet>> GetAllPets()
         {
             string address = _appSettings.BackendPetsUrl;
             
-            using (var client = new HttpClient())
-            {
-                try
-                {
-                    var response = await client.GetAsync(address);
-                    response.EnsureSuccessStatusCode();
-                    var stringResponse = await response.Content.ReadAsStringAsync();
-
-                    List<Pet> output = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Pet>>(stringResponse);
-                    return output;
-                }
-                catch(HttpRequestException ex)
-                {
-                    return new List<Pet>();
-                }
-            }
+            return await _restService.ExecuteGetAction<List<Pet>>(address);
         }
 		
-
+        
         public async Task<bool> UpdatePet(Pet pet)
         {
-           string address = $"{_appSettings.BackendPetsUrl}/{pet.Id}";
-           var serializedPet = Newtonsoft.Json.JsonConvert.SerializeObject(pet);
-           var httpContent = new StringContent(serializedPet, Encoding.UTF8, "application/json");
-            
-            using (var client = new HttpClient())
-            {
-                try
-                {
-                    var response = await client.PutAsync(address, httpContent);
-                    response.EnsureSuccessStatusCode();
-                    var stringResponse = await response.Content.ReadAsStringAsync();
-                    
-                    return true;
-                }
-                catch(HttpRequestException ex)
-                {
-                    return false;
-                }
-            }
+           var address = $"{_appSettings.BackendPetsUrl}/{pet.Id}";
+           return await _restService.ExecutePutAction(address, pet);
         }
 
         
         public async Task<bool> CreatePet(Pet pet)
         {
-            if(pet == null)
-            {
-                return false;
-            }
-
             var address = _appSettings.BackendPetsUrl;
-            var serializedPet = Newtonsoft.Json.JsonConvert.SerializeObject(pet);
-            var httpContent = new StringContent(serializedPet, Encoding.UTF8, "application/json");
-
-            using (var client = new HttpClient())
-            {
-                try
-                {
-                    var response = await client.PostAsync(address, httpContent);
-                    response.EnsureSuccessStatusCode();
-                    return true;
-                }
-                catch(HttpRequestException ex)
-                {
-                    return false;
-                }
-            }
+            return await _restService.ExecutePostAction(address, pet);
         }
 
-        public bool DeletePet(Pet pet)
+        public async Task<bool> DeletePet(Pet pet)
         {
-            return true;
+            var address = $"{_appSettings.BackendPetsUrl}/{pet.Id}";
+            return await _restService.ExecuteDeleteAction(address, pet);
         }
 
         public async Task<Pet> GetPet(string id)
         {
             string address = $"{_appSettings.BackendPetsUrl}/{id}";
-            
-            using (var client = new HttpClient())
-            {
-                try
-                {
-                    var response = await client.GetAsync(address);
-                    response.EnsureSuccessStatusCode();
-                    var stringResponse = await response.Content.ReadAsStringAsync();
-
-                    Pet output = Newtonsoft.Json.JsonConvert.DeserializeObject<Pet>(stringResponse);
-                    return output;
-                }
-                catch(HttpRequestException ex)
-                {
-                    return new Pet();
-                }
-            }
+            return await _restService.ExecuteGetAction<Pet>(address);
         }
 
         public byte[] ConvertPhotoToByteArray(Stream fileStream)

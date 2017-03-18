@@ -34,6 +34,7 @@ namespace Toz.Dotnet
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+            services.AddSingleton<IRestService, RestService>();
             services.AddSingleton<IFilesManagementService, FilesManagementService>();
             services.AddSingleton<IPetsManagementService, PetsManagementService>();
 
