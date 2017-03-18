@@ -2,11 +2,9 @@ using System;
 using Toz.Dotnet.Core.Interfaces;
 using System.Collections.Generic;
 using Toz.Dotnet.Models;
-using Toz.Dotnet.Models.EnumTypes;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Toz.Dotnet.Models.JsonConventers;
+using System.IO;
 
 namespace Toz.Dotnet.Core.Services
 {
@@ -47,51 +45,33 @@ namespace Toz.Dotnet.Core.Services
 
         public bool UpdatePet(Pet pet)
         {
-            if(pet != null)
-            {
-                pet.LastEditTime = DateTime.Now;
-
-                return true;
-            }
-            return false;
+            return true;
         }
 
         
         public bool CreatePet(Pet pet)
         {
-            int? newId;
-
-            if(pet != null && (newId = GetFirstAvailableId()) != null )
-            {
-                return true;
-            }
-            return false;
+            return true;
         }
 
         public bool DeletePet(Pet pet)
         {
-            if(pet != null && _mockupPetsDatabase.Contains(pet))
-            {
-                _mockupPetsDatabase.Remove(pet);
-                return true;
-            }
-            return false;
+            return true;
         }
 
         public Pet GetPet(int id)
         {
-            if(id >= 0)
-            {
-                return null; 
-            }
             return null;
         }
 
-        private int? GetFirstAvailableId()
-        {           
-
-
-            return 1;
+        public byte[] ConvertPhotoToByteArray(Stream fileStream)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                fileStream.CopyTo(memoryStream);
+                return memoryStream.ToArray();
+            }
         }
+
     }
 }
