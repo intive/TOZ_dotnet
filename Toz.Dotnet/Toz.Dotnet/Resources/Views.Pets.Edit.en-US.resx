@@ -54,8 +54,8 @@
     <data name="WrongFileType" xml:space="preserve">
         <value>Wrong file type.</value>
     </data>
-    <data name="WrongFileLength" xml:space="preserve">
-        <value>File length equal 0.</value>
+    <data name="EmptyFile" xml:space="preserve">
+        <value>File is empty.</value>
     </data>
     <data name="NoFileSelected" xml:space="preserve">
         <value>No file selected.</value>

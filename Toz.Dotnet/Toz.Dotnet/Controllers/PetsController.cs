@@ -146,7 +146,7 @@ namespace Toz.Dotnet.Controllers
                     }
                     else
                     {
-                        ViewData["ValidationPhotoAlert"] = "WrongFileLength";
+                        ViewData["ValidationPhotoAlert"] = "EmptyFile";
                         return View(pet);
                     }
                 }

@@ -49,12 +49,12 @@
         <value>Durchsuchen...</value>
     </data>
     <data name="WrongFileType" xml:space="preserve">
-        <value>Wrong file type.</value>
+        <value>Falscher Dateityp.</value>
     </data>
-    <data name="WrongFileLength" xml:space="preserve">
-        <value>File length equal 0.</value>
+    <data name="EmptyFile" xml:space="preserve">
+        <value>Die Datei ist leer.</value>
     </data>
     <data name="NoFileSelected" xml:space="preserve">
-        <value>No file selected.</value>
+        <value>Keine Datei ausgewählt.</value>
     </data>
 </root>
