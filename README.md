@@ -26,3 +26,6 @@ https://github.com/blstream/TOZ_dotnet/wiki/Docker
 
 # Coding conventions
 https://github.com/blstream/TOZ_dotnet/wiki/Coding-conventions
+
+# Working with REST API research (by Adrian)
+https://github.com/blstream/TOZ_dotnet/wiki/Backend-API-integration
