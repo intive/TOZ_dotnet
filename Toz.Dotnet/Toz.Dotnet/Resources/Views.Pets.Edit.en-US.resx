@@ -60,4 +60,10 @@
     <data name="NoFileSelected" xml:space="preserve">
         <value>No file selected.</value>
     </data>
+    <data name="PhotoAlertWithoutPhoto" xml:space="preserve">
+        <value>Click again "Save" button to save without photo.</value>
+    </data>
+    <data name="PhotoAlertWithLastPhoto" xml:space="preserve">
+        <value>Click again "Save" button to save last selected photo</value>
+    </data>
 </root>
