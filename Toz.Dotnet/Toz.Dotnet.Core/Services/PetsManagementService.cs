@@ -1,78 +1,60 @@
-using System;
 using Toz.Dotnet.Core.Interfaces;
 using System.Collections.Generic;
 using Toz.Dotnet.Models;
-using Toz.Dotnet.Models.EnumTypes;
-using System.Linq;
+using System.Threading.Tasks;
 using System.IO;
+using Microsoft.Extensions.Options;
+using Toz.Dotnet.Resources.Configuration;
 
 namespace Toz.Dotnet.Core.Services
 {
     public class PetsManagementService : IPetsManagementService
     {
+        private IRestService _restService;
         private IFilesManagementService _filesManagementService;
         private List<Pet> _mockupPetsDatabase;
+        public string RequestUri { get; set; }
 
-        public PetsManagementService(IFilesManagementService filesManagementService)
+        public PetsManagementService(IFilesManagementService filesManagementService, IRestService restService, IOptions<AppSettings> appSettings)
         {
             _filesManagementService = filesManagementService;
             _mockupPetsDatabase = new List<Pet>();
+            _restService = restService;
+
+            RequestUri = appSettings.Value.BackendPetsUrl;
         }
 
-		public List<Pet> GetAllPets()
+		public async Task<List<Pet>> GetAllPets()
         {
-            return _mockupPetsDatabase;
+            string address = RequestUri;
+            
+            return await _restService.ExecuteGetAction<List<Pet>>(address);
         }
 		
-
-        public bool UpdatePet(Pet pet)
+        
+        public async Task<bool> UpdatePet(Pet pet)
         {
-            if(pet != null)
-            {
-                if(pet.Photo == null)
-                {
-                    pet.Photo = _mockupPetsDatabase[pet.Id].Photo;
-                }
-                pet.LastEditTime = DateTime.Now;
-                _mockupPetsDatabase[pet.Id] = pet;
-                return true;
-            }
-            return false;
+           var address = $"{RequestUri}/{pet.Id}";
+           return await _restService.ExecutePutAction(address, pet);
         }
 
         
-        public bool CreatePet(Pet pet)
+        public async Task<bool> CreatePet(Pet pet)
         {
-            int? newId;
-
-            if(pet != null && (newId = GetFirstAvailableId()) != null )
-            {
-                pet.Id = (int)newId;
-                pet.AddingTime = DateTime.Now;
-                pet.LastEditTime = DateTime.Now;          
-                _mockupPetsDatabase.Add(pet);
-                return true;
-            }
-            return false;
+            var address = RequestUri;
+            return await _restService.ExecutePostAction(address, pet);
         }
 
-        public bool DeletePet(Pet pet)
+        public async Task<bool> DeletePet(Pet pet)
         {
-            if(pet != null && _mockupPetsDatabase.Contains(pet))
-            {
-                _mockupPetsDatabase.Remove(pet);
-                return true;
-            }
-            return false;
+            var address = $"{RequestUri}/{pet.Id}";
+            return await _restService.ExecuteDeleteAction(address, pet);
         }
 
-        public Pet GetPet(int id)
+        public async Task<Pet> GetPet(string id)
         {
-            if(id >= 0)
-            {
-                return _mockupPetsDatabase[id]; 
-            }
-            return null;
+            string address = $"{RequestUri}/{id}";
+            return await _restService.ExecuteGetAction<Pet>(address);
         }
 
         public byte[] ConvertPhotoToByteArray(Stream fileStream)
@@ -84,21 +66,5 @@ namespace Toz.Dotnet.Core.Services
             }
         }
 
-        private int? GetFirstAvailableId()
-        {           
-            IEnumerable<int> takenIds = _mockupPetsDatabase.Select(p => p.Id).ToList();
-            int? availableId;
-
-            try
-            {
-                availableId = Enumerable.Range(0, int.MaxValue).Except(takenIds).First();
-            }
-            catch (InvalidOperationException)
-            {
-                availableId = null;
-            }
-
-            return availableId;
-        }
     }
 }

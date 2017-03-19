@@ -2,9 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models;
 using Microsoft.Extensions.Localization;
-using Toz.Dotnet.Configuration;
+using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Http;
+using Toz.Dotnet.Resources.Configuration;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -24,7 +25,10 @@ namespace Toz.Dotnet.Controllers
 
         public IActionResult Index()
         {
-            return View(_petsManagementService.GetAllPets());
+            List<Pet> pets = _petsManagementService.GetAllPets().Result;
+            //todo add photo if will be avaialbe on backends
+            pets.ForEach(pet=> pet.Photo = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 }); // temporary
+            return View(pets);
         }
 
         [HttpPost]
@@ -52,7 +56,7 @@ namespace Toz.Dotnet.Controllers
 
             if (pet != null && ModelState.IsValid)
             {
-                if (_petsManagementService.CreatePet(pet)) 
+                if (_petsManagementService.CreatePet(pet).Result) 
                 {
                     lastAcceptPhoto = null;
                     return RedirectToAction("Index");
@@ -101,7 +105,7 @@ namespace Toz.Dotnet.Controllers
 
             if (pet != null && ModelState.IsValid)
             {
-                if (_petsManagementService.UpdatePet(pet)) 
+                if (_petsManagementService.UpdatePet(pet).Result) 
                 {
                     lastAcceptPhoto = null;
                     return RedirectToAction("Index");
@@ -118,9 +122,20 @@ namespace Toz.Dotnet.Controllers
             
         } 
 
-        public ActionResult Edit(int id) 
+        public ActionResult Edit(string id) 
         {
-            return View(_petsManagementService.GetPet(id));
+            return View(_petsManagementService.GetPet(id).Result);
+        }
+
+        public ActionResult Delete(string id)
+        {
+            var pet = _petsManagementService.GetPet(id).Result;
+            if(pet != null)
+            {
+                _petsManagementService.DeletePet(pet).Wait();
+            }
+
+            return RedirectToAction("Index");
         }
 
         private bool IsAcceptPhotoType(string photoType, string[] acceptTypes)

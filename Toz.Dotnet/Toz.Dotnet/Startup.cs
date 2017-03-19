@@ -13,7 +13,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Toz.Dotnet.Core.Services;
 using Toz.Dotnet.Core.Interfaces;
-using Toz.Dotnet.Configuration;
 
 namespace Toz.Dotnet
 {
@@ -35,6 +34,7 @@ namespace Toz.Dotnet
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+            services.AddSingleton<IRestService, RestService>();
             services.AddSingleton<IFilesManagementService, FilesManagementService>();
             services.AddSingleton<IPetsManagementService, PetsManagementService>();
 
@@ -61,7 +61,7 @@ namespace Toz.Dotnet
 
             var appSettings = Configuration.GetSection("AppSettings");
 
-            services.Configure<AppSettings>(appSettings);
+            services.Configure<Toz.Dotnet.Resources.Configuration.AppSettings>(appSettings);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
