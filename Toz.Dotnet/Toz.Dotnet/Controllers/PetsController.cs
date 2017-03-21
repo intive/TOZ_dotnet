@@ -57,6 +57,7 @@ namespace Toz.Dotnet.Controllers
             }
             else
             {
+                if(!result)
                 {
                     ViewData["ValidationPhotoAlert"] = _validationPhotoAlert;
                     if(_lastAcceptPhoto != null)
