@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
   </PropertyGroup>
@@ -14,36 +13,35 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="NewPetDataValidation.de.Designer.cs">
+    <Compile Update="ModelsDataValidation.de.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>NewPetDataValidation.de.resx</DependentUpon>
+      <DependentUpon>ModelsDataValidation.de.resx</DependentUpon>
     </Compile>
-    <Compile Update="NewPetDataValidation.pl.Designer.cs">
+    <Compile Update="ModelsDataValidation.pl.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>NewPetDataValidation.pl.resx</DependentUpon>
+      <DependentUpon>ModelsDataValidation.pl.resx</DependentUpon>
     </Compile>
-    <Compile Update="NewPetDataValidation.en.Designer.cs">
+    <Compile Update="ModelsDataValidation.en.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>NewPetDataValidation.en.resx</DependentUpon>
+      <DependentUpon>ModelsDataValidation.en.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="NewPetDataValidation.de.resx">
+    <EmbeddedResource Update="ModelsDataValidation.de.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>NewPetDataValidation.de.Designer.cs</LastGenOutput>
+      <LastGenOutput>ModelsDataValidation.de.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="NewPetDataValidation.en.resx">
+    <EmbeddedResource Update="ModelsDataValidation.en.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>NewPetDataValidation.en.Designer.cs</LastGenOutput>
+      <LastGenOutput>ModelsDataValidation.en.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="NewPetDataValidation.pl.resx">
+    <EmbeddedResource Update="ModelsDataValidation.pl.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>NewPetDataValidation.pl.Designer.cs</LastGenOutput>
+      <LastGenOutput>ModelsDataValidation.pl.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-
 </Project>
