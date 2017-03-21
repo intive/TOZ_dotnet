@@ -7,7 +7,7 @@ namespace Toz.Dotnet.Models.JsonConventers
 {
     public class JsonDateTimeConventer : DateTimeConverterBase
     {
-        private const string Format = "dd-MM-yy HH:mm:ss";
+        private const string Format = "dd-MM-yyyy HH:mm:ss";
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
