@@ -12,36 +12,4 @@
     <PackageReference Include="NETStandard.Library" Version="1.6" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="ModelsDataValidation.de.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ModelsDataValidation.de.resx</DependentUpon>
-    </Compile>
-    <Compile Update="ModelsDataValidation.pl.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ModelsDataValidation.pl.resx</DependentUpon>
-    </Compile>
-    <Compile Update="ModelsDataValidation.en.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ModelsDataValidation.en.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="ModelsDataValidation.de.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ModelsDataValidation.de.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="ModelsDataValidation.en.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ModelsDataValidation.en.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="ModelsDataValidation.pl.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ModelsDataValidation.pl.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
 </Project>
