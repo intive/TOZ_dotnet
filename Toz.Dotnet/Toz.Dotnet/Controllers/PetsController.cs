@@ -17,7 +17,6 @@ namespace Toz.Dotnet.Controllers
 		private readonly IStringLocalizer<PetsController> _localizer;
         private readonly AppSettings _appSettings;
         private static byte[] _lastAcceptPhoto;
-        private static bool _firstNoAcceptPhoto = false;
         private string _validationPhotoAlert;
 		
         public PetsController(IPetsManagementService petsManagementService, IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings)
@@ -49,7 +48,6 @@ namespace Toz.Dotnet.Controllers
                     {
                         _lastAcceptPhoto = null;
                         _validationPhotoAlert = null;
-                        _firstNoAcceptPhoto = false;
                         return RedirectToAction("Index");
                     }
                     else
@@ -59,7 +57,6 @@ namespace Toz.Dotnet.Controllers
             }
             else
             {
-                if(!result)
                 {
                     ViewData["ValidationPhotoAlert"] = _validationPhotoAlert;
                     if(_lastAcceptPhoto != null)
@@ -98,7 +95,6 @@ namespace Toz.Dotnet.Controllers
                     {
                         _lastAcceptPhoto = null;
                         _validationPhotoAlert = null;
-                        _firstNoAcceptPhoto = false;
                         return RedirectToAction("Index");
                     }
                     else
@@ -157,7 +153,6 @@ namespace Toz.Dotnet.Controllers
         {
             if(photo != null)
             {
-                _firstNoAcceptPhoto = false;
                 if(IsAcceptPhotoType(photo.ContentType, _appSettings.AcceptPhotoTypes))
                 {
                     if(photo.Length > 0)
@@ -168,14 +163,12 @@ namespace Toz.Dotnet.Controllers
                     }
                     else
                     {
-                        _firstNoAcceptPhoto = true;
                         _validationPhotoAlert = "EmptyFile";
                         return false;
                     }
                 }
                 else
                 {
-                    _firstNoAcceptPhoto = true;
                     _validationPhotoAlert = "WrongFileType";
                     return false; 
                 }

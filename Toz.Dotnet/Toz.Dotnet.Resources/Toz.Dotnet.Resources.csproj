@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
   </PropertyGroup>
@@ -11,39 +10,6 @@
 
   <ItemGroup>
     <PackageReference Include="NETStandard.Library" Version="1.6" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="NewPetDataValidation.de.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>NewPetDataValidation.de.resx</DependentUpon>
-    </Compile>
-    <Compile Update="NewPetDataValidation.pl.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>NewPetDataValidation.pl.resx</DependentUpon>
-    </Compile>
-    <Compile Update="NewPetDataValidation.en.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>NewPetDataValidation.en.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="NewPetDataValidation.de.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>NewPetDataValidation.de.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="NewPetDataValidation.en.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>NewPetDataValidation.en.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="NewPetDataValidation.pl.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>NewPetDataValidation.pl.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

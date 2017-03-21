@@ -1,6 +1,8 @@
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Toz.Dotnet.Core.Interfaces;
 
 namespace Toz.Dotnet.Core.Services
@@ -9,7 +11,7 @@ namespace Toz.Dotnet.Core.Services
     {
         private const string RestMediaType = "application/json";
 
-        public async Task<bool> ExecuteDeleteAction<T>(string address, T obj)
+        public async Task<bool> ExecuteDeleteAction<T>(string address, T obj, CancellationToken cancelationToken = default(CancellationToken))
         {
             if(obj == null)
             {
@@ -20,7 +22,7 @@ namespace Toz.Dotnet.Core.Services
             {
                 try
                 {
-                    var response = await client.DeleteAsync(address);
+                    var response = await client.DeleteAsync(address, cancelationToken);
                     response.EnsureSuccessStatusCode();
                     return true;
                 }
@@ -31,17 +33,17 @@ namespace Toz.Dotnet.Core.Services
             }
         }
 
-        public async Task<T> ExecuteGetAction<T>(string address)
+        public async Task<T> ExecuteGetAction<T>(string address, CancellationToken cancelationToken = default(CancellationToken))
         {            
             using (var client = new HttpClient())
             {
                 try
                 {
-                    var response = await client.GetAsync(address);
+                    var response = await client.GetAsync(address, cancelationToken);
                     response.EnsureSuccessStatusCode();
                     var stringResponse = await response.Content.ReadAsStringAsync();
 
-                    T output = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(stringResponse);
+                    T output = JsonConvert.DeserializeObject<T>(stringResponse);
                     return output;
                 }
                 catch(HttpRequestException)
@@ -51,7 +53,7 @@ namespace Toz.Dotnet.Core.Services
             }
         }
 
-        public async Task<bool> ExecutePostAction<T>(string address, T obj)
+        public async Task<bool> ExecutePostAction<T>(string address, T obj, CancellationToken cancelationToken = default(CancellationToken))
         {
             if(obj == null)
             {
@@ -65,7 +67,7 @@ namespace Toz.Dotnet.Core.Services
             {
                 try
                 {
-                    var response = await client.PostAsync(address, httpContent);
+                    var response = await client.PostAsync(address, httpContent, cancelationToken);
                     response.EnsureSuccessStatusCode();
                     return true;
                 }
@@ -75,20 +77,20 @@ namespace Toz.Dotnet.Core.Services
                 }
             }
         }
-        public async Task<bool> ExecutePutAction<T>(string address, T obj) 
+        public async Task<bool> ExecutePutAction<T>(string address, T obj, CancellationToken cancelationToken = default(CancellationToken)) 
         {
             if(string.IsNullOrEmpty(address) || obj == null)
             {
                 return false;
             }
             
-            var serializedObject = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+            var serializedObject = JsonConvert.SerializeObject(obj);
             var httpContent = new StringContent(serializedObject, Encoding.UTF8, RestMediaType);
             using (var client = new HttpClient())
             {
                 try
                 {
-                    var response = await client.PutAsync(address, httpContent);
+                    var response = await client.PutAsync(address, httpContent, cancelationToken);
                     response.EnsureSuccessStatusCode();
                     var stringResponse = await response.Content.ReadAsStringAsync();
                     

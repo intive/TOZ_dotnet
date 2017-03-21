@@ -23,14 +23,14 @@ namespace Toz.Dotnet.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class NewPetDataValidation {
+    public class ModelsDataValidation {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal NewPetDataValidation() {
+        internal ModelsDataValidation() {
         }
         
         /// <summary>
@@ -40,7 +40,7 @@ namespace Toz.Dotnet.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Toz.Dotnet.Resources.NewPetDataValidation", typeof(NewPetDataValidation).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Toz.Dotnet.Resources.ModelsDataValidation", typeof(ModelsDataValidation).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -91,9 +91,9 @@ namespace Toz.Dotnet.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Select a pet type..
         /// </summary>
-        public static string TypeUndefined {
+        public static string PetTypeUndefined {
             get {
-                return ResourceManager.GetString("TypeUndefined", resourceCulture);
+                return ResourceManager.GetString("PetTypeUndefined", resourceCulture);
             }
         }
     }
