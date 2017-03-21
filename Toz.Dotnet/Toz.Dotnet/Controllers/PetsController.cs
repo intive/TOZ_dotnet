@@ -37,7 +37,7 @@ namespace Toz.Dotnet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(
             [Bind("Name, Type, Sex, Description, Address")] 
-            Pet pet, [Bind("Photo")] IFormFile photo)
+            Pet pet, [Bind("Photo")] IFormFile photo, CancellationToken cancellationToken)
         {
             if(lastAcceptPhoto != null && photo == null)
             {
@@ -83,7 +83,7 @@ namespace Toz.Dotnet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
             [Bind("Id, Name, Type, Sex, Description, Address, AddingTime")] 
-            Pet pet, [Bind("Photo")] IFormFile photo)
+            Pet pet, [Bind("Photo")] IFormFile photo, CancellationToken cancellationToken)
         {
             if(lastAcceptPhoto != null)
             {
@@ -124,13 +124,13 @@ namespace Toz.Dotnet.Controllers
             
         } 
 
-        public async Task<ActionResult> Edit(string id) 
+        public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken) 
         {
             return View(await _petsManagementService.GetPet(id));
         }
 
         
-        public async Task<ActionResult> Delete(string id)
+        public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)
         {
             var pet = await _petsManagementService.GetPet(id);
             if(pet != null)
