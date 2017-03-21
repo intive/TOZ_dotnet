@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Http;
 using Toz.Dotnet.Resources.Configuration;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -25,9 +27,9 @@ namespace Toz.Dotnet.Controllers
             _appSettings = appSettings.Value;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            List<Pet> pets = _petsManagementService.GetAllPets().Result;
+            List<Pet> pets = await _petsManagementService.GetAllPets();
             //todo add photo if will be avaialbe on backends
             pets.ForEach(pet=> pet.Photo = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 }); // temporary
             return View(pets);
@@ -35,14 +37,15 @@ namespace Toz.Dotnet.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Add(
+        public async Task<IActionResult> Add(
             [Bind("Name, Type, Sex, Description, Address")] 
-            Pet pet, [Bind("Photo")] IFormFile photo)
+            Pet pet, [Bind("Photo")] IFormFile photo, CancellationToken cancellationToken)
         {
             bool result = ValidatePhoto(pet, photo);
+            
             if (pet != null && result && ModelState.IsValid)
             {
-                    if (_petsManagementService.CreatePet(pet).Result)
+                    if (await _petsManagementService.CreatePet(pet))
                     {
                         _lastAcceptPhoto = null;
                         _validationPhotoAlert = null;
@@ -53,7 +56,6 @@ namespace Toz.Dotnet.Controllers
                     {
                         return BadRequest();
                     }
-
             }
             else
             {
@@ -81,16 +83,18 @@ namespace Toz.Dotnet.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(
+        public async Task<IActionResult> Edit(
             [Bind("Id, Name, Type, Sex, Description, Address, AddingTime")] 
-            Pet pet, [Bind("Photo")] IFormFile photo)
+            Pet pet, [Bind("Photo")] IFormFile photo, CancellationToken cancellationToken)
         {
             //todo add photo if will be available on backends
             _lastAcceptPhoto = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 }; //get photo from backend, if available
+
             bool result = ValidatePhoto(pet, photo);
+
             if (pet != null && result && ModelState.IsValid)
             {
-                    if (_petsManagementService.UpdatePet(pet).Result)
+                    if (await _petsManagementService.UpdatePet(pet))
                     {
                         _lastAcceptPhoto = null;
                         _validationPhotoAlert = null;
@@ -101,7 +105,6 @@ namespace Toz.Dotnet.Controllers
                     {
                         return BadRequest();
                     }
-
             }
             else
             {
@@ -119,21 +122,22 @@ namespace Toz.Dotnet.Controllers
                     }
                 }
                 return View(pet);
-            }      
+            }
             
         } 
 
-        public ActionResult Edit(string id) 
+        public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken) 
         {
-            return View(_petsManagementService.GetPet(id).Result);
+            return View(await _petsManagementService.GetPet(id));
         }
 
-        public ActionResult Delete(string id)
+        
+        public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)
         {
-            var pet = _petsManagementService.GetPet(id).Result;
+            var pet = await _petsManagementService.GetPet(id);
             if(pet != null)
             {
-                _petsManagementService.DeletePet(pet).Wait();
+                await _petsManagementService.DeletePet(pet);
             }
 
             return RedirectToAction("Index");
@@ -181,15 +185,8 @@ namespace Toz.Dotnet.Controllers
                 if(_lastAcceptPhoto != null)
                 {
                     pet.Photo = _lastAcceptPhoto;
-                    return true;
                 }
-                if(_firstNoAcceptPhoto)
-                {
-                    return true;
-                }
-                _validationPhotoAlert = "NoFileSelected";
-                _firstNoAcceptPhoto = true;
-                return false;
+                return true;
             }
         }
     }
