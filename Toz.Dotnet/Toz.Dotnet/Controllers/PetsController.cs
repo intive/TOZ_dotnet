@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Http;
 using Toz.Dotnet.Resources.Configuration;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -24,7 +25,7 @@ namespace Toz.Dotnet.Controllers
             _appSettings = appSettings.Value;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             List<Pet> pets = await _petsManagementService.GetAllPets();
             //todo add photo if will be avaialbe on backends
@@ -131,7 +132,7 @@ namespace Toz.Dotnet.Controllers
         
         public async Task<ActionResult> Delete(string id)
         {
-            var pet = _petsManagementService.GetPet(id).Result;
+            var pet = await _petsManagementService.GetPet(id);
             if(pet != null)
             {
                 await _petsManagementService.DeletePet(pet);
