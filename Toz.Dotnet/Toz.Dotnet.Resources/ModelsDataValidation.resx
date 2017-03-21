@@ -126,7 +126,7 @@
   <data name="NameLetters" xml:space="preserve">
     <value>The name can only consist of letters.</value>
   </data>
-  <data name="TypeUndefined" xml:space="preserve">
+  <data name="PetTypeUndefined" xml:space="preserve">
     <value>Select a pet type.</value>
   </data>
 </root>

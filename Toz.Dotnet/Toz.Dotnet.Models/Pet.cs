@@ -14,12 +14,12 @@ namespace Toz.Dotnet.Models
 
                   
         [JsonProperty("name")]     
-        [StringLength(30, ErrorMessageResourceType = typeof(Resources.NewPetDataValidation), ErrorMessageResourceName = "MaxLength")]     
+        [StringLength(30, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]     
         public string Name {get; set;}
 
         [JsonProperty("type")]
         [JsonConverter(typeof(StringEnumConverter))]
-        [RegularExpression("^(Cat|Dog)$", ErrorMessageResourceType = typeof(Resources.NewPetDataValidation), ErrorMessageResourceName = "TypeUndefined")]
+        [RegularExpression("^(Cat|Dog)$", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "PetTypeUndefined")]
         public PetType Type {get; set;}
         
         [JsonProperty("sex")]
@@ -31,12 +31,12 @@ namespace Toz.Dotnet.Models
 
 
         [JsonProperty("description")]
-        [StringLength(300, ErrorMessageResourceType = typeof(Resources.NewPetDataValidation), ErrorMessageResourceName = "MaxLength")]
+        [StringLength(300, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]
         public string Description {get; set;}
 
 
         [JsonProperty("address")]
-        [StringLength(100, ErrorMessageResourceType = typeof(Resources.NewPetDataValidation), ErrorMessageResourceName = "MaxLength")]
+        [StringLength(100, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]
         public string Address {get; set;}
 
         [JsonProperty("created")]
