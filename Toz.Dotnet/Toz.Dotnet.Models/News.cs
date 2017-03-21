@@ -39,6 +39,7 @@ namespace Toz.Dotnet.Models
                     LastEditTime = lastEditTime;
                     Body = body;
                     Photo = photo;
+                    Status = status;
                  }
         }
 }
