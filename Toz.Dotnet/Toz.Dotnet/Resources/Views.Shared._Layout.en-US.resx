@@ -9,4 +9,7 @@
     <data name="NewsList" xml:space="preserve">
         <value>News list</value>
     </data>
+    <data name="Login" xml:space="preserve">
+        <value>Login</value>
+    </data>
 </root>

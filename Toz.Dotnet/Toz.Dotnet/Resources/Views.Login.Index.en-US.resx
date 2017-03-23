@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="Title" xml:space="preserve">
+        <value>Login</value>
+    </data>
+    <data name="Username" xml:space="preserve">
+        <value>Username</value>
+    </data>
+    <data name="Password" xml:space="preserve">
+        <value>Password</value>
+    </data>
+    <data name="SignIn" xml:space="preserve">
+        <value>SignIn</value>
+    </data>
+    <data name="SignOut" xml:space="preserve">
+        <value>SignOut</value>
+    </data>
+</root>
