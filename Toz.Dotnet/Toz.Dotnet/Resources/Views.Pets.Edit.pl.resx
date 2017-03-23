@@ -60,4 +60,12 @@
     <data name="NoFileSelected" xml:space="preserve">
         <value>Nie wybrano pliku.</value>
     </data>
+    <data name="PhotoAlertWithoutPhoto" xml:space="preserve">
+        <value>Naciśnij ponownie przycisk "Zapisz",
+        aby zapisać bez zdjęcia.</value>
+    </data>
+    <data name="PhotoAlertWithLastPhoto" xml:space="preserve">
+        <value>Naciśnij ponownie przycisk "Zapisz",
+        aby zapisać z ostatnio wybranym zdjęciem.</value>
+    </data>
 </root>
