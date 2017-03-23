@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Toz.Dotnet.Models.EnumTypes
+@model Toz.Dotnet.Models.Login
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Localizer["Title"];
+}
+
+<body>
+    <h2>@Localizer["Title"]</h2>
+    <hr>
+
+    <div class="Login">
+        <form asp-controller="Login" method="POST">
+            <table class="forms" align="center">
+                <tr>
+                    <td><label>@Localizer["Username"]</label></td>
+                    <td><input asp-for="Username" class="form-control" id="LoginUsername"></td>
+                </tr>
+                <tr>
+                    <td><label>@Localizer["Password"]</label></td>
+                    <td><input asp-for="Password" type="password" class="form-control" id="LoginPassword"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <br>
+                        <input type="submit" class="btn btn-primary btn-block" id="SignIn" value=@Localizer["SignIn"]>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
