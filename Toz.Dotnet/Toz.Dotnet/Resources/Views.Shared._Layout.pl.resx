@@ -6,4 +6,7 @@
     <data name="PetAdd" xml:space="preserve">
         <value>Dodaj zwierzaka</value>
     </data>
+    <data name="NewsList" xml:space="preserve">
+        <value>Lista newsów</value>
+    </data>
 </root>

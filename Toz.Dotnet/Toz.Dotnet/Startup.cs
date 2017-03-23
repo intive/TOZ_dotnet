@@ -37,6 +37,7 @@ namespace Toz.Dotnet
             services.AddSingleton<IRestService, RestService>();
             services.AddSingleton<IFilesManagementService, FilesManagementService>();
             services.AddSingleton<IPetsManagementService, PetsManagementService>();
+            services.AddSingleton<INewsManagementService, NewsManagementService>();
 
             services.AddMvc()
                 .AddViewLocalization(

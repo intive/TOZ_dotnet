@@ -3,7 +3,7 @@
     <data name="Id" xml:space="preserve">
         <value>ID</value>
     </data>
-    <data name="Title" xml:space="preserve">
+    <data name="PageTitle" xml:space="preserve">
         <value>Tierliste</value>
     </data>
     <data name="Name" xml:space="preserve">

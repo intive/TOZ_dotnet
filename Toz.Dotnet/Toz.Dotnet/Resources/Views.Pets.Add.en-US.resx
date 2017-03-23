@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-    <data name="Title" xml:space="preserve">
+    <data name="PageTitle" xml:space="preserve">
         <value>Add a pet</value>
     </data>
     <data name="Name" xml:space="preserve">

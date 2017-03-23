@@ -1,0 +1,58 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Toz.Dotnet.Models.EnumTypes
+@model IEnumerable<Toz.Dotnet.Models.News>
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Localizer["PageTitle"];
+}
+
+<h2>@Localizer["PageTitle"]</h2>
+<div class="table-responsive">
+    <div class="panel panel-default">
+        <div class="panel-heading">@Localizer["ListPanelTitle"]</div>
+        <div class="panel-body">
+            <td>@Html.ActionLink(@Localizer["Add"].Value, "Add", "News", null, new { @style = "width: 120px;", @class = "btn btn-primary btn-block"}) </td>
+        </div>
+    </div>
+    <table class="table">
+        <tr>
+            <th>@Localizer["Title"]</th>
+            <th>@Localizer["Photo"]</th>
+            <th>@Localizer["ShortBody"]</th>
+            <th>@Localizer["PublishingTime"]</th>
+            <th style="width:120px;"></th>
+            <th style="width:120px;"></th>
+            <th style="width:120px;"></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td style="width:64px;height:64px;"><img src="http://img.cda.pl/obr/thumbs/6adb80c33f5b55df46a481b57a61c64c.png_oooooooooo_273x.png" style="width:64px;height:64px;"/></td>
+                <td>@item.Body</td>
+                @if(@item.PublishingTime != DateTime.MinValue)
+                {
+                    <td>@item.PublishingTime</td>
+                }else
+                {
+                    <td></td>
+                }
+
+                @if(@item.Status == NewsStatus.Draft)
+                {
+                    <td>
+                        <div class="draft"><div class="glyphicon glyphicon-exclamation-sign"></div>
+                            @Localizer["Draft"]
+                        </div>
+                    </td>
+                }else
+                {
+                    <td></td>
+                }
+                <td>@Html.ActionLink(@Localizer["Delete"].Value, "Delete", "News", new { id = item.Id }, new { @class = "btn btn-primary btn-block"}) </td>
+                <td>@Html.ActionLink(@Localizer["Edit"].Value, "Edit", "News", new{ id = item.Id }, new { @class = "btn btn-primary btn-block"}) </td>
+            </tr>
+        }
+    </table>
+</div>
