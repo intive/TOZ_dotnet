@@ -112,6 +112,11 @@
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center;">
+                        <input type="button" class="btn btn-primary btn-block" id="PetDelete" value=@Localizer["Delete"] onclick="@("window.location.href='" + @Url.Action("Delete", "Pets", new {id = Model.Id}) + "'");">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
                         <input type="button" class="btn btn-primary btn-block" id="PetCancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "Pets") + "'");">
                     </td>
                 </tr>

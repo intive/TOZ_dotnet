@@ -46,5 +46,9 @@ namespace Toz.Dotnet.Controllers
         public ActionResult Delete() {
             return View();
         }
+
+        public ActionResult Details(string id) {
+            return View(new News("","ABC",DateTime.MinValue,DateTime.Now, DateTime.Now, "body", new byte[10], NewsStatus.Draft));
+        }
     }
 }
