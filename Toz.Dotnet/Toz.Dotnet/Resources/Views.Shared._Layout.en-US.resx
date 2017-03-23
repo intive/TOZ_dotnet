@@ -6,4 +6,7 @@
     <data name="PetAdd" xml:space="preserve">
         <value>Add a pet</value>
     </data>
+    <data name="Login" xml:space="preserve">
+        <value>Login</value>
+    </data>
 </root>
