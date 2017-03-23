@@ -15,40 +15,40 @@
         <table class="forms" align="center">
             <tr>
                 <td><label>@Localizer["Id"]:</label></td>
-                <td><span>@Model.Id</span></td>
+                <td><pre>@Model.Id</pre></td>
             </tr>
             <tr>
                 <td><label>@Localizer["Title"]:</label></td>
-                <td><span>@Model.Title</span></td>
+                <td><pre>@Model.Title</pre></td>
             </tr>
             <tr>
                 <td><label>@Localizer["PublishingTime"]:</label></td>
-                <td><span>@Model.PublishingTime</span></td>
+                <td><pre>@Model.PublishingTime</pre></td>
             </tr>
             <tr>
                 <td><label>@Localizer["AddingTime"]:</label></td>
-                <td><span>@Model.AddingTime</span></td>
+                <td><pre>@Model.AddingTime</pre></td>
             </tr>
             <tr>
                 <td><label>@Localizer["LastEditTime"]:</label></td>
-                <td><span>@Model.AddingTime</span></td>
+                <td><pre>@Model.AddingTime</pre></td>
             </tr>
             <tr>
                 <td><label>@Localizer["Body"]:</label></td>
-                <td><div class="container" style="width: 400px;word-wrap:break-word; ">@Model.Body</div></td>
+                <td><pre style="white-space: pre-wrap; word-wrap: break-word; max-width: 400px;">@Model.Body</pre></td>
             </tr>
             <tr>
                 <td><label>@Localizer["Photo"]:</label></td>
-                <td><span>@Model.Photo</span></td>
+                <td><pre>@Model.Photo</pre></td>
             </tr>
             <tr>
                 <td><label>@Localizer["Status"]:</label></td>
                 @if(@Model.Status == NewsStatus.Draft)
                 {
-                    <td><span>@Localizer["Draft"]</span></td>
+                    <td><pre>@Localizer["Draft"]</pre></td>
                 }else
                 {
-                    <td><span>@Localizer["Published"]</span></td>
+                    <td><pre>@Localizer["Published"]</pre></td>
                 }
             </tr>
             <tr>
