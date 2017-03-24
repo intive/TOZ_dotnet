@@ -28,6 +28,8 @@ namespace Toz.Dotnet.Models
 
         public NewsStatus Status {get; set;}
 
+        public News() {}
+        
         public News(string id, string title, DateTime publishingTime, DateTime addingTime, DateTime lastEditTime,
                     string body, byte[] photo, NewsStatus status)
                 {
