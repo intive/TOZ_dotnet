@@ -1,0 +1,73 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Toz.Dotnet.Models.EnumTypes
+@model Toz.Dotnet.Models.News
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Localizer["PageTitle"];
+}
+
+<body>
+    <h2>@Localizer["PageTitle"]</h2>
+    <hr>
+
+    <div class="DetailsOfPet">
+        <table class="forms" align="center">
+            <tr>
+                <td><label>@Localizer["Id"]:</label></td>
+                <td><pre>@Model.Id</pre></td>
+            </tr>
+            <tr>
+                <td><label>@Localizer["Title"]:</label></td>
+                <td><pre>@Model.Title</pre></td>
+            </tr>
+            <tr>
+                <td><label>@Localizer["PublishingTime"]:</label></td>
+                @if(@Model.PublishingTime == DateTime.MinValue) 
+                {
+                    <td><pre></pre></td>
+                }
+                else
+                {
+                    <td><pre>@Model.PublishingTime</pre></td>
+                }
+            </tr>
+            <tr>
+                <td><label>@Localizer["AddingTime"]:</label></td>
+                <td><pre>@Model.AddingTime</pre></td>
+            </tr>
+            <tr>
+                <td><label>@Localizer["LastEditTime"]:</label></td>
+                <td><pre>@Model.AddingTime</pre></td>
+            </tr>
+            <tr>
+                <td><label>@Localizer["Body"]:</label></td>
+                <td><pre style="white-space: pre-wrap; word-wrap: break-word; max-width: 400px;">@Model.Body</pre></td>
+            </tr>
+            <tr>
+                <td><label>@Localizer["Photo"]:</label></td>
+                <td><pre>@Model.Photo</pre></td>
+            </tr>
+            <tr>
+                <td><label>@Localizer["Status"]:</label></td>
+                @if(@Model.Status == NewsStatus.Draft)
+                {
+                    <td><pre>@Localizer["Draft"]</pre></td>
+                }else
+                {
+                    <td><pre>@Localizer["Published"]</pre></td>
+                }
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;">
+                    <input type="button" class="btn btn-primary btn-block" id="DetailsEdit" value=@Localizer["Edit"] onclick="@("window.location.href='" + @Url.Action("Edit", "News", new {id = Model.Id}) + "'");">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;">
+                    <input type="button" class="btn btn-primary btn-block" id="DetailsBack" value=@Localizer["Back"] onclick="@("window.location.href='" + @Url.Action("Index", "News") + "'");">
+                </td>
+            </tr>
+        </table>
+    </div>
+<body>

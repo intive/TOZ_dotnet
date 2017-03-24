@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
     <data name="PetList" xml:space="preserve">
-        <value>List of pets</value>
+        <value>Pets list</value>
     </data>
     <data name="PetAdd" xml:space="preserve">
         <value>Add a pet</value>
+    </data>
+    <data name="NewsList" xml:space="preserve">
+        <value>News list</value>
     </data>
     <data name="Login" xml:space="preserve">
         <value>Login</value>
