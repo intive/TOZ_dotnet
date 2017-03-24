@@ -12,4 +12,7 @@
     <data name="Login" xml:space="preserve">
         <value>Anmeldung</value>
     </data>
+    <data name="Users" xml:space="preserve">
+        <value>Benutzen</value>
+    </data>
 </root>

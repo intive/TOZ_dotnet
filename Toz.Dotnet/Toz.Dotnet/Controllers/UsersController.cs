@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using Toz.Dotnet.Models;
 using Toz.Dotnet.Resources.Configuration;
 
 namespace Toz.Dotnet.Controllers
@@ -25,7 +26,17 @@ namespace Toz.Dotnet.Controllers
 
         public ActionResult Add(CancellationToken cacellationToken)
         {
-            return View();
+            return View(new User());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add(
+            [Bind("FirstName, LastName, PhoneNumber, Email, Purpose")] 
+            User user, CancellationToken cancellationToken)
+        {
+
+            return RedirectToAction("Index");
         }
     }
 }

@@ -1,0 +1,16 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Toz.Dotnet.Models.EnumTypes
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Localizer["PageTitle"];
+}
+
+<h2>@Localizer["PageTitle"]</h2>
+<div class="table-responsive">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <td>@Html.ActionLink(@Localizer["Add"].Value, "Add", "Users", null, new { @style = "width: 120px;", @class = "btn btn-primary btn-block"}) </td>
+        </div>
+    </div>
+</div>
