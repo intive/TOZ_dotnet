@@ -3,7 +3,7 @@
     <data name="Id" xml:space="preserve">
         <value>ID</value>
     </data>
-    <data name="Title" xml:space="preserve">
+    <data name="PageTitle" xml:space="preserve">
         <value>Edytuj zwierzaka</value>
     </data>
     <data name="Name" xml:space="preserve">
@@ -48,6 +48,9 @@
     <data name="Cancel" xml:space="preserve">
         <value>Anuluj</value>
     </data>
+    <data name="Delete" xml:space="preserve">
+        <value>Usuń</value>
+    </data>
     <data name="Browse" xml:space="preserve">
         <value>Wybierz...</value>
     </data>
@@ -59,5 +62,13 @@
     </data>
     <data name="NoFileSelected" xml:space="preserve">
         <value>Nie wybrano pliku.</value>
+    </data>
+    <data name="PhotoAlertWithoutPhoto" xml:space="preserve">
+        <value>Naciśnij ponownie przycisk "Zapisz",
+        aby zapisać bez zdjęcia.</value>
+    </data>
+    <data name="PhotoAlertWithLastPhoto" xml:space="preserve">
+        <value>Naciśnij ponownie przycisk "Zapisz",
+        aby zapisać z ostatnio wybranym zdjęciem.</value>
     </data>
 </root>

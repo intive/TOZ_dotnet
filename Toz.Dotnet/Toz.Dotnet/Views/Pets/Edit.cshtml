@@ -4,11 +4,11 @@
 @inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = @Localizer["Title"];
+    ViewData["Title"] = @Localizer["PageTitle"];
 }
 
 <body>
-    <h2>@Localizer["Title"]</h2>
+    <h2>@Localizer["PageTitle"]</h2>
     <hr>
 
     <div class="EditingPet">
@@ -81,9 +81,10 @@
                         @{
                             if(ViewData["ValidationPhotoAlert"] != null)
                             {
-                                var temp = Convert.ToString(ViewData["ValidationPhotoAlert"]);
+                                var firstString = Convert.ToString(ViewData["ValidationPhotoAlert"]);
+                                var secondString = Convert.ToString(ViewData["SelectedPhoto"]);
                                 <td></td>
-                                <td>@Html.Label("PhotoAlert", @Localizer[temp].Value, new {@style = "color:red;font-weight:bold"})</td>
+                                <td>@Html.Label("PhotoAlert", @Localizer[firstString].Value+@Localizer[secondString].Value, new {@class="field-validation-error"} )</td>
                             }
                         }
                 </tr>
@@ -107,6 +108,11 @@
                     <td colspan="2" style="text-align: center;">
                         <br>
                         <input type="submit" class="btn btn-primary btn-block" id="PetSave" value=@Localizer["Save"]>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <input type="button" class="btn btn-primary btn-block" id="PetDelete" value=@Localizer["Delete"] onclick="@("window.location.href='" + @Url.Action("Delete", "Pets", new {id = Model.Id}) + "'");">
                     </td>
                 </tr>
                 <tr>

@@ -4,11 +4,11 @@
 @inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = @Localizer["Title"];
+    ViewData["Title"] = @Localizer["PageTitle"];
 }
 
 <body>
-    <h2>@Localizer["Title"]</h2>
+    <h2>@Localizer["PageTitle"]</h2>
     <hr>
 
     <div class="AddingPet">
@@ -75,9 +75,10 @@
                         @{
                             if(ViewData["ValidationPhotoAlert"] != null)
                             {
-                                var temp = Convert.ToString(ViewData["ValidationPhotoAlert"]);
+                                var firstString = Convert.ToString(ViewData["ValidationPhotoAlert"]);
+                                var secondString = Convert.ToString(ViewData["SelectedPhoto"]);
                                 <td></td>
-                                <td>@Html.Label("PhotoAlert", @Localizer[temp].Value, new {@style = "color:red;font-weight:bold"})</td>
+                                <td>@Html.Label("PhotoAlert", @Localizer[firstString].Value+@Localizer[secondString].Value, new {@class="field-validation-error"} )</td>
                             }
                         }
                 </tr>
