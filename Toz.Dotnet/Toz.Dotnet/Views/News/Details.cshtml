@@ -23,7 +23,14 @@
             </tr>
             <tr>
                 <td><label>@Localizer["PublishingTime"]:</label></td>
-                <td><pre>@Model.PublishingTime</pre></td>
+                @if(@Model.PublishingTime == DateTime.MinValue) 
+                {
+                    <td><pre></pre></td>
+                }
+                else
+                {
+                    <td><pre>@Model.PublishingTime</pre></td>
+                }
             </tr>
             <tr>
                 <td><label>@Localizer["AddingTime"]:</label></td>
