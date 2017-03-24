@@ -7,6 +7,8 @@ namespace Toz.Dotnet.Resources.Configuration
         public string BackendBaseUrl { get; set;}
 
         public string BackendPetsUrl{ get; set; }
+        
+        public string BackendNewsUrl{ get; set; }
 
     }
 }
