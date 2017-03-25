@@ -8,5 +8,7 @@ namespace Toz.Dotnet.Resources.Configuration
 
         public string BackendPetsUrl{ get; set; }
 
+        //TODO: Add when backend API for Users is available
+        //public string BackendUsersUrl{ get; set; }
     }
 }

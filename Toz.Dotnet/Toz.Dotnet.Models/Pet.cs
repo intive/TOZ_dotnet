@@ -11,7 +11,6 @@ namespace Toz.Dotnet.Models
     {
         [JsonProperty("id")]
         public string Id {get; set;}
-
                   
         [JsonProperty("name")]     
         [StringLength(30, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]     
@@ -29,11 +28,9 @@ namespace Toz.Dotnet.Models
         [JsonIgnore]
         public byte [] Photo {get; set;}
 
-
         [JsonProperty("description")]
         [StringLength(300, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]
         public string Description {get; set;}
-
 
         [JsonProperty("address")]
         [StringLength(100, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]
