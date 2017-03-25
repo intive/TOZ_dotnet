@@ -62,3 +62,24 @@ textarea.input-validation-error {
       border: 2px solid #8B0000;
       background: #FA8072;
  }
+
+.draft {
+    padding: 6px 10px 6px 10px;
+    margin-bottom: 18px;
+    color: #b94a48;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    background-color: #f2dede;
+    border: 1px solid #eed3d7;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.draft .glyphicon{
+    float:left;
+    margin-right: 5px;
+}
+
+.draft div{
+    overflow:hidden;
+}

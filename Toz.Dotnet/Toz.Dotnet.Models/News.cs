@@ -11,17 +11,16 @@ namespace Toz.Dotnet.Models
     {
         public string Id {get; set;}
 
-        [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
         [StringLength(100, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]    
         public string Title {get; set;}
 
+        [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
         public DateTime PublishingTime  {get; set;}
 
         public DateTime AddingTime  {get; set;}
 
         public DateTime LastEditTime {get; set;}
 
-        [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
         [StringLength(1000, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]   
         public string Body {get; set;}
 
@@ -29,6 +28,8 @@ namespace Toz.Dotnet.Models
 
         public NewsStatus Status {get; set;}
 
+        public News() {}
+        
         public News(string id, string title, DateTime publishingTime, DateTime addingTime, DateTime lastEditTime,
                     string body, byte[] photo, NewsStatus status)
                 {

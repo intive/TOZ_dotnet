@@ -13,13 +13,11 @@ namespace Toz.Dotnet.Core.Services
     {
         private IRestService _restService;
         private IFilesManagementService _filesManagementService;
-        private List<Pet> _mockupPetsDatabase;
         public string RequestUri { get; set; }
 
         public PetsManagementService(IFilesManagementService filesManagementService, IRestService restService, IOptions<AppSettings> appSettings)
         {
             _filesManagementService = filesManagementService;
-            _mockupPetsDatabase = new List<Pet>();
             _restService = restService;
 
             RequestUri = appSettings.Value.BackendPetsUrl;
@@ -28,7 +26,6 @@ namespace Toz.Dotnet.Core.Services
 		public async Task<List<Pet>> GetAllPets(CancellationToken cancelationToken = default(CancellationToken))
         {
             string address = RequestUri;
-            
             return await _restService.ExecuteGetAction<List<Pet>>(address, cancelationToken);
         }
 		
@@ -66,6 +63,5 @@ namespace Toz.Dotnet.Core.Services
                 return memoryStream.ToArray();
             }
         }
-
     }
 }
