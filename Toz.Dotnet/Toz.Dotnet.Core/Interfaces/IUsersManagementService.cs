@@ -12,6 +12,6 @@ namespace Toz.Dotnet.Core.Interfaces
         Task<bool> UpdateUser(User user, CancellationToken cancelationToken = default(CancellationToken));
         Task<bool> DeleteUser(User user, CancellationToken cancelationToken = default(CancellationToken));
         Task<bool> CreateUser(User user, CancellationToken cancelationToken = default(CancellationToken));
-        //string RequestUri { get; set; }
+        string RequestUri { get; set; }
     }
 }

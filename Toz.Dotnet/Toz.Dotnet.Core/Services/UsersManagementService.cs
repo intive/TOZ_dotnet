@@ -10,11 +10,11 @@ namespace Toz.Dotnet.Core.Services
 {
     //TODO: uncomment everything when backend is ready
     public class UsersManagementService : IUsersManagementService
-    {
-        
+    {     
         //private IRestService _restService;
         private List<User> _mockupUsersDatabase;
-        //public string RequestUri { get; set; }
+
+        public string RequestUri { get; set; }
 
         public UsersManagementService(IUsersManagementService usersManagementService, IRestService restService, IOptions<AppSettings> appSettings)
         {
