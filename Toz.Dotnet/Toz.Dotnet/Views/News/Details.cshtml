@@ -25,7 +25,7 @@
                 <td><label>@Localizer["PublishingTime"]:</label></td>
                 @if(@Model.PublishingTime == DateTime.MinValue) 
                 {
-                    <td><pre></pre></td>
+                    <td><pre>@Localizer["Lack"]</pre></td>
                 }
                 else
                 {
@@ -38,7 +38,14 @@
             </tr>
             <tr>
                 <td><label>@Localizer["LastEditTime"]:</label></td>
-                <td><pre>@Model.AddingTime</pre></td>
+                @if (@Model.LastEditTime == DateTime.MinValue)
+                {
+                    <td><pre>@Localizer["Lack"]</pre></td>
+                }
+                else
+                {
+                    <td><pre>@Model.LastEditTime</pre></td>
+                }
             </tr>
             <tr>
                 <td><label>@Localizer["Body"]:</label></td>
@@ -46,7 +53,14 @@
             </tr>
             <tr>
                 <td><label>@Localizer["Photo"]:</label></td>
-                <td><pre>@Model.Photo</pre></td>
+                @if (Model.Photo == null)
+                {
+                    <td><pre>@Localizer["Lack"]</pre></td>
+                }
+                else
+                {
+                    <td><pre>@Model.Photo</pre></td>
+                }
             </tr>
             <tr>
                 <td><label>@Localizer["Status"]:</label></td>

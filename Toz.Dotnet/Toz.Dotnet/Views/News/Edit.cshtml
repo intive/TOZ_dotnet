@@ -1,0 +1,123 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@model Toz.Dotnet.Models.News
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Localizer["Title"];
+}
+
+<body>
+    <h2>@Localizer["PageTitle"]</h2>
+    <hr>
+
+    <div class="EditingNews">
+        <form asp-controller="News" asp-action="Edit" method="POST" enctype="multipart/form-data">
+            <table class="forms" align="center">
+                <tr align="left">
+                    <td></td>
+                    <td>@Html.ValidationMessageFor(Model => Model.Title, null, null)</td>
+                </tr>
+                <tr>
+                    <td><label>@Localizer["Title"]:</label></td>
+                    <td><input type="text" asp-for="Title" class="form-control" id="NewsTitle"></td>
+                </tr>
+                <tr align="left">
+                    <td></td>
+                    <td>@Html.ValidationMessageFor(Model => Model.Body, null, null)</td>
+                </tr>
+                <tr>
+                    <td><label>@Localizer["Text"]:</label></td>
+                    <td><textarea asp-for="Body" class="form-control" id="NewsBody" cols="10" rows="4" style="resize: vertical"></textarea></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <div class="form-group">
+                            <label>@Localizer["Photo"]</label>
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <span class="btn btn-default btn-file">
+                                        @Localizer["Browse"] <input type="file" id="imgInp" asp-for="Photo" accept="image/jpeg,image/png">
+                                    </span>
+                                </span>
+                                <input type="text" class="form-control" readonly>
+                            </div>
+                            @if (Model.Photo != null)
+                            {
+                               <img id='img-upload' src="data:image;base64,@System.Convert.ToBase64String(Model.Photo)" />
+                            }
+                            else
+                            {
+                               <img id='img-upload' />
+                            }
+        
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>@Localizer["AddingTime"]:</label></td>
+                    <td><input type="text" asp-for="AddingTime" class="form-control" id="NewsAddingTime" readonly></td>
+                </tr>
+                <tr>
+                    <td><label>@Localizer["LastEditTime"]:</label></td>
+                    @if (Model.LastEditTime == DateTime.MinValue)
+                    {
+                        <td><input type="text" value="@Localizer["Lack"]" class="form-control" id="NewsLastEditTime" readonly></td>
+                    }
+                    else
+                    {
+                        <td><input type="text" asp-for="LastEditTime" class="form-control" id="NewsLastEditTime" readonly></td>
+                    }
+                </tr>
+                <tr>
+                    <td><label>@Localizer["PublishingTime"]:</label></td>
+                    @if (Model.PublishingTime == DateTime.MinValue)
+                    {
+                        <td><input type="text" value="@Localizer["Lack"]" class="form-control" id="NewsPublishingTime" readonly></td>
+                    }
+                    else
+                    {
+                        <td><input type="text" asp-for="PublishingTime" class="form-control" id="NewsPublishingTime" readonly></td>
+                    }
+                    
+                </tr>
+                
+                @if (Model.Status == Toz.Dotnet.Models.EnumTypes.NewsStatus.Draft)
+                {
+                            <tr>
+                                <td colspan="2" style="text-align: center;">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <input type="button" class="btn btn-primary btn-block" id="NewsCancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "News") + "'");">
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <input type="submit" class="btn btn-primary btn-block" id="NewsSave" name="saveBtn" value=@Localizer["Save"]>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                }
+                else if (Model.Status == Toz.Dotnet.Models.EnumTypes.NewsStatus.Published)
+                {
+                    <tr>
+                        <td colspan="2" style="text-align: center;">
+                            <input type="button" class="btn btn-primary btn-block" id="NewsCancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "News") + "'");">
+                        </td>
+                    </tr>
+
+                }
+                
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <input type="button" class="btn btn-primary btn-block" style="margin-top:8px;" id="NewsPublish" value=@Localizer["Delete"] onclick="@("window.location.href='" + @Url.Action("Delete", "News", new {id = Model.Id}) + "'");">
+                    </td>
+                </tr>
+                                  
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <input type="submit" class="btn btn-primary btn-block" style="margin-top:8px;" id="NewsPublish" name="publishBtn" value=@Localizer["Publish"]>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
