@@ -15,7 +15,7 @@ namespace Toz.Dotnet.Controllers
 
         public UsersController(IStringLocalizer<UsersController> localizer, IOptions<AppSettings> appSettings)
         {
-			_localizer = localizer;
+            _localizer = localizer;
             _appSettings = appSettings.Value;
         }
 
