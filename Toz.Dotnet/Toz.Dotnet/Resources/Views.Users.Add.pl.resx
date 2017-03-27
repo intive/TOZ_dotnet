@@ -25,7 +25,7 @@
         <value>Wolontariusz</value>
     </data>
     <data name="TemporaryHome" xml:space="preserve">
-        <value>Gość</value>
+        <value>Opiekun tymczasowy</value>
     </data>
     <data name="Save" xml:space="preserve">
         <value>Zapisz</value>

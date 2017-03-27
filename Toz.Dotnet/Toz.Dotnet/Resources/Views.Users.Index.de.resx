@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
     <data name="PageTitle" xml:space="preserve">
-        <value>Die Benutzer</value>
+        <value>Alle Benutzer</value>
     </data>
     <data name="Add" xml:space="preserve">
         <value>Hinzufügen</value>

@@ -130,6 +130,6 @@
     <value>Wählen Sie den Typ des Tiers aus.</value>
   </data>
   <data name="TypeUndefined" xml:space="preserve">
-    <value>Wählen Sie den Typ dem Benutzer aus.</value>
+    <value>Wählen Sie den Typ des Benutzers aus.</value>
   </data>
 </root>
