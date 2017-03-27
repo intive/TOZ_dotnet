@@ -35,8 +35,11 @@ namespace Toz.Dotnet.Controllers
             [Bind("FirstName, LastName, PhoneNumber, Email, Purpose")] 
             User user, CancellationToken cancellationToken)
         {
-
-            return RedirectToAction("Index");
+            if (user != null && ModelState.IsValid)
+            {   
+                return RedirectToAction("Index");
+            }
+            return View(user);
         }
     }
 }

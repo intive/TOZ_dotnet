@@ -31,11 +31,19 @@
                     <td><input type="text" asp-for="LastName" class="form-control" id="LastName"></td>
                 </tr>
 
+                <tr allign="left">
+                    <td></td>
+                    <td>@Html.ValidationMessageFor(Model => Model.PhoneNumber, null, null)</td>
+                </tr>
                 <tr>
                     <td><label>@Localizer["PhoneNumber"]:</label></td>
                     <td><input type="text" asp-for="PhoneNumber" class="form-control" id="PhoneNumber"></td>
                 </tr>
 
+                <tr allign="left">
+                    <td></td>
+                    <td>@Html.ValidationMessageFor(Model => Model.Email, null, null)</td>
+                </tr>
                 <tr>
                     <td><label>@Localizer["Email"]:</label></td>
                     <td><input type="text" asp-for="Email" class="form-control" id="Email"></td>
