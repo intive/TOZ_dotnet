@@ -96,5 +96,11 @@ namespace Toz.Dotnet.Resources {
                 return ResourceManager.GetString("PetTypeUndefined", resourceCulture);
             }
         }
+
+        public static string TypeUndefined {
+            get {
+                return ResourceManager.GetString("TypeUndefined", resourceCulture);
+            }
+        }
     }
 }

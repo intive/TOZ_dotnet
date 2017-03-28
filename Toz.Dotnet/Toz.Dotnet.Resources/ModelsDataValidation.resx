@@ -129,4 +129,8 @@
   <data name="PetTypeUndefined" xml:space="preserve">
     <value>Select a pet type.</value>
   </data>
+  <data name="TypeUndefined" xml:space="preserve">
+    <value>Select a user type.</value>
+  </data>
+  
 </root>

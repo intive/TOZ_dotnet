@@ -11,7 +11,7 @@ namespace Toz.Dotnet.Models
     {
         [JsonProperty("id")]
         public string Id {get; set;}
-                  
+
         [JsonProperty("name")]     
         [StringLength(30, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]     
         public string Name {get; set;}
