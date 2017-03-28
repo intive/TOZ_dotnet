@@ -18,6 +18,10 @@ namespace Toz.Dotnet.Controllers
         private INewsManagementService _newsManagementService;
 	    private readonly IStringLocalizer<NewsController> _localizer;
         private readonly AppSettings _appSettings;
+        private List<News> _news = new List<News>(){
+                new News("id_1","ABC",DateTime.MinValue,DateTime.Now, DateTime.Now, "body", new byte[10], NewsStatus.Draft),
+                new News("id_2","ABCD",DateTime.Now,DateTime.Now, DateTime.Now, "bodyy", new byte[10], NewsStatus.Published)
+            };
 
         public NewsController(INewsManagementService newsManagementService, IStringLocalizer<NewsController> localizer, IOptions<AppSettings> appSettings)
         {
@@ -27,20 +31,16 @@ namespace Toz.Dotnet.Controllers
         }
 
         public ActionResult Index() {
-            List<News> news = new List<News>(){
-                new News("","ABC",DateTime.MinValue,DateTime.Now, DateTime.Now, "body", new byte[10], NewsStatus.Draft),
-                new News("","ABCD",DateTime.Now,DateTime.Now, DateTime.Now, "bodyy", new byte[10], NewsStatus.Published)
-            };
-
-            return View(news);
+            return View(_news);
         }
 
         public ActionResult Add() {
-            return View();
+            return View(new News());
         }
 
-        public ActionResult Edit() {
-            return View();
+        public ActionResult Edit(string id) {
+            return View(_news.Find(x => x.Id == id));
+           
         }
 
         public ActionResult Delete() {
@@ -48,7 +48,7 @@ namespace Toz.Dotnet.Controllers
         }
 
         public ActionResult Details(string id) {
-            return View(new News("","ABC",DateTime.MinValue,DateTime.Now, DateTime.Now, "body", new byte[10], NewsStatus.Draft));
+            return View(_news.Find(x => x.Id == id));
         }
     }
 }
