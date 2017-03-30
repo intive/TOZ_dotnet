@@ -13,6 +13,7 @@
 
     <div class="EditingNews">
         <form asp-controller="News" asp-action="Edit" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="status" value="RELEASED"/>
             <table class="forms" align="center">
                 <tr align="left">
                     <td></td>
@@ -82,7 +83,7 @@
                     
                 </tr>
                 
-                @if (Model.Status == NewsStatus.Unreleased)
+                @if (Model.Status == NewsStatus.UNRELEASED)
                 {
                             <tr>
                                 <td colspan="2" style="text-align: center;">
@@ -91,13 +92,13 @@
                                             <input type="button" class="btn btn-primary btn-block" id="NewsCancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "News") + "'");">
                                         </div>
                                         <div class="col-xs-6">
-                                            <input type="submit" class="btn btn-primary btn-block" id="NewsSave" name="saveBtn" value=@Localizer["Save"]>
+                                            <input type="submit" class="btn btn-primary btn-block" id="NewsSave" name="saveBtn" value=@Localizer["Save"]   onclick="$('input[name=status]').val('UNRELEASED');$(this).closest('form').submit();">
                                         </div>
                                     </div>
                                 </td>
                             </tr>
                 }
-                else if (Model.Status == NewsStatus.Released)
+                else if (Model.Status == NewsStatus.RELEASED)
                 {
                     <tr>
                         <td colspan="2" style="text-align: center;">
@@ -109,13 +110,13 @@
                 
                 <tr>
                     <td colspan="2" style="text-align: center;">
-                        <input type="button" class="btn btn-primary btn-block" style="margin-top:8px;" id="NewsPublish" value=@Localizer["Delete"] onclick="@("window.location.href='" + @Url.Action("Delete", "News", new {id = Model.Id}) + "'");">
+                        <input type="button" class="btn btn-primary btn-block" style="margin-top:8px;" id="NewsDelete" value=@Localizer["Delete"] onclick="@("window.location.href='" + @Url.Action("Delete", "News", new {id = Model.Id}) + "'");">
                     </td>
                 </tr>
                                   
                 <tr>
                     <td colspan="2" style="text-align: center;">
-                        <input type="submit" class="btn btn-primary btn-block" style="margin-top:8px;" id="NewsPublish" name="publishBtn" value=@Localizer["Publish"]>
+                        <input type="submit" class="btn btn-primary btn-block" style="margin-top:8px;" id="NewsPublish" value=@Localizer["Publish"] onclick="$('input[name=status]').val('RELEASED');$(this).closest('form').submit();">
                     </td>
                 </tr>
             </table>

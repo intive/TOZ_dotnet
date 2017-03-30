@@ -11,6 +11,7 @@
     <hr>
     <div class="AddingNews">
         <form asp-controller="News" asp-action="Add" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="status" value="RELEASED"/>
             <table class="forms" align="center">
                 <tr align="left">
                     <td></td>
@@ -59,14 +60,14 @@
                                 <input type="button" class="btn btn-primary btn-block" id="NewsCancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "News") + "'");">
                             </div>
                             <div class="col-xs-6">
-                                <input type="submit" class="btn btn-primary btn-block" id="NewsSave" name="saveBtn" value=@Localizer["Save"]>
+                                <input type="submit" class="btn btn-primary btn-block" id="NewsSave" name="saveBtn" value=@Localizer["Save"]  onclick="$('input[name=status]').val('UNRELEASED');$(this).closest('form').submit();">
                             </div>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center;">
-                        <input type="submit" class="btn btn-primary btn-block" id="NewsSave" name="publishBtn" value=@Localizer["Publish"]>
+                        <input type="submit" class="btn btn-primary btn-block" id="NewsSave" name="publishBtn" value=@Localizer["Publish"] onclick="$('input[name=status]').val('RELEASED');$(this).closest('form').submit();">
                     </td>
                 </tr>
             </table>

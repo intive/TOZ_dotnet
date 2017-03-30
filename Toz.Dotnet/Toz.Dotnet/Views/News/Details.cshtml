@@ -64,11 +64,11 @@
             </tr>
             <tr>
                 <td><label>@Localizer["Status"]:</label></td>
-                @if(@Model.Status == NewsStatus.Unreleased)
+                @if(@Model.Status == NewsStatus.UNRELEASED)
                 {
                     <td><pre>@Localizer["Unreleased"]</pre></td>
                 }
-                else if (@Model.Status == NewsStatus.Released)
+                else if (@Model.Status == NewsStatus.RELEASED)
                 {
                     <td><pre>@Localizer["Released"]</pre></td>
                 }

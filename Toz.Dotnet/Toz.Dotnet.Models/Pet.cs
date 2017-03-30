@@ -18,7 +18,7 @@ namespace Toz.Dotnet.Models
 
         [JsonProperty("type")]
         [JsonConverter(typeof(StringEnumConverter))]
-        [RegularExpression("^(Cat|Dog)$", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "PetTypeUndefined")]
+        [RegularExpression("^(CAT|DOG)$", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "PetTypeUndefined")]
         public PetType Type {get; set;}
         
         [JsonProperty("sex")]
@@ -43,6 +43,9 @@ namespace Toz.Dotnet.Models
         [JsonProperty("lastModified")]
         [JsonConverter(typeof(JsonDateTimeConventer))]
         public DateTime LastEditTime {get; set;}
+
+        [JsonProperty("imageUrl")]
+        public string ImageUrl {get; set;}
 
         public Pet() { }
 

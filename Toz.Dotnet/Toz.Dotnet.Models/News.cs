@@ -40,6 +40,9 @@ namespace Toz.Dotnet.Models
         [JsonConverter(typeof(StringEnumConverter))]
         public NewsStatus Status {get; set;}
 
+        [JsonProperty("photoUrl")]
+        public string PhotoUrl {get; set; }
+
         public News() {}
         
         public News(string id, string title, DateTime publishingTime, DateTime addingTime, DateTime lastEditTime,

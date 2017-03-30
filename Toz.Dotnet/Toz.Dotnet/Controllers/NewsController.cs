@@ -32,17 +32,21 @@ namespace Toz.Dotnet.Controllers
         {
             List<News> news = await _newsManagementService.GetAllNews();
             //todo add photo if will be avaialbe on backends
-            news.ForEach(pet=> pet.Photo = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 }); // temporary
+            news.ForEach(n=> n.Photo = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 }); // temporary
             return View(news);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(
-            [Bind("Title, Body, Status")] 
-            News news, [Bind("Photo")] IFormFile photo, CancellationToken cancellationToken)
+            [Bind("Title, Body")] 
+            News news, [Bind("Photo")] IFormFile photo, string status, CancellationToken cancellationToken)
         {
             bool result = ValidatePhoto(news, photo);
+            news.PhotoUrl = "storage/a5/0d/4d/a50d4d4c-ccd2-4747-8dec-d6d7f521336e.jpg";
+
+            Enum.TryParse(status, out NewsStatus newsStatus);
+            news.Status = newsStatus;
             
             if (news != null && result && ModelState.IsValid)
             {
@@ -84,13 +88,17 @@ namespace Toz.Dotnet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
-            [Bind("Title, Body, Status")] 
-            News news, [Bind("Photo")] IFormFile photo, CancellationToken cancellationToken)
+            [Bind("Id, Title, Body, Status")] 
+            News news, [Bind("Photo")] IFormFile photo, string status, CancellationToken cancellationToken)
         {
             //todo add photo if will be available on backends
             _lastAcceptPhoto = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 }; //get photo from backend, if available
 
             bool result = ValidatePhoto(news, photo);
+            news.PhotoUrl = "storage/a5/0d/4d/a50d4d4c-ccd2-4747-8dec-d6d7f521336e.jpg";
+
+            Enum.TryParse(status, out NewsStatus newsStatus);
+            news.Status = newsStatus;
 
             if (news != null && result && ModelState.IsValid)
             {
