@@ -18,7 +18,7 @@ namespace Toz.Dotnet.Models.JsonConventers
 
             var s = reader.Value.ToString();
             
-            System.DateTime dt = new DateTime(1970,1,1,0,0,0,0,System.DateTimeKind.Utc);
+            DateTime dt = new DateTime(1970,1,1,0,0,0,0,System.DateTimeKind.Utc);
             dt = dt.AddSeconds(Math.Round(Convert.ToDouble(s) / 1000)).ToLocalTime();
 
             return dt;
