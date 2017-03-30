@@ -15,8 +15,11 @@
     <data name="PublishingTime" xml:space="preserve">
         <value>Erscheinungstermin</value>
     </data>
-    <data name="Draft" xml:space="preserve">
-        <value>Entwurf</value>
+    <data name="Unreleased" xml:space="preserve">
+        <value>Unveröffentlicht</value>
+    </data>
+    <data name="Archived" xml:space="preserve">
+        <value>Archiviert</value>
     </data>
     <data name="Details" xml:space="preserve">
         <value>Nähere</value>
@@ -29,5 +32,8 @@
     </data>
     <data name="ListPanelTitle" xml:space="preserve">
         <value>Schaltflächen</value>
+    </data>
+    <data name="Lack" xml:space="preserve">
+        <value>(mangel)</value>
     </data>
 </root>

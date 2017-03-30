@@ -19,6 +19,7 @@
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <script src="~/js/site.js"></script>
     </environment>
 </head>
 <body>
@@ -40,17 +41,19 @@
                     <li><a asp-area="" asp-controller="Users" asp-action="Index">@Localizer["Users"]</a></li>
                     <li><a asp-area="" asp-controller="Login" asp-action="Index">@Localizer["Login"]</a></li>
                 </ul>
+                <ul class="nav" style="text-align: right;">
+                        <form id="selectLanguage" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@Context.Request.Path" method="post">
+                            <input type="hidden" name="culture" value="pl"/>
+                            <a class="flag flag-pl" href="#" onclick="$('input[name=culture]').val('pl');$(this).closest('form').submit();"></a>
+                            <a class="flag flag-gb" href="#" onclick="$('input[name=culture]').val('en-US');$(this).closest('form').submit();"></a>
+                            <a class="flag flag-de" href="#" onclick="$('input[name=culture]').val('de');$(this).closest('form').submit();"></a>
+                        </form>
+                </ul>
             </div>
         </div>
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <div class="text-right">
-                @await Html.PartialAsync("_SelectLanguagePartial")
-            </div>
-        </footer>
     </div>
 
     <environment names="Development">

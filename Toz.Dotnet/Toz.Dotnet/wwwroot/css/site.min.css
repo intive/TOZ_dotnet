@@ -63,7 +63,20 @@ textarea.input-validation-error {
       background: #FA8072;
  }
 
-.draft {
+.unreleased {
+    padding: 6px 10px 6px 10px;
+    margin-bottom: 18px;
+    color: #C2C038;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    background-color: #ffffcc;
+    border: 1px solid #eed3d7;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    min-width: 150px;
+}
+
+.archived {
     padding: 6px 10px 6px 10px;
     margin-bottom: 18px;
     color: #b94a48;
@@ -73,13 +86,23 @@ textarea.input-validation-error {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
+    min-width: 150px;
 }
 
-.draft .glyphicon{
-    float:left;
+.unreleased .archived .glyphicon{
+    float: left;
     margin-right: 5px;
 }
 
-.draft div{
-    overflow:hidden;
+.unreleased .archived div{
+    overflow: hidden;
 }
+
+.overflow-ellipsis {
+    max-width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.flag{display:inline-block;width:32px;height:32px;background:url('../images/flags.png') no-repeat}.flag.flag-gb{background-position:-32px 0}.flag.flag-pl{background-position:0 -32px}.flag.flag-de{background-position:0 0}

@@ -24,10 +24,13 @@
     <data name="Body" xml:space="preserve">
         <value>Tekst</value>
     </data>
-    <data name="Draft" xml:space="preserve">
-        <value>Szkic</value>
+    <data name="Unreleased" xml:space="preserve">
+        <value>Nieopublikowany</value>
     </data>
-    <data name="Published" xml:space="preserve">
+    <data name="Archived" xml:space="preserve">
+        <value>Zarchiwizowany</value>
+    </data>
+    <data name="Released" xml:space="preserve">
         <value>Opublikowany</value>
     </data>
     <data name="Details" xml:space="preserve">
@@ -40,6 +43,6 @@
         <value>Wróć</value>
     </data>
     <data name="Lack" xml:space="preserve">
-        <value>Brak</value>
+        <value>(brak)</value>
     </data>
 </root>

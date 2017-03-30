@@ -24,10 +24,13 @@
     <data name="Body" xml:space="preserve">
         <value>Text</value>
     </data>
-    <data name="Draft" xml:space="preserve">
-        <value>Draft</value>
+    <data name="Unreleased" xml:space="preserve">
+        <value>Unreleased</value>
     </data>
-    <data name="Published" xml:space="preserve">
+    <data name="Archived" xml:space="preserve">
+        <value>Archived</value>
+    </data>
+    <data name="Released" xml:space="preserve">
         <value>Published</value>
     </data>
     <data name="Details" xml:space="preserve">
@@ -40,6 +43,6 @@
         <value>Back</value>
     </data>
     <data name="Lack" xml:space="preserve">
-        <value>Lack</value>
+        <value>(lack)</value>
     </data>
 </root>
