@@ -17,18 +17,24 @@ namespace Toz.Dotnet.Models.JsonConventers
             }
 
             var s = reader.Value.ToString();
-            DateTime result;
-            if (DateTime.TryParseExact(s, Format, CultureInfo.InvariantCulture, DateTimeStyles.None, out result))
-            {
-                return result;
-            }
+            
+            DateTime dt = new DateTime(1970,1,1,0,0,0,0,System.DateTimeKind.Utc);
+            dt = dt.AddSeconds(Math.Round(Convert.ToDouble(s) / 1000)).ToLocalTime();
 
-            return DateTime.Now;
+            return dt;
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            writer.WriteValue(((DateTime)value).ToString(Format));
+            DateTime result;
+            var s = value.ToString();
+
+            if(DateTime.TryParseExact(s, Format, CultureInfo.InvariantCulture, DateTimeStyles.None, out result)) {
+                Int64 unixTimestamp = (Int64)(result.Subtract(new DateTime(1970, 1, 1))).TotalMilliseconds;
+                writer.WriteValue(unixTimestamp);
+            }
+
+            writer.WriteValue(0);
         }
     }
 }

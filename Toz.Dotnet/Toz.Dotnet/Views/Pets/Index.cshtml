@@ -32,11 +32,11 @@
             <tr>
                 <td>@item.Name</td>
 
-                @if(@item.Type == PetType.Dog)
+                @if(@item.Type == PetType.DOG)
                 {
                     <td>@Localizer["Dog"]</td>
                 }
-                else if(@item.Type == PetType.Cat)
+                else if(@item.Type == PetType.CAT)
                 {
                     <td>@Localizer["Cat"]</td>
                 }
@@ -45,11 +45,11 @@
                     <td>@Localizer["Unknown"]</td>
                 }
 
-                @if(@item.Sex == PetSex.Male)
+                @if(@item.Sex == PetSex.MALE)
                 {
                     <td>@Localizer["Male"]</td>
                 }
-                else if(@item.Sex == PetSex.Female)
+                else if(@item.Sex == PetSex.FEMALE)
                 {
                     <td>@Localizer["Female"]</td>
                 }

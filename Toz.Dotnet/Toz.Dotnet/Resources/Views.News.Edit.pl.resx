@@ -37,6 +37,6 @@
         <value>Data modyfikacji</value>
     </data>
     <data name="Lack" xml:space="preserve">
-        <value>Brak</value>
+        <value>(brak)</value>
     </data>
 </root>

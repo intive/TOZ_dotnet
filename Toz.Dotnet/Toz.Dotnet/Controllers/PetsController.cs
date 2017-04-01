@@ -41,6 +41,7 @@ namespace Toz.Dotnet.Controllers
             Pet pet, [Bind("Photo")] IFormFile photo, CancellationToken cancellationToken)
         {
             bool result = ValidatePhoto(pet, photo);
+            pet.ImageUrl = "storage/a5/0d/4d/a50d4d4c-ccd2-4747-8dec-d6d7f521336e.jpg"; //temporary
             
             if (pet != null && result && ModelState.IsValid)
             {
@@ -87,6 +88,7 @@ namespace Toz.Dotnet.Controllers
         {
             //todo add photo if will be available on backends
             _lastAcceptPhoto = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 }; //get photo from backend, if available
+            pet.ImageUrl = "storage/a5/0d/4d/a50d4d4c-ccd2-4747-8dec-d6d7f521336e.jpg"; //temporary
 
             bool result = ValidatePhoto(pet, photo);
 
