@@ -28,7 +28,7 @@ namespace Toz.Dotnet.Tests.Tests
                 LastEditTime = DateTime.Now,
                 Body = "Text",
                 Photo = new byte[10],
-                Status = NewsStatus.Published
+                Status = NewsStatus.RELEASED
             };
 
             _newsManagementService.RequestUri = RequestUriHelper.NewsUri;

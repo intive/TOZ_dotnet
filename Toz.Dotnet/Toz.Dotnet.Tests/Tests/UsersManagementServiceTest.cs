@@ -29,7 +29,7 @@ namespace Toz.Dotnet.Tests.Tests
             _UserManagementService.RequestUri = RequestUriHelper.UsersUri;
         }
         
-        [Fact]
+        /*[Fact]
         public void TestDependencyInjectionFromUserManagementService()
         {
             Assert.NotNull(_UserManagementService);
@@ -124,7 +124,7 @@ namespace Toz.Dotnet.Tests.Tests
                 Email = User.Email,
                 Purpose = User.Purpose
             };
-        }
+        }*/
         
     }
 }

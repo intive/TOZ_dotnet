@@ -23,8 +23,8 @@ namespace Toz.Dotnet.Tests.Tests
             {
                 Id = System.Guid.NewGuid().ToString(),
                 Name = "TestDog",
-                Type = PetType.Dog,
-                Sex = PetSex.Male,
+                Type = PetType.DOG,
+                Sex = PetSex.MALE,
                 Photo = new byte[10],
                 Description = "Dog that eats tigers",
                 Address = "Found in the jungle",
@@ -116,25 +116,15 @@ namespace Toz.Dotnet.Tests.Tests
         }
 
         [Theory]
-        [InlineData("Name")]
-        [InlineData("Address")]
         [InlineData("Type")]
         public void TestPetValidationIfRequiredPropertyIsNotInitialized(string property)
         {
             // Arrange
             Pet pet = ClonePet(_testingPet);
 
-            if (property.Equals("Name")) 
-            { 
-                pet.Name = "";
-            }
-            else if (property.Equals("Address"))
+            if (property.Equals("Type"))
             {
-                pet.Address = "";
-            }
-            else if (property.Equals("Type"))
-            {
-                pet.Type = PetType.Unidentified;
+                pet.Type = PetType.UNIDENTIFIED;
             }
            
             var context = new ValidationContext(pet, null, null);
@@ -177,6 +167,7 @@ namespace Toz.Dotnet.Tests.Tests
             Assert.False(valid);                      
         }
 
+/*
         [Theory]
         [InlineData("CR7")]
         [InlineData("     ")]
@@ -193,7 +184,7 @@ namespace Toz.Dotnet.Tests.Tests
             bool valid = Validator.TryValidateObject(pet, context, result, true);
 
             Assert.False(valid);
-        }
+        }*/
 
         private Pet ClonePet(Pet pet)
         {
