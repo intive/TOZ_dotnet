@@ -1,5 +1,6 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Toz.Dotnet.Models.EnumTypes
+@model IEnumerable<Toz.Dotnet.Models.User>
 @inject IViewLocalizer Localizer
 
 @{
@@ -9,8 +10,40 @@
 <h2>@Localizer["PageTitle"]</h2>
 <div class="table-responsive">
     <div class="panel panel-default">
+        <div class="panel-heading">@Localizer["PageTitle"]</div>
         <div class="panel-body">
             <td>@Html.ActionLink(@Localizer["Add"].Value, "Add", "Users", null, new { @style = "width: 120px;", @class = "btn btn-primary btn-block"}) </td>
         </div>
     </div>
+    <table class="table">
+        <tr>
+            <th>@Localizer["FirstName"]</th>
+            <th>@Localizer["LastName"]</th>
+            <th>@Localizer["PhoneNumber"]</th>
+            <th>@Localizer["Email"]</th>
+            <th>@Localizer["Purpose"]</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.FirstName</td>
+                <td>@item.LastName</td>
+                <td>@item.PhoneNumber</td>
+                <td>@item.Email</td>
+
+                @if(@item.Purpose == UserType.Administrator)
+                {
+                    <td>@Localizer["Administrator"]</td>
+                }
+                else if(@item.Purpose == UserType.Volunteer)
+                {
+                    <td>@Localizer["Volunteer"]</td>
+                }
+                else
+                {
+                    <td>@Localizer["TemporaryHome"]</td>
+                }
+            </tr>
+        }
+    </table>
 </div>

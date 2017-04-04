@@ -10,7 +10,7 @@ namespace Toz.Dotnet.Resources.CustomValidationAttributes
         {
             if (value == null) 
             {
-                return true;
+                return false;
             }
  
             string valueAsString = value as string;
@@ -31,7 +31,7 @@ namespace Toz.Dotnet.Resources.CustomValidationAttributes
                 }
             }
 
-            if (valueAsString.Length != 9 || valueAsString.Length != 11)
+            if (valueAsString.Length != 9 && valueAsString.Length != 11)
             {
                 return false;
             }

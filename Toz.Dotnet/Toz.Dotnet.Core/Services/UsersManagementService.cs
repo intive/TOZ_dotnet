@@ -1,10 +1,10 @@
-using Toz.Dotnet.Core.Interfaces;
 using System.Collections.Generic;
-using Toz.Dotnet.Models;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
+using Toz.Dotnet.Models;
+using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Resources.Configuration;
-using System.Threading;
 
 namespace Toz.Dotnet.Core.Services
 {
@@ -16,7 +16,7 @@ namespace Toz.Dotnet.Core.Services
 
         public string RequestUri { get; set; }
 
-        public UsersManagementService(IUsersManagementService usersManagementService, IRestService restService, IOptions<AppSettings> appSettings)
+        public UsersManagementService(IRestService restService, IOptions<AppSettings> appSettings)
         {
             _mockupUsersDatabase = new List<User>();
             //_restService = restService;
@@ -45,7 +45,7 @@ namespace Toz.Dotnet.Core.Services
         
         public async Task<bool> CreateUser(User user, CancellationToken cancelationToken = default(CancellationToken))
         {
-            if(_mockupUsersDatabase.Exists(u => u.Id == user.Id))
+            if(!_mockupUsersDatabase.Exists(u => u.Id == user.Id))
             {
                 _mockupUsersDatabase.Add(user);
                 user.Id = _mockupUsersDatabase.IndexOf(user).ToString();
