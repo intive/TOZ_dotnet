@@ -37,17 +37,5 @@ namespace Toz.Dotnet.Models
         [RegularExpression("^(Administrator|Volunteer|TemporaryHome)$", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "TypeUndefined")]
         public UserType Purpose {get; set;}
 
-
-        public User() { }
-
-        public User(string id, string firstName, string lastName, string phoneNumber, string email, UserType purpose)
-        {
-            Id = id;
-            FirstName = firstName;
-            LastName = lastName;
-            PhoneNumber = phoneNumber;
-            Email = email;
-            Purpose = purpose;
-        }
     }
 }
