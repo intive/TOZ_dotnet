@@ -43,19 +43,5 @@ namespace Toz.Dotnet.Models
         [JsonProperty("photoUrl")]
         public string PhotoUrl {get; set; }
 
-        public News() {}
-        
-        public News(string id, string title, DateTime publishingTime, DateTime addingTime, DateTime lastEditTime,
-                    string body, byte[] photo, NewsStatus status)
-                {
-                    Id = id;
-                    Title = title;
-                    PublishingTime = publishingTime;
-                    AddingTime = addingTime;
-                    LastEditTime = lastEditTime;
-                    Body = body;
-                    Photo = photo;
-                    Status = status;
-                 }
         }
 }

@@ -46,21 +46,5 @@ namespace Toz.Dotnet.Models
 
         [JsonProperty("imageUrl")]
         public string ImageUrl {get; set;}
-
-        public Pet() { }
-
-        public Pet(string id, string name, PetType type, PetSex sex, byte [] photo, string description, string address,
-                    DateTime addingTime, DateTime lastEditTime)
-                {
-                    Id = id;
-                    Name = name;
-                    Type = type;
-                    Sex = sex;
-                    Photo = photo;
-                    Description = description;
-                    Address = address;
-                    AddingTime = addingTime;
-                    LastEditTime = lastEditTime;
-                 }
-        }
+    }
 }
