@@ -9,6 +9,6 @@ namespace Toz.Dotnet.Models
         public List<Config> Configs { get; set; }
 
         [JsonProperty("reservations")]
-        public List<Reservartion> Reservations { get; set;}
+        public List<Reservation> Reservations { get; set;}
     }
 }

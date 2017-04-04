@@ -4,7 +4,7 @@ using Toz.Dotnet.Models.JsonConventers;
 
 namespace Toz.Dotnet.Models
 {
-    public class Reservartion
+    public class Reservation
     {
         [JsonProperty("id")]
         public string Id { get; set; }
