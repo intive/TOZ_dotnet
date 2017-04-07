@@ -64,6 +64,15 @@
                     </td>
                 </tr>
 
+                <tr allign="left">
+                    <td></td>
+                    <td>@Html.ValidationMessageFor(Model => Model.Passwd, null, null)</td>
+                </tr>
+                <tr>
+                    <td><label>@Localizer["Passwd"]:</label></td>
+                    <td><input type="password" asp-for="Passwd" class="form-control" id="Passwd"></td>
+                </tr>
+
                 <tr>
                     <td colspan="2" style="text-align: center;">
                         <br>

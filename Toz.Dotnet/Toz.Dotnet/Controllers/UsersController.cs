@@ -37,7 +37,7 @@ namespace Toz.Dotnet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(
-            [Bind("FirstName, LastName, PhoneNumber, Email, Purpose")] 
+            [Bind("FirstName, LastName, PhoneNumber, Email, Purpose, Passwd")] 
             User user, CancellationToken cancellationToken)
         {
             if (user != null && ModelState.IsValid)
@@ -51,7 +51,7 @@ namespace Toz.Dotnet.Controllers
                     return BadRequest();
                 }
             }
-            return RedirectToAction("Index");
+            return View(user);
         }
     }
 }
