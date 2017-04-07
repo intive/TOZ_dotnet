@@ -23,6 +23,7 @@ namespace Toz.Dotnet.Models
         
         [JsonProperty("sex")]
         [JsonConverter(typeof(StringEnumConverter))]
+        [RegularExpression("^(MALE|FEMALE)$", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "PetSexUndefined")]
         public PetSex Sex {get; set;}
 
         [JsonIgnore]
@@ -38,11 +39,11 @@ namespace Toz.Dotnet.Models
 
         [JsonProperty("created")]
         [JsonConverter(typeof(JsonDateTimeConventer))]
-        public DateTime AddingTime  {get; set;}
+        public DateTime? AddingTime  {get; set;}
 
         [JsonProperty("lastModified")]
         [JsonConverter(typeof(JsonDateTimeConventer))]
-        public DateTime LastEditTime {get; set;}
+        public DateTime? LastEditTime {get; set;}
 
         [JsonProperty("imageUrl")]
         public string ImageUrl {get; set;}

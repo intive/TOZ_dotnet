@@ -33,8 +33,6 @@ namespace Toz.Dotnet.Models.JsonConventers
                 Int64 unixTimestamp = (Int64)(result.Subtract(new DateTime(1970, 1, 1))).TotalMilliseconds;
                 writer.WriteValue(unixTimestamp);
             }
-
-            writer.WriteValue(0);
         }
     }
 }

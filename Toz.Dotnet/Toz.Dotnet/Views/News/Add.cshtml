@@ -18,16 +18,16 @@
                     <td>@Html.ValidationMessageFor(Model => Model.Title, null, null)</td>
                 </tr>
                 <tr>
-                    <td><label>@Localizer["Title"]:</label></td>
-                    <td><input type="text" asp-for="Title" class="form-control" id="NewsTitle"></td>
+                    <td class="col-md-3"><label>@Localizer["Title"]:</label></td>
+                    <td class="col-md-9"><textarea asp-for="Title" class="form-control" id="NewsTitle" cols="20" rows="2" style="resize: vertical"></textarea></td>
                 </tr>
                 <tr align="left">
                     <td></td>
                     <td>@Html.ValidationMessageFor(Model => Model.Body, null, null)</td>
                 </tr>
                 <tr>
-                    <td><label>@Localizer["Text"]:</label></td>
-                    <td><textarea asp-for="Body" class="form-control" id="NewsBody" cols="10" rows="4" style="resize: vertical"></textarea></td>
+                    <td class="col-md-3"><label>@Localizer["Text"]:</label></td>
+                    <td class="col-md-9"><textarea asp-for="Body" class="form-control" id="NewsBody" cols="20" rows="4" style="resize: vertical"></textarea></td>
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center;">
