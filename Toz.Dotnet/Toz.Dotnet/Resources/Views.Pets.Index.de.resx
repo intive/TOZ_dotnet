@@ -60,4 +60,7 @@
     <data name="ListPanelTitle" xml:space="preserve">
         <value>Schaltflächen</value>
     </data>
+    <data name="Lack" xml:space="preserve">
+        <value>(mangel)</value>
+    </data>
 </root>

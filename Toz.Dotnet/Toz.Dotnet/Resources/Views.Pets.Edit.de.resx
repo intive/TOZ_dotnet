@@ -69,4 +69,7 @@
     <data name="PhotoAlertWithLastPhoto" xml:space="preserve">
         <value>Click again "Save" button to save last selected photo</value>
     </data>
+    <data name="Lack" xml:space="preserve">
+        <value>(mangel)</value>
+    </data>
 </root>

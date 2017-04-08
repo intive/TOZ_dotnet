@@ -25,7 +25,7 @@
         <value>Adres</value>
     </data>
     <data name="AddingTime" xml:space="preserve">
-        <value>Data dodania</value>
+        <value>Data utworzenia</value>
     </data>
     <data name="LastEditTime" xml:space="preserve">
         <value>Data modyfikacji</value>
@@ -59,5 +59,8 @@
     </data>
     <data name="ListPanelTitle" xml:space="preserve">
         <value>Przyciski</value>
+    </data>
+    <data name="Lack" xml:space="preserve">
+        <value>(brak)</value>
     </data>
 </root>

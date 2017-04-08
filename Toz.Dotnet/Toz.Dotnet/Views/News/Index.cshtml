@@ -10,14 +10,13 @@
 <h2>@Localizer["PageTitle"]</h2>
 <div class="table-responsive">
     <div class="panel panel-default">
-        <div class="panel-heading">@Localizer["ListPanelTitle"]</div>
         <div class="panel-body">
             <td>@Html.ActionLink(@Localizer["Add"].Value, "Add", "News", null, new { @style = "width: 120px;", @class = "btn btn-primary btn-block"}) </td>
         </div>
     </div>
     <table class="table">
         <tr>
-            <th>@Localizer["PublishingTime"]</th>
+            <th></th>
             <th>@Localizer["Title"]</th>
             <th>@Localizer["Photo"]</th>
             <th>@Localizer["ShortBody"]</th>
@@ -28,15 +27,15 @@
         @foreach (var item in Model)
         {
             <tr>
-                @if(@item.PublishingTime == DateTime.MinValue) 
+                @if(!@item.PublishingTime.HasValue) 
                 {
-                    <td style="">@Localizer["Lack"]</td>
+                    <td>@Localizer["Lack"]</td>
                 }
                 else
                 {
-                    <td style="">@item.PublishingTime</td>
+                    <td>@item.PublishingTime</td>
                 }
-                <td>@item.Title</td>
+                <td style="word-wrap:break-word;"><div style="width:200px;overflow:auto">@item.Title</div></td>
                 <td style="width:64px;height:64px;"><img src="http://img.cda.pl/obr/thumbs/6adb80c33f5b55df46a481b57a61c64c.png_oooooooooo_273x.png" style="width:64px;height:64px;"/></td>
                 <td class="overflow-ellipsis">@item.Body</td>
 
@@ -60,7 +59,7 @@
                 {
                     <td></td>
                 }
-                <td>@Html.ActionLink(@Localizer["Details"].Value, "Details", "News", new { id = item.Id }, new { @class = "btn btn-primary btn-block"}) </td>
+                <!--<td>@Html.ActionLink(@Localizer["Details"].Value, "Details", "News", new { id = item.Id }, new { @class = "btn btn-primary btn-block"}) </td>-->
                 <td>@Html.ActionLink(@Localizer["Edit"].Value, "Edit", "News", new{ id = item.Id }, new { @class = "btn btn-primary btn-block"}) </td>
             </tr>
         }

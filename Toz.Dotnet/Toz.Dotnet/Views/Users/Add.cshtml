@@ -18,8 +18,8 @@
                     <td>@Html.ValidationMessageFor(Model => Model.FirstName, null, null)</td>
                 </tr>
                 <tr>
-                    <td><label>@Localizer["FirstName"]:</label></td>
-                    <td><input type="text" asp-for="FirstName" class="form-control" id="FirstName"></td>
+                    <td class="col-md-3"><label>@Localizer["FirstName"]:</label></td>
+                    <td class="col-md-9"><input type="text" asp-for="FirstName" class="form-control" id="FirstName"></td>
                 </tr>
 
                 <tr allign="left">
@@ -27,8 +27,8 @@
                     <td>@Html.ValidationMessageFor(Model => Model.LastName, null, null)</td>
                 </tr>
                 <tr>
-                    <td><label>@Localizer["LastName"]:</label></td>
-                    <td><input type="text" asp-for="LastName" class="form-control" id="LastName"></td>
+                    <td class="col-md-3"><label>@Localizer["LastName"]:</label></td>
+                    <td class="col-md-9"><input type="text" asp-for="LastName" class="form-control" id="LastName"></td>
                 </tr>
 
                 <tr allign="left">
@@ -36,8 +36,8 @@
                     <td>@Html.ValidationMessageFor(Model => Model.PhoneNumber, null, null)</td>
                 </tr>
                 <tr>
-                    <td><label>@Localizer["PhoneNumber"]:</label></td>
-                    <td><input type="text" asp-for="PhoneNumber" class="form-control" id="PhoneNumber"></td>
+                    <td class="col-md-3"><label>@Localizer["PhoneNumber"]:</label></td>
+                    <td class="col-md-9"><input type="text" asp-for="PhoneNumber" class="form-control" id="PhoneNumber"></td>
                 </tr>
 
                 <tr allign="left">
@@ -45,8 +45,8 @@
                     <td>@Html.ValidationMessageFor(Model => Model.Email, null, null)</td>
                 </tr>
                 <tr>
-                    <td><label>@Localizer["Email"]:</label></td>
-                    <td><input type="text" asp-for="Email" class="form-control" id="Email"></td>
+                    <td class="col-md-3"><label>@Localizer["Email"]:</label></td>
+                    <td class="col-md-9"><input type="text" asp-for="Email" class="form-control" id="Email"></td>
                 </tr>
 
                 <tr allign="left">
@@ -54,8 +54,8 @@
                     <td>@Html.ValidationMessageFor(Model => Model.Purpose, null, null)</td>
                 </tr>
                 <tr>
-                    <td><label>@Localizer["Purpose"]:</label></td>
-                    <td>
+                    <td class="col-md-3"><label>@Localizer["Purpose"]:</label></td>
+                    <td class="col-md-9">
                         <select asp-for="Purpose" class="form-control" id="UserType">
                             <option value="0">@Localizer["Administrator"]</option>
                             <option value="1">@Localizer["Volunteer"]</option>
