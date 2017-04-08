@@ -13,7 +13,7 @@ namespace Toz.Dotnet.Models
         public string Id {get; set;}
 
         [JsonProperty("name")]     
-        [StringLength(30, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]     
+        [StringLength(35, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]     
         public string Name {get; set;}
 
         [JsonProperty("type")]
@@ -23,26 +23,27 @@ namespace Toz.Dotnet.Models
         
         [JsonProperty("sex")]
         [JsonConverter(typeof(StringEnumConverter))]
+        [RegularExpression("^(MALE|FEMALE)$", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "PetSexUndefined")]
         public PetSex Sex {get; set;}
 
         [JsonIgnore]
         public byte [] Photo {get; set;}
 
         [JsonProperty("description")]
-        [StringLength(300, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]
+        [StringLength(120, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]
         public string Description {get; set;}
 
         [JsonProperty("address")]
-        [StringLength(100, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]
+        [StringLength(35, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]
         public string Address {get; set;}
 
         [JsonProperty("created")]
         [JsonConverter(typeof(JsonDateTimeConventer))]
-        public DateTime AddingTime  {get; set;}
+        public DateTime? AddingTime  {get; set;}
 
         [JsonProperty("lastModified")]
         [JsonConverter(typeof(JsonDateTimeConventer))]
-        public DateTime LastEditTime {get; set;}
+        public DateTime? LastEditTime {get; set;}
 
         [JsonProperty("imageUrl")]
         public string ImageUrl {get; set;}

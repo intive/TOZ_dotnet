@@ -10,7 +10,6 @@
 <h2>@Localizer["PageTitle"]</h2>
 <div class="table-responsive">
     <div class="panel panel-default">
-        <div class="panel-heading">@Localizer["ListPanelTitle"]</div> <!-- Jak ktoś będzie miał lepszy pomysł na tę nazwę to poprawię -->
         <div class="panel-body">
             <td>@Html.ActionLink(@Localizer["Add"].Value, "Add", "Pets", null, new { @style = "width: 120px;", @class = "btn btn-primary btn-block"}) </td>
         </div>
@@ -62,7 +61,14 @@
                 <td>@item.Description</td>
                 <td>@item.Address</td>
                 <td>@item.AddingTime</td>
-                <td>@item.LastEditTime</td>
+                @if(!@item.LastEditTime.HasValue) 
+                {
+                    <td>@Localizer["Lack"]</td>
+                }
+                else
+                {
+                    <td>@item.LastEditTime</td>
+                }
                 <td>@Html.ActionLink(@Localizer["Edit"].Value, "Edit", "Pets", new{ id = item.Id }, new { @class = "btn btn-primary btn-block"}) </td>
             </tr>
         }

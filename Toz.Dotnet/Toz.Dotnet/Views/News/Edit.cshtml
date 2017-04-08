@@ -10,7 +10,6 @@
 <body>
     <h2>@Localizer["PageTitle"]</h2>
     <hr>
-
     <div class="EditingNews">
         <form asp-controller="News" asp-action="Edit" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="status" value="RELEASED"/>
@@ -20,16 +19,16 @@
                     <td>@Html.ValidationMessageFor(Model => Model.Title, null, null)</td>
                 </tr>
                 <tr>
-                    <td><label>@Localizer["Title"]:</label></td>
-                    <td><input type="text" asp-for="Title" class="form-control" id="NewsTitle"></td>
+                    <td class="col-md-3"><label>@Localizer["Title"]:</label></td>
+                    <td class="col-md-9"><textarea asp-for="Title" class="form-control" id="NewsTitle" cols="20" rows="2" style="resize: vertical"></textarea></td>
                 </tr>
                 <tr align="left">
                     <td></td>
                     <td>@Html.ValidationMessageFor(Model => Model.Body, null, null)</td>
                 </tr>
                 <tr>
-                    <td><label>@Localizer["Text"]:</label></td>
-                    <td><textarea asp-for="Body" class="form-control" id="NewsBody" cols="10" rows="4" style="resize: vertical"></textarea></td>
+                    <td class="col-md-3"><label>@Localizer["Text"]:</label></td>
+                    <td class="col-md-9"><textarea asp-for="Body" class="form-control" id="NewsBody" cols="20" rows="4" style="resize: vertical"></textarea></td>
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center;">
@@ -56,29 +55,29 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><label>@Localizer["AddingTime"]:</label></td>
-                    <td><input type="text" asp-for="AddingTime" class="form-control" id="NewsAddingTime" readonly></td>
+                    <td class="col-md-3"><label>@Localizer["AddingTime"]:</label></td>
+                    <td class="col-md-9"><input type="text" asp-for="AddingTime" class="form-control" id="NewsAddingTime" readonly></td>
                 </tr>
                 <tr>
-                    <td><label>@Localizer["LastEditTime"]:</label></td>
-                    @if (Model.LastEditTime == DateTime.MinValue)
+                    <td class="col-md-3"><label>@Localizer["LastEditTime"]:</label></td>
+                    @if (!@Model.LastEditTime.HasValue)
                     {
-                        <td><input type="text" value="@Localizer["Lack"]" class="form-control" id="NewsLastEditTime" readonly></td>
+                        <td class="col-md-9"><input type="text" value="@Localizer["Lack"]" class="form-control" id="NewsLastEditTime" readonly></td>
                     }
                     else
                     {
-                        <td><input type="text" asp-for="LastEditTime" class="form-control" id="NewsLastEditTime" readonly></td>
+                        <td class="col-md-9"><input type="text" asp-for="LastEditTime" class="form-control" id="NewsLastEditTime" readonly></td>
                     }
                 </tr>
                 <tr>
-                    <td><label>@Localizer["PublishingTime"]:</label></td>
-                    @if (Model.PublishingTime == DateTime.MinValue)
+                    <td class="col-md-3"><label>@Localizer["PublishingTime"]:</label></td>
+                    @if (!@Model.LastEditTime.HasValue)
                     {
-                        <td><input type="text" value="@Localizer["Lack"]" class="form-control" id="NewsPublishingTime" readonly></td>
+                        <td class="col-md-9"><input type="text" value="@Localizer["Lack"]" class="form-control" id="NewsPublishingTime" readonly></td>
                     }
                     else
                     {
-                        <td><input type="text" asp-for="PublishingTime" class="form-control" id="NewsPublishingTime" readonly></td>
+                        <td class="col-md-9"><input type="text" asp-for="PublishingTime" class="form-control" id="NewsPublishingTime" readonly></td>
                     }
                     
                 </tr>
@@ -113,7 +112,6 @@
                         <input type="button" class="btn btn-primary btn-block" style="margin-top:8px;" id="NewsDelete" value=@Localizer["Delete"] onclick="@("window.location.href='" + @Url.Action("Delete", "News", new {id = Model.Id}) + "'");">
                     </td>
                 </tr>
-                                  
                 <tr>
                     <td colspan="2" style="text-align: center;">
                         <input type="submit" class="btn btn-primary btn-block" style="margin-top:8px;" id="NewsPublish" value=@Localizer["Publish"] onclick="$('input[name=status]').val('RELEASED');$(this).closest('form').submit();">

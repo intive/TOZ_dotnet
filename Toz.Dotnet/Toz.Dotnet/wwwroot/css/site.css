@@ -30,7 +30,7 @@
 }
 
 #img-upload{
-    width: 256px;
+    width: 600px;
 }
 
 .forms td {
@@ -124,4 +124,12 @@ textarea.input-validation-error {
 
 .flag.flag-de {
     background-position: 0 0;
+}
+
+.input-group {
+    width: 100%;
+}
+
+.forms { 
+    width: 600px;
 }

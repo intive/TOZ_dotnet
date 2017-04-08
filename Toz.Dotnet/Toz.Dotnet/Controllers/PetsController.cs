@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Toz.Dotnet.Resources.Configuration;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Linq;
+using System;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -31,7 +33,7 @@ namespace Toz.Dotnet.Controllers
             List<Pet> pets = await _petsManagementService.GetAllPets();
             //todo add photo if will be avaialbe on backends
             pets.ForEach(pet=> pet.Photo = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 }); // temporary
-            return View(pets);
+            return View(pets.OrderByDescending(x => x.AddingTime).ThenByDescending(x => x.LastEditTime).ToList());
         }
 
         [HttpPost]
