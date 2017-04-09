@@ -15,4 +15,7 @@
     <data name="Users" xml:space="preserve">
         <value>Users</value>
     </data>
+	<data name="Schedule" xml:space="preserve">
+        <value>Schedule</value>
+    </data>
 </root>

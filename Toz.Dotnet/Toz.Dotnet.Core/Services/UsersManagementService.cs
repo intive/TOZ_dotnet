@@ -75,5 +75,11 @@ namespace Toz.Dotnet.Core.Services
             //string address = $"{RequestUri}/{id}";
             //return await _restService.ExecuteGetAction<User>(address, cancelationToken);
         }
+
+        public async Task<User> FindUser(string firstName, string lastName, CancellationToken cancelationToken = default(CancellationToken))
+        {
+            //Return user with typed firstName and lastName or null if not found.
+            return _mockupUsersDatabase.Find(u => u.FirstName.Equals(firstName) && u.LastName.Equals(lastName));
+        }
     }
 }
