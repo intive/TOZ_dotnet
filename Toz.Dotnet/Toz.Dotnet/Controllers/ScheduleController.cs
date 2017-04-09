@@ -50,7 +50,7 @@ namespace Toz.Dotnet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddReservation(
             [Bind("FirstName, LastName")]
-            User userData, CancellationToken cancellationToken)
+            UserBase userData, CancellationToken cancellationToken)
         {
             User user = null;
 
@@ -60,8 +60,11 @@ namespace Toz.Dotnet.Controllers
 
                 if (user == null)
                 {
-                    await _usersManagementService.CreateUser(userData);
-                    user = await _usersManagementService.FindUser(userData.FirstName, userData.LastName);
+                    user.FirstName = userData.FirstName;
+                    user.LastName = userData.LastName;
+
+                    await _usersManagementService.CreateUser(user);
+                    user = await _usersManagementService.FindUser(user.FirstName, user.LastName);
 
                     if (user == null)
                     {
@@ -95,7 +98,7 @@ namespace Toz.Dotnet.Controllers
         public IActionResult AddReservation()
         {
             //Store information about slot number  
-            return View(new User());
+            return View(new UserBase());
         }
         
         public async Task<ActionResult> DeleteReservation(string id, CancellationToken cancellationToken)
