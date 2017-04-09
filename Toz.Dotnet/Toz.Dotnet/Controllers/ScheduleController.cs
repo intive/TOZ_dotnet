@@ -37,7 +37,9 @@ namespace Toz.Dotnet.Controllers
         public async Task<IActionResult> Index(DateTime startDate, CancellationToken cancellationToken)
         {
             if (startDate != DateTime.MinValue)
+            {
                 _startDate = startDate;
+            }
 
             const int daysCount = 14;
             Schedule schedule = await _scheduleManagementService.GetSchedule(_startDate, _startDate.AddDays(daysCount - 1));
