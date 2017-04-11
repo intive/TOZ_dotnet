@@ -10,7 +10,9 @@ namespace Toz.Dotnet.Core.Services
 {
     //TODO: uncomment everything when backend is ready
     public class UsersManagementService : IUsersManagementService
-    {     
+    {
+        private const int DefaultUserIndex = 0;
+
         //private IRestService _restService;
         private List<User> _mockupUsersDatabase;
 
@@ -76,10 +78,25 @@ namespace Toz.Dotnet.Core.Services
             //return await _restService.ExecuteGetAction<User>(address, cancelationToken);
         }
 
+        //Returns list of users with typed firstName and lastName or empty list if not found.
+        public async Task<List<User>> FindAllUsers(string firstName, string lastName, CancellationToken cancelationToken = default(CancellationToken))
+        {
+            return _mockupUsersDatabase.FindAll(u => u.FirstName.Equals(firstName) && u.LastName.Equals(lastName));
+        }
+
+        //Returns first occurance of user with typed firstName and lastName or null if not found
         public async Task<User> FindUser(string firstName, string lastName, CancellationToken cancelationToken = default(CancellationToken))
         {
-            //Return user with typed firstName and lastName or null if not found.
-            return _mockupUsersDatabase.Find(u => u.FirstName.Equals(firstName) && u.LastName.Equals(lastName));
+            List<User> users = await FindAllUsers(firstName, lastName, cancelationToken);
+
+            if (users.Count > 0)
+            {
+                return users[DefaultUserIndex];
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

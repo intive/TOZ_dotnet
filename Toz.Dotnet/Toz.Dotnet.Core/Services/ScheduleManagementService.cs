@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +13,8 @@ namespace Toz.Dotnet.Core.Services
 {
     public class ScheduleManagementService : IScheduleManagementService
     {
+        private const int TimeFormatIndex = 0;
+
         private IRestService _restService;
         public string RequestUri { get; set; }
 
@@ -24,10 +27,8 @@ namespace Toz.Dotnet.Core.Services
 
         public async Task<Schedule> GetSchedule(DateTime startDate, DateTime endDate, CancellationToken cancelationToken = default(CancellationToken))
         {
-            const int timeFormatIndex = 5;
-
-            string start = startDate.GetDateTimeFormats()[timeFormatIndex];
-            string end = endDate.GetDateTimeFormats()[timeFormatIndex];
+            string start = startDate.GetDateTimeFormats()[TimeFormatIndex];
+            string end = endDate.GetDateTimeFormats()[TimeFormatIndex];
 
             var address = $"{RequestUri}/?from={start}&to={end}";
             return await _restService.ExecuteGetAction<Schedule>(address, cancelationToken);
@@ -55,6 +56,18 @@ namespace Toz.Dotnet.Core.Services
         {
             var address = $"{RequestUri}/{reservation.Id}";
             return await _restService.ExecuteDeleteAction(address, reservation, cancelationToken);
+        }
+
+        /// <summary>
+        /// Returns the first day of the week.
+        /// </summary>
+        /// <param name="day">Any day of chosen week.</param>
+        /// <returns></returns>   
+        public DateTime GetFirstDayOfWeek(DateTime day)
+        {
+            DayOfWeek firstDayOfWeek = CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
+            int delta = firstDayOfWeek - day.DayOfWeek;
+            return day.AddDays(delta);
         }
         
     }

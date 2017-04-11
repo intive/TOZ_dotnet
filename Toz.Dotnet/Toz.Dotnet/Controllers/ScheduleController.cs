@@ -15,6 +15,8 @@ namespace Toz.Dotnet.Controllers
 {
     public class ScheduleController : Controller
     {
+        private const int DaysCount = 14;
+        
         private IScheduleManagementService _scheduleManagementService;
         private IUsersManagementService _usersManagementService;
         private readonly IStringLocalizer<ScheduleController> _localizer;
@@ -28,10 +30,7 @@ namespace Toz.Dotnet.Controllers
             _usersManagementService = usersManagementService;
             _localizer = localizer;
             _appSettings = appSettings.Value;
-
-            DayOfWeek firstDayOfWeek = CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
-            int delta = firstDayOfWeek - DateTime.Now.DayOfWeek;
-            _startDate = DateTime.Now.AddDays(delta);
+            _startDate = _scheduleManagementService.GetFirstDayOfWeek(DateTime.Now);
         }
 
         public async Task<IActionResult> Index(DateTime startDate, CancellationToken cancellationToken)
@@ -40,9 +39,8 @@ namespace Toz.Dotnet.Controllers
             {
                 _startDate = startDate;
             }
-
-            const int daysCount = 14;
-            Schedule schedule = await _scheduleManagementService.GetSchedule(_startDate, _startDate.AddDays(daysCount - 1));
+                        
+            Schedule schedule = await _scheduleManagementService.GetSchedule(_startDate, _startDate.AddDays(DaysCount - 1));
             return View(schedule);
         }
         
@@ -57,14 +55,14 @@ namespace Toz.Dotnet.Controllers
             if (userData != null && ModelState.IsValid)
             {
                 user = await _usersManagementService.FindUser(userData.FirstName, userData.LastName);
-
+                
                 if (user == null)
                 {
                     user.FirstName = userData.FirstName;
                     user.LastName = userData.LastName;
 
                     await _usersManagementService.CreateUser(user);
-                    user = await _usersManagementService.FindUser(user.FirstName, user.LastName);
+                    user = await _usersManagementService.FindUser(userData.FirstName, userData.LastName);
 
                     if (user == null)
                     {
@@ -79,11 +77,9 @@ namespace Toz.Dotnet.Controllers
 
             Reservation reservation = new Reservation();
             reservation.OwnerId = user.Id;
-            reservation.ModificationMessage = String.Format("Assigned to {0} {1}.", user.FirstName, user.LastName);
             //Get number of slot
             //Based on a chosen Period assign Date, EndTime, StartTime to reservation object
-            //Assign ModificationAuthorId (Currenlty logged in user) to reservation object.
-
+            
             if (await _scheduleManagementService.MakeReservation(reservation))
             {
                 return RedirectToAction("Index");
@@ -108,8 +104,6 @@ namespace Toz.Dotnet.Controllers
 
             if (reservation != null)
             {
-                reservation.ModificationMessage = String.Format("Cancelled reservation for {0} {1}.", user.FirstName, user.LastName);
-                //Assign ModificationAuthorId (Currenlty logged in user) to reservation object
                 await _scheduleManagementService.DeleteReservation(reservation);
             }
 

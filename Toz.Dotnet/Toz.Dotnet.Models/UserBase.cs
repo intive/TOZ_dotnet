@@ -8,6 +8,9 @@ namespace Toz.Dotnet.Models
 {
     public class UserBase
     {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
         [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
         [JsonProperty("firstName")]
         [StringLength(30, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]

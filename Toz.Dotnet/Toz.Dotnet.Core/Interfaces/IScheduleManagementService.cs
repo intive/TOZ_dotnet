@@ -14,5 +14,6 @@ namespace Toz.Dotnet.Core.Interfaces
         Task<bool> MakeReservation(Reservation reservation, CancellationToken cancelationToken = default(CancellationToken));
         Task<bool> UpdateReservation(Reservation reservation, CancellationToken cancelationToken = default(CancellationToken));
         Task<bool> DeleteReservation(Reservation reservation, CancellationToken cancelationToken = default(CancellationToken));
+        DateTime GetFirstDayOfWeek(DateTime day);
     }
 }

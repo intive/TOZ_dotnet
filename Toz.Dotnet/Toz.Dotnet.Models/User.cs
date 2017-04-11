@@ -8,10 +8,7 @@ namespace Toz.Dotnet.Models
 {
     public class User : UserBase
     {
-        [JsonProperty("id")]
-        public string Id {get; set;}
-        
-		[Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
+        [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
         [JsonProperty("phoneNumber")]        
         [PhoneNumber]
         public string PhoneNumber {get; set;}
