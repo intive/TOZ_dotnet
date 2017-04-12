@@ -1,0 +1,48 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Toz.Dotnet.Models.EnumTypes
+@model Toz.Dotnet.Models.User
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Localizer["PageTitle"];
+}
+
+<body>
+    <h2>@Localizer["PageTitle"]</h2>
+    <hr>
+
+    <div class="AddingReservation">
+        <form asp-controller="Schedule" asp-action="Add" method="POST" enctype="multipart/form-data">
+            <table class="forms" align="center">
+                <tr align="left">
+                    <td></td>
+                    <td>@Html.ValidationMessageFor(Model => Model.FirstName, null, null)</td>
+                </tr>
+                <tr>
+                    <td><label>@Localizer["FirstName"]:</label></td>
+                    <td><input type="text" asp-for="FirstName" class="form-control" id="FirstName"></td>
+                </tr>
+
+                <tr align="left">
+                    <td></td>
+                    <td>@Html.ValidationMessageFor(Model => Model.LastName, null, null)</td>
+                </tr>
+                <tr>
+                    <td><label>@Localizer["LastName"]:</label></td>
+                    <td><input type="text" asp-for="LastName" class="form-control" id="LastName"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        </br>
+                        <input type="submit" class="btn btn-primary btn-block" id="ReservationSave" value=@Localizer["Save"]>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <input type="button" class="btn btn-primary btn-block" id="ReservationCancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "Schedule") + "'");">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>

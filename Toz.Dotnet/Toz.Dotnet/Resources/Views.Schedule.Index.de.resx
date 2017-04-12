@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="PageTitle" xml:space="preserve">
+        <value>Dienstplan</value>
+    </data>
+    <data name="Week" xml:space="preserve">
+        <value>Woche</value>
+    </data>
+    <data name="Monday" xml:space="preserve">
+        <value>Montag</value>
+    </data>
+    <data name="Tuesday" xml:space="preserve">
+        <value>Dienstag</value>
+    </data>
+    <data name="Wednesday" xml:space="preserve">
+        <value>Mittwoch</value>
+    </data>
+    <data name="Thursday" xml:space="preserve">
+        <value>Donnerstag</value>
+    </data>
+    <data name="Friday" xml:space="preserve">
+        <value>Freitag</value>
+    </data>
+    <data name="Saturday" xml:space="preserve">
+        <value>Samstag</value>
+    </data>
+    <data name="Sunday" xml:space="preserve">
+        <value>Sonntag</value>
+    </data>
+</root>

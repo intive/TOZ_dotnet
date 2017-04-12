@@ -15,4 +15,7 @@
     <data name="Users" xml:space="preserve">
         <value>Użytkownicy</value>
     </data>
+    <data name="Schedule" xml:space="preserve">
+        <value>Kalendarz dyżurów</value>
+    </data>
 </root>

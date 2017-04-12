@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="PageTitle" xml:space="preserve">
+        <value>Przypisz wolontariusza do dyżuru:</value>
+    </data>
+    <data name="FirstName" xml:space="preserve">
+        <value>Imię</value>
+    </data>
+    <data name="LastName" xml:space="preserve">
+        <value>Nazwisko</value>
+    </data>
+    <data name="Save" xml:space="preserve">
+        <value>Zapisz</value>
+    </data>
+    <data name="Cancel" xml:space="preserve">
+        <value>Anuluj</value>
+    </data>   
+</root>
