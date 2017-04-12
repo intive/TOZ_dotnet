@@ -30,7 +30,7 @@ body {
 }
 
 #img-upload {
-    width: 256px;
+    width: 600px;
 }
 
 .forms td {
@@ -106,3 +106,11 @@ textarea.input-validation-error {
 }
 
 .flag{display:inline-block;width:32px;height:32px;background:url('../images/flags.png') no-repeat}.flag.flag-gb{background-position:-32px 0}.flag.flag-pl{background-position:0 -32px}.flag.flag-de{background-position:0 0}
+
+.input-group {
+    width: 100%;
+}
+
+.forms { 
+    width: 600px;
+}

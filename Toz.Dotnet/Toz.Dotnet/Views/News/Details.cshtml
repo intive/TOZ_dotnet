@@ -19,11 +19,11 @@
             </tr>
             <tr>
                 <td><label>@Localizer["Title"]:</label></td>
-                <td><pre>@Model.Title</pre></td>
+                <td><pre  style="white-space: pre-wrap; word-wrap: break-word; max-width: 400px;">@Model.Title</pre></td>
             </tr>
             <tr>
                 <td><label>@Localizer["PublishingTime"]:</label></td>
-                @if(@Model.PublishingTime == DateTime.MinValue) 
+                @if(!@Model.PublishingTime.HasValue) 
                 {
                     <td><pre>@Localizer["Lack"]</pre></td>
                 }
@@ -38,7 +38,7 @@
             </tr>
             <tr>
                 <td><label>@Localizer["LastEditTime"]:</label></td>
-                @if (@Model.LastEditTime == DateTime.MinValue)
+                @if (!@Model.LastEditTime.HasValue)
                 {
                     <td><pre>@Localizer["Lack"]</pre></td>
                 }

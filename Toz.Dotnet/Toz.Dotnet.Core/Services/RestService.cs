@@ -60,8 +60,11 @@ namespace Toz.Dotnet.Core.Services
                 return false;
             }
 
-            var serializedObj = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
-            var httpContent = new StringContent(serializedObj, Encoding.UTF8, RestMediaType);
+            string serializedObject = JsonConvert.SerializeObject(obj, Formatting.Indented, new JsonSerializerSettings {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+            
+            var httpContent = new StringContent(serializedObject, Encoding.UTF8, RestMediaType);
 
             using (var client = new HttpClient())
             {
@@ -85,7 +88,10 @@ namespace Toz.Dotnet.Core.Services
                 return false;
             }
             
-            var serializedObject = JsonConvert.SerializeObject(obj);
+            string serializedObject = JsonConvert.SerializeObject(obj, Formatting.Indented, new JsonSerializerSettings {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
             var httpContent = new StringContent(serializedObject, Encoding.UTF8, RestMediaType);
             using (var client = new HttpClient())
             {

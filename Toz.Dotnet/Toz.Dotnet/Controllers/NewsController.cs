@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Toz.Dotnet.Resources.Configuration;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Linq;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -33,7 +34,7 @@ namespace Toz.Dotnet.Controllers
             List<News> news = await _newsManagementService.GetAllNews();
             //todo add photo if will be avaialbe on backends
             news.ForEach(n=> n.Photo = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 }); // temporary
-            return View(news);
+            return View(news.OrderByDescending(x => x.PublishingTime ?? DateTime.MaxValue).ThenByDescending(x => x.Title).ToList());
         }
 
         [HttpPost]

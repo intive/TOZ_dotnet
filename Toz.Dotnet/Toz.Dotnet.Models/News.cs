@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Toz.Dotnet.Models.EnumTypes;
 using Toz.Dotnet.Models.JsonConventers;
+using Toz.Dotnet.Resources.CustomValidationAttributes;
 
 namespace Toz.Dotnet.Models
 {
@@ -12,25 +13,26 @@ namespace Toz.Dotnet.Models
         [JsonProperty("id")]  
         public string Id {get; set;}
 
-        [JsonProperty("title")]  
-        [StringLength(100, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]    
+        [JsonProperty("title")]
+        [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
+        [StringLength(100, MinimumLength = 1, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]    
         public string Title {get; set;}
 
         [JsonProperty("published")]
         [JsonConverter(typeof(JsonDateTimeConventer))]
-        [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
-        public DateTime PublishingTime  {get; set;}
+        public DateTime? PublishingTime  {get; set;}
 
         [JsonProperty("created")]
         [JsonConverter(typeof(JsonDateTimeConventer))]
-        public DateTime AddingTime  {get; set;}
+        public DateTime? AddingTime  {get; set;}
 
         [JsonProperty("lastModified")]
         [JsonConverter(typeof(JsonDateTimeConventer))]
-        public DateTime LastEditTime {get; set;}
+        public DateTime? LastEditTime {get; set;}
 
         [JsonProperty("contents")]
-        [StringLength(1000, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]   
+        [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
+        [StringLength(1000, MinimumLength = 1, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]   
         public string Body {get; set;}
 
         [JsonIgnore]

@@ -97,6 +97,12 @@ namespace Toz.Dotnet.Resources {
             }
         }
 
+        public static string PetSexUndefined {
+            get {
+                return ResourceManager.GetString("PetSexUndefined", resourceCulture);
+            }
+        }
+
         public static string TypeUndefined {
             get {
                 return ResourceManager.GetString("TypeUndefined", resourceCulture);

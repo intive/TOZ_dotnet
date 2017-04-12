@@ -71,4 +71,7 @@
         <value>Naciśnij ponownie przycisk "Zapisz",
         aby zapisać z ostatnio wybranym zdjęciem.</value>
     </data>
+    <data name="Lack" xml:space="preserve">
+        <value>(brak)</value>
+    </data>
 </root>
