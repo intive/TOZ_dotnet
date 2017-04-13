@@ -17,7 +17,7 @@ namespace Toz.Dotnet.Tests.Sanity.Tests
             _petsManagementService = ServiceProvider.Instance.Resolve<IPetsManagementService>();
             _testingPet = new Pet()
             {
-                Id = null,
+                Id = System.Guid.NewGuid().ToString(),
                 Name = "TestDog",
                 Type = PetType.DOG,
                 Sex = PetSex.MALE,
@@ -46,15 +46,22 @@ namespace Toz.Dotnet.Tests.Sanity.Tests
         [Fact]
         public void CreateNewPetTest()
         {
-            //Assert.True(_petsManagementService.CreatePet(_testingPet).Result);
-            //_petsManagementService.DeletePet(_testingPet).Wait();
-            var pets = _petsManagementService.GetAllPets().Result;
-            var randomPet = pets[1];
-            randomPet.Id = null;
-            randomPet.Name = "Name:4";
-            randomPet.Sex = PetSex.FEMALE;
-            Assert.True(_petsManagementService.CreatePet(randomPet).Result);
-            _petsManagementService.DeletePet(randomPet).Wait();
+            bool created = _petsManagementService.CreatePet(_testingPet).Result;
+            Assert.True(created);
+            if(created)
+            {
+                _petsManagementService.DeletePet(_testingPet).Wait();
+            }
+            // var pets = _petsManagementService.GetAllPets().Result;
+            // var randomPet = pets[1];
+            // randomPet.Id = null;
+            // randomPet.Name = "TestPet";
+            // bool created = _petsManagementService.CreatePet(randomPet).Result;
+            // Assert.True(created);
+            // if(created)
+            // {
+            //     _petsManagementService.DeletePet(randomPet).Wait();
+            // }
         }
 
         [Fact]
@@ -64,8 +71,12 @@ namespace Toz.Dotnet.Tests.Sanity.Tests
             if(pets.Any())
             {
                 var firstPet = pets.FirstOrDefault();
-                Assert.True(_petsManagementService.DeletePet(firstPet).Result);
-                Assert.True(_petsManagementService.CreatePet(firstPet).Result);
+                bool deleted = _petsManagementService.DeletePet(firstPet).Result;
+                Assert.True(deleted);
+                if(deleted)
+                {
+                    _petsManagementService.CreatePet(firstPet).Wait();
+                }
             }
         }
 
