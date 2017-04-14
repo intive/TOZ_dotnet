@@ -6,32 +6,19 @@ using Toz.Dotnet.Resources.CustomValidationAttributes;
 
 namespace Toz.Dotnet.Models
 {
-    public class User
+    public class User : UserBase
     {
-        [JsonProperty("id")]
-        public string Id {get; set;}
-
-        [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
-        [JsonProperty("firstName")]   
-        [StringLength(30, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]     
-        public string FirstName {get; set;}
-
-        [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
-        [JsonProperty("lastName")]        
-        [StringLength(30, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]     
-        public string LastName {get; set;}
-        
         [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
         [JsonProperty("phoneNumber")]        
         [PhoneNumber]
         public string PhoneNumber {get; set;}
-
-        [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
+        
+		[Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
         [JsonProperty("email")]
         [EmailAddress]
         public string Email {get; set;}
-
-        [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
+        
+		[Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
         [JsonProperty("purpose")]
         [JsonConverter(typeof(StringEnumConverter))]
         [RegularExpression("^(Administrator|Volunteer|TemporaryHome)$", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "TypeUndefined")]
