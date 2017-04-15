@@ -7,8 +7,6 @@ namespace Toz.Dotnet.Models.JsonConventers
 {
     public class JsonDateTimeConventer : DateTimeConverterBase
     {
-        private const string Format = "dd-MM-yyyy HH:mm:ss";
-
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             if (reader.Value == null)
@@ -29,7 +27,7 @@ namespace Toz.Dotnet.Models.JsonConventers
             DateTime result;
             var s = value.ToString();
 
-            if(DateTime.TryParseExact(s, Format, CultureInfo.InvariantCulture, DateTimeStyles.None, out result)) {
+            if(DateTime.TryParseExact(s, String.Format("{0} {1}", CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern.ToString(), CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern.ToString()), CultureInfo.InvariantCulture, DateTimeStyles.None, out result)) {
                 Int64 unixTimestamp = (Int64)(result.Subtract(new DateTime(1970, 1, 1))).TotalMilliseconds;
                 writer.WriteValue(unixTimestamp);
             }
