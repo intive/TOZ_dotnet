@@ -89,7 +89,7 @@ namespace Toz.Dotnet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
-            [Bind("Id, Title, Body, Status")] 
+            [Bind("Id, Title, Body, Status, PublishingTime, AddingTime, LastEditTime")] 
             News news, [Bind("Photo")] IFormFile photo, string status, CancellationToken cancellationToken)
         {
             //todo add photo if will be available on backends
