@@ -22,7 +22,7 @@ namespace Toz.Dotnet.Tests.Sanity
             
             _testingPet = new Pet()
             {
-                Id = null,
+                Id = System.Guid.NewGuid().ToString(),
                 Name = "TestDog",
                 Type = PetType.DOG,
                 Sex = PetSex.MALE,
@@ -63,23 +63,15 @@ namespace Toz.Dotnet.Tests.Sanity
             Assert.NotNull(pet);
             Assert.Null(_petsManagementService.GetPet("notExistingIDThatIsNotID--1").Result);
             //Create pet
-            bool created = _petsManagementService.CreatePet(_testingPet).Result;
-            Assert.True(created);
-            if(created)
-            {
-                //Delete pet
-                Assert.True(_petsManagementService.DeletePet(_testingPet).Result);
-            }
+            Assert.True(_petsManagementService.CreatePet(_testingPet).Result);
+            //Delete pet
+            Assert.True(_petsManagementService.DeletePet(_testingPet).Result);
             //Update pet
             string petName = firstPet.Name;
             firstPet.Name = "SanityTestName";
-            bool updated = _petsManagementService.UpdatePet(firstPet).Result;
-            Assert.True(updated);
-            if(updated)
-            {
-                firstPet.Name = petName;
-                Assert.True(_petsManagementService.UpdatePet(firstPet).Result);
-            }
+            Assert.True(_petsManagementService.UpdatePet(firstPet).Result);
+            firstPet.Name = petName;
+            Assert.True(_petsManagementService.UpdatePet(firstPet).Result);
         }
 
         [Fact]
@@ -95,23 +87,15 @@ namespace Toz.Dotnet.Tests.Sanity
             Assert.NotNull(singleNews);
             Assert.Null(_newsManagementService.GetNews("notExistingIDThatIsNotID--1").Result);
             //Create news
-            bool created = _newsManagementService.CreateNews(_testingNews).Result;
-            Assert.True(created);
-            if(created)
-            {
-                //Delete news
-                Assert.True(_newsManagementService.DeleteNews(_testingNews).Result);
-            }
+            Assert.True(_newsManagementService.CreateNews(_testingNews).Result);
+            //Delete news
+            Assert.True(_newsManagementService.DeleteNews(_testingNews).Result);
             //Update news
             string newsTitle = firstNews.Title;
-            firstNews.Title = "SanityTestName";
-            bool updated = _newsManagementService.UpdateNews(firstNews).Result;
-            Assert.True(updated);
-            if(updated)
-            {
-                firstNews.Title = newsTitle;
-                Assert.True(_newsManagementService.UpdateNews(firstNews).Result);
-            }
+            firstNews.Title = "SanityTestTitle";
+            Assert.True(_newsManagementService.UpdateNews(firstNews).Result);
+            firstNews.Title = newsTitle;
+            Assert.True(_newsManagementService.UpdateNews(firstNews).Result);
         }
     }
 }
