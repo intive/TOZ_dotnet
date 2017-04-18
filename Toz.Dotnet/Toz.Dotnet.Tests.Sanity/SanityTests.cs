@@ -13,39 +13,13 @@ namespace Toz.Dotnet.Tests.Sanity
         private IPetsManagementService _petsManagementService;
         private INewsManagementService _newsManagementService;
         private IUsersManagementService _userManagementService;
-        private Pet _testPet;
-        private News _testNews;
         private User _testUser;
+
         public SanityTests()
         {
             _petsManagementService = ServiceProvider.Instance.Resolve<IPetsManagementService>();
             _newsManagementService = ServiceProvider.Instance.Resolve<INewsManagementService>();
             _userManagementService = ServiceProvider.Instance.Resolve<IUsersManagementService>();
-
-            _testPet = new Pet()
-            {
-                Id = System.Guid.NewGuid().ToString(),
-                Name = "SanityTestDog",
-                Type = PetType.DOG,
-                Sex = PetSex.MALE,
-                Photo = new byte[10],
-                Description = "Dog that eats tigers",
-                Address = "Found in the jungle",
-                AddingTime = DateTime.Now,
-                LastEditTime = DateTime.Now
-            };
-
-            _testNews = new News()
-            {               
-                Id = System.Guid.NewGuid().ToString(),
-                Title = "SanityTestNews",
-                PublishingTime = DateTime.Now,
-                AddingTime = DateTime.Now,
-                LastEditTime = DateTime.Now,
-                Body = "Text",
-                Photo = new byte[10],
-                Status = NewsStatus.RELEASED
-            };
 
             _testUser = new User()
             {
@@ -83,11 +57,11 @@ namespace Toz.Dotnet.Tests.Sanity
                 Assert.True(_petsManagementService.UpdatePet(firstPet).Result);
                 firstPet.Name = petName;
                 Assert.True(_petsManagementService.UpdatePet(firstPet).Result);
+                //Delete pet
+                Assert.True(_petsManagementService.DeletePet(firstPet).Result);
+                //Create pet
+                Assert.True(_petsManagementService.CreatePet(firstPet).Result);
             }
-            //Create pet
-            Assert.True(_petsManagementService.CreatePet(_testPet).Result);
-            //Delete pet
-            Assert.True(_petsManagementService.DeletePet(_testPet).Result);
         }
 
         [Fact]
@@ -110,38 +84,38 @@ namespace Toz.Dotnet.Tests.Sanity
                 Assert.True(_newsManagementService.UpdateNews(firstNews).Result);
                 firstNews.Title = newsTitle;
                 Assert.True(_newsManagementService.UpdateNews(firstNews).Result);
+                //Delete news
+                Assert.True(_newsManagementService.DeleteNews(firstNews).Result);
+                //Create news
+                Assert.True(_newsManagementService.CreateNews(firstNews).Result);
             }
-            //Create news
-            Assert.True(_newsManagementService.CreateNews(_testNews).Result);
-            //Delete news
-            Assert.True(_newsManagementService.DeleteNews(_testNews).Result);
         }
 
-        [Fact]
-        public void UsersFunctionalityTest()
-        {
-            Assert.True(!string.IsNullOrEmpty(_userManagementService.RequestUri));
-            //Get all news
-            var users = _userManagementService.GetAllUsers().Result;
-            Assert.NotNull(users);
-            //Get specified news
-            if(users.Any())
-            {
-                var firstUser = users.FirstOrDefault();
-                var singleUser = _userManagementService.GetUser(firstUser.Id).Result;
-                Assert.NotNull(singleUser);
-                Assert.Null(_userManagementService.GetUser("notExistingIDThatIsNotID--1").Result);
-                //Update news
-                string userFirsName = firstUser.FirstName;
-                firstUser.FirstName = "SanityTestFirstName";
-                Assert.True(_userManagementService.UpdateUser(firstUser).Result);
-                firstUser.FirstName = userFirsName;
-                Assert.True(_userManagementService.UpdateUser(firstUser).Result);
-            }
-            //Create news
-            Assert.True(_userManagementService.CreateUser(_testUser).Result);
-            //Delete news
-            Assert.True(_userManagementService.DeleteUser(_testUser).Result);
-        }
+        //[Fact]
+        //public void UsersFunctionalityTest()
+        //{
+        //    Assert.True(!string.IsNullOrEmpty(_userManagementService.RequestUri));
+        //    //Get all news
+        //    var users = _userManagementService.GetAllUsers().Result;
+        //    Assert.NotNull(users);
+        //    //Get specified news
+        //    if (users.Any())
+        //    {
+        //        var firstUser = users.FirstOrDefault();
+        //        var singleUser = _userManagementService.GetUser(firstUser.Id).Result;
+        //        Assert.NotNull(singleUser);
+        //        Assert.Null(_userManagementService.GetUser("notExistingIDThatIsNotID--1").Result);
+        //        //Update news
+        //        string userFirsName = firstUser.FirstName;
+        //        firstUser.FirstName = "SanityTestFirstName";
+        //        Assert.True(_userManagementService.UpdateUser(firstUser).Result);
+        //        firstUser.FirstName = userFirsName;
+        //        Assert.True(_userManagementService.UpdateUser(firstUser).Result);
+        //    }
+        //    //Create news
+        //    Assert.True(_userManagementService.CreateUser(_testUser).Result);
+        //    //Delete news
+        //    Assert.True(_userManagementService.DeleteUser(_testUser).Result);
+        //}
     }
 }

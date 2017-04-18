@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toz.Dotnet.Resources", "Toz
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toz.Dotnet.Tests", "Toz.Dotnet.Tests\Toz.Dotnet.Tests.csproj", "{B897A699-572A-4F1A-AA32-734D40639B3D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Toz.Dotnet.Tests.Sanity", "Toz.Dotnet.Tests.Sanity\Toz.Dotnet.Tests.Sanity.csproj", "{41AD5D8D-3F3C-4701-9B8D-8C303A2D874A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{B897A699-572A-4F1A-AA32-734D40639B3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B897A699-572A-4F1A-AA32-734D40639B3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B897A699-572A-4F1A-AA32-734D40639B3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41AD5D8D-3F3C-4701-9B8D-8C303A2D874A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41AD5D8D-3F3C-4701-9B8D-8C303A2D874A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41AD5D8D-3F3C-4701-9B8D-8C303A2D874A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41AD5D8D-3F3C-4701-9B8D-8C303A2D874A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
