@@ -8,55 +8,100 @@ using Microsoft.Extensions.Options;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.EnumTypes;
+using Toz.Dotnet.Models.ViewModels;
 using Toz.Dotnet.Resources.Configuration;
 
 namespace Toz.Dotnet.Controllers
 {
     public class ScheduleController : Controller
     {
+        private IScheduleManagementService _scheduleManagementService;
         private IUsersManagementService _usersManagementService;
-        private readonly IStringLocalizer<UsersController> _localizer;
+        private readonly IStringLocalizer<ScheduleController> _localizer;
         private readonly AppSettings _appSettings;
 
-        public ScheduleController(IUsersManagementService usersManagementService, IStringLocalizer<UsersController> localizer, IOptions<AppSettings> appSettings)
+        public ScheduleController(IScheduleManagementService scheduleManagementService, IUsersManagementService usersManagementService,
+                                  IStringLocalizer<ScheduleController> localizer, IOptions<AppSettings> appSettings)
         {
+            _scheduleManagementService = scheduleManagementService;
             _usersManagementService = usersManagementService;
             _localizer = localizer;
             _appSettings = appSettings.Value;
         }
 
-        public async Task<IActionResult> AddReservation()
-        {
-            var u = new User();
-            return View(u);
+        public async Task<IActionResult> Index(int offset, CancellationToken cancellationToken)
+        {     
+            List<Week> schedule = await _scheduleManagementService.GetSchedule(offset, cancellationToken);
+            return View(schedule);
         }
 
-        public async Task<IActionResult> Index(CancellationToken cancellationToken)
+        public IActionResult Earlier()
+        {
+            return RedirectToAction("Index", new {offset = -1});
+        }
+
+        public IActionResult Later()
+        {
+            return RedirectToAction("Index", new {offset = +1});
+        }
+
+        public IActionResult AddReservation(DateTime date, Period timeOfDay)
         { 
-            // Fake setup for a 2-weeks schedule with no reservations
-            var Week1 = new Week();
-            var Week2 =  new Week();
-            Week1.DateFrom = new DateTime(2017, 4, 3);
-            Week1.DateTo = new DateTime(2017, 4, 9);
-            Week2.DateFrom = new DateTime(2017, 4, 10);
-            Week2.DateTo = new DateTime(2017, 4, 16);
-            for(int i=0; i<14; i++)
+            if (date != null && date > DateTime.MinValue && date < DateTime.MaxValue)
             {
-                var slot1 = Week1.Slots[i] = new Slot();
-                slot1.Date = new DateTime(2017, 4, Week1.DateFrom.Day + i);
-                var slot2 = Week2.Slots[i] = new Slot();
-                slot2.Date = new DateTime(2017, 4, Week2.DateFrom.Day + i);
-
-                slot1.TimeOfDay = slot1.TimeOfDay = (i%2 == 1) ? Period.Morning : Period.Afternoon;
+                if (timeOfDay == Period.Afternoon || timeOfDay == Period.Morning)
+                {
+                    ViewData["date"] = date.ToString("yyyy/MM/dd");
+                    return View(new ReservationToken());
+                }
+                else 
+                {
+                    return BadRequest();
+                }
             }
-            var WeekList = new List<Week>();
-            WeekList.Add(Week1);
-            WeekList.Add(Week2);
-            // example reservation
-            Week1.Slots[2].Volunteer = await _usersManagementService.GetUser("0");
-            // end of fake setup
+            else 
+            {
+                return BadRequest();
+            }
+        }
 
-            return View(WeekList);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateReservation(
+            [Bind("Date, TimeOfDay, FirstName, LastName")]
+            ReservationToken token, CancellationToken cancellationToken)
+        {
+            Console.WriteLine("SLOT DATE: " + token.Date + ", TIME: " + token.TimeOfDay);
+            Console.WriteLine("USER FIRST: " + token.FirstName + ", LAST: " + token.LastName);
+
+            if (token != null && ModelState.IsValid)
+            {
+                Slot slot = _scheduleManagementService.FindSlot(token.Date, token.TimeOfDay);
+                User user = await _usersManagementService.FindUser(token.FirstName, token.LastName);
+
+                if (await _scheduleManagementService.CreateReservation(slot, user, cancellationToken))
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            else
+            {
+                return View(token);
+            }       
+        }
+        
+        public async Task<ActionResult> DeleteReservation(string id, CancellationToken cancellationToken)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                await _scheduleManagementService.DeleteReservation(id);
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

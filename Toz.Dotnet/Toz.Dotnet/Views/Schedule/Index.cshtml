@@ -1,6 +1,6 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Toz.Dotnet.Models.EnumTypes
-@model IEnumerable<Toz.Dotnet.Models.Week>
+@model IEnumerable<Toz.Dotnet.Models.ViewModels.Week>
 @inject IViewLocalizer Localizer
 
 @{
@@ -33,7 +33,7 @@
 
                     @if(volunteer == null)
                     {
-                        <td class="btn-default" onclick="@("window.location.href='" + @Url.Action("AddReservation", "Schedule") + "'");">@("Slot " + slotnumber)</td>                               
+                        <td class="btn-default" onclick="@("window.location.href='" + @Url.Action("AddReservation", "Schedule", new { Date = slot.Date, TimeOfDay = slot.TimeOfDay }) + "'");">@("Slot " + slotnumber)</td>                               
                     }
                     else
                     {
@@ -52,7 +52,7 @@
 
                     @if(volunteer == null)
                     {
-                        <td class="btn-default" onclick="@("window.location.href='" + @Url.Action("AddReservation", "Schedule") + "'");">@("Slot " + slotnumber)</td>        
+                        <td class="btn-default" onclick="@("window.location.href='" + @Url.Action("AddReservation", "Schedule", new { Date = slot.Date, TimeOfDay = slot.TimeOfDay }) + "'");">@("Slot " + slotnumber)</td>        
                     }
                     else
                     {
@@ -84,24 +84,28 @@
                 <p>Czy na pewno chcesz usunąć tę rezerwację?</p>
             </div>
             <div class="modal-footer">
-                <form asp-controller="Schedule" asp-action="DeleteReservation" method="post" class="form-inline" role="form">
-                    <input type="hidden" id="id">
-                    <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-trash" style="vertical-align:middle;margin-top: -5px"</span> Usuń</button>
+                <span>
+                    <button type="button" id="reservationDeleteButton" class="btn btn-danger"><span class="glyphicon glyphicon-trash" style="vertical-align:middle;margin-top: -5px"</span> Usuń</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
-                </form>
+                </span>
             </div>
         </div>
     </div>
 </div> 
 
-<script type="text/javascript">     
-$(document).ready(function () 
+@section scripts
 {
-    $('#myModal').on('show.bs.modal', function (event) 
-    {
-        var button = $(event.relatedTarget);
-        var clickedButtonId = button.data('Id');
-        $("input #id").val(clickedButtonId);
-    });    
-})
-</script>
+    <script>     
+        $(document).ready(function () 
+        {
+            $('#myModal').on('show.bs.modal', function (e) 
+            {
+                var id = $(e.relatedTarget).data('id');
+                $('#reservationDeleteButton').click(function () {
+                    document.location.replace('@Url.Action("DeleteReservation", "Schedule")?id=' + id);
+                });
+            });    
+        })
+    </script>
+}
+

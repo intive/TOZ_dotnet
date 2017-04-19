@@ -1,15 +1,14 @@
 using System;
-using System.Collections.Generic;
 using Toz.Dotnet.Models.EnumTypes;
 
-namespace Toz.Dotnet.Models
+namespace Toz.Dotnet.Models.ViewModels
 {
-    public struct Slot
+    public class Slot
     {       
         public DateTime Date;
         public string Day { get { return Date.ToString(); } }
         public Period TimeOfDay;
         public string ReservationId;
-        public User Volunteer;
+        public UserBase Volunteer;
     }
 }
