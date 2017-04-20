@@ -53,7 +53,6 @@
     value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
-
     mimetype: application/x-microsoft.net.object.bytearray.base64
     value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
@@ -117,22 +116,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="PetList" xml:space="preserve">
-    <value>Lista zwierzaków</value>
-  </data>
-  <data name="PetAdd" xml:space="preserve">
-    <value>Dodaj zwierzaka</value>
-  </data>
-  <data name="NewsList" xml:space="preserve">
-    <value>Lista newsów</value>
-  </data>
-  <data name="Login" xml:space="preserve">
-    <value>Logowanie</value>
-  </data>
-  <data name="Users" xml:space="preserve">
-    <value>Użytkownicy</value>
-  </data>
-  <data name="Schedule" xml:space="preserve">
-    <value>Kalendarz dyżurów</value>
-  </data>
+  
+    <data name="PageTitle" xml:space="preserve">
+        <value>Assign a volunteer to the duty slot:</value>
+    </data>
+    <data name="FirstName" xml:space="preserve">
+        <value>First name</value>
+    </data>
+    <data name="LastName" xml:space="preserve">
+        <value>Last name</value>
+    </data>
+    <data name="Save" xml:space="preserve">
+        <value>Save</value>
+    </data>
+    <data name="Cancel" xml:space="preserve">
+        <value>Cancel</value>
+    </data>   
 </root>

@@ -23,7 +23,7 @@ namespace Toz.Dotnet.Core.Services
         // Monday of the current week       
         private DateTime _datum;
         // Offset from the current week
-        private int offset;        
+        private int _offset;        
         // As per specification, Backend will return entries from 6 weeks based on the current date.
         private Week[] _cache;    
         //TODO: Delete after connecting with Backend API
@@ -42,7 +42,7 @@ namespace Toz.Dotnet.Core.Services
 
         public async Task<List<Week>> GetSchedule(int weekOffset, CancellationToken cancelationToken = default(CancellationToken))
         {
-            offset += weekOffset;
+            _offset += weekOffset;
 
             if(_cache == null)
             {
@@ -50,8 +50,11 @@ namespace Toz.Dotnet.Core.Services
             }
 
             List<Week> schedule = new List<Week>();
-            schedule.Add(_cache[2 + offset]);
-            schedule.Add(_cache[3 + offset]);
+            if (_cache.Length > _offset + 3)
+            {
+                schedule.Add(_cache[2 + _offset]);
+                schedule.Add(_cache[3 + _offset]);
+            }
 
             return schedule;
 
@@ -68,20 +71,22 @@ namespace Toz.Dotnet.Core.Services
 
         public async Task<bool> CreateReservation(Slot slot, UserBase userData, CancellationToken cancelationToken = default(CancellationToken))
         {
-            User user = await _usersManagementService.FindUser(userData.FirstName, userData.LastName);
+            User user = await _usersManagementService.FindUser(userData.FirstName, userData.LastName, cancelationToken);
                 
             // Registers the user if not already registered:
             if (user == null)
             {
-                user = new User();
-                user.FirstName = userData.FirstName;
-                user.LastName = userData.LastName;
-                if(await _usersManagementService.CreateUser(user) == false)
+                user = new User
+                {
+                    FirstName = userData.FirstName,
+                    LastName = userData.LastName
+                };
+                if(await _usersManagementService.CreateUser(user, cancelationToken) == false)
                 {
                     return false;
                 }
 
-                user = await _usersManagementService.FindUser(userData.FirstName, userData.LastName);
+                user = await _usersManagementService.FindUser(userData.FirstName, userData.LastName, cancelationToken);
                 if (user == null)
                 {
                     return false;
@@ -113,7 +118,7 @@ namespace Toz.Dotnet.Core.Services
 
         public async Task<bool> DeleteReservation(string id, CancellationToken cancelationToken = default(CancellationToken))
         {
-            var r = await GetReservation(id);
+            var r = await GetReservation(id, cancelationToken);
             if(r != null)
             {
                 foreach(Week w in _cache)
