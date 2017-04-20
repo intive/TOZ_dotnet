@@ -15,8 +15,8 @@ namespace Toz.Dotnet.Controllers
 {
     public class ScheduleController : Controller
     {
-        private IScheduleManagementService _scheduleManagementService;
-        private IUsersManagementService _usersManagementService;
+        private readonly IScheduleManagementService _scheduleManagementService;
+        private readonly IUsersManagementService _usersManagementService;
         private readonly IStringLocalizer<ScheduleController> _localizer;
         private readonly AppSettings _appSettings;
 
@@ -47,22 +47,15 @@ namespace Toz.Dotnet.Controllers
 
         public IActionResult AddReservation(DateTime date, Period timeOfDay)
         { 
-            if (date != null && date > DateTime.MinValue && date < DateTime.MaxValue)
+            if (date > DateTime.MinValue && date < DateTime.MaxValue)
             {
                 if (timeOfDay == Period.Afternoon || timeOfDay == Period.Morning)
                 {
                     ViewData["date"] = date.ToString("yyyy/MM/dd");
                     return View(new ReservationToken());
                 }
-                else 
-                {
-                    return BadRequest();
-                }
             }
-            else 
-            {
-                return BadRequest();
-            }
+            return BadRequest();
         }
 
         [HttpPost]
@@ -74,31 +67,30 @@ namespace Toz.Dotnet.Controllers
             Console.WriteLine("SLOT DATE: " + token.Date + ", TIME: " + token.TimeOfDay);
             Console.WriteLine("USER FIRST: " + token.FirstName + ", LAST: " + token.LastName);
 
-            if (token != null && ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 Slot slot = _scheduleManagementService.FindSlot(token.Date, token.TimeOfDay);
-                User user = await _usersManagementService.FindUser(token.FirstName, token.LastName);
+                //User user = await _usersManagementService.FindUser(token.FirstName, token.LastName, cancellationToken);
+                UserBase user = new User()
+                {
+                    LastName = token.LastName,
+                    FirstName = token.FirstName
+                };
 
                 if (await _scheduleManagementService.CreateReservation(slot, user, cancellationToken))
                 {
                     return RedirectToAction("Index");
                 }
-                else
-                {
-                    return BadRequest();
-                }
+                return BadRequest();
             }
-            else
-            {
-                return View(token);
-            }       
+            return View(token);      
         }
         
         public async Task<ActionResult> DeleteReservation(string id, CancellationToken cancellationToken)
         {
             if (!string.IsNullOrEmpty(id))
             {
-                await _scheduleManagementService.DeleteReservation(id);
+                await _scheduleManagementService.DeleteReservation(id, cancellationToken);
             }
 
             return RedirectToAction("Index");

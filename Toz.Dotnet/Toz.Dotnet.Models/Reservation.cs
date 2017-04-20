@@ -2,7 +2,7 @@ using System;
 using Newtonsoft.Json;
 using Toz.Dotnet.Models.JsonConventers;
 
-namespace Toz.Dotnet.Models.Schedule
+namespace Toz.Dotnet.Models
 {
     public class Reservation
     {
