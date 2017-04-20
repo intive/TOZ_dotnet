@@ -6,19 +6,18 @@ using System.Threading.Tasks;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Resources.Configuration;
-using Toz.Dotnet.Models.EnumTypes;
 using System.Linq;
 using Toz.Dotnet.Models.ViewModels;
+using Period = Toz.Dotnet.Models.EnumTypes.Period;
 
 namespace Toz.Dotnet.Core.Services
 {
     public class ScheduleManagementService : IScheduleManagementService
     {
         public string RequestUri { get; set; }
-        private const int TimeFormatIndex = 0;
 
-        private IRestService _restService;
-        private IUsersManagementService _usersManagementService;
+        private readonly IRestService _restService;
+        private readonly IUsersManagementService _usersManagementService;
 
         // Monday of the current week       
         private DateTime _datum;
@@ -50,7 +49,8 @@ namespace Toz.Dotnet.Core.Services
             }
 
             List<Week> schedule = new List<Week>();
-            if (_cache.Length > _offset + 3)
+
+            if (_cache.Length > _offset + 3 && _offset + 2 >= 0)
             {
                 schedule.Add(_cache[2 + _offset]);
                 schedule.Add(_cache[3 + _offset]);
@@ -72,7 +72,7 @@ namespace Toz.Dotnet.Core.Services
         public async Task<bool> CreateReservation(Slot slot, UserBase userData, CancellationToken cancelationToken = default(CancellationToken))
         {
             User user = await _usersManagementService.FindUser(userData.FirstName, userData.LastName, cancelationToken);
-                
+
             // Registers the user if not already registered:
             if (user == null)
             {
@@ -147,17 +147,20 @@ namespace Toz.Dotnet.Core.Services
 
         private DateTime GetFirstDayOfWeek(DateTime input)
         {
+            const int countOfDaysInWeek = 7;
             int delta = DayOfWeek.Monday - input.DayOfWeek;
-            DateTime monday = input.AddDays((delta > 0) ? delta-7 : delta);
+            DateTime monday = input.AddDays((delta > 0) ? delta - countOfDaysInWeek : delta);
             return monday;
         }
 
         // Creates a fake 6-weeks schedule with sample reservations
         private async void CreateScheduleMockup()
         {
+            const int countOfWeeks = 6;
+            const int countOfSlotsInOneWeek = 14;
             // Set-up weeks
-            _cache = new Week[6];  
-            for (int i=0; i<6; i++)
+            _cache = new Week[countOfWeeks];  
+            for (int i=0; i< countOfWeeks; i++)
             {
                 _cache[i] = new Week();
             }
@@ -172,7 +175,7 @@ namespace Toz.Dotnet.Core.Services
             // Set-up slots for each week
             foreach(var week in _cache)
             {
-                for(int i=0; i<14; i++)
+                for(int i=0; i< countOfSlotsInOneWeek; i++)
                 {
                     week.Slots[i] = new Slot
                     {

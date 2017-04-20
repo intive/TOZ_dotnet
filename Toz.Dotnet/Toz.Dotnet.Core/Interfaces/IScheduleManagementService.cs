@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Toz.Dotnet.Models;
-using Toz.Dotnet.Models.EnumTypes;
 using Toz.Dotnet.Models.ViewModels;
+using Period = Toz.Dotnet.Models.EnumTypes.Period;
 
 namespace Toz.Dotnet.Core.Interfaces
 {

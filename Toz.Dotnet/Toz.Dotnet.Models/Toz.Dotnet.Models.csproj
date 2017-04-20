@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
-    <PackageReference Include="CoreCompat.Newtonsoft.Json" Version="9.0.2-beta001"/>
+    <PackageReference Include="CoreCompat.Newtonsoft.Json" Version="9.0.2-beta001" />
   </ItemGroup>
 
   <ItemGroup>
@@ -15,7 +15,7 @@
 
   <!--Project references -->
   <ItemGroup>
-    <ProjectReference Include="../Toz.Dotnet.Resources/Toz.Dotnet.Resources.csproj"/>
+    <ProjectReference Include="../Toz.Dotnet.Resources/Toz.Dotnet.Resources.csproj" />
   </ItemGroup>
 
 </Project>

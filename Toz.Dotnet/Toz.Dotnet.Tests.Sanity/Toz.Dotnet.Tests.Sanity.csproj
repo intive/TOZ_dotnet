@@ -21,6 +21,7 @@
     <ProjectReference Include="../Toz.Dotnet/Toz.Dotnet.csproj" />
     <ProjectReference Include="../Toz.Dotnet.Models/Toz.Dotnet.Models.csproj" />
     <ProjectReference Include="../Toz.Dotnet.Resources/Toz.Dotnet.Resources.csproj" />
+    <ProjectReference Include="../Toz.Dotnet.Tests/Toz.Dotnet.Tests.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
