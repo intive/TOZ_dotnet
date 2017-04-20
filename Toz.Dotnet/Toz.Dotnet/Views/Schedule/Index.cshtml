@@ -1,0 +1,111 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Toz.Dotnet.Models.EnumTypes
+@model IEnumerable<Toz.Dotnet.Models.ViewModels.Week>
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Localizer["PageTitle"];
+}
+
+<h2>@Localizer["PageTitle"]</h2>
+<br>
+
+@foreach(var week in Model)
+{
+    <h3><b>@Localizer["Week"] @week.WeekNumber</b> (@week.DateFrom.ToString("dd.MM.yyyy") - @week.DateTo.ToString("dd.MM.yyyy"))</h3>
+    <div class="table-responsive"> 
+        <table class="table">
+            <tr>
+                <th class="col-lg-1">@Localizer["Monday"]</th>
+                <th class="col-lg-1">@Localizer["Tuesday"]</th>
+                <th class="col-lg-1">@Localizer["Wednesday"]</th>
+                <th class="col-lg-1">@Localizer["Thursday"]</th>
+                <th class="col-lg-1">@Localizer["Friday"]</th>
+                <th class="col-lg-1">@Localizer["Saturday"]</th>
+                <th class="col-lg-1">@Localizer["Sunday"]</th>
+            </tr>
+            <tr>
+                @for(var i=0;i<7;i++)
+                {
+                    var slotnumber = 2*i;
+                    var slot = week.Slots[slotnumber];
+                    var volunteer = slot.Volunteer;
+
+                    @if(volunteer == null)
+                    {
+                        <td class="btn-default" onclick="@("window.location.href='" + @Url.Action("AddReservation", "Schedule", new { Date = slot.Date, TimeOfDay = slot.TimeOfDay }) + "'");">@("Slot " + slotnumber)</td>                               
+                    }
+                    else
+                    {
+                        <td>
+                            <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id=@slot.ReservationId>@volunteer.FirstName @volunteer.LastName</button>     
+                        </td>
+                    }
+                }
+            </tr>
+            <tr>
+                @for(var i=0;i<7;i++)
+                {
+                    var slotnumber = 2*i+1;
+                    var slot = week.Slots[slotnumber];
+                    var volunteer = slot.Volunteer;
+
+                    @if(volunteer == null)
+                    {
+                        <td class="btn-default" onclick="@("window.location.href='" + @Url.Action("AddReservation", "Schedule", new { Date = slot.Date, TimeOfDay = slot.TimeOfDay }) + "'");">@("Slot " + slotnumber)</td>        
+                    }
+                    else
+                    {
+                        <td>
+                            <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id=@slot.ReservationId>@volunteer.FirstName @volunteer.LastName</button>
+                        </td>      
+                    }
+                }
+            </tr>
+        </table>
+    </div>
+}
+      
+<div class="panel panel-default">
+    <div class="panel-body">
+        <input type="button" class="btn btn-primary btn-lg pull-left" id="Earlier" value=@Localizer["Earlier"] onclick="@("window.location.href='" + @Url.Action("Earlier", "Schedule") + "'");">
+        <input type="button" class="btn btn-primary btn-lg pull-right" id="Later" value=@Localizer["Later"] onclick="@("window.location.href='" + @Url.Action("Later", "Schedule") + "'");">
+    </div>
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Potwierdź usunięcie</h4>
+            </div>
+            <div class="modal-body">
+                <p>Czy na pewno chcesz usunąć tę rezerwację?</p>
+            </div>
+            <div class="modal-footer">
+                <span>
+                    <button type="button" id="reservationDeleteButton" class="btn btn-danger"><span class="glyphicon glyphicon-trash" style="vertical-align:middle;margin-top: -5px"</span> Usuń</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div> 
+
+@section scripts
+{
+    <script>     
+        $(document).ready(function () 
+        {
+            $('#myModal').on('show.bs.modal', function (e) 
+            {
+                var id = $(e.relatedTarget).data('id');
+                $('#reservationDeleteButton').click(function () {
+                    document.location.replace('@Url.Action("DeleteReservation", "Schedule")?id=' + id);
+                });
+            });    
+        })
+    </script>
+}
+
