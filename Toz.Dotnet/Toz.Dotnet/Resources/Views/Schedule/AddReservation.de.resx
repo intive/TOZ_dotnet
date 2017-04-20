@@ -117,19 +117,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   
-    <data name="PetList" xml:space="preserve">
-        <value>Pets list</value>
+    <data name="PageTitle" xml:space="preserve">
+        <value>Weisen Sie einen Freiwilliger zum Dienst zu:</value>
     </data>
-    <data name="PetAdd" xml:space="preserve">
-        <value>Add a pet</value>
+    <data name="FirstName" xml:space="preserve">
+        <value>Vorname</value>
     </data>
-    <data name="NewsList" xml:space="preserve">
-        <value>News list</value>
+    <data name="LastName" xml:space="preserve">
+        <value>Nachname</value>
     </data>
-    <data name="Login" xml:space="preserve">
-        <value>Login</value>
+    <data name="Save" xml:space="preserve">
+        <value>Speichern</value>
     </data>
-    <data name="Users" xml:space="preserve">
-        <value>Users</value>
-    </data>
+    <data name="Cancel" xml:space="preserve">
+        <value>Verwerfen</value>
+    </data>   
 </root>

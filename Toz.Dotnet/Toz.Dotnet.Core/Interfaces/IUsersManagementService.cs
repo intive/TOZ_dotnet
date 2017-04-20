@@ -14,6 +14,8 @@ namespace Toz.Dotnet.Core.Interfaces
         Task<bool> CreateUser(User user, CancellationToken cancelationToken = default(CancellationToken));
         Task<List<User>> FindAllUsers(string firstName, string lastName, CancellationToken cancelationToken = default(CancellationToken));
         Task<User> FindUser(string firstName, string lastName, CancellationToken cancelationToken = default(CancellationToken));
+        void SetupSampleUsers(CancellationToken cancelationToken = default(CancellationToken));
+        User GetRandomVolunteer(CancellationToken cancelationToken = default(CancellationToken));
         string RequestUri { get; set; }
     }
 }

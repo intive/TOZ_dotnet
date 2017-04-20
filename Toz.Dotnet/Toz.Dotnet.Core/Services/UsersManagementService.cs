@@ -5,6 +5,9 @@ using Microsoft.Extensions.Options;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Resources.Configuration;
+using Toz.Dotnet.Models.EnumTypes;
+using System;
+using System.Linq;
 
 namespace Toz.Dotnet.Core.Services
 {
@@ -15,7 +18,8 @@ namespace Toz.Dotnet.Core.Services
 
         //private IRestService _restService;
         private List<User> _mockupUsersDatabase;
-
+        private Random r = new Random();
+        
         public string RequestUri { get; set; }
 
         public UsersManagementService(IRestService restService, IOptions<AppSettings> appSettings)
@@ -78,6 +82,15 @@ namespace Toz.Dotnet.Core.Services
             //return await _restService.ExecuteGetAction<User>(address, cancelationToken);
         }
 
+        public User GetRandomVolunteer(CancellationToken cancelationToken = default(CancellationToken))
+        {
+            var volunteers = _mockupUsersDatabase.Where(p => p.Purpose == UserType.Volunteer).ToList();
+            int count = volunteers.Count();
+            return volunteers[r.Next(0, count-1)];
+            //string address = $"{RequestUri}/{id}";
+            //return await _restService.ExecuteGetAction<User>(address, cancelationToken);
+        }
+
         //Returns list of users with typed firstName and lastName or empty list if not found.
         public async Task<List<User>> FindAllUsers(string firstName, string lastName, CancellationToken cancelationToken = default(CancellationToken))
         {
@@ -97,6 +110,92 @@ namespace Toz.Dotnet.Core.Services
             {
                 return null;
             }
+        }
+        
+        public async void SetupSampleUsers(CancellationToken cancelationToken = default(CancellationToken))
+        {
+            _mockupUsersDatabase.Clear();
+
+            await CreateUser(new User
+            {
+                FirstName = "Jan",
+                LastName = "Kowalski",
+                PhoneNumber = "012345678",
+                Email = "jan.kowalski@onet.eu",
+                Purpose = UserType.Administrator
+            });
+
+            await CreateUser(new User
+            {
+                FirstName = "Adrian",
+                LastName = "Standowicz",
+                PhoneNumber = "123456789",
+                Email = "adrian.standowicz@gmail.com",
+                Purpose = UserType.Volunteer
+            });
+
+            await CreateUser(new User
+            {
+                FirstName = "Daniel",
+                LastName = "Kleszczyński",
+                PhoneNumber = "234567890",
+                Email = "danielk@o2.pl",
+                Purpose = UserType.Volunteer
+            });
+
+            await CreateUser(new User
+            {
+                FirstName = "Łukasz",
+                LastName = "Sielewicz",
+                PhoneNumber = "345678901",
+                Email = "lsielewicz@hotmail.eu",
+                Purpose = UserType.Volunteer
+            });
+
+            await CreateUser(new User
+            {
+                FirstName = "Krystian",
+                LastName = "Kaniewski",
+                PhoneNumber = "456789012",
+                Email = "kania@wp.pl",
+                Purpose = UserType.Volunteer
+            });
+
+            await CreateUser(new User
+            {
+                FirstName = "Bartosz",
+                LastName = "Hliwa",
+                PhoneNumber = "567890123",
+                Email = "hliwart@op.pl",
+                Purpose = UserType.Volunteer
+            });
+
+            await CreateUser(new User
+            {
+                FirstName = "Mateusz",
+                LastName = "Kumpf",
+                PhoneNumber = "678901234",
+                Email = "matkumpf@gmail.com",
+                Purpose = UserType.Volunteer
+            });
+
+            await CreateUser(new User
+            {
+                FirstName = "Huber",
+                LastName = "Taler",
+                PhoneNumber = "789012345",
+                Email = "h.taler@intive.com",
+                Purpose = UserType.TemporaryHome
+            });
+
+            await CreateUser(new User
+            {
+                FirstName = "Sebastian",
+                LastName = "Peć",
+                PhoneNumber = "890123456",
+                Email = "spec@intive.com",
+                Purpose = UserType.TemporaryHome
+            });
         }
     }
 }
