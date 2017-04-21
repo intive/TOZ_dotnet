@@ -135,4 +135,7 @@
   <data name="TypeUndefined" xml:space="preserve">
     <value>Wybierz typ użytkownika.</value>
   </data>
+  <data name="OnlyDigits" xml:space="preserve">
+    <value>To pole może zawierać tylko cyfry.</value>
+  </data>
 </root>
