@@ -1,10 +1,12 @@
 @using Microsoft.AspNetCore.Mvc.Localization
+@using Toz.Dotnet.Core.Services
 @using Toz.Dotnet.Models.EnumTypes
 @model IEnumerable<Toz.Dotnet.Models.Pet>
 @inject IViewLocalizer Localizer
 
 @{
     ViewData["Title"] = @Localizer["PageTitle"];
+    var filesManagmentService = new FilesManagementService();
 }
 
 <h2>@Localizer["PageTitle"]</h2>
@@ -57,7 +59,7 @@
                     <td>@Localizer["Unidentified"]</td>
                 }
 
-                <td style="width:64px;height:64px;"><img src="data:image;base64,@System.Convert.ToBase64String(item.Photo)" style="width:64px;height:64px;"/></td>
+                <td style="width:64px;height:64px;"><img src="data:image;base64,@Convert.ToBase64String(item.Photo)" @*style="width: 64px; height: 64px;"*@/></td>
                 <td>@item.Description</td>
                 <td>@item.Address</td>
                 <td>@item.AddingTime</td>
