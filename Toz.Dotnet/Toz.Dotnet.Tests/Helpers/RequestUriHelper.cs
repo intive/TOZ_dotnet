@@ -10,5 +10,6 @@ namespace Toz.Dotnet.Tests.Helpers
         public static string PetsUri { get; } = "https://intense-badlands-80645.herokuapp.com/pets";
         public static string NewsUri { get; } = "https://intense-badlands-80645.herokuapp.com/news";
         public static string UsersUri { get; } = "https://intense-badlands-80645.herokuapp.com/users";
+        public static string OrganizationInfoUri { get; } = "https://intense-badlands-80645.herokuapp.com/organization/info";
     }
 }

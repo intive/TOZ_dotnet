@@ -40,6 +40,7 @@ namespace Toz.Dotnet
             services.AddSingleton<INewsManagementService, NewsManagementService>();
             services.AddSingleton<IUsersManagementService, UsersManagementService>();
             services.AddSingleton<IScheduleManagementService, ScheduleManagementService>();
+            services.AddSingleton<IOrganizationInfoManagementService, OrganizationInfoManagementService>();
 
             services.AddMvc()
                 .AddViewLocalization(
