@@ -135,4 +135,7 @@
   <data name="Schedule" xml:space="preserve">
     <value>Dienstplan</value>
   </data>
+  <data name="OrganizationInfo" xml:space="preserve">
+    <value>Organisationsinfo</value>
+  </data>
 </root>

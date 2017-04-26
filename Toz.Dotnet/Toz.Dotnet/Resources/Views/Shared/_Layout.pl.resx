@@ -135,4 +135,7 @@
   <data name="Schedule" xml:space="preserve">
     <value>Kalendarz dyżurów</value>
   </data>
+  <data name="OrganizationInfo" xml:space="preserve">
+    <value>Informacje o firmie</value>
+  </data>
 </root>

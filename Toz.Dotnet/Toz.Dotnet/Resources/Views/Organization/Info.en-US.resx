@@ -117,25 +117,67 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="PetList" xml:space="preserve">
-    <value>Pets list</value>
-  </data>
-  <data name="PetAdd" xml:space="preserve">
-    <value>Add a pet</value>
-  </data>
-  <data name="NewsList" xml:space="preserve">
-    <value>News list</value>
-  </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
-  </data>
-  <data name="Users" xml:space="preserve">
-    <value>Users</value>
-  </data>
-  <data name="Schedule" xml:space="preserve">
-    <value>Schedule</value>
-  </data>
-  <data name="OrganizationInfo" xml:space="preserve">
+  <data name="PageTitle" xml:space="preserve">
     <value>Organization Info</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="ApartmentNumber" xml:space="preserve">
+    <value>Apartment No.</value>
+  </data>
+  <data name="BankAccount" xml:space="preserve">
+    <value>Bank Account Details</value>
+  </data>
+  <data name="BankAccountNumber" xml:space="preserve">
+    <value>Account Number</value>
+  </data>
+  <data name="BankName" xml:space="preserve">
+    <value>Bank Name</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Contact" xml:space="preserve">
+    <value>Contact Information</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="Fax" xml:space="preserve">
+    <value>Fax No.</value>
+  </data>
+  <data name="HouseNumber" xml:space="preserve">
+    <value>House No.</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Phone No.</value>
+  </data>
+  <data name="PostCode" xml:space="preserve">
+    <value>Post code</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Street" xml:space="preserve">
+    <value>Street</value>
+  </data>
+  <data name="Website" xml:space="preserve">
+    <value>Website</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>General</value>
   </data>
 </root>

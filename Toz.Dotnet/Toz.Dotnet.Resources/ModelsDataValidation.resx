@@ -135,5 +135,7 @@
   <data name="TypeUndefined" xml:space="preserve">
     <value>Select a user type.</value>
   </data>
-  
+  <data name="OnlyDigits" xml:space="preserve">
+    <value>This field can only consist of digits.</value>
+  </data>
 </root>

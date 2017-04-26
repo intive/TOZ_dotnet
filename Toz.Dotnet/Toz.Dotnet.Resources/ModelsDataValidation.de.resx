@@ -130,7 +130,7 @@
     <value>Wählen Sie den Typ des Tiers aus.</value>
   </data>
   <data name="PetSexUndefined" xml:space="preserve">
-    <value>**Ładne niemieckie zdanie**</value>
+    <value>Wählen Sie das Geschlecht des Tiers aus.</value>
   </data>
   <data name="TypeUndefined" xml:space="preserve">
     <value>Wählen Sie den Typ des Benutzers aus.</value>
@@ -140,5 +140,8 @@
   </data>
   <data name="LastNameRequired" xml:space="preserve">
     <value>Last name is required</value>
+  </data>
+  <data name="OnlyDigits" xml:space="preserve">
+    <value>Dieses Feld kann nur aus Ziffern bestehen.</value>
   </data>
 </root>
