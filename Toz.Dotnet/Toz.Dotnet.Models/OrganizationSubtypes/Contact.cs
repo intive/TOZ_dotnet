@@ -20,7 +20,7 @@ namespace Toz.Dotnet.Models.OrganizationSubtypes
         public string Phone { get; set; }
 
         [JsonProperty("fax")]
-        [RegularExpression("^[0-9]*$", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "OnlyDigits")]
+        [PhoneNumber]
         public string Fax { get; set; }
 
         [JsonProperty("website")]

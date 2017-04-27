@@ -41,6 +41,7 @@
                     <li><a asp-area="" asp-controller="Users" asp-action="Index">@Localizer["Users"]</a></li>
                     <li><a asp-area="" asp-controller="Schedule" asp-action="Index">@Localizer["Schedule"]</a></li>
                     <li><a asp-area="" asp-controller="Login" asp-action="Index">@Localizer["Login"]</a></li>
+                    <li><a asp-area="" asp-controller="Organization" asp-action="Info">@Localizer["OrganizationInfo"]</a></li>
                 </ul>
                 <ul hidden class="nav" style="text-align: right;">
                         <form id="selectLanguage" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@Context.Request.Path" method="post">
