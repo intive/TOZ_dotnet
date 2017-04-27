@@ -150,4 +150,10 @@
   <data name="Later" xml:space="preserve">
     <value>Później</value>
   </data>
+  <data name="Afternoon" xml:space="preserve">
+    <value>Popołudnie</value>
+  </data>
+  <data name="Morning" xml:space="preserve">
+    <value>Rano</value>
+  </data>
 </root>
