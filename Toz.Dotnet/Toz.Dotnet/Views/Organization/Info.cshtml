@@ -14,7 +14,7 @@
     <hr>
 
     <div class="OrganizationInfo">
-        <form asp-controller="Organization" asp-action="@(Model == null ? "Create" : "Edit")" @{Model == null ? "method=\"POST\"" : "method=\"PUT\""} enctype="multipart/form-data">
+        <form asp-controller="Organization" asp-action="CreateEdit" method="POST" enctype="multipart/form-data">
 
             <h3>@Localizer["General"]:</h3>
             <hr>

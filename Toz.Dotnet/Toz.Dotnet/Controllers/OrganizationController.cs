@@ -30,10 +30,12 @@ namespace Toz.Dotnet.Controllers
             _appSettings = appSettings.Value;
         }
 
+        [HttpGet]
         public IActionResult Info(bool edit = false)
         {
             ViewData["EditMode"] = edit;
 
+            //return current organization info or null if not present
             //var organization = await _organizationManagementService.GetOrganizationInfo();
             Address a = new Address
             {
@@ -71,32 +73,28 @@ namespace Toz.Dotnet.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Organization organization, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateEdit(Organization organization, CancellationToken cancellationToken)
         {
             if (organization != null && ModelState.IsValid)
             {
-                if (await _organizationManagementService.CreateOrganizationInfo(organization, cancellationToken))
+                if(await _organizationManagementService.GetOrganizationInfo() == null)
                 {
-                    return RedirectToAction("Info");
+                    if (await _organizationManagementService.CreateOrganizationInfo(organization, cancellationToken))
+                    {
+                        return RedirectToAction("Info");
+                    }
+                    return BadRequest();
                 }
-                return BadRequest();
-            }
-            return View(organization);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Organization organization, CancellationToken cancellationToken)
-        {
-            if (organization != null && ModelState.IsValid)
-            {
-                if (await _organizationManagementService.UpdateOrganizationInfo(organization, cancellationToken))
+                else
                 {
-                    return RedirectToAction("Info", new { edit = false });
-                }
-                return BadRequest();
+                    if (await _organizationManagementService.UpdateOrganizationInfo(organization, cancellationToken))
+                    {
+                        return RedirectToAction("Info");
+                    }
+                    return BadRequest();
+                }           
             }
-            return View(organization);
+            return RedirectToAction("Info", new { edit = true });
         }
     }
 }
