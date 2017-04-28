@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Toz.Dotnet.Models.JsonConventers;
+﻿using Newtonsoft.Json;
 using Toz.Dotnet.Models.OrganizationSubtypes;
 
 namespace Toz.Dotnet.Models
 {
-    public class OrganizationInfo
+    public class Organization
     {
         [JsonProperty("name")]
         public string Name { get; set; }

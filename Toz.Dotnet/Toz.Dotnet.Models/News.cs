@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Toz.Dotnet.Models.EnumTypes;
 using Toz.Dotnet.Models.JsonConventers;
-using Toz.Dotnet.Resources.CustomValidationAttributes;
 
 namespace Toz.Dotnet.Models
 {
