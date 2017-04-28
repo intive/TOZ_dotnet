@@ -19,9 +19,9 @@ namespace Toz.Dotnet.Core.Services
             RequestUri = appSettings.Value.BackendOrganizationInfoUrl;
         }
 
-        public async Task<bool> UpdateOrCreateInfo(OrganizationInfo organizationInfo, CancellationToken cancelationToken = default(CancellationToken))
+        public async Task<bool> UpdateOrCreateInfo(Organization organizationInfo, CancellationToken cancelationToken = default(CancellationToken))
         {
-            Func<string, OrganizationInfo, CancellationToken, Task<bool>> methodToExecute = _restService.ExecutePutAction;
+            Func<string, Organization, CancellationToken, Task<bool>> methodToExecute = _restService.ExecutePutAction;
 
             if (await GetOrganizationInfo(cancelationToken) == null)
             {
@@ -31,9 +31,9 @@ namespace Toz.Dotnet.Core.Services
             return await methodToExecute(RequestUri, organizationInfo, cancelationToken);
         }
 
-        public async Task<OrganizationInfo> GetOrganizationInfo(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Organization> GetOrganizationInfo(CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await _restService.ExecuteGetAction<OrganizationInfo>(RequestUri, cancellationToken);
+            return await _restService.ExecuteGetAction<Organization>(RequestUri, cancellationToken);
         }
     }
 }

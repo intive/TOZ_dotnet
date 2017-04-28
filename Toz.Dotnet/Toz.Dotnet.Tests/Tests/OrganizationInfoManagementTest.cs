@@ -43,7 +43,7 @@ namespace Toz.Dotnet.Tests.Tests
         {
             var originalOrganizationInfo = _organizationInfoManagementService.GetOrganizationInfo().Result;
 
-            var customOrganizationInfo = new OrganizationInfo()
+            var customOrganizationInfo = new Organization()
             {
                 Name = "Test",
                 Address = new Address()

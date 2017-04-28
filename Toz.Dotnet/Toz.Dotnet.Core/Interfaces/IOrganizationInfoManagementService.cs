@@ -6,8 +6,8 @@ namespace Toz.Dotnet.Core.Interfaces
 {
     public interface IOrganizationInfoManagementService
     {
-        Task<bool> UpdateOrCreateInfo(OrganizationInfo organizationInfo, CancellationToken cancelationToken = default(CancellationToken));
-        Task<OrganizationInfo> GetOrganizationInfo(CancellationToken cancellationToken = default(CancellationToken));
+        Task<bool> UpdateOrCreateInfo(Organization organizationInfo, CancellationToken cancelationToken = default(CancellationToken));
+        Task<Organization> GetOrganizationInfo(CancellationToken cancellationToken = default(CancellationToken));
         string RequestUri { get; set; }
     }
 }
