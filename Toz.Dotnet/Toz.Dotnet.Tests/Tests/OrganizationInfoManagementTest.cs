@@ -11,11 +11,11 @@ namespace Toz.Dotnet.Tests.Tests
 {
     public class OrganizationInfoManagementTest
     {
-        private readonly IOrganizationInfoManagementService _organizationInfoManagementService;
+        private readonly IOrganizationManagementService _organizationInfoManagementService;
 
         public OrganizationInfoManagementTest()
         {
-            _organizationInfoManagementService = ServiceProvider.Instance.Resolve<IOrganizationInfoManagementService>();
+            _organizationInfoManagementService = ServiceProvider.Instance.Resolve<IOrganizationManagementService>();
             _organizationInfoManagementService.RequestUri = RequestUriHelper.OrganizationInfoUri;
         }
 

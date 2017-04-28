@@ -8,12 +8,12 @@ using Toz.Dotnet.Resources.Configuration;
 
 namespace Toz.Dotnet.Core.Services
 {
-    public class OrganizationInfoManagementService : IOrganizationInfoManagementService
+    public class OrganizationManagementService : IOrganizationManagementService
     {
         private readonly IRestService _restService;
         public string RequestUri { get; set; }
 
-        public OrganizationInfoManagementService(IRestService restService, IOptions<AppSettings> appSettings)
+        public OrganizationManagementService(IRestService restService, IOptions<AppSettings> appSettings)
         {
             _restService = restService;
             RequestUri = appSettings.Value.BackendOrganizationInfoUrl;
