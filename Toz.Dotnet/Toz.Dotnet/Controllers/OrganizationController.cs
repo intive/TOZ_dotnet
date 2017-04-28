@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 using System.Threading;
 using Toz.Dotnet.Models.OrganizationSubtypes;
 using System;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Routing;
+using Toz.Dotnet.Extensions;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -26,17 +30,16 @@ namespace Toz.Dotnet.Controllers
 
         public OrganizationController(IStringLocalizer<OrganizationController> localizer, IOptions<AppSettings> appSettings)
         {
+            //_organizationManagementService = organizationManagemntService;
             _localizer = localizer;
             _appSettings = appSettings.Value;
         }
 
         [HttpGet]
-        public IActionResult Info(bool edit = false)
+        public IActionResult Info(bool edit, Organization organizationInstance = null)
         {
             ViewData["EditMode"] = edit;
 
-            //return current organization info or null if not present
-            //var organization = await _organizationManagementService.GetOrganizationInfo();
             Address a = new Address
             {
                 Street = "Testowa",
@@ -61,40 +64,43 @@ namespace Toz.Dotnet.Controllers
                 BankName = "Bank Opieki nad Zwierzętami SA"
             };
 
-            Organization organization = new Organization
+            Organization testOrganization = new Organization
             {
                 Name = "Towarzystwo Opieki nad Zwięrzętami",
                 Address = a,
                 Contact = c,
                 BankAccount = b
             };
-            return View(organization);
+            return View(testOrganization);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateEdit(Organization organization, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateEdit(
+            Organization organization, CancellationToken cancellationToken)
         {
             if (organization != null && ModelState.IsValid)
             {
-                if(await _organizationManagementService.GetOrganizationInfo() == null)
-                {
-                    if (await _organizationManagementService.CreateOrganizationInfo(organization, cancellationToken))
-                    {
-                        return RedirectToAction("Info");
-                    }
+                //if(await _organizationManagementService.GetOrganizationInfo() == null)
+                //{
+                    //if (await _organizationManagementService.CreateOrganizationInfo(organization, cancellationToken))
+                    //{
+                        return RedirectToAction("Info", new RouteValueDictionary(new { edit = false }));
+                   // }
                     return BadRequest();
-                }
-                else
-                {
-                    if (await _organizationManagementService.UpdateOrganizationInfo(organization, cancellationToken))
-                    {
+                //}
+                //else
+                //{
+                    //if (await _organizationManagementService.UpdateOrganizationInfo(organization, cancellationToken))
+                   // {
                         return RedirectToAction("Info");
-                    }
+                    //}
                     return BadRequest();
-                }           
+               // }           
             }
-            return RedirectToAction("Info", new { edit = true });
+
+            ViewData["EditMode"] = true;
+            return View("Info", organization);  
         }
     }
 }

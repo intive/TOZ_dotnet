@@ -62,6 +62,15 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid Email Address.
+        /// </summary>
+        public static string EmailValidationMessage {
+            get {
+                return ResourceManager.GetString("EmailValidationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You can&apos;t leave this empty..
         /// </summary>
         public static string EmptyField {
@@ -89,6 +98,24 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This field can only consist of digits..
+        /// </summary>
+        public static string OnlyDigits {
+            get {
+                return ResourceManager.GetString("OnlyDigits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a pet sex..
+        /// </summary>
+        public static string PetSexUndefined {
+            get {
+                return ResourceManager.GetString("PetSexUndefined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a pet type..
         /// </summary>
         public static string PetTypeUndefined {
@@ -96,24 +123,13 @@ namespace Toz.Dotnet.Resources {
                 return ResourceManager.GetString("PetTypeUndefined", resourceCulture);
             }
         }
-
-        public static string PetSexUndefined {
-            get {
-                return ResourceManager.GetString("PetSexUndefined", resourceCulture);
-            }
-        }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a user type..
+        /// </summary>
         public static string TypeUndefined {
             get {
                 return ResourceManager.GetString("TypeUndefined", resourceCulture);
-            }
-        }
-
-        public static string OnlyDigits
-        {
-            get
-            {
-                return ResourceManager.GetString("OnlyDigits", resourceCulture);
             }
         }
     }

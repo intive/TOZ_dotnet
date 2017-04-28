@@ -138,4 +138,7 @@
   <data name="OnlyDigits" xml:space="preserve">
     <value>To pole może zawierać tylko cyfry.</value>
   </data>
+  <data name="EmailValidationMessage" xml:space="preserve">
+    <value>Błędny adres email</value>
+  </data>
 </root>
