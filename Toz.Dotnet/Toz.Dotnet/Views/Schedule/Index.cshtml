@@ -33,12 +33,12 @@
 
                     @if(volunteer == null)
                     {
-                        <td class="btn-default" onclick="@("window.location.href='" + @Url.Action("AddReservation", "Schedule", new { Date = slot.Date, TimeOfDay = slot.TimeOfDay }) + "'");">@("Slot " + slotnumber)</td>                               
+                        <td class="col-lg btn-default" onclick="@("window.location.href='" + @Url.Action("AddReservation", "Schedule", new { Date = slot.Date, TimeOfDay = slot.TimeOfDay }) + "'");">@Localizer["Morning"]<br>(08:00 - 12:00)</td>                               
                     }
                     else
                     {
                         <td>
-                            <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id=@slot.ReservationId>@volunteer.FirstName @volunteer.LastName</button>     
+                            <button type="button" class="btn-block btn btn-danger" data-toggle="modal" data-target="#myModal" data-id=@slot.ReservationId>@volunteer.FirstName<br>@volunteer.LastName</button>     
                         </td>
                     }
                 }
@@ -50,14 +50,14 @@
                     var slot = week.Slots[slotnumber];
                     var volunteer = slot.Volunteer;
 
-                    @if(volunteer == null)
+                    @if (volunteer == null)
                     {
-                        <td class="btn-default" onclick="@("window.location.href='" + @Url.Action("AddReservation", "Schedule", new { Date = slot.Date, TimeOfDay = slot.TimeOfDay }) + "'");">@("Slot " + slotnumber)</td>        
+                        <td class="col-lg btn-default" onclick="@("window.location.href='" + @Url.Action("AddReservation", "Schedule", new { Date = slot.Date, TimeOfDay = slot.TimeOfDay }) + "'");">@Localizer["Afternoon"]<br>(12:00 - 16:00)</td>
                     }
                     else
                     {
                         <td>
-                            <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal" data-id=@slot.ReservationId>@volunteer.FirstName @volunteer.LastName</button>
+                            <button type="button" class="btn-block btn btn-danger" data-toggle="modal" data-target="#myModal" data-id=@slot.ReservationId>@volunteer.FirstName<br>@volunteer.LastName</button>
                         </td>      
                     }
                 }

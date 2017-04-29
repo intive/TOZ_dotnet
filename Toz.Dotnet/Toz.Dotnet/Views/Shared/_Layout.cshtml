@@ -41,8 +41,9 @@
                     <li><a asp-area="" asp-controller="Users" asp-action="Index">@Localizer["Users"]</a></li>
                     <li><a asp-area="" asp-controller="Schedule" asp-action="Index">@Localizer["Schedule"]</a></li>
                     <li><a asp-area="" asp-controller="Login" asp-action="Index">@Localizer["Login"]</a></li>
+                    <li><a asp-area="" asp-controller="Organization" asp-action="Info">@Localizer["OrganizationInfo"]</a></li>
                 </ul>
-                <ul class="nav" style="text-align: right;">
+                <ul hidden class="nav" style="text-align: right;">
                         <form id="selectLanguage" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@Context.Request.Path" method="post">
                             <input type="hidden" name="culture" value="pl"/>
                             <a class="flag flag-pl" href="#" onclick="$('input[name=culture]').val('pl');$(this).closest('form').submit();"></a>

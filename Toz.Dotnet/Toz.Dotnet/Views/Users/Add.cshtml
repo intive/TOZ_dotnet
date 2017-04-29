@@ -3,11 +3,11 @@
 @model Toz.Dotnet.Models.User
 @inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = @Localizer["Title"];
+    ViewData["Title"] = @Localizer["PageTitle"];
 }
 
 <body>
-    <h2>@Localizer["Title"]</h2>
+    <h2>@Localizer["PageTitle"]</h2>
     <hr>
 
     <div class="NewUser">
@@ -56,10 +56,10 @@
                 <tr>
                     <td class="col-md-3"><label>@Localizer["Purpose"]:</label></td>
                     <td class="col-md-9">
-                        <select asp-for="Purpose" class="form-control" id="UserType">
-                            <option value="0">@Localizer["Administrator"]</option>
-                            <option value="1">@Localizer["Volunteer"]</option>
-                            <option value="2">@Localizer["TemporaryHome"]</option>
+                        <select asp-for="Purpose" class="form-control" id="UserType">                        
+                            <option value="0">@Localizer["Volunteer"]</option>
+                            <option value="1">@Localizer["TemporaryHome"]</option>
+                            <option value="2">@Localizer["Administrator"]</option>
                         </select>
                     </td>
                 </tr>
