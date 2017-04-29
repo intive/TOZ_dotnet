@@ -11,16 +11,9 @@ namespace Toz.Dotnet.Core.Services
     {
         public Image DownloadImage(string address)
         {
-            try
-            {
-                HttpClient httpClient = new HttpClient();
-                var imgBytes = httpClient.GetStreamAsync(address);
-                return Image.FromStream(imgBytes.Result);
-            }
-            catch (ArgumentNullException)
-            {
-                return null;
-            }
+            HttpClient httpClient = new HttpClient();
+            var imgBytes = httpClient.GetStreamAsync(address);
+            return Image.FromStream(imgBytes.Result);
         }
 
         public bool UploadImage(Image image)

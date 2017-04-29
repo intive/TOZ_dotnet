@@ -36,7 +36,7 @@
                     <td>@item.PublishingTime</td>
                 }
                 <td style="word-wrap:break-word;"><div style="width:200px;overflow:auto">@item.Title</div></td>
-                <td style="width:64px;height:64px;"><img src="http://img.cda.pl/obr/thumbs/6adb80c33f5b55df46a481b57a61c64c.png_oooooooooo_273x.png" style="width:64px;height:64px;"/></td>
+                <td><img src="data:image;base64,@Convert.ToBase64String(item.Photo)" alt="Pet photo"/></td>
                 <td class="overflow-ellipsis">@item.Body</td>
 
                 @if(@item.Status == NewsStatus.UNRELEASED)

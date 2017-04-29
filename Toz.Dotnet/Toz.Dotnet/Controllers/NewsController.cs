@@ -16,14 +16,16 @@ namespace Toz.Dotnet.Controllers
 {
     public class NewsController : Controller
     {
+        private IFilesManagementService _filesManagementService;
         private INewsManagementService _newsManagementService;
 	    private readonly IStringLocalizer<NewsController> _localizer;
         private readonly AppSettings _appSettings;
         private static byte[] _lastAcceptPhoto;
         private string _validationPhotoAlert;
 
-        public NewsController(INewsManagementService newsManagementService, IStringLocalizer<NewsController> localizer, IOptions<AppSettings> appSettings)
+        public NewsController(IFilesManagementService filesManagementService, INewsManagementService newsManagementService, IStringLocalizer<NewsController> localizer, IOptions<AppSettings> appSettings)
         {
+            _filesManagementService = filesManagementService;
             _newsManagementService = newsManagementService;
 			_localizer = localizer;
             _appSettings = appSettings.Value;
@@ -33,7 +35,9 @@ namespace Toz.Dotnet.Controllers
         {
             List<News> news = await _newsManagementService.GetAllNews();
             //todo add photo if will be avaialbe on backends
-            news.ForEach(n=> n.Photo = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 }); // temporary
+            var img = _filesManagementService.DownloadImage(@"http://img.cda.pl/obr/thumbs/6adb80c33f5b55df46a481b57a61c64c.png_oooooooooo_273x.png");
+            var thumbnail = _filesManagementService.GetThumbnail(img);
+            news.ForEach(n => n.Photo = _filesManagementService.ImageToByteArray(thumbnail)); // temporary
             return View(news.OrderByDescending(x => x.PublishingTime ?? DateTime.MaxValue).ThenByDescending(x => x.Title).ToList());
         }
 
