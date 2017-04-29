@@ -59,7 +59,7 @@
                     <td>@Localizer["Unidentified"]</td>
                 }
 
-                <td style="width:64px;height:64px;"><img src="data:image;base64,@Convert.ToBase64String(item.Photo)" @*style="width: 64px; height: 64px;"*@/></td>
+                <td><img src="data:image;base64,@Convert.ToBase64String(item.Photo)" alt="Pet photo"/></td>
                 <td>@item.Description</td>
                 <td>@item.Address</td>
                 <td>@item.AddingTime</td>

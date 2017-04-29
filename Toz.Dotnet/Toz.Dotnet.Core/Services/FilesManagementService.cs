@@ -1,11 +1,9 @@
 using System;
 using System.IO;
 using System.Net.Http;
-using ImageSharp;
-using ImageSharp.PixelFormats;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models.Images;
-using Image = System.Drawing.Image;
+using System.Drawing;
 
 namespace Toz.Dotnet.Core.Services
 {
@@ -13,9 +11,16 @@ namespace Toz.Dotnet.Core.Services
     {
         public Image DownloadImage(string address)
         {
-            HttpClient httpClient = new HttpClient();
-            var imgBytes = httpClient.GetStreamAsync(address);
-            return Image.FromStream(imgBytes.Result);
+            try
+            {
+                HttpClient httpClient = new HttpClient();
+                var imgBytes = httpClient.GetStreamAsync(address);
+                return Image.FromStream(imgBytes.Result);
+            }
+            catch (ArgumentNullException)
+            {
+                return null;
+            }
         }
 
         public bool UploadImage(Image image)
@@ -24,13 +29,7 @@ namespace Toz.Dotnet.Core.Services
             return true;
         }
 
-        public Image<Rgba32> GetThumbnail(Image image) // ImageSharp library
-        {
-            var img = ImageSharp.Image.Load(Configuration.Default, ImageToByteArray(image));
-            return img.Resize(Thumbnails.Width, Thumbnails.Height);
-        }
-
-        public Image GetThumbnail2(Image image) // Just System.Drawing
+        public Image GetThumbnail(Image image)
         {
             var thumbnail = image.GetThumbnailImage(Thumbnails.Width, Thumbnails.Height, () => true, new IntPtr());
             return thumbnail;

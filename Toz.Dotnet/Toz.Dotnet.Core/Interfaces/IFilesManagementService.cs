@@ -1,15 +1,12 @@
-using ImageSharp;
-using ImageSharp.PixelFormats;
-using Image = System.Drawing.Image;
+using System.Drawing;
 
 namespace Toz.Dotnet.Core.Interfaces
 {
     public interface IFilesManagementService
     {
         bool UploadImage(Image image);
-        Image DownloadImage(string jsonAddress);
-        Image<Rgba32> GetThumbnail(Image image);
-        Image GetThumbnail2(Image image);
+        Image DownloadImage(string address);
+        Image GetThumbnail(Image image);
         byte[] ImageToByteArray(Image image);
         Image ByteArrayToImage(byte[] bytes);
     }
