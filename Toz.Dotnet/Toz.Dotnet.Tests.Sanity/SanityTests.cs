@@ -13,6 +13,7 @@ namespace Toz.Dotnet.Tests.Sanity
         private IPetsManagementService _petsManagementService;
         private INewsManagementService _newsManagementService;
         private IUsersManagementService _userManagementService;
+        private IFilesManagementService _filesManagementService;
         private User _testUser;
 
         public SanityTests()
@@ -20,10 +21,11 @@ namespace Toz.Dotnet.Tests.Sanity
             _petsManagementService = ServiceProvider.Instance.Resolve<IPetsManagementService>();
             _newsManagementService = ServiceProvider.Instance.Resolve<INewsManagementService>();
             _userManagementService = ServiceProvider.Instance.Resolve<IUsersManagementService>();
+            _filesManagementService = ServiceProvider.Instance.Resolve<IFilesManagementService>();
 
             _testUser = new User()
             {
-                Id = System.Guid.NewGuid().ToString(),
+                Id = Guid.NewGuid().ToString(),
                 FirstName = "Test",
                 LastName = "User",
                 PhoneNumber = "123456789",
@@ -35,7 +37,7 @@ namespace Toz.Dotnet.Tests.Sanity
             _newsManagementService.RequestUri = RequestUriHelper.NewsUri;
             _userManagementService.RequestUri = RequestUriHelper.UsersUri;
         }
-        
+
 
         [Fact]
         public void PetsFunctionalityTest()
@@ -45,7 +47,7 @@ namespace Toz.Dotnet.Tests.Sanity
             var pets = _petsManagementService.GetAllPets().Result;
             Assert.NotNull(pets);
             //Get specified pet
-            if(pets.Any())
+            if (pets.Any())
             {
                 var firstPet = pets.FirstOrDefault();
                 var pet = _petsManagementService.GetPet(firstPet.Id).Result;
@@ -72,7 +74,7 @@ namespace Toz.Dotnet.Tests.Sanity
             var news = _newsManagementService.GetAllNews().Result;
             Assert.NotNull(news);
             //Get specified news
-            if(news.Any())
+            if (news.Any())
             {
                 var firstNews = news.FirstOrDefault();
                 var singleNews = _newsManagementService.GetNews(firstNews.Id).Result;
@@ -95,27 +97,42 @@ namespace Toz.Dotnet.Tests.Sanity
         //public void UsersFunctionalityTest()
         //{
         //    Assert.True(!string.IsNullOrEmpty(_userManagementService.RequestUri));
-        //    //Get all news
+        //    //Get all users
         //    var users = _userManagementService.GetAllUsers().Result;
         //    Assert.NotNull(users);
-        //    //Get specified news
+        //    //Get specified user
         //    if (users.Any())
         //    {
         //        var firstUser = users.FirstOrDefault();
         //        var singleUser = _userManagementService.GetUser(firstUser.Id).Result;
         //        Assert.NotNull(singleUser);
         //        Assert.Null(_userManagementService.GetUser("notExistingIDThatIsNotID--1").Result);
-        //        //Update news
+        //        //Update user
         //        string userFirsName = firstUser.FirstName;
         //        firstUser.FirstName = "SanityTestFirstName";
         //        Assert.True(_userManagementService.UpdateUser(firstUser).Result);
         //        firstUser.FirstName = userFirsName;
         //        Assert.True(_userManagementService.UpdateUser(firstUser).Result);
         //    }
-        //    //Create news
+        //    //Create user
         //    Assert.True(_userManagementService.CreateUser(_testUser).Result);
-        //    //Delete news
+        //    //Delete user
         //    Assert.True(_userManagementService.DeleteUser(_testUser).Result);
         //}
+
+        [Fact]
+        public void FilesFunctionalityTest()
+        {
+            //Download image
+            var img = _filesManagementService.DownloadImage(@"http://i.pinger.pl/pgr167/7dc36d63001e9eeb4f01daf3/kot%20ze%20shreka9.jpg");
+            Assert.NotNull(img);
+            //Get thumbnail
+            Assert.NotNull(_filesManagementService.GetThumbnail(img));
+            //Image to byte array
+            Assert.NotNull(_filesManagementService.ImageToByteArray(img));
+            //Byte array to image
+            var imgBytes = _filesManagementService.ImageToByteArray(img);
+            Assert.NotNull(_filesManagementService.ByteArrayToImage(imgBytes));
+        }
     }
 }
