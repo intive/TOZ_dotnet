@@ -10,6 +10,12 @@ namespace Toz.Dotnet.Core.Services
     public class RestService : IRestService
     {
         private const string RestMediaType = "application/json";
+        private readonly IAuthService _authService; // TEMPORARY
+
+        public RestService(IAuthService authService)
+        {
+            _authService = authService; // TEMPORARY
+        }
 
         public async Task<bool> ExecuteDeleteAction<T>(string address, T obj, CancellationToken cancelationToken = default(CancellationToken))
         {
@@ -22,6 +28,12 @@ namespace Toz.Dotnet.Core.Services
             {
                 try
                 {
+                    // --> TEMPORARY
+                    if (_authService.IsAuth)
+                    {
+                        _authService.AddTokenToHttpClient(client);
+                    }
+                    // <--
                     var response = await client.DeleteAsync(address, cancelationToken);
                     response.EnsureSuccessStatusCode();
                     return true;
@@ -39,6 +51,12 @@ namespace Toz.Dotnet.Core.Services
             {
                 try
                 {
+                    // --> TEMPORARY
+                    if (_authService.IsAuth)
+                    {
+                        _authService.AddTokenToHttpClient(client);
+                    }
+                    // <--
                     var response = await client.GetAsync(address, cancelationToken);
                     response.EnsureSuccessStatusCode();
                     var stringResponse = await response.Content.ReadAsStringAsync();
@@ -70,6 +88,12 @@ namespace Toz.Dotnet.Core.Services
             {
                 try
                 {
+                    // --> TEMPORARY
+                    if (_authService.IsAuth)
+                    {
+                        _authService.AddTokenToHttpClient(client);
+                    }
+                    // <--
                     var response = await client.PostAsync(address, httpContent, cancelationToken);
                     response.EnsureSuccessStatusCode();
                     return true;
@@ -97,6 +121,12 @@ namespace Toz.Dotnet.Core.Services
             {
                 try
                 {
+                    // --> TEMPORARY
+                    if (_authService.IsAuth)
+                    {
+                        _authService.AddTokenToHttpClient(client);
+                    }
+                    // <--
                     var response = await client.PutAsync(address, httpContent, cancelationToken);
                     response.EnsureSuccessStatusCode();
                     var stringResponse = await response.Content.ReadAsStringAsync();
