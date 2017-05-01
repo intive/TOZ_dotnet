@@ -96,6 +96,7 @@ namespace Toz.Dotnet.Core.Services
                     // <--
                     var response = await client.PostAsync(address, httpContent, cancelationToken);
                     response.EnsureSuccessStatusCode();
+
                     return true;
                 }
                 catch(HttpRequestException)

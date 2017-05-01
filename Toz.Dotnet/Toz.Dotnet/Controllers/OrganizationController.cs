@@ -45,8 +45,7 @@ namespace Toz.Dotnet.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateEdit(
-            Organization organization, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateEdit(Organization organization, CancellationToken cancellationToken)
         {
             if (organization != null && ModelState.IsValid)
             {

@@ -62,6 +62,24 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bank account number must be exactly 26 digits.
+        /// </summary>
+        public static string BankAccountLength {
+            get {
+                return ResourceManager.GetString("BankAccountLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bank account number is invaild.
+        /// </summary>
+        public static string BankAccountValidationMessage {
+            get {
+                return ResourceManager.GetString("BankAccountValidationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid Email Address.
         /// </summary>
         public static string EmailValidationMessage {
