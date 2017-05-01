@@ -21,7 +21,7 @@ namespace Toz.Dotnet.Controllers
             // --> TEMPORARY
             for(int i = 0; i < 5; i++)
             {
-                await _authService.SignIn(new Models.Login() { email = $"TOZ_user{i}.email@gmail.com", password = $"TOZ_name_{i}" });
+                await _authService.SignIn(new Models.Login() { Email = $"TOZ_user{i}.email@gmail.com", Password = $"TOZ_name_{i}" });
                 if(_authService.IsAuth)
                 {
                     ViewData["Auth"] = "Zalogowano!!!";

@@ -43,7 +43,7 @@ namespace Toz.Dotnet.Core.Services
                     string responseString = await response.Content.ReadAsStringAsync();
                     _token = Newtonsoft.Json.JsonConvert.DeserializeObject<JwtToken>(responseString);
                     IsAuth = true;
-                    ActiveUser = login.email;
+                    ActiveUser = login.Email;
                 }
                 catch(HttpRequestException)
                 {
