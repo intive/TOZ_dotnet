@@ -11,5 +11,6 @@ namespace Toz.Dotnet.Tests.Helpers
         public static string NewsUri { get; } = "https://intense-badlands-80645.herokuapp.com/news";
         public static string UsersUri { get; } = "https://intense-badlands-80645.herokuapp.com/users";
         public static string OrganizationInfoUri { get; } = "https://intense-badlands-80645.herokuapp.com/organization/info";
+        public static string JwtTokenUrl { get; } = "https://intense-badlands-80645.herokuapp.com/tokens/acquire";
     }
 }

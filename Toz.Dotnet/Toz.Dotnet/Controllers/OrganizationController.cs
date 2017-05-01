@@ -49,6 +49,7 @@ namespace Toz.Dotnet.Controllers
         {
             if (organization != null && ModelState.IsValid)
             {
+                organization.Contact.Website = new UriBuilder(organization.Contact.Website).Uri.ToString();
                 if (await _organizationManagementService.UpdateOrCreateInfo(organization, cancellationToken))
                 {
                     return RedirectToAction("Info", new RouteValueDictionary(new { edit = false }));

@@ -12,5 +12,6 @@ namespace Toz.Dotnet.Core.Interfaces
         void SighOut();
         void AddTokenToHttpClient(HttpClient httpClient);
         string ActiveUser { get; }
+        string RequestUri { get; set; }
     }
 }

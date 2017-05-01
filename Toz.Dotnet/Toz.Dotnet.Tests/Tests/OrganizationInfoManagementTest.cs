@@ -12,11 +12,14 @@ namespace Toz.Dotnet.Tests.Tests
     public class OrganizationInfoManagementTest
     {
         private readonly IOrganizationManagementService _organizationInfoManagementService;
+        private readonly IAuthService _authService;
 
         public OrganizationInfoManagementTest()
         {
             _organizationInfoManagementService = ServiceProvider.Instance.Resolve<IOrganizationManagementService>();
+            _authService = ServiceProvider.Instance.Resolve<IAuthService>();
             _organizationInfoManagementService.RequestUri = RequestUriHelper.OrganizationInfoUri;
+            _authService.RequestUri = RequestUriHelper.JwtTokenUrl;
         }
 
         [Fact]
@@ -37,10 +40,26 @@ namespace Toz.Dotnet.Tests.Tests
             }
            
         }
+        [Fact]
+        public async void TestAuthentication()
+        {
+            // --> TEMPORARY
+            for (int i = 0; i < 5; i++)
+            {
+                await _authService.SignIn(new Models.Login() { Email = $"TOZ_user{i}.email@gmail.com", Password = $"TOZ_name_{i}" });
+                if (_authService.IsAuth)
+                {
+                    break;
+                }
+            }
+            Assert.True(_authService.IsAuth);
+            _authService.SighOut();
+        }
 
         [Fact]
-        public void TestOfUpdatingOrganizationInfo()
+        public async void TestOfUpdatingOrganizationInfo()
         {
+            
             var originalOrganizationInfo = _organizationInfoManagementService.GetOrganizationInfo().Result;
 
             var customOrganizationInfo = new Organization()
@@ -58,25 +77,37 @@ namespace Toz.Dotnet.Tests.Tests
                 BankAccount = new BankAccount()
                 {
                     BankName = "TestBankName",
-                    Number = "1235121231231233123"
+                    Number = "61109010140000071219812874"
                 },
                 Contact = new Contact()
                 {
                     Email = "testEmail@test.com",
-                    Fax = "1234",
-                    Phone = "123412341",
-                    Website = "testwebsite.com"
+                    Fax = "123456789",
+                    Phone = "123456789",
+                    Website = "http://testwebsite.com"
                 }
             };
-
-            var firstUpdateResult = _organizationInfoManagementService.UpdateOrCreateInfo(customOrganizationInfo).Result;
-            Assert.True(firstUpdateResult);
-
-            if (originalOrganizationInfo != null)
+            // --> TEMPORARY
+            for (int i = 0; i < 5; i++)
             {
-                var secondUpdateResult = _organizationInfoManagementService.UpdateOrCreateInfo(originalOrganizationInfo).Result;
-                Assert.True(secondUpdateResult);
+                await _authService.SignIn(new Models.Login() { Email = $"TOZ_user{i}.email@gmail.com", Password = $"TOZ_name_{i}" });
+                if (_authService.IsAuth)
+                {
+                    break;
+                }
             }
+            if (_authService.IsAuth)
+            {
+                var firstUpdateResult = _organizationInfoManagementService.UpdateOrCreateInfo(customOrganizationInfo).Result;
+                Assert.True(firstUpdateResult);
+
+                if (originalOrganizationInfo != null)
+                {
+                    var secondUpdateResult = _organizationInfoManagementService.UpdateOrCreateInfo(originalOrganizationInfo).Result;
+                    Assert.True(secondUpdateResult);
+                }
+            }
+
             
         }
     }
