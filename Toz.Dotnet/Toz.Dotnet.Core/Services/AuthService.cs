@@ -43,7 +43,7 @@ namespace Toz.Dotnet.Core.Services
                     string responseString = await response.Content.ReadAsStringAsync();
                     _token = Newtonsoft.Json.JsonConvert.DeserializeObject<JwtToken>(responseString);
                     IsAuth = true;
-                    ActiveUser = login.email;
+                    ActiveUser = login.Email;
                 }
                 catch(HttpRequestException)
                 {
@@ -60,7 +60,7 @@ namespace Toz.Dotnet.Core.Services
 
         public void AddTokenToHttpClient(HttpClient httpClient)
         {
-            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_token.jwt}");
+            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_token.JWT}");
         }
     }
 }
