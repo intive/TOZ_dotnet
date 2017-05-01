@@ -22,7 +22,6 @@
             <th>@Localizer["ShortBody"]</th>
             <th></th>
             <th></th>
-            <th></th>
         </tr>
         @foreach (var item in Model)
         {
@@ -35,14 +34,14 @@
                 {
                     <td>@item.PublishingTime</td>
                 }
-                <td style="word-wrap:break-word;"><div style="width:200px;overflow:auto">@item.Title</div></td>
+                <td style="word-wrap:break-word;"><div style="width:200px;o verflow:auto">@item.Title</div></td>
                 <td style="width:64px;height:64px;"><img src="http://img.cda.pl/obr/thumbs/6adb80c33f5b55df46a481b57a61c64c.png_oooooooooo_273x.png" style="width:64px;height:64px;"/></td>
                 <td class="overflow-ellipsis">@item.Body</td>
 
                 @if(@item.Status == NewsStatus.UNRELEASED)
                 {
                     <td>
-                        <div class="unreleased"><div class="glyphicon glyphicon-exclamation-sign"></div>
+                        <div class="unreleased pull-right"><div class="glyphicon glyphicon-exclamation-sign"></div>
                             @Localizer["Unreleased"]
                         </div>
                     </td>
@@ -50,7 +49,7 @@
                 else if(@item.Status == NewsStatus.ARCHIVED)
                 {
                     <td>
-                        <div class="archived"><div class="glyphicon glyphicon-exclamation-sign"></div>
+                        <div class="archived pull-right"><div class="glyphicon glyphicon-exclamation-sign"></div>
                             @Localizer["Archived"]
                         </div>
                     </td>
@@ -59,7 +58,6 @@
                 {
                     <td></td>
                 }
-                <!--<td>@Html.ActionLink(@Localizer["Details"].Value, "Details", "News", new { id = item.Id }, new { @class = "btn btn-primary btn-block"}) </td>-->
                 <td>@Html.ActionLink(@Localizer["Edit"].Value, "Edit", "News", new{ id = item.Id }, new { @class = "btn btn-primary btn-block"}) </td>
             </tr>
         }
