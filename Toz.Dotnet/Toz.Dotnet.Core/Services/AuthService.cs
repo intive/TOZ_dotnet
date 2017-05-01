@@ -62,7 +62,7 @@ namespace Toz.Dotnet.Core.Services
 
         public void AddTokenToHttpClient(HttpClient httpClient)
         {
-            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_token.jwt}");
+            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_token.JWT}");
         }
     }
 }

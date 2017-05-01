@@ -117,8 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BankAccountLength" xml:space="preserve">
+    <value>Bank account number must be exactly 26 digits</value>
+  </data>
+  <data name="BankAccountValidationMessage" xml:space="preserve">
+    <value>Bank account number is invaild</value>
+  </data>
+  <data name="EmailValidationMessage" xml:space="preserve">
+    <value>Invalid Email Address</value>
+  </data>
   <data name="EmptyField" xml:space="preserve">
     <value>You can't leave this empty.</value>
+  </data>
+  <data name="InvaildPhoneNumber" xml:space="preserve">
+    <value>Invalid phone number</value>
   </data>
   <data name="MaxLength" xml:space="preserve">
     <value>The maximum length is {1} characters.</value>
@@ -126,25 +138,16 @@
   <data name="NameLetters" xml:space="preserve">
     <value>The name can only consist of letters.</value>
   </data>
-  <data name="PetTypeUndefined" xml:space="preserve">
-    <value>Select a pet type.</value>
+  <data name="OnlyDigits" xml:space="preserve">
+    <value>This field can only consist of digits.</value>
   </data>
   <data name="PetSexUndefined" xml:space="preserve">
     <value>Select a pet sex.</value>
   </data>
+  <data name="PetTypeUndefined" xml:space="preserve">
+    <value>Select a pet type.</value>
+  </data>
   <data name="TypeUndefined" xml:space="preserve">
     <value>Select a user type.</value>
-  </data>
-  <data name="OnlyDigits" xml:space="preserve">
-    <value>This field can only consist of digits.</value>
-  </data>
-  <data name="EmailValidationMessage" xml:space="preserve">
-    <value>Invalid Email Address</value>
-  </data>
-  <data name="BankAccountLength" xml:space="preserve">
-    <value>Bank account number must be exactly 26 digits</value>
-  </data>
-  <data name="BankAccountValidationMessage" xml:space="preserve">
-    <value>Bank account number is invaild</value>
   </data>
 </root>

@@ -11,7 +11,7 @@
 <div class="table-responsive">
     <div class="panel panel-default">
         <div class="panel-body">
-            <td>@Html.ActionLink(@Localizer["Add"].Value, "Add", "News", null, new { @style = "width: 120px;", @class = "btn btn-primary btn-block"}) </td>
+            @Html.ActionLink(@Localizer["Add"].Value, "Add", "News", null, new { @style = "width: 120px;", @class = "btn btn-primary btn-block"})
         </div>
     </div>
     <table class="table">
@@ -20,7 +20,6 @@
             <th>@Localizer["Title"]</th>
             <th>@Localizer["Photo"]</th>
             <th>@Localizer["ShortBody"]</th>
-            <th></th>
             <th></th>
             <th></th>
         </tr>
@@ -42,7 +41,7 @@
                 @if(@item.Status == NewsStatus.UNRELEASED)
                 {
                     <td>
-                        <div class="unreleased"><div class="glyphicon glyphicon-exclamation-sign"></div>
+                        <div class="unreleased pull-right"><div class="glyphicon glyphicon-exclamation-sign"></div>
                             @Localizer["Unreleased"]
                         </div>
                     </td>
@@ -50,7 +49,7 @@
                 else if(@item.Status == NewsStatus.ARCHIVED)
                 {
                     <td>
-                        <div class="archived"><div class="glyphicon glyphicon-exclamation-sign"></div>
+                        <div class="archived pull-right"><div class="glyphicon glyphicon-exclamation-sign"></div>
                             @Localizer["Archived"]
                         </div>
                     </td>
@@ -59,7 +58,6 @@
                 {
                     <td></td>
                 }
-                <!--<td>@Html.ActionLink(@Localizer["Details"].Value, "Details", "News", new { id = item.Id }, new { @class = "btn btn-primary btn-block"}) </td>-->
                 <td>@Html.ActionLink(@Localizer["Edit"].Value, "Edit", "News", new{ id = item.Id }, new { @class = "btn btn-primary btn-block"}) </td>
             </tr>
         }

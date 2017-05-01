@@ -51,7 +51,7 @@ namespace Toz.Dotnet.Controllers
                     return BadRequest();
                 }
             }
-            return RedirectToAction("Index");
+            return View(user);
         }
     }
 }

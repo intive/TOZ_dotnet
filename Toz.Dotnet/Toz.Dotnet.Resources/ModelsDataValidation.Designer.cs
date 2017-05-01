@@ -98,6 +98,15 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid phone number.
+        /// </summary>
+        public static string InvaildPhoneNumber {
+            get {
+                return ResourceManager.GetString("InvaildPhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The maximum length is {1} characters..
         /// </summary>
         public static string MaxLength {
