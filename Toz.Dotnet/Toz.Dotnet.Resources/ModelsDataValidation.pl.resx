@@ -123,7 +123,7 @@
   <data name="MaxLength" xml:space="preserve">
     <value>Maksymalna długość to {1} znaków.</value>
   </data>
-  <data name="NameLetters" xml:space="preserve">
+  <data name="FirstnameLetters" xml:space="preserve">
     <value>Imię może zawierać tylko litery.</value>
   </data>
   <data name="PetTypeUndefined" xml:space="preserve">
@@ -146,5 +146,8 @@
   </data>
   <data name="BankAccountValidationMessage" xml:space="preserve">
     <value>Nieprawidłowy numer bankowy</value>
+  </data>
+  <data name="LastnameLetters" xml:space="preserve">
+    <value>Nazwisko może zawierać tylko litery.</value>
   </data>
 </root>
