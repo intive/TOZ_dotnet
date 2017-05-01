@@ -138,4 +138,7 @@
   <data name="OnlyDigits" xml:space="preserve">
     <value>To pole może zawierać tylko cyfry.</value>
   </data>
+  <data name="InvaildPhoneNumber" xml:space="preserve">
+    <value>Nieprawidłowy numer telefonu</value>
+  </data>
 </root>
