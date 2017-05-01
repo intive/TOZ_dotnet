@@ -150,22 +150,7 @@
   <data name="TypeUndefined" xml:space="preserve">
     <value>Wybierz typ użytkownika.</value>
   </data>
-<<<<<<< HEAD
-  <data name="OnlyDigits" xml:space="preserve">
-    <value>To pole może zawierać tylko cyfry.</value>
-  </data>
-  <data name="EmailValidationMessage" xml:space="preserve">
-    <value>Błędny adres email</value>
-  </data>
-  <data name="BankAccountLength" xml:space="preserve">
-    <value>Numer bankowy musi składać się dokładnie z 26 cyfr</value>
-  </data>
-  <data name="BankAccountValidationMessage" xml:space="preserve">
-    <value>Nieprawidłowy numer bankowy</value>
-  </data>
   <data name="LastnameLetters" xml:space="preserve">
     <value>Nazwisko może zawierać tylko litery.</value>
   </data>
-=======
->>>>>>> 5a4a5ae07cc9e64e9ea10897094f2e508fb1f9cb
 </root>
