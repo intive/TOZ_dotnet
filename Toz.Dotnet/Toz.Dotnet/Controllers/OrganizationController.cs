@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 using System.Threading;
 using Toz.Dotnet.Models.OrganizationSubtypes;
 using System;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Routing;
+using Toz.Dotnet.Extensions;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -17,58 +21,26 @@ namespace Toz.Dotnet.Controllers
         private readonly IStringLocalizer<OrganizationController> _localizer;
         private readonly AppSettings _appSettings;
 
-        //public OrganizationController(IOrganizationManagementService organizationManagementService, IStringLocalizer<OrganizationController> localizer, IOptions<AppSettings> appSettings)
-        //{
-        //    _organizationManagementService = organizationManagementService;
-        //    _localizer = localizer;
-        //    _appSettings = appSettings.Value;
-        //}
-
-        public OrganizationController(IStringLocalizer<OrganizationController> localizer, IOptions<AppSettings> appSettings)
+        public OrganizationController(IOrganizationManagementService organizationManagementService, IStringLocalizer<OrganizationController> localizer, IOptions<AppSettings> appSettings)
         {
+            _organizationManagementService = organizationManagementService;
             _localizer = localizer;
             _appSettings = appSettings.Value;
         }
 
+
         [HttpGet]
-        public IActionResult Info(bool edit = false)
+        public async Task<IActionResult> Info(bool edit, Organization organizationInstance = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             ViewData["EditMode"] = edit;
 
-            //return current organization info or null if not present
-            //var organization = await _organizationManagementService.GetOrganizationInfo();
-            Address a = new Address
+            var organizationInfo = await _organizationManagementService.GetOrganizationInfo(cancellationToken);
+            if (organizationInfo != null)
             {
-                Street = "Testowa",
-                HouseNumber = "25",
-                ApartmentNumber = "10",
-                PostCode = "71-353",
-                City = "Szczecin",
-                Country = "Polska"
-            };
-
-            Contact c = new Contact
-            {
-                Email = "toz@intive.com",
-                Phone = "123456789",
-                Fax = "123456789",
-                Website = "http://www.toz-szczecin.pl"
-            };
-
-            BankAccount b = new BankAccount
-            {
-                Number = "12345678901234567890123456",
-                BankName = "Bank Opieki nad Zwierzętami SA"
-            };
-
-            Organization organization = new Organization
-            {
-                Name = "Towarzystwo Opieki nad Zwięrzętami",
-                Address = a,
-                Contact = c,
-                BankAccount = b
-            };
-            return View(organization);
+                return View(organizationInfo);
+            }
+            ViewData["EditMode"] = false;
+            return View();
         }
 
         [HttpPost]
@@ -77,24 +49,16 @@ namespace Toz.Dotnet.Controllers
         {
             if (organization != null && ModelState.IsValid)
             {
-                if(await _organizationManagementService.GetOrganizationInfo() == null)
+                organization.Contact.Website = new UriBuilder(organization.Contact.Website).Uri.ToString();
+                if (await _organizationManagementService.UpdateOrCreateInfo(organization, cancellationToken))
                 {
-                    if (await _organizationManagementService.CreateOrganizationInfo(organization, cancellationToken))
-                    {
-                        return RedirectToAction("Info");
-                    }
-                    return BadRequest();
+                    return RedirectToAction("Info", new RouteValueDictionary(new { edit = false }));
                 }
-                else
-                {
-                    if (await _organizationManagementService.UpdateOrganizationInfo(organization, cancellationToken))
-                    {
-                        return RedirectToAction("Info");
-                    }
-                    return BadRequest();
-                }           
+                return BadRequest();       
             }
-            return RedirectToAction("Info", new { edit = true });
+
+            ViewData["EditMode"] = true;
+            return View("Info", organization);  
         }
     }
 }

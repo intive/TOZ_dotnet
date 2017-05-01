@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
-    <PackageReference Include="CoreCompat.Newtonsoft.Json" Version="9.0.2-beta001" />
   </ItemGroup>
 
   <ItemGroup>

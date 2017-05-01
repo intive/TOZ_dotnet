@@ -40,6 +40,10 @@ namespace Toz.Dotnet
             services.AddSingleton<INewsManagementService, NewsManagementService>();
             services.AddSingleton<IUsersManagementService, UsersManagementService>();
             services.AddSingleton<IScheduleManagementService, ScheduleManagementService>();
+            services.AddSingleton<IOrganizationManagementService, OrganizationManagementService>();
+
+            services.AddSession();
+            services.AddMemoryCache();
             services.AddSingleton<IAuthService, AuthService>(); // TEMPORARY
             //services.AddSingleton<IOrganizationManagementService, OrganizationManagementService>();
 
@@ -84,7 +88,7 @@ namespace Toz.Dotnet
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
+            app.UseSession();
             app.UseStaticFiles();
 
             var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();

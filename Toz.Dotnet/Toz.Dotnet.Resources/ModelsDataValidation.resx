@@ -138,4 +138,13 @@
   <data name="OnlyDigits" xml:space="preserve">
     <value>This field can only consist of digits.</value>
   </data>
+  <data name="EmailValidationMessage" xml:space="preserve">
+    <value>Invalid Email Address</value>
+  </data>
+  <data name="BankAccountLength" xml:space="preserve">
+    <value>Bank account number must be exactly 26 digits</value>
+  </data>
+  <data name="BankAccountValidationMessage" xml:space="preserve">
+    <value>Bank account number is invaild</value>
+  </data>
 </root>
