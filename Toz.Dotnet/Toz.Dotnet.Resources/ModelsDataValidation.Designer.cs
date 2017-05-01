@@ -98,7 +98,20 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
+<<<<<<< HEAD
         /// Wyszukuje zlokalizowany ciąg podobny do ciągu The firstname can only consist of letters..
+=======
+        ///   Looks up a localized string similar to Invalid phone number.
+        /// </summary>
+        public static string InvaildPhoneNumber {
+            get {
+                return ResourceManager.GetString("InvaildPhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum length is {1} characters..
+>>>>>>> 5a4a5ae07cc9e64e9ea10897094f2e508fb1f9cb
         /// </summary>
         public static string FirstnameLetters {
             get {
