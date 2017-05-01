@@ -10,5 +10,6 @@ namespace Toz.Dotnet.Resources.Configuration
         public string BackendUsersUrl { get; set; }
 		public string BackendScheduleUrl { get; set; }
         public string BackendOrganizationInfoUrl { get; set; }
+        public string BackendJwtUrl { get; set; }
     }
 }

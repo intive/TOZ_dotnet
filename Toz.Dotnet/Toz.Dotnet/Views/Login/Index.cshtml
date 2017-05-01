@@ -10,17 +10,17 @@
 <body>
     <h2>@Localizer["Title"]</h2>
     <hr>
-
-    <div class="Login">
+    <div>@ViewData["Auth"]</div>
+    <div hidden class="Login">
         <form asp-controller="Login" method="POST">
             <table class="forms" align="center">
                 <tr>
                     <td><label>@Localizer["Username"]</label></td>
-                    <td><input asp-for="Username" class="form-control" id="LoginUsername"></td>
+                    <td><input asp-for="email" class="form-control" id="LoginUsername"></td>
                 </tr>
                 <tr>
                     <td><label>@Localizer["Password"]</label></td>
-                    <td><input asp-for="Password" type="password" class="form-control" id="LoginPassword"></td>
+                    <td><input asp-for="password" type="password" class="form-control" id="LoginPassword"></td>
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center;">
@@ -31,4 +31,5 @@
             </table>
         </form>
     </div>
+
 </body>

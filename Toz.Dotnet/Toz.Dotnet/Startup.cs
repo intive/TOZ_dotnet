@@ -44,6 +44,8 @@ namespace Toz.Dotnet
 
             services.AddSession();
             services.AddMemoryCache();
+            services.AddSingleton<IAuthService, AuthService>(); // TEMPORARY
+            //services.AddSingleton<IOrganizationManagementService, OrganizationManagementService>();
 
             services.AddMvc()
                 .AddViewLocalization(

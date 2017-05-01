@@ -1,7 +1,9 @@
 ﻿@using Toz.Dotnet.Models.EnumTypes
 @using Microsoft.AspNetCore.Mvc.Localization
+@using Toz.Dotnet.Core.Interfaces
 
 @inject IViewLocalizer Localizer
+@inject IAuthService _iAuthService
 
 <!DOCTYPE html>
 <html>
@@ -36,14 +38,22 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Pets" asp-action="Index">@Localizer["PetList"]</a></li>
-                    <li><a asp-area="" asp-controller="News" asp-action="Index">@Localizer["NewsList"]</a></li>
-                    <li><a asp-area="" asp-controller="Users" asp-action="Index">@Localizer["Users"]</a></li>
-                    <li><a asp-area="" asp-controller="Schedule" asp-action="Index">@Localizer["Schedule"]</a></li>
-                    <li><a asp-area="" asp-controller="Login" asp-action="Index">@Localizer["Login"]</a></li>
-                    <li><a asp-area="" asp-controller="Organization" asp-action="Info">@Localizer["OrganizationInfo"]</a></li>
+                    @{
+                        if (_iAuthService.IsAuth == true)
+                        {
+                            <li><a asp-area="" asp-controller="Pets" asp-action="Index">@Localizer["PetList"]</a></li>
+                            <li><a asp-area="" asp-controller="News" asp-action="Index">@Localizer["NewsList"]</a></li>
+                            <li><a asp-area="" asp-controller="Users" asp-action="Index">@Localizer["Users"]</a></li>
+                            <li><a asp-area="" asp-controller="Schedule" asp-action="Index">@Localizer["Schedule"]</a></li>
+                            <li><a asp-area="" asp-controller="Organization" asp-action="Info">@Localizer["OrganizationInfo"]</a></li>
+                        }
+                        else
+                        {
+                            <li><a asp-area="" asp-controller="Login" asp-action="Index">@Localizer["Login"]</a></li>
+                        }
+                    }
                 </ul>
-                <ul class="nav" style="text-align: right;">
+                <ul hidden class="nav" style="text-align: right;">
                         <form id="selectLanguage" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@Context.Request.Path" method="post">
                             <input type="hidden" name="culture" value="pl"/>
                             <a class="flag flag-pl" href="#" onclick="$('input[name=culture]').val('pl');$(this).closest('form').submit();"></a>
