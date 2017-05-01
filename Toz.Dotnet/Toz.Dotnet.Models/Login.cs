@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using System;
+using Newtonsoft.Json;
 using Toz.Dotnet.Models.EnumTypes;
 
 namespace Toz.Dotnet.Models

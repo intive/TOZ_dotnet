@@ -17,11 +17,13 @@ namespace Toz.Dotnet.Core.Services
 
         public bool IsAuth { get; private set; }
         public string ActiveUser { get; private set; }
+        public string RequestUri { get; set; }
 
         public AuthService(IOptions<AppSettings> appsettings)
         {
             _appSettings = appsettings.Value;
             IsAuth = false;
+            RequestUri = _appSettings.BackendJwtUrl;
         }
 
         public async Task SignIn(Login login)
@@ -38,7 +40,7 @@ namespace Toz.Dotnet.Core.Services
             {
                 try
                 {
-                    var response = await client.PostAsync(_appSettings.BackendJwtUrl, httpContent);
+                    var response = await client.PostAsync(RequestUri, httpContent);
                     response.EnsureSuccessStatusCode();
                     string responseString = await response.Content.ReadAsStringAsync();
                     _token = Newtonsoft.Json.JsonConvert.DeserializeObject<JwtToken>(responseString);
