@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Toz.Dotnet.Resources;
 
 namespace Toz.Dotnet.Models.CustomValidationAttributes
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-    public sealed class BankAccountNumberAttribute : ValidationAttribute
+    public sealed class BankAccountNumberAttribute : ClientSideValidationAttributeBase
     {
         private const string PolandIbanPrefix = "PL";
 
@@ -54,6 +57,7 @@ namespace Toz.Dotnet.Models.CustomValidationAttributes
             }
             return false;
         }
- 
+
+        
     }
 }
