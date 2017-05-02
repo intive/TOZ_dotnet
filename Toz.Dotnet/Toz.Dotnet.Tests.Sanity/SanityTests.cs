@@ -5,28 +5,31 @@ using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.EnumTypes;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Toz.Dotnet.Tests.Sanity
 {
     public class SanityTests
     {
-        private IPetsManagementService _petsManagementService;
-        private INewsManagementService _newsManagementService;
-        private IUsersManagementService _userManagementService;
-        private IFilesManagementService _filesManagementService;
+        private readonly AuthService _authHelper;
+        private readonly IPetsManagementService _petsManagementService;
+        private readonly INewsManagementService _newsManagementService;
+        private readonly IUsersManagementService _userManagementService;
+        private readonly IFilesManagementService _filesManagementService;
         private User _testUser;
 
         public SanityTests()
         {
+            _authHelper = new AuthService();
             _petsManagementService = ServiceProvider.Instance.Resolve<IPetsManagementService>();
             _newsManagementService = ServiceProvider.Instance.Resolve<INewsManagementService>();
             _userManagementService = ServiceProvider.Instance.Resolve<IUsersManagementService>();
             _filesManagementService = ServiceProvider.Instance.Resolve<IFilesManagementService>();
 
-            _testUser = new User()
+            _testUser = new User
             {
                 Id = Guid.NewGuid().ToString(),
-                FirstName = "Test",
+                FirstName = "SanityTest",
                 LastName = "User",
                 PhoneNumber = "123456789",
                 Email = "test@test.com",
@@ -38,10 +41,13 @@ namespace Toz.Dotnet.Tests.Sanity
             _userManagementService.RequestUri = RequestUriHelper.UsersUri;
         }
 
-
         [Fact]
-        public void PetsFunctionalityTest()
+        public async void PetsFunctionalityTest()
         {
+            if (!_authHelper.AuthHelper.IsAuth)
+            {
+                Assert.True(await _authHelper.SignIn()); 
+            }
             Assert.True(!string.IsNullOrEmpty(_petsManagementService.RequestUri));
             //Get all pets
             var pets = _petsManagementService.GetAllPets().Result;
@@ -67,8 +73,12 @@ namespace Toz.Dotnet.Tests.Sanity
         }
 
         [Fact]
-        public void NewsFunctionalityTest()
+        public async void NewsFunctionalityTest()
         {
+            if (!_authHelper.AuthHelper.IsAuth)
+            {
+                Assert.True(await _authHelper.SignIn());
+            }
             Assert.True(!string.IsNullOrEmpty(_newsManagementService.RequestUri));
             //Get all news
             var news = _newsManagementService.GetAllNews().Result;
@@ -94,8 +104,12 @@ namespace Toz.Dotnet.Tests.Sanity
         }
 
         //[Fact]
-        //public void UsersFunctionalityTest()
+        //public async void UsersFunctionalityTest()
         //{
+        //    if (!_authHelper.AuthHelper.IsAuth)
+        //    {
+        //        Assert.True(await _authHelper.SignIn());
+        //    }
         //    Assert.True(!string.IsNullOrEmpty(_userManagementService.RequestUri));
         //    //Get all users
         //    var users = _userManagementService.GetAllUsers().Result;
@@ -121,8 +135,12 @@ namespace Toz.Dotnet.Tests.Sanity
         //}
 
         [Fact]
-        public void FilesFunctionalityTest()
+        public async void FilesFunctionalityTest()
         {
+            if (!_authHelper.AuthHelper.IsAuth)
+            {
+                Assert.True(await _authHelper.SignIn());
+            }
             //Download image
             var img = _filesManagementService.DownloadImage(@"http://i.pinger.pl/pgr167/7dc36d63001e9eeb4f01daf3/kot%20ze%20shreka9.jpg");
             Assert.NotNull(img);

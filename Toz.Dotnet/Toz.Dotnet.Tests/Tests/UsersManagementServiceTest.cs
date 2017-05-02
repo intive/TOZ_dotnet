@@ -1,22 +1,19 @@
-using Xunit;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Tests.Helpers;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.EnumTypes;
-using System.Linq;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace Toz.Dotnet.Tests.Tests
 {
     public class UserManagementTest
     {
-        private IUsersManagementService _userManagementService;
+        private readonly IUsersManagementService _userManagementService;
         private User _testUser;
         public UserManagementTest()
         {
             _userManagementService = ServiceProvider.Instance.Resolve<IUsersManagementService>();
-            _testUser = new User()
+
+            _testUser = new User
             {               
                 Id = System.Guid.NewGuid().ToString(),
                 FirstName = "Test",

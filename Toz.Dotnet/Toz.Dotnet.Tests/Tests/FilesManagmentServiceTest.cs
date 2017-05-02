@@ -8,7 +8,7 @@ namespace Toz.Dotnet.Tests.Tests
 {
     public class FilesManagementServiceTest
     {
-        private IFilesManagementService _filesManagementService;
+        private readonly IFilesManagementService _filesManagementService;
         private const string ImageAddress = @"http://i.pinger.pl/pgr167/7dc36d63001e9eeb4f01daf3/kot%20ze%20shreka9.jpg";
 
         public FilesManagementServiceTest()
