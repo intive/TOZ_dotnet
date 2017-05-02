@@ -9,20 +9,21 @@ using Toz.Dotnet.Resources.Configuration;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
-using System;
 
 namespace Toz.Dotnet.Controllers
 {
     public class PetsController : Controller
     {
+        private IFilesManagementService _filesManagementService;
         private IPetsManagementService _petsManagementService;
 		private readonly IStringLocalizer<PetsController> _localizer;
         private readonly AppSettings _appSettings;
         private static byte[] _lastAcceptPhoto;
         private string _validationPhotoAlert;
 		
-        public PetsController(IPetsManagementService petsManagementService, IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings)
+        public PetsController(IFilesManagementService filesManagementService, IPetsManagementService petsManagementService, IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings)
         {
+            _filesManagementService = filesManagementService;
             _petsManagementService = petsManagementService;
 			_localizer = localizer;
             _appSettings = appSettings.Value;
@@ -32,7 +33,9 @@ namespace Toz.Dotnet.Controllers
         {
             List<Pet> pets = await _petsManagementService.GetAllPets();
             //todo add photo if will be avaialbe on backends
-            pets.ForEach(pet=> pet.Photo = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 }); // temporary
+            var img = _filesManagementService.DownloadImage(@"http://i.pinger.pl/pgr167/7dc36d63001e9eeb4f01daf3/kot%20ze%20shreka9.jpg");
+            var thumbnail = _filesManagementService.GetThumbnail(img);
+            pets.ForEach(pet => pet.Photo = _filesManagementService.ImageToByteArray(thumbnail)); // temporary
             return View(pets.OrderByDescending(x => x.AddingTime).ThenByDescending(x => x.LastEditTime).ToList());
         }
 

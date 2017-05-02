@@ -4,8 +4,6 @@ using Toz.Dotnet.Tests.Helpers;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.EnumTypes;
 using System;
-using Microsoft.Extensions.Options;
-using Toz.Dotnet.Resources.Configuration;
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,14 +12,18 @@ namespace Toz.Dotnet.Tests.Tests
 {
     public class NewsManagementTest
     {
-        private INewsManagementService _newsManagementService;
-        private News _testingNews;
+        private readonly AuthService _authHelper;
+        private readonly INewsManagementService _newsManagementService;
+        private readonly News _testingNews;
+
         public NewsManagementTest()
         {
+            _authHelper = new AuthService();
             _newsManagementService = ServiceProvider.Instance.Resolve<INewsManagementService>();
-            _testingNews = new News()
+
+            _testingNews = new News
             {               
-                Id = System.Guid.NewGuid().ToString(),
+                Id = Guid.NewGuid().ToString(),
                 Title = "TestNews",
                 PublishingTime = DateTime.Now,
                 AddingTime = DateTime.Now,
@@ -47,21 +49,33 @@ namespace Toz.Dotnet.Tests.Tests
         }
 
         [Fact]
-        public void TestOfGettingAllNews()
+        public async void TestOfGettingAllNews()
         {
+            if (!_authHelper.AuthHelper.IsAuth)
+            {
+                Assert.True(await _authHelper.SignIn());
+            }
             Assert.NotNull(_newsManagementService.GetAllNews().Result);
         }
          
         [Fact]
-        public void TestOfCreatingNewNews()
+        public async void TestOfCreatingNewNews()
         {
+            if (!_authHelper.AuthHelper.IsAuth)
+            {
+                Assert.True(await _authHelper.SignIn());
+            }
             Assert.True(_newsManagementService.CreateNews(_testingNews).Result);
             _newsManagementService.DeleteNews(_testingNews).Wait();
         }
 
         [Fact]
-        public void TestOfDeletingSpecifiedNews()
+        public async void TestOfDeletingSpecifiedNews()
         {
+            if (!_authHelper.AuthHelper.IsAuth)
+            {
+                Assert.True(await _authHelper.SignIn());
+            }
             var news = _newsManagementService.GetAllNews().Result;
             if(news.Any())
             {
@@ -72,8 +86,12 @@ namespace Toz.Dotnet.Tests.Tests
         }
 
         [Fact]
-        public void TestOfGettingSpecifiedNews()
+        public async void TestOfGettingSpecifiedNews()
         {
+            if (!_authHelper.AuthHelper.IsAuth)
+            {
+                Assert.True(await _authHelper.SignIn());
+            }
             var news = _newsManagementService.GetAllNews().Result;
             if(news.Any())
             {
@@ -87,8 +105,12 @@ namespace Toz.Dotnet.Tests.Tests
 
         
         [Fact]
-        public void TestOfNewsUpdating()
+        public async void TestOfNewsUpdating()
         {
+            if (!_authHelper.AuthHelper.IsAuth)
+            {
+                Assert.True(await _authHelper.SignIn());
+            }
             var news = _newsManagementService.GetAllNews().Result;
             if(news.Any())
             {
@@ -116,7 +138,7 @@ namespace Toz.Dotnet.Tests.Tests
 
         private News CloneNews(News news)
         {
-            return new News()
+            return new News
             {
                 Id = news.Id,
                 Title = news.Title,

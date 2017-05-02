@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Toz.Dotnet.Core.Interfaces;
+﻿using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.OrganizationSubtypes;
 using Toz.Dotnet.Tests.Helpers;
@@ -11,15 +8,14 @@ namespace Toz.Dotnet.Tests.Tests
 {
     public class OrganizationInfoManagementTest
     {
+        private readonly AuthService _authHelper;
         private readonly IOrganizationManagementService _organizationInfoManagementService;
-        private readonly IAuthService _authService;
 
         public OrganizationInfoManagementTest()
         {
+            _authHelper = new AuthService();
             _organizationInfoManagementService = ServiceProvider.Instance.Resolve<IOrganizationManagementService>();
-            _authService = ServiceProvider.Instance.Resolve<IAuthService>();
             _organizationInfoManagementService.RequestUri = RequestUriHelper.OrganizationInfoUri;
-            _authService.RequestUri = RequestUriHelper.JwtTokenUrl;
         }
 
         [Fact]
@@ -38,34 +34,28 @@ namespace Toz.Dotnet.Tests.Tests
                 Assert.NotNull(organizationInfo.BankAccount);
                 Assert.NotNull(organizationInfo.Contact);
             }
-           
         }
+
         [Fact]
         public async void TestAuthentication()
         {
-            // --> TEMPORARY
-            for (int i = 0; i < 5; i++)
+            if (!_authHelper.AuthHelper.IsAuth)
             {
-                await _authService.SignIn(new Models.Login() { Email = $"TOZ_user{i}.email@gmail.com", Password = $"TOZ_name_{i}" });
-                if (_authService.IsAuth)
-                {
-                    break;
-                }
+                Assert.True(await _authHelper.SignIn());
             }
-            Assert.True(_authService.IsAuth);
-            _authService.SighOut();
+            Assert.True(_authHelper.AuthHelper.IsAuth);
+            _authHelper.AuthHelper.SighOut();
         }
 
         [Fact]
         public async void TestOfUpdatingOrganizationInfo()
         {
-            
             var originalOrganizationInfo = _organizationInfoManagementService.GetOrganizationInfo().Result;
 
-            var customOrganizationInfo = new Organization()
+            var customOrganizationInfo = new Organization
             {
                 Name = "Test",
-                Address = new Address()
+                Address = new Address
                 {
                     ApartmentNumber = "45",
                     City = "TestCity",
@@ -74,12 +64,14 @@ namespace Toz.Dotnet.Tests.Tests
                     PostCode = "73-220",
                     Street = "TestStreet"
                 },
-                BankAccount = new BankAccount()
+
+                BankAccount = new BankAccount
                 {
                     BankName = "TestBankName",
                     Number = "61109010140000071219812874"
                 },
-                Contact = new Contact()
+
+                Contact = new Contact
                 {
                     Email = "testEmail@test.com",
                     Fax = "123456789",
@@ -87,16 +79,12 @@ namespace Toz.Dotnet.Tests.Tests
                     Website = "http://testwebsite.com"
                 }
             };
-            // --> TEMPORARY
-            for (int i = 0; i < 5; i++)
+
+            if (!_authHelper.AuthHelper.IsAuth)
             {
-                await _authService.SignIn(new Models.Login() { Email = $"TOZ_user{i}.email@gmail.com", Password = $"TOZ_name_{i}" });
-                if (_authService.IsAuth)
-                {
-                    break;
-                }
+                Assert.True(await _authHelper.SignIn());
             }
-            if (_authService.IsAuth)
+            else
             {
                 var firstUpdateResult = _organizationInfoManagementService.UpdateOrCreateInfo(customOrganizationInfo).Result;
                 Assert.True(firstUpdateResult);

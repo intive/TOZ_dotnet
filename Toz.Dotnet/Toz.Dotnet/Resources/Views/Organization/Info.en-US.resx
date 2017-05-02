@@ -180,4 +180,7 @@
   <data name="General" xml:space="preserve">
     <value>General</value>
   </data>
+  <data name="OnlyDigits" xml:space="preserve">
+    <value>This field can only consist of digits.</value>
+  </data>
 </root>
