@@ -18,12 +18,12 @@ namespace Toz.Dotnet.Models
 
         [JsonProperty("type")]
         [JsonConverter(typeof(StringEnumConverter))]
-        [RegularExpression("^(CAT|DOG)$", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "PetTypeUndefined")]
+        [Range(1, 2, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "PetTypeUndefined")]
         public PetType Type {get; set;}
         
         [JsonProperty("sex")]
         [JsonConverter(typeof(StringEnumConverter))]
-        [RegularExpression("^(MALE|FEMALE)$", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "PetSexUndefined")]
+        [Range(1, 2, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "PetSexUndefined")]
         public PetSex Sex {get; set;}
 
         [JsonIgnore]

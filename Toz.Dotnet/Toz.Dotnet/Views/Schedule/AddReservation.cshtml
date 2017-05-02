@@ -11,16 +11,13 @@
     <h2>@Localizer["PageTitle"]</h2>
     <hr>
     
-    
     <div class="AddingReservation">
-        <form asp-controller="Schedule" asp-action="CreateReservation" method="POST" enctype="multipart/form-data">
+        <form asp-controller="Schedule" asp-action="AddReservation" method="POST" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Date" class="form-control" id="Date" />
+            <input type="hidden" asp-for="TimeOfDay" class="form-control" id="TimeOfDay" />
+
             <table class="forms" align="center">
-                <tr>
-                    <td class="hidden"><input type="text" asp-for="Date" class="form-control" id="Date" value="@ViewData["date"]" readonly></td>
-                </tr>
-                <tr>
-                    <td class="hidden"><input type="text" asp-for="TimeOfDay" class="form-control" id="TimeOfDay" readonly></td>
-                </tr>
+
                 <tr align="left">
                     <td></td>
                     <td>@Html.ValidationMessageFor(Model => Model.FirstName, null, null)</td>

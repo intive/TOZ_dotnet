@@ -1,7 +1,9 @@
 ﻿@using Toz.Dotnet.Models.EnumTypes
 @using Microsoft.AspNetCore.Mvc.Localization
+@using Toz.Dotnet.Core.Interfaces
 
 @inject IViewLocalizer Localizer
+@inject IAuthService _iAuthService
 
 <!DOCTYPE html>
 <html>
@@ -21,6 +23,10 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
         <script src="~/js/site.js"></script>
     </environment>
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.3.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -36,12 +42,20 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Pets" asp-action="Index">@Localizer["PetList"]</a></li>
-                    <li><a asp-area="" asp-controller="News" asp-action="Index">@Localizer["NewsList"]</a></li>
-                    <li><a asp-area="" asp-controller="Users" asp-action="Index">@Localizer["Users"]</a></li>
-                    <li><a asp-area="" asp-controller="Schedule" asp-action="Index">@Localizer["Schedule"]</a></li>
-                    <li><a asp-area="" asp-controller="Login" asp-action="Index">@Localizer["Login"]</a></li>
-                    <li><a asp-area="" asp-controller="Organization" asp-action="Info">@Localizer["OrganizationInfo"]</a></li>
+                    @{
+                        if (_iAuthService.IsAuth == true)
+                        {
+                            <li><a asp-area="" asp-controller="Pets" asp-action="Index">@Localizer["PetList"]</a></li>
+                            <li><a asp-area="" asp-controller="News" asp-action="Index">@Localizer["NewsList"]</a></li>
+                            <li><a asp-area="" asp-controller="Users" asp-action="Index">@Localizer["Users"]</a></li>
+                            <li><a asp-area="" asp-controller="Schedule" asp-action="Index">@Localizer["Schedule"]</a></li>
+                            <li><a asp-area="" asp-controller="Organization" asp-action="Info">@Localizer["OrganizationInfo"]</a></li>
+                        }
+                        else
+                        {
+                            <li><a asp-area="" asp-controller="Login" asp-action="Index">@Localizer["Login"]</a></li>
+                        }
+                    }
                 </ul>
                 <ul hidden class="nav" style="text-align: right;">
                         <form id="selectLanguage" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@Context.Request.Path" method="post">
