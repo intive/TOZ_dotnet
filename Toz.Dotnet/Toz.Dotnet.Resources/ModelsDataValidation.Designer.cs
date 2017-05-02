@@ -167,13 +167,5 @@ namespace Toz.Dotnet.Resources {
                 return ResourceManager.GetString("TypeUndefined", resourceCulture);
             }
         }
-
-        public static string OnlyDigits
-        {
-            get
-            {
-                return ResourceManager.GetString("OnlyDigits", resourceCulture);
-            }
-        }
     }
 }
