@@ -10,6 +10,7 @@ using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.EnumTypes;
 using Toz.Dotnet.Models.ViewModels;
 using Toz.Dotnet.Resources.Configuration;
+using System.Globalization;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -51,8 +52,12 @@ namespace Toz.Dotnet.Controllers
             {
                 if (timeOfDay == Period.Afternoon || timeOfDay == Period.Morning)
                 {
-                    ViewData["date"] = date.ToString("yyyy/MM/dd");
-                    return View(new ReservationToken());
+                    ReservationToken token = new ReservationToken()
+                    {
+                        Date = date
+                    };
+                    
+                    return View(token);
                 }
             }
             return BadRequest();
@@ -60,12 +65,14 @@ namespace Toz.Dotnet.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateReservation(
+        public async Task<IActionResult> AddReservation(
             [Bind("Date, TimeOfDay, FirstName, LastName")]
             ReservationToken token, CancellationToken cancellationToken)
         {
             Console.WriteLine("SLOT DATE: " + token.Date + ", TIME: " + token.TimeOfDay);
             Console.WriteLine("USER FIRST: " + token.FirstName + ", LAST: " + token.LastName);
+
+            token.Date = Convert.ToDateTime(token.Date.ToString(), CultureInfo.InvariantCulture);
 
             if (ModelState.IsValid)
             {
@@ -81,8 +88,10 @@ namespace Toz.Dotnet.Controllers
                 {
                     return RedirectToAction("Index");
                 }
+
                 return BadRequest();
             }
+
             return View(token);      
         }
         

@@ -135,7 +135,7 @@
   <data name="MaxLength" xml:space="preserve">
     <value>Maksymalna długość to {1} znaków.</value>
   </data>
-  <data name="NameLetters" xml:space="preserve">
+  <data name="FirstnameLetters" xml:space="preserve">
     <value>Imię może zawierać tylko litery.</value>
   </data>
   <data name="OnlyDigits" xml:space="preserve">
@@ -149,5 +149,8 @@
   </data>
   <data name="TypeUndefined" xml:space="preserve">
     <value>Wybierz typ użytkownika.</value>
+  </data>
+  <data name="LastnameLetters" xml:space="preserve">
+    <value>Nazwisko może zawierać tylko litery.</value>
   </data>
 </root>
