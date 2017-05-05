@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Toz.Dotnet.Models.JsonConventers;
+﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using Toz.Dotnet.Models.CustomValidationAttributes;
 
@@ -13,11 +8,12 @@ namespace Toz.Dotnet.Models.OrganizationSubtypes
     {
         [JsonProperty("number")]
         [BankAccountNumber(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "BankAccountValidationMessage")]
-        //[StringLength(26, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "BankAccountLength", MinimumLength = 26)]
-        //[RegularExpression("^[0-9]*$", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "OnlyDigits")]
+        //[Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
         public string Number { get; set; }
 
         [JsonProperty("bankName")]
+        [RegularExpression(@"^(?![\W_]+$)(?!\d+$)[a-zA-Z0-9 .&',_-]+$", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "InvalidValue")]
+        //[Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
         public string BankName { get; set; }
     }
 }

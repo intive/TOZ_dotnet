@@ -153,4 +153,7 @@
   <data name="LastnameLetters" xml:space="preserve">
     <value>The surname can only consist of letters.</value>
   </data>
+  <data name="InvalidValue" xml:space="preserve">
+    <value>The entered value is not valid.</value>
+  </data>
 </root>

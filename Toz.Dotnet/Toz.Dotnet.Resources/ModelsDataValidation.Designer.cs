@@ -48,7 +48,7 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        ///   Przesłania właściwość CurrentUICulture bieżącego wątku dla wszystkich
+        ///   Zastępuje właściwość CurrentUICulture bieżącego wątku dla wszystkich
         ///   przypadków przeszukiwania zasobów za pomocą tej klasy zasobów wymagającej zdefiniowania typu.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -97,7 +97,17 @@ namespace Toz.Dotnet.Resources {
             }
         }
         
-        ///   Looks up a localized string similar to Invalid phone number.
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu The firstname can only consist of letters..
+        /// </summary>
+        public static string FirstnameLetters {
+            get {
+                return ResourceManager.GetString("FirstnameLetters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Invalid phone number.
         /// </summary>
         public static string InvaildPhoneNumber {
             get {
@@ -106,11 +116,11 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The maximum length is {1} characters..
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu The entered value is not valid..
         /// </summary>
-        public static string FirstnameLetters {
+        public static string InvalidValue {
             get {
-                return ResourceManager.GetString("FirstnameLetters", resourceCulture);
+                return ResourceManager.GetString("InvalidValue", resourceCulture);
             }
         }
         
