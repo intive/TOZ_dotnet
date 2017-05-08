@@ -41,6 +41,7 @@ namespace Toz.Dotnet
             services.AddSingleton<IUsersManagementService, UsersManagementService>();
             services.AddSingleton<IScheduleManagementService, ScheduleManagementService>();
             services.AddSingleton<IOrganizationManagementService, OrganizationManagementService>();
+            services.AddSingleton<IBackendErrorsService, BackendErrorsService>();
 
             services.AddSession();
             services.AddMemoryCache();

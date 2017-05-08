@@ -25,12 +25,12 @@ namespace Toz.Dotnet.Tests.Tests
             {               
                 Id = Guid.NewGuid().ToString(),
                 Title = "TestNews",
-                PublishingTime = DateTime.Now,
-                AddingTime = DateTime.Now,
-                LastEditTime = DateTime.Now,
-                Body = "Text",
+                Published = DateTime.Now,
+                Created = DateTime.Now,
+                LastModified = DateTime.Now,
+                Contents = "Text",
                 Photo = new byte[10],
-                Status = NewsStatus.RELEASED
+                Type = NewsStatus.Released
             };
 
             _newsManagementService.RequestUri = RequestUriHelper.NewsUri;
@@ -142,12 +142,12 @@ namespace Toz.Dotnet.Tests.Tests
             {
                 Id = news.Id,
                 Title = news.Title,
-                PublishingTime = news.PublishingTime,
-                AddingTime = news.AddingTime,
-                LastEditTime = news.LastEditTime,
-                Body = news.Body,
+                Published = news.Published,
+                Created = news.Created,
+                LastModified = news.LastModified,
+                Contents = news.Contents,
                 Photo = news.Photo,
-                Status = news.Status
+                Type = news.Type
             };
         }
         

@@ -33,11 +33,11 @@
             <tr>
                 <td>@item.Name</td>
 
-                @if(@item.Type == PetType.DOG)
+                @if(@item.Type == PetType.Dog)
                 {
                     <td>@Localizer["Dog"]</td>
                 }
-                else if(@item.Type == PetType.CAT)
+                else if(@item.Type == PetType.Cat)
                 {
                     <td>@Localizer["Cat"]</td>
                 }
@@ -46,11 +46,11 @@
                     <td>@Localizer["Unknown"]</td>
                 }
 
-                @if(@item.Sex == PetSex.MALE)
+                @if(@item.Sex == PetSex.Male)
                 {
                     <td>@Localizer["Male"]</td>
                 }
-                else if(@item.Sex == PetSex.FEMALE)
+                else if(@item.Sex == PetSex.Female)
                 {
                     <td>@Localizer["Female"]</td>
                 }
@@ -62,14 +62,14 @@
                 <td><img src="data:image;base64,@Convert.ToBase64String(item.Photo)" alt="Pet photo"/></td>
                 <td>@item.Description</td>
                 <td>@item.Address</td>
-                <td>@item.AddingTime</td>
-                @if(!@item.LastEditTime.HasValue) 
+                <td>@item.Created</td>
+                @if(!@item.LastModified.HasValue) 
                 {
                     <td>@Localizer["Lack"]</td>
                 }
                 else
                 {
-                    <td>@item.LastEditTime</td>
+                    <td>@item.LastModified</td>
                 }
                 <td>@Html.ActionLink(@Localizer["Edit"].Value, "Edit", "Pets", new{ id = item.Id }, new { @class = "btn btn-primary btn-block"}) </td>
             </tr>

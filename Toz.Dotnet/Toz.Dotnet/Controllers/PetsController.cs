@@ -16,17 +16,20 @@ namespace Toz.Dotnet.Controllers
     {
         private IFilesManagementService _filesManagementService;
         private IPetsManagementService _petsManagementService;
-		private readonly IStringLocalizer<PetsController> _localizer;
+        private IBackendErrorsService _backendErrorsService;
+        private readonly IStringLocalizer<PetsController> _localizer;
         private readonly AppSettings _appSettings;
         private static byte[] _lastAcceptPhoto;
         private string _validationPhotoAlert;
 		
-        public PetsController(IFilesManagementService filesManagementService, IPetsManagementService petsManagementService, IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings)
+        public PetsController(IFilesManagementService filesManagementService, IPetsManagementService petsManagementService,
+            IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService)
         {
             _filesManagementService = filesManagementService;
             _petsManagementService = petsManagementService;
 			_localizer = localizer;
             _appSettings = appSettings.Value;
+            _backendErrorsService = backendErrorsService;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
@@ -36,7 +39,7 @@ namespace Toz.Dotnet.Controllers
             var img = _filesManagementService.DownloadImage(@"http://i.pinger.pl/pgr167/7dc36d63001e9eeb4f01daf3/kot%20ze%20shreka9.jpg");
             var thumbnail = _filesManagementService.GetThumbnail(img);
             pets.ForEach(pet => pet.Photo = _filesManagementService.ImageToByteArray(thumbnail)); // temporary
-            return View(pets.OrderByDescending(x => x.AddingTime).ThenByDescending(x => x.LastEditTime).ToList());
+            return View(pets.OrderByDescending(x => x.Created).ThenByDescending(x => x.LastModified).ToList());
         }
 
         [HttpPost]
@@ -58,7 +61,8 @@ namespace Toz.Dotnet.Controllers
                     }
                     else
                     {
-                        return BadRequest();
+                        _backendErrorsService.UpdateModelState(ModelState);
+                        return View(pet);
                     }
             }
             else
@@ -107,7 +111,8 @@ namespace Toz.Dotnet.Controllers
                     }
                     else
                     {
-                        return BadRequest();
+                        _backendErrorsService.UpdateModelState(ModelState);
+                        return View(pet);
                     }
             }
             else
@@ -127,7 +132,6 @@ namespace Toz.Dotnet.Controllers
                 }
                 return View(pet);
             }
-            
         } 
 
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken) 

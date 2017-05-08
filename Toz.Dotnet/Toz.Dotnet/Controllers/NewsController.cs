@@ -18,17 +18,20 @@ namespace Toz.Dotnet.Controllers
     {
         private IFilesManagementService _filesManagementService;
         private INewsManagementService _newsManagementService;
-	    private readonly IStringLocalizer<NewsController> _localizer;
+        private IBackendErrorsService _backendErrorsService;
+        private readonly IStringLocalizer<NewsController> _localizer;
         private readonly AppSettings _appSettings;
         private static byte[] _lastAcceptPhoto;
         private string _validationPhotoAlert;
 
-        public NewsController(IFilesManagementService filesManagementService, INewsManagementService newsManagementService, IStringLocalizer<NewsController> localizer, IOptions<AppSettings> appSettings)
+        public NewsController(IFilesManagementService filesManagementService, INewsManagementService newsManagementService,
+            IStringLocalizer<NewsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService)
         {
             _filesManagementService = filesManagementService;
             _newsManagementService = newsManagementService;
 			_localizer = localizer;
             _appSettings = appSettings.Value;
+            _backendErrorsService = backendErrorsService;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
@@ -38,20 +41,20 @@ namespace Toz.Dotnet.Controllers
             var img = _filesManagementService.DownloadImage(@"http://img.cda.pl/obr/thumbs/6adb80c33f5b55df46a481b57a61c64c.png_oooooooooo_273x.png");
             var thumbnail = _filesManagementService.GetThumbnail(img);
             news.ForEach(n => n.Photo = _filesManagementService.ImageToByteArray(thumbnail)); // temporary
-            return View(news.OrderByDescending(x => x.PublishingTime ?? DateTime.MaxValue).ThenByDescending(x => x.Title).ToList());
+            return View(news.OrderByDescending(x => x.Published ?? DateTime.MaxValue).ThenByDescending(x => x.Title).ToList());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(
-            [Bind("Title, Body")] 
+            [Bind("Title, Contents")] 
             News news, [Bind("Photo")] IFormFile photo, string status, CancellationToken cancellationToken)
         {
             bool result = ValidatePhoto(news, photo);
             news.PhotoUrl = "storage/a5/0d/4d/a50d4d4c-ccd2-4747-8dec-d6d7f521336e.jpg";
 
             Enum.TryParse(status, out NewsStatus newsStatus);
-            news.Status = newsStatus;
+            news.Type = newsStatus;
             
             if (news != null && result && ModelState.IsValid)
             {
@@ -63,7 +66,8 @@ namespace Toz.Dotnet.Controllers
                     }
                     else
                     {
-                        return BadRequest();
+                        _backendErrorsService.UpdateModelState(ModelState);
+                        return View(news);
                     }
             }
             else
@@ -93,7 +97,7 @@ namespace Toz.Dotnet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
-            [Bind("Id, Title, Body, Status, PublishingTime, AddingTime, LastEditTime")] 
+            [Bind("Id, Title, Contents, Status, PublishingTime, AddingTime, LastEditTime")] 
             News news, [Bind("Photo")] IFormFile photo, string status, CancellationToken cancellationToken)
         {
             //todo add photo if will be available on backends
@@ -103,7 +107,7 @@ namespace Toz.Dotnet.Controllers
             news.PhotoUrl = "storage/a5/0d/4d/a50d4d4c-ccd2-4747-8dec-d6d7f521336e.jpg";
 
             Enum.TryParse(status, out NewsStatus newsStatus);
-            news.Status = newsStatus;
+            news.Type = newsStatus;
 
             if (news != null && result && ModelState.IsValid)
             {
@@ -115,7 +119,8 @@ namespace Toz.Dotnet.Controllers
                     }
                     else
                     {
-                        return BadRequest();
+                        _backendErrorsService.UpdateModelState(ModelState);
+                        return View(news);
                     }
             }
             else
@@ -135,7 +140,6 @@ namespace Toz.Dotnet.Controllers
                 }
                 return View(news);
             }
-            
         } 
 
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken) 

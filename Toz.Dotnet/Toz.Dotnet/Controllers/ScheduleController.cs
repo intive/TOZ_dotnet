@@ -18,16 +18,18 @@ namespace Toz.Dotnet.Controllers
     {
         private readonly IScheduleManagementService _scheduleManagementService;
         private readonly IUsersManagementService _usersManagementService;
+        private IBackendErrorsService _backendErrorsService;
         private readonly IStringLocalizer<ScheduleController> _localizer;
         private readonly AppSettings _appSettings;
 
         public ScheduleController(IScheduleManagementService scheduleManagementService, IUsersManagementService usersManagementService,
-                                  IStringLocalizer<ScheduleController> localizer, IOptions<AppSettings> appSettings)
+                                  IStringLocalizer<ScheduleController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService)
         {
             _scheduleManagementService = scheduleManagementService;
             _usersManagementService = usersManagementService;
             _localizer = localizer;
             _appSettings = appSettings.Value;
+            _backendErrorsService = backendErrorsService;
         }
 
         public async Task<IActionResult> Index(int offset, CancellationToken cancellationToken)
@@ -88,8 +90,10 @@ namespace Toz.Dotnet.Controllers
                 {
                     return RedirectToAction("Index");
                 }
-
-                return BadRequest();
+                else
+                {
+                    _backendErrorsService.UpdateModelState(ModelState);
+                }
             }
 
             return View(token);      

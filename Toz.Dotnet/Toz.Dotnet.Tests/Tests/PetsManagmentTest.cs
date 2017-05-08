@@ -24,13 +24,13 @@ namespace Toz.Dotnet.Tests.Tests
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = "TestDog",
-                Type = PetType.DOG,
-                Sex = PetSex.MALE,
+                Type = PetType.Dog,
+                Sex = PetSex.Male,
                 Photo = new byte[10],
                 Description = "Dog that eats tigers",
                 Address = "Found in the jungle",
-                AddingTime = DateTime.Now,
-                LastEditTime = DateTime.Now
+                Created = DateTime.Now,
+                LastModified = DateTime.Now
             };
 
             _petsManagementService.RequestUri = RequestUriHelper.PetsUri;
@@ -141,7 +141,7 @@ namespace Toz.Dotnet.Tests.Tests
 
             if (property.Equals("Type"))
             {
-                pet.Type = PetType.UNIDENTIFIED;
+                pet.Type = PetType.Unidentified;
             }
            
             var context = new ValidationContext(pet, null, null);
@@ -214,8 +214,8 @@ namespace Toz.Dotnet.Tests.Tests
                 Photo = (byte[])pet.Photo.Clone(),
                 Description = pet.Description,
                 Address = pet.Address,
-                AddingTime = pet.AddingTime,
-                LastEditTime = pet.LastEditTime
+                Created = pet.Created,
+                LastModified = pet.LastModified
             };
         }
     }

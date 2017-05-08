@@ -13,14 +13,17 @@ namespace Toz.Dotnet.Controllers
     public class UsersController : Controller
     {
         private IUsersManagementService _usersManagementService;
+        private IBackendErrorsService _backendErrorsService;
         private readonly IStringLocalizer<UsersController> _localizer;
         private readonly AppSettings _appSettings;
 
-        public UsersController(IUsersManagementService usersManagementService, IStringLocalizer<UsersController> localizer, IOptions<AppSettings> appSettings)
+        public UsersController(IUsersManagementService usersManagementService, IStringLocalizer<UsersController> localizer,
+            IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService)
         {
             _usersManagementService = usersManagementService;
             _localizer = localizer;
             _appSettings = appSettings.Value;
+            _backendErrorsService = backendErrorsService;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
@@ -48,7 +51,7 @@ namespace Toz.Dotnet.Controllers
                 }
                 else
                 {
-                    return BadRequest();
+                    _backendErrorsService.UpdateModelState(ModelState);
                 }
             }
             return View(user);

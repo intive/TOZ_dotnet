@@ -1,9 +1,15 @@
+
+using System.Runtime.Serialization;
+
 namespace Toz.Dotnet.Models.EnumTypes
 {
     public enum PetSex
     {
-        UNKNOWN,
-        MALE,
-        FEMALE
+        [EnumMember(Value = "UNKNOWN")]
+        Unknown,
+        [EnumMember(Value = "MALE")]
+        Male,
+        [EnumMember(Value = "FEMALE")]
+        Female
     };
 }
