@@ -29,45 +29,49 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">TOZ.Dotnet</a>
+                <a class="navbar-brand" href="#">TOZ.Dotnet</a>
             </div>
-            <div class="navbar-collapse collapse">
+            <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                    @{
-                        if (_iAuthService.IsAuth == true)
-                        {
-                            <li><a asp-area="" asp-controller="Pets" asp-action="Index">@Localizer["PetList"]</a></li>
-                            <li><a asp-area="" asp-controller="News" asp-action="Index">@Localizer["NewsList"]</a></li>
-                            <li><a asp-area="" asp-controller="Users" asp-action="Index">@Localizer["Users"]</a></li>
-                            <li><a asp-area="" asp-controller="Schedule" asp-action="Index">@Localizer["Schedule"]</a></li>
-                            <li><a asp-area="" asp-controller="Organization" asp-action="Info">@Localizer["OrganizationInfo"]</a></li>
-                        }
-                        else
-                        {
-                            <li><a asp-area="" asp-controller="Login" asp-action="Index">@Localizer["Login"]</a></li>
-                        }
+                    @if (_iAuthService.IsAuth == true)
+                    {
+                        <li><a asp-controller="Home" asp-action="Index">@Localizer["HomePage"]</a></li>
+                        <li><a asp-controller="Pets" asp-action="Index">@Localizer["PetList"]</a></li>
+                        <li><a asp-controller="News" asp-action="Index">@Localizer["NewsList"]</a></li>
+                        <li><a asp-controller="Users" asp-action="Index">@Localizer["Users"]</a></li>
+                        <li><a asp-controller="Schedule" asp-action="Index">@Localizer["Schedule"]</a></li>
+                        <li><a asp-controller="Organization" asp-action="Info">@Localizer["OrganizationInfo"]</a></li>
                     }
                 </ul>
-                <ul hidden class="nav" style="text-align: right;">
-                        <form id="selectLanguage" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@Context.Request.Path" method="post">
-                            <input type="hidden" name="culture" value="pl"/>
-                            <a class="flag flag-pl" href="#" onclick="$('input[name=culture]').val('pl');$(this).closest('form').submit();"></a>
-                            <a class="flag flag-gb" href="#" onclick="$('input[name=culture]').val('en-US');$(this).closest('form').submit();"></a>
-                            <a class="flag flag-de" href="#" onclick="$('input[name=culture]').val('de');$(this).closest('form').submit();"></a>
-                        </form>
+                <ul class="nav navbar-nav navbar-right">
+                    @if (_iAuthService.IsAuth == false)
+                    {
+                        <li><a asp-controller="Login" asp-action="Index"><span class="glyphicon glyphicon-log-in"></span>  @Localizer["Login"]</a></li>
+                    }
+                    else
+                    {
+                        <li><a><span class="glyphicon glyphicon-log-out"></span>  @Localizer["Logout"]</a></li>
+                    }
                 </ul>
+                <!--<ul hidden class="nav" style="text-align: right;">
+                    <form id="selectLanguage" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@Context.Request.Path" method="post">
+                        <input type="hidden" name="culture" value="pl" />
+                        <a class="flag flag-pl" href="#" onclick="$('input[name=culture]').val('pl');$(this).closest('form').submit();"></a>
+                        <a class="flag flag-gb" href="#" onclick="$('input[name=culture]').val('en-US');$(this).closest('form').submit();"></a>
+                        <a class="flag flag-de" href="#" onclick="$('input[name=culture]').val('de');$(this).closest('form').submit();"></a>
+                    </form>
+                </ul>-->
             </div>
         </div>
-    </div>
+    </nav>
     <div class="container body-content">
         @RenderBody()
     </div>

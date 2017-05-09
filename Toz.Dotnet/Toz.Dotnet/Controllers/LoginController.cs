@@ -26,15 +26,14 @@ namespace Toz.Dotnet.Controllers
                 await _authService.SignIn(new Models.Login() { Email = $"TOZ_user{i}.email@gmail.com", Password = $"TOZ_name_{i}" });
                 if(_authService.IsAuth)
                 {
-                    ViewData["Auth"] = "Zalogowano!!!";
-                    return View();
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
                     _backendErrorsService.UpdateModelState(ModelState);
                 }
             }
-            ViewData["Auth"] = "Nie zalogowano!!!";
+            //ViewData["Auth"] = "Nie zalogowano!!!";
             return View();
             // <--
         }

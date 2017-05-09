@@ -1,38 +1,45 @@
-﻿<link rel="stylesheet" href="~/css/mainpage.css" />
-<div class="container">
-    <div class="col-sm-4">
-        <div class="tile purple" onclick="@("window.location.href='" + @Url.Action("Index", "Pets") + "'");">
-            <div class="tile-icon"><img src="~/images/pets.png" /></div>
-            <h3 class="title">Lista zwierzaków</h3>
-            <p>Pozwala przejrzeć listę zwierzaków</p>
+﻿@using Toz.Dotnet.Core.Interfaces
+
+@inject IAuthService _iAuthService
+
+<link rel="stylesheet" href="~/css/mainpage.css" />
+@if (_iAuthService.IsAuth == true)
+{
+    <div class="container">
+        <div class="col-sm-4">
+            <div class="tile purple" onclick="@("window.location.href='" + @Url.Action("Index", "Pets") + "'");">
+                <div class="tile-icon"><img src="~/images/pets.png" /></div>
+                <h3 class="title">Lista zwierzaków</h3>
+                <p>Pozwala przejrzeć listę zwierzaków</p>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="tile red" onclick="@("window.location.href='" + @Url.Action("Index", "News") + "'");">
+                <div class="tile-icon"><img src="~/images/news.png" /></div>
+                <h3 class="title">Lista aktualności</h3>
+                <p>Pozwala przejrzeć listę aktualności</p>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="tile orange" onclick="@("window.location.href='" + @Url.Action("Index", "Users") + "'");">
+                <div class="tile-icon"><img src="~/images/users.png" /></div>
+                <h3 class="title">Lista użytkowników</h3>
+                <p>Pozwala przejrzeć listę użytkowników</p>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="tile green" onclick="@("window.location.href='" + @Url.Action("Index", "Schedule") + "'");">
+                <div class="tile-icon"><img src="~/images/calendar.png" /></div>
+                <h3 class="title">Kalendarz dyżurów</h3>
+                <p>Pozwala przypisać wolontariuszy do dyżurów</p>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="tile blue" onclick="@("window.location.href='" + @Url.Action("Info", "Organization") + "'");">
+                <div class="tile-icon"><img src="~/images/company.png" /></div>
+                <h3 class="title">Informacje o firmie</h3>
+                <p>Pozwala ustawić bądź zaktualizować dane o firmie</p>
+            </div>
         </div>
     </div>
-    <div class="col-sm-4">
-        <div class="tile red" onclick="@("window.location.href='" + @Url.Action("Index", "News") + "'");">
-            <div class="tile-icon"><img src="~/images/news.png" /></div>
-            <h3 class="title">Lista aktualności</h3>
-            <p>Pozwala przejrzeć listę aktualności</p>
-        </div>
-    </div>
-    <div class="col-sm-4">
-        <div class="tile orange" onclick="@("window.location.href='" + @Url.Action("Index", "Users") + "'");">
-            <div class="tile-icon"><img src="~/images/users.png" /></div>
-            <h3 class="title">Lista użytkowników</h3>
-            <p>Pozwala przejrzeć listę użytkowników</p>
-        </div>
-    </div>
-    <div class="col-sm-4">
-        <div class="tile green" onclick="@("window.location.href='" + @Url.Action("Index", "Schedule") + "'");">
-            <div class="tile-icon"><img src="~/images/calendar.png" /></div>
-            <h3 class="title">Kalendarz dyżurów</h3>
-            <p>Pozwala przypisać wolontariuszy do dyżurów</p>
-        </div>
-    </div>
-    <div class="col-sm-4">
-        <div class="tile blue" onclick="@("window.location.href='" + @Url.Action("Info", "Organization") + "'");">
-            <div class="tile-icon"><img src="~/images/company.png" /></div>
-            <h3 class="title">Informacje o firmie</h3>
-            <p>Pozwala ustawić bądź zaktualizować dane o firmie</p>
-        </div>
-    </div>
-</div>
+}
