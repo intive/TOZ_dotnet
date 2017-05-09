@@ -8,16 +8,11 @@ namespace Toz.Dotnet.Models.CustomValidationAttributes
     {    
         public override bool IsValid(object value) 
         {
-            if (value == null) 
-            {
-                return false;
-            }
- 
             string valueAsString = value as string;
 
             if (valueAsString == null) 
             {
-                return false;
+                return true;
             }
 
             // remove '+' character and all white spaces

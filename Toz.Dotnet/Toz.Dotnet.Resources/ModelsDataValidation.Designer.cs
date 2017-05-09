@@ -71,7 +71,7 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Bank account number is invaild.
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu This bank account number is not valid.
         /// </summary>
         public static string BankAccountValidationMessage {
             get {
@@ -89,7 +89,7 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu You can&apos;t leave this empty..
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu You can&apos;t leave this empty.
         /// </summary>
         public static string EmptyField {
             get {
@@ -98,7 +98,7 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu The firstname can only consist of letters..
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu The firstname can only consist of letters.
         /// </summary>
         public static string FirstnameLetters {
             get {
@@ -107,16 +107,34 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Invalid phone number.
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Invalid fax number.
         /// </summary>
-        public static string InvaildPhoneNumber {
+        public static string InvalidFaxNumber {
             get {
-                return ResourceManager.GetString("InvaildPhoneNumber", resourceCulture);
+                return ResourceManager.GetString("InvalidFaxNumber", resourceCulture);
             }
         }
         
         /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu The entered value is not valid..
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Invalid phone number.
+        /// </summary>
+        public static string InvalidPhoneNumber {
+            get {
+                return ResourceManager.GetString("InvalidPhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Invalid website URL.
+        /// </summary>
+        public static string InvalidURL {
+            get {
+                return ResourceManager.GetString("InvalidURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu The entered value is not valid.
         /// </summary>
         public static string InvalidValue {
             get {
@@ -125,7 +143,7 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu The surname can only consist of letters..
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu The surname can only consist of letters.
         /// </summary>
         public static string LastnameLetters {
             get {
@@ -134,7 +152,7 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu The maximum length is {1} characters..
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu The maximum length is {1} characters.
         /// </summary>
         public static string MaxLength {
             get {
@@ -143,7 +161,7 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu This field can only consist of digits..
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu This field can only consist of digits.
         /// </summary>
         public static string OnlyDigits {
             get {
@@ -152,7 +170,7 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Select a pet sex..
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Select a pet sex.
         /// </summary>
         public static string PetSexUndefined {
             get {
@@ -161,7 +179,7 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Select a pet type..
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Select a pet type.
         /// </summary>
         public static string PetTypeUndefined {
             get {
@@ -170,7 +188,7 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Select a user type..
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Select a user type.
         /// </summary>
         public static string TypeUndefined {
             get {

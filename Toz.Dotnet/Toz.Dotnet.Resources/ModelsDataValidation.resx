@@ -121,39 +121,45 @@
     <value>Bank account number must be exactly 26 digits</value>
   </data>
   <data name="BankAccountValidationMessage" xml:space="preserve">
-    <value>Bank account number is invaild</value>
+    <value>This bank account number is not valid</value>
   </data>
   <data name="EmailValidationMessage" xml:space="preserve">
     <value>Invalid Email Address</value>
   </data>
   <data name="EmptyField" xml:space="preserve">
-    <value>You can't leave this empty.</value>
+    <value>You can't leave this empty</value>
   </data>
-  <data name="InvaildPhoneNumber" xml:space="preserve">
+  <data name="InvalidPhoneNumber" xml:space="preserve">
     <value>Invalid phone number</value>
   </data>
   <data name="MaxLength" xml:space="preserve">
-    <value>The maximum length is {1} characters.</value>
+    <value>The maximum length is {1} characters</value>
   </data>
   <data name="FirstnameLetters" xml:space="preserve">
-    <value>The firstname can only consist of letters.</value>
+    <value>The firstname can only consist of letters</value>
   </data>
   <data name="OnlyDigits" xml:space="preserve">
-    <value>This field can only consist of digits.</value>
+    <value>This field can only consist of digits</value>
   </data>
   <data name="PetSexUndefined" xml:space="preserve">
-    <value>Select a pet sex.</value>
+    <value>Select a pet sex</value>
   </data>
   <data name="PetTypeUndefined" xml:space="preserve">
-    <value>Select a pet type.</value>
+    <value>Select a pet type</value>
   </data>
   <data name="TypeUndefined" xml:space="preserve">
-    <value>Select a user type.</value>
+    <value>Select a user type</value>
   </data>
   <data name="LastnameLetters" xml:space="preserve">
-    <value>The surname can only consist of letters.</value>
+    <value>The surname can only consist of letters</value>
   </data>
   <data name="InvalidValue" xml:space="preserve">
-    <value>The entered value is not valid.</value>
+    <value>The entered value is not valid</value>
+  </data>
+  <data name="InvalidFaxNumber" xml:space="preserve">
+    <value>Invalid fax number</value>
+  </data>
+  <data name="InvalidURL" xml:space="preserve">
+    <value>Invalid website URL</value>
   </data>
 </root>
