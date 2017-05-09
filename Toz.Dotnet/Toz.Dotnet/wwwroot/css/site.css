@@ -1,11 +1,11 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿html, body {
+    margin: 0px;
+    padding: 0px;
 }
 
 .body-content {
     padding-left: 15px;
-    padding-right: 15px;
+    padding-right: 15px
 }
 
 .btn-file {
@@ -13,56 +13,31 @@
     overflow: hidden;
 }
 
-.btn-file input[type=file] {
-    position: absolute;
-    top: 0;
-    right: 0;
-    min-width: 100%;
-    min-height: 100%;
-    font-size: 100px;
-    text-align: right;
-    filter: alpha(opacity=0);
-    opacity: 0;
-    outline: none;
-    background: white;
-    cursor: inherit;
-    display: block;
-}
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
 
-#img-upload{
-    width: 600px;
+#img-upload {
+    width: 480px;
+    align-items: center;
+    display: block;
+    margin: 0 auto;
+    padding-top: 10px;
 }
 
 .forms td {
     padding: 3px;
 }
-
-/* Validation styles*/
-.field-validation-error {
-    color: red;
-    font-weight: bold;
-    font-size: 13px;
-    white-space:pre-line;
-}
-
-input.input-validation-error {
-    border: 2px solid #8B0000;
-    background: #FA8072;
-}
-
-select.input-validation-error {
-    border: 2px solid #8B0000;
-    background: #FA8072;
-}
-
-input[type="checkbox"].input-validation-error {
-    border: 0 none;
-}
-
-textarea.input-validation-error {
-      border: 2px solid #8B0000;
-      background: #FA8072;
- }
 
 .unreleased {
     padding: 6px 10px 6px 10px;
@@ -90,13 +65,13 @@ textarea.input-validation-error {
     width: 150px;
 }
 
-.unreleased .archived .glyphicon{
+.unreleased .archived .glyphicon {
     float: left;
     margin-right: 5px;
 }
 
-.unreleased .archived div{
-    overflow:hidden;
+.unreleased .archived div {
+    overflow: hidden;
 }
 
 .overflow-ellipsis {
@@ -110,26 +85,79 @@ textarea.input-validation-error {
     display: inline-block;
     width: 32px;
     height: 32px;
-    background: url('../images/flags.png') no-repeat;
+    background: url('../images/flags.png') no-repeat
 }
 
+    .flag.flag-gb {
+        background-position: -32px 0
+    }
 
-.flag.flag-gb {
-    background-position: -32px 0;
-}
+    .flag.flag-pl {
+        background-position: 0 -32px
+    }
 
-.flag.flag-pl {
-    background-position: 0 -32px;
-}
-
-.flag.flag-de {
-    background-position: 0 0;
-}
+    .flag.flag-de {
+        background-position: 0 0
+    }
 
 .input-group {
-    width: 100%;
+    width: 457px;
 }
 
-.forms { 
+.form-control-feedback {
+    right: 25px;
+}
+
+.input-validation-error {
+    background: white;
+    border: 1px solid red;
+}
+
+.center {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
     width: 600px;
+}
+
+.form-horizontal .control-label {
+    text-align: left;
+}
+
+.pagetitle {
+    border: 1px solid grey;
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.pagetitlelegend {
+    color: white;
+    padding: 5px 10px;
+    font-size: 32px;
+    border-radius: 10px;
+    text-align: center;
+    /* IE10+ */
+    background-image: -ms-linear-gradient(bottom, #1e5799 0%, #2989D8 50%, #7db9e8 100%);
+    /* Mozilla Firefox */
+    background-image: -moz-linear-gradient(bottom, #1e5799 0%, #2989D8 50%, #7db9e8 100%);
+    /* Opera */
+    background-image: -o-linear-gradient(bottom, #1e5799 0%, #2989D8 50%, #7db9e8 100%);
+    /* Webkit (Safari/Chrome 10) */
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #1e5799), color-stop(50, #2989D8), color-stop(100, #7db9e8));
+    /* Webkit (Chrome 11+) */
+    background-image: -webkit-linear-gradient(bottom, #1e5799 0%, #2989D8 50%, #7db9e8 100%);
+    /* W3C Markup */
+    background-image: linear-gradient(to top, #1e5799 0%, #2989D8 50%, #7db9e8 100%);
+}
+
+.navbar .navbar-nav {
+    display: inline-block;
+    float: none;
+    vertical-align: top;
+}
+
+.navbar .navbar-collapse {
+    text-align: center;
 }

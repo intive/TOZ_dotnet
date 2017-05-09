@@ -3,31 +3,6 @@
     font-size: 14px;
     line-height: 1.5em;
     font-weight: 400;
-    padding-top: 90px;
-}
-
-@media (max-width: 991px) {
-    body {
-        padding-top: 130px;
-    }
-}
-
-@media (max-width: 886px) {
-    body {
-        padding-top: 180px;
-    }
-}
-
-@media (max-width: 800px) {
-    body {
-        padding-top: 230px;
-    }
-}
-
-@media (max-width: 768px) {
-    body {
-        padding-top: 120px;
-    }
 }
 
 p,
@@ -42,10 +17,6 @@ button {
     line-height: inherit;
 }
 
-strong {
-    font-weight: 600;
-}
-
 h1,
 h2,
 h3,
@@ -56,9 +27,7 @@ h6 {
     line-height: 1.5em;
     font-weight: 300;
 }
-strong {
-    font-weight: 400;
-}
+
 .tile {
     width: 100%;
     display: inline-block;

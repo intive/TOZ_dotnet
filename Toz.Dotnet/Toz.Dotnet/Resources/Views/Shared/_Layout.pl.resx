@@ -124,7 +124,7 @@
     <value>Dodaj zwierzaka</value>
   </data>
   <data name="NewsList" xml:space="preserve">
-    <value>Lista newsów</value>
+    <value>Lista aktualności</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Zaloguj</value>
