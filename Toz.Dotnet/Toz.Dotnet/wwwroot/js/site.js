@@ -29,42 +29,4 @@ $(document).ready( function() {
 		        reader.readAsDataURL(input.files[0]);
 		    }
 		}
-
-		$("#imgInp").change(function(){
-		    readURL(this);
-        }); 
-
-        jQuery.validator.setDefaults({
-            highlight: function (element, errorClass, validClass) {
-                if (element.type === 'radio') {
-                    this.findByName(element.name).addClass(errorClass).removeClass(validClass);
-                } else {
-                    $(element).addClass(errorClass).removeClass(validClass);
-                    $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-                    $(element).closest('.form-control-feedback').removeClass('glyphicon-ok').addClass('glyphicon-remove');
-                    $(element).nextAll('.glyphicon').removeClass('hidden');
-                    $(element).nextAll('.glyphicon').removeClass('glyphicon-ok').addClass('glyphicon-remove');
-                    $(element).nextAll('.glyphicon').removeClass('has-success').addClass('has-error');
-                }
-            },
-            unhighlight: function (element, errorClass, validClass) {
-                if (element.type === 'radio') {
-                    this.findByName(element.name).removeClass(errorClass).addClass(validClass);
-                } else {
-                    $(element).removeClass(errorClass).addClass(validClass);
-                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
-                    $(element).nextAll('.glyphicon').removeClass('hidden');
-                    $(element).nextAll('.glyphicon').removeClass('glyphicon-remove').addClass('glyphicon-ok');
-                    $(element).nextAll('.glyphicon').removeClass('has-error').addClass('has-success');
-                }
-            }
-        });
-
-        $(function () {
-
-            $("span.field-validation-valid, span.field-validation-error").addClass('help-block');
-            $("div.form-group").has("span.field-validation-error").addClass('has-error');
-            $("div.validation-summary-errors").has("li:visible").addClass("alert");
-
-        });
 	});
