@@ -1,6 +1,4 @@
 ﻿body {
-    font-family: "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
-    font-size: 14px;
     line-height: 1.5em;
     font-weight: 400;
 }
@@ -23,7 +21,6 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: "Open Sans", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
     line-height: 1.5em;
     font-weight: 300;
 }

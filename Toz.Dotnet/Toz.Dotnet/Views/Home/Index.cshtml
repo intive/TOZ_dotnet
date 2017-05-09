@@ -2,7 +2,11 @@
 
 @inject IAuthService _iAuthService
 
-<link rel="stylesheet" href="~/css/mainpage.css" />
+<head>
+    <link rel="stylesheet" href="~/css/mainpage.css" />
+</head>
+
+<body>
 @if (_iAuthService.IsAuth == true)
 {
     <div class="container">
@@ -43,3 +47,4 @@
         </div>
     </div>
 }
+</body>
