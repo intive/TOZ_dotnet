@@ -14,8 +14,8 @@ namespace Toz.Dotnet.Controllers
 {
     public class PetsController : Controller
     {
-        private IFilesManagementService _filesManagementService;
-        private IPetsManagementService _petsManagementService;
+        private readonly IFilesManagementService _filesManagementService;
+        private readonly IPetsManagementService _petsManagementService;
 		private readonly IStringLocalizer<PetsController> _localizer;
         private readonly AppSettings _appSettings;
         private static byte[] _lastAcceptPhoto;
@@ -48,7 +48,7 @@ namespace Toz.Dotnet.Controllers
             bool result = ValidatePhoto(pet, photo);
             pet.ImageUrl = "storage/a5/0d/4d/a50d4d4c-ccd2-4747-8dec-d6d7f521336e.jpg"; //temporary
             
-            if (pet != null && result && ModelState.IsValid)
+            if (result && ModelState.IsValid)
             {
                     if (await _petsManagementService.CreatePet(pet))
                     {
@@ -61,23 +61,22 @@ namespace Toz.Dotnet.Controllers
                         return BadRequest();
                     }
             }
-            else
+
+            if(!result)
             {
-                if(!result)
+                ViewData["ValidationPhotoAlert"] = _validationPhotoAlert;
+                if(_lastAcceptPhoto != null)
                 {
-                    ViewData["ValidationPhotoAlert"] = _validationPhotoAlert;
-                    if(_lastAcceptPhoto != null)
-                    {
-                        pet.Photo = _lastAcceptPhoto;
-                        ViewData["SelectedPhoto"] = "PhotoAlertWithLastPhoto";
-                    }
-                    else
-                    {
-                        ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
-                    }
+                    pet.Photo = _lastAcceptPhoto;
+                    ViewData["SelectedPhoto"] = "PhotoAlertWithLastPhoto";
                 }
-                return View(pet);
+                else
+                {
+                    ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
+                }
             }
+            return View(pet);
+            
         } 
 
         public IActionResult Add()
@@ -97,7 +96,7 @@ namespace Toz.Dotnet.Controllers
 
             bool result = ValidatePhoto(pet, photo);
 
-            if (pet != null && result && ModelState.IsValid)
+            if (result && ModelState.IsValid)
             {
                     if (await _petsManagementService.UpdatePet(pet))
                     {
@@ -105,29 +104,23 @@ namespace Toz.Dotnet.Controllers
                         _validationPhotoAlert = null;
                         return RedirectToAction("Index");
                     }
-                    else
-                    {
-                        return BadRequest();
-                    }
+                    return BadRequest();
             }
-            else
+
+            if(!result)
             {
-                if(!result)
+                ViewData["ValidationPhotoAlert"] = _validationPhotoAlert;
+                if(_lastAcceptPhoto != null)
                 {
-                    ViewData["ValidationPhotoAlert"] = _validationPhotoAlert;
-                    if(_lastAcceptPhoto != null)
-                    {
-                        pet.Photo = _lastAcceptPhoto;
-                        ViewData["SelectedPhoto"] = "PhotoAlertWithLastPhoto";
-                    }
-                    else
-                    {
-                        ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
-                    }
+                    pet.Photo = _lastAcceptPhoto;
+                    ViewData["SelectedPhoto"] = "PhotoAlertWithLastPhoto";
                 }
-                return View(pet);
+                else
+                {
+                    ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
+                }
             }
-            
+            return View(pet);
         } 
 
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken) 
@@ -136,7 +129,7 @@ namespace Toz.Dotnet.Controllers
         }
 
         
-        public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)
+/*        public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)
         {
             var pet = await _petsManagementService.GetPet(id);
             if(pet != null)
@@ -145,14 +138,16 @@ namespace Toz.Dotnet.Controllers
             }
 
             return RedirectToAction("Index");
-        }
+        }*/
 
         private bool IsAcceptPhotoType(string photoType, string[] acceptTypes)
         {
             foreach(var type in acceptTypes)
             {
-                if(type == photoType)
+                if (type == photoType)
+                {
                     return true;
+                }
             }
             return false;
         }
@@ -169,26 +164,19 @@ namespace Toz.Dotnet.Controllers
                         _lastAcceptPhoto = pet.Photo;
                         return true;
                     }
-                    else
-                    {
-                        _validationPhotoAlert = "EmptyFile";
-                        return false;
-                    }
+
+                    _validationPhotoAlert = "EmptyFile";
+                    return false;
                 }
-                else
-                {
-                    _validationPhotoAlert = "WrongFileType";
-                    return false; 
-                }
+
+                _validationPhotoAlert = "WrongFileType";
+                return false; 
             }
-            else
+            if(_lastAcceptPhoto != null)
             {
-                if(_lastAcceptPhoto != null)
-                {
-                    pet.Photo = _lastAcceptPhoto;
-                }
-                return true;
+                pet.Photo = _lastAcceptPhoto;
             }
+            return true;
         }
     }
 	
