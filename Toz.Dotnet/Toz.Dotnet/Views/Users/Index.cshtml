@@ -18,16 +18,19 @@
 <div class="panel panel-default panel-table">
     <div class="panel-heading">
         <div class="row">
-            <div class="col col-xs-6">
+            <div class="col col-xs-4">
                 <h3 class="panel-title">@Localizer["PageTitle"]</h3>
             </div>
-            <div class="col col-xs-6 text-right">
+            <div class="col col-xs-4">
+                <input type="text" id="search" class="search form-control" placeholder="@Localizer["SearchPlaceholder"]">
+            </div>
+            <div class="col col-xs-4 text-right">
                 @Html.ActionLink(@Localizer["Add"].Value, "Add", "Users", null, new { data_modal = "", @class = "btn btn-sm btn-primary btn-create" })
             </div>
         </div>
     </div>
     <div class="panel-body">
-        <table class="table table-striped table-bordered table-list">
+        <table id="table" class="table table-striped table-bordered table-list">
             <thead>
                 <tr>
                     <th>@Localizer["FirstName"]</th>
@@ -65,6 +68,11 @@
                 }
             </tbody>
         </table>
-        <div class="panel-footer"></div>
     </div>
 </div>
+
+@section Scripts
+        {
+    <script src="@Url.Content("https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js")"></script>
+    <script src="@Url.Content("https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js")"></script>
+}

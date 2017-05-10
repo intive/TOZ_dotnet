@@ -156,4 +156,7 @@
   <data name="Released" xml:space="preserve">
     <value>Freigegeben</value>
   </data>
+  <data name="SearchPlaceholder" xml:space="preserve">
+    <value>Suche...</value>
+  </data>
 </root>

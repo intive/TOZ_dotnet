@@ -150,4 +150,7 @@
   <data name="Edit" xml:space="preserve">
     <value>Edytuj</value>
   </data>
+  <data name="SearchPlaceholder" xml:space="preserve">
+    <value>Szukaj...</value>
+  </data>
 </root>

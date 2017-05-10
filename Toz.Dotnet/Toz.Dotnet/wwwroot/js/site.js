@@ -1,5 +1,13 @@
 ﻿// Write your Javascript code.
 $(document).ready(function () {
+    $('input[type="submit"]').on('click', function () {
+        $(this).prop("disabled", true);
+    });
+
+    $('input[type="button"]').on('click', function () {
+        $(this).prop("disabled", true);
+    });
+
     $(document).on('change', '.btn-file :file', function () {
         var input = $(this),
             label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
@@ -81,4 +89,22 @@ $(document).ready(function () {
             return false;
         });
     }
+
+    $('#table').DataTable({
+        "dom": 't<"panel-footer"p>',
+        "language": {
+            "zeroRecords": "Nie znaleziono pasujących rekordów",
+            "emptyTable": "Brak rekordów",
+            "paginate": {
+                "first": "Pierwsza",
+                "last": "Ostatnia",
+                "next": "Następna",
+                "previous": "Poprzednia"
+            }
+        }
+    });
+
+    $('#search').keyup(function () {
+        $('#table').DataTable().search($(this).val()).draw();
+    })
 });
