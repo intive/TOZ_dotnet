@@ -67,11 +67,12 @@
             <input type="button" class="btn btn-danger btn-block" id="Delete" value=@Localizer["Delete"] onclick="@("window.location.href='" + @Url.Action("Delete", "News", new {id = Model.Id}) + "'");">
             @if (Model.Type == NewsStatus.Unreleased)
             {
-                <input type="button" class="btn btn-warning btn-block" id="Cancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "News") + "'");">
+                <input type="button" class="btn btn-warning btn-block" id="Cancel" data-dismiss="modal" value=@Localizer["Cancel"]>
                 <input type="submit" class="btn btn-primary btn-block" id="Save" name="saveBtn" value=@Localizer["Save"] onclick="$('input[name=status]').val('Unreleased');$(this).closest('form').submit();">}
             else if (Model.Type == NewsStatus.Released)
             {
-                <input type="button" class="btn btn-warning btn-block" id="Cancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "News") + "'");">}
+                <input type="button" class="btn btn-warning btn-block" id="Cancel" data-dismiss="modal" value=@Localizer["Cancel"]>
+            }
             <input type="submit" class="btn btn-primary btn-block" id="Publish" value=@Localizer["Publish"] onclick="$('input[name=status]').val('Released');$(this).closest('form').submit();">
 
         </fieldset>

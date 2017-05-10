@@ -67,7 +67,7 @@
                 </div>
             </div>
 
-            <input type="button" class="btn btn-warning btn-block" id="Cancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "Users") + "'");">
+            <input type="button" class="btn btn-warning btn-block" id="Cancel" data-dismiss="modal" value=@Localizer["Cancel"]>
             <input type="submit" class="btn btn-primary btn-block" id="Save" value=@Localizer["Save"]>
         </fieldset>
     </form>

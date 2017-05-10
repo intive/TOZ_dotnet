@@ -56,7 +56,7 @@
                 }
             </div>
 
-            <input type="button" class="btn btn-warning btn-block" id="Cancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "News") + "'");">
+            <input type="button" class="btn btn-warning btn-block" id="Cancel" data-dismiss="modal" value=@Localizer["Cancel"]>
             <input type="submit" class="btn btn-primary btn-block" id="Save" name="Save" value=@Localizer["Save"] onclick="$('input[name=status]').val('Unreleased');">
             <input type="submit" class="btn btn-primary btn-block" id="Publish" name="Publish" value=@Localizer["Publish"] onclick="$('input[name=status]').val('Released');">
         </fieldset>

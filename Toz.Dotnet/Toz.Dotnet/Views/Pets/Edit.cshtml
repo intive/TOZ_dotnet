@@ -95,7 +95,7 @@
                 </div>
             </div>
             <input type="submit" class="btn btn-danger btn-block" id="Delete" value=@Localizer["Delete"] onclick="@("window.location.href='" + @Url.Action("Delete", "Pets", new {id = Model.Id}) + "'");">
-            <input type="submit" class="btn btn-warning btn-block" id="Cancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "Pets") + "'");">
+            <input type="button" class="btn btn-warning btn-block" id="Cancel" data-dismiss="modal" value=@Localizer["Cancel"]>
             <input type="submit" class="btn btn-primary btn-block" id="Save" value=@Localizer["Save"]>
         </fieldset>
     </form>
