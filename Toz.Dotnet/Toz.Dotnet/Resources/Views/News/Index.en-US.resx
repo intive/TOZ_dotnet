@@ -53,6 +53,7 @@
     value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
+
     mimetype: application/x-microsoft.net.object.bytearray.base64
     value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
@@ -116,41 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-    <data name="PageTitle" xml:space="preserve">
-        <value>News list</value>
-    </data>
-    <data name="Title" xml:space="preserve">
-        <value>Title</value>
-    </data>
-    <data name="Photo" xml:space="preserve">
-        <value>Photo</value>
-    </data>
-    <data name="ShortBody" xml:space="preserve">
-        <value>Text</value>
-    </data>
-    <data name="PublishingTime" xml:space="preserve">
-        <value>Publishing time</value>
-    </data>
-    <data name="Unreleased" xml:space="preserve">
-        <value>Unreleased</value>
-    </data>
-    <data name="Archived" xml:space="preserve">
-        <value>Archived</value>
-    </data>
-    <data name="Details" xml:space="preserve">
-        <value>Details</value>
-    </data>
-    <data name="Edit" xml:space="preserve">
-        <value>Edit</value>
-    </data>
-    <data name="Add" xml:space="preserve">
-        <value>Add</value>
-    </data>a
-    <data name="ListPanelTitle" xml:space="preserve">
-        <value>Buttons</value>
-    </data>
-    <data name="Lack" xml:space="preserve">
-        <value>(lack)</value>
-    </data>
+  <data name="PageTitle" xml:space="preserve">
+    <value>News list</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="Photo" xml:space="preserve">
+    <value>Photo</value>
+  </data>
+  <data name="ShortBody" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="PublishingTime" xml:space="preserve">
+    <value>Publishing time</value>
+  </data>
+  <data name="Unreleased" xml:space="preserve">
+    <value>Unreleased</value>
+  </data>
+  <data name="Archived" xml:space="preserve">
+    <value>Archived</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="ListPanelTitle" xml:space="preserve">
+    <value>Buttons</value>
+  </data>
+  <data name="Lack" xml:space="preserve">
+    <value>(lack)</value>
+  </data>
+  <data name="Released" xml:space="preserve">
+    <value>Released</value>
+  </data>
 </root>

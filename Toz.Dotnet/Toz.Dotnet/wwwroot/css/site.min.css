@@ -5,7 +5,7 @@ html, body {
 
 .body-content {
     padding-left: 15px;
-    padding-right: 15px
+    padding-right: 15px;
 }
 
 .btn-file {
@@ -13,19 +13,19 @@ html, body {
     overflow: hidden;
 }
 
-.btn-file input[type=file] {
-    position: absolute;
-    top: 0;
-    right: 0;
-    font-size: 100px;
-    text-align: right;
-    filter: alpha(opacity=0);
-    opacity: 0;
-    outline: none;
-    background: white;
-    cursor: inherit;
-    display: block;
-}
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
 
 #img-upload {
     width: 480px;
@@ -65,12 +65,12 @@ html, body {
     width: 150px;
 }
 
-.unreleased .archived .glyphicon{
+.unreleased .archived .glyphicon {
     float: left;
     margin-right: 5px;
 }
 
-.unreleased .archived div{
+.unreleased .archived div {
     overflow: hidden;
 }
 
@@ -81,7 +81,24 @@ html, body {
     white-space: nowrap;
 }
 
-.flag{display:inline-block;width:32px;height:32px;background:url('../images/flags.png') no-repeat}.flag.flag-gb{background-position:-32px 0}.flag.flag-pl{background-position:0 -32px}.flag.flag-de{background-position:0 0}
+.flag {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    background: url('../images/flags.png') no-repeat;
+}
+
+    .flag.flag-gb {
+        background-position: -32px 0;
+    }
+
+    .flag.flag-pl {
+        background-position: 0 -32px;
+    }
+
+    .flag.flag-de {
+        background-position: 0 0;
+    }
 
 .input-group {
     width: 457px;
@@ -143,4 +160,57 @@ html, body {
 
 .navbar .navbar-collapse {
     text-align: center;
+}
+
+.panel-table .panel-body {
+    padding: 0;
+}
+
+    .panel-table .panel-body .table-bordered {
+        border-style: none;
+        margin: 0;
+    }
+
+        .panel-table .panel-body .table-bordered > thead > tr > th:first-of-type {
+            text-align: center;
+            width: 100px;
+        }
+
+        .panel-table .panel-body .table-bordered > thead > tr > th:last-of-type,
+        .panel-table .panel-body .table-bordered > tbody > tr > td:last-of-type {
+            border-right: 0px;
+        }
+
+        .panel-table .panel-body .table-bordered > thead > tr > th:first-of-type,
+        .panel-table .panel-body .table-bordered > tbody > tr > td:first-of-type {
+            border-left: 0px;
+        }
+
+        .panel-table .panel-body .table-bordered > tbody > tr:first-of-type > td {
+            border-bottom: 0px;
+        }
+
+        .panel-table .panel-body .table-bordered > thead > tr:first-of-type > th {
+            border-top: 0px;
+        }
+
+.panel-table .panel-footer .pagination {
+    margin: 0;
+}
+
+/*
+used to vertically center elements, may need modification if you're not using default sizes.
+*/
+.panel-table .panel-footer .col {
+    line-height: 34px;
+    height: 34px;
+}
+
+.panel-table .panel-heading .col h3 {
+    line-height: 30px;
+    height: 30px;
+}
+
+.panel-table .panel-body .table-bordered > tbody > tr > td {
+    line-height: 34px;
 }

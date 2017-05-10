@@ -7,100 +7,96 @@
     ViewData["Title"] = @Localizer["PageTitle"];
 }
 
-<body>
-    <div class="container-fluid center">
-        <form class="form-horizontal" asp-controller="Pets" asp-action="Edit" method="POST" enctype="multipart/form-data">
-            <fieldset class="pagetitle">
-                <legend class="pagetitlelegend">@Localizer["PageTitle"]</legend>
-                <div class="form-group row">
-                    <label class="col-sm-2 control-label">@Localizer["Id"]</label>
-                    <div class="col-sm-10">
-                        <input type="text" asp-for="Id" class="form-control" id="Id" disabled>
-                    </div>
+<div class="container-fluid center">
+    <form class="form-horizontal" asp-controller="Pets" asp-action="Edit" method="POST" enctype="multipart/form-data">
+        <fieldset class="pagetitle">
+            <legend class="pagetitlelegend">@Localizer["PageTitle"]</legend>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["Id"]</label>
+                <div class="col-sm-10">
+                    <input type="text" asp-for="Id" class="form-control" id="Id" disabled>
                 </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 control-label">@Localizer["Name"]</label>
-                    <div class="col-sm-10">
-                        <input type="text" asp-for="Name" class="form-control" id="Name">
-                        <span class="glyphicon form-control-feedback"></span>
-                        @Html.ValidationMessageFor(m => m.Name)
-                    </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["Name"]</label>
+                <div class="col-sm-10">
+                    <input type="text" asp-for="Name" class="form-control" id="Name">
+                    <span class="glyphicon form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.Name)
                 </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 control-label">@Localizer["Type"]</label>
-                    <div class="col-sm-10 selectContainer">
-                        <select asp-for="Type" class="form-control" id="Type">
-                            <option value="0"></option>
-                            <option value="1">@Localizer["Dog"]</option>
-                            <option value="2">@Localizer["Cat"]</option>
-                        </select>
-                        <span class="glyphicon form-control-feedback"></span>
-                        @Html.ValidationMessageFor(m => m.Type)
-                    </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["Type"]</label>
+                <div class="col-sm-10 selectContainer">
+                    <select asp-for="Type" class="form-control" id="Type">
+                        <option value="0"></option>
+                        <option value="1">@Localizer["Dog"]</option>
+                        <option value="2">@Localizer["Cat"]</option>
+                    </select>
+                    <span class="glyphicon form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.Type)
                 </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 control-label">@Localizer["Sex"]</label>
-                    <div class="col-sm-10 selectContainer">
-                        <select asp-for="Sex" class="form-control" id="Sex">
-                            <option value="0"></option>
-                            <option value="1">@Localizer["Male"]</option>
-                            <option value="2">@Localizer["Female"]</option>
-                        </select>
-                        <span class="glyphicon form-control-feedback"></span>
-                        @Html.ValidationMessageFor(m => m.Sex)
-                    </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["Sex"]</label>
+                <div class="col-sm-10 selectContainer">
+                    <select asp-for="Sex" class="form-control" id="Sex">
+                        <option value="0"></option>
+                        <option value="1">@Localizer["Male"]</option>
+                        <option value="2">@Localizer["Female"]</option>
+                    </select>
+                    <span class="glyphicon form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.Sex)
                 </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 control-label">@Localizer["Photo"]</label>
-                    <div class="input-group">
-                        <span class="input-group-btn">
-                            <span class="btn btn-default btn-file">
-                                @Localizer["Browse"] <input type="file" id="imgInp" asp-for="Photo" accept="image/jpeg,image/png">
-
-                                @{
-                                    if (ViewData["ValidationPhotoAlert"] != null)
-                                    {
-                                        var firstString = Convert.ToString(ViewData["ValidationPhotoAlert"]);
-                                        var secondString = Convert.ToString(ViewData["SelectedPhoto"]);
-                                        @Html.Label("PhotoAlert", @Localizer[firstString].Value + @Localizer[secondString].Value, new { @class = "field-validation-error" })
-                                    }
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["Photo"]</label>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <span class="btn btn-default btn-file">
+                            @Localizer["Browse"] <input type="file" id="imgInp" asp-for="Photo" accept="image/jpeg,image/png">
+                            @{
+                                if (ViewData["ValidationPhotoAlert"] != null)
+                                {
+                                    var firstString = Convert.ToString(ViewData["ValidationPhotoAlert"]);
+                                    var secondString = Convert.ToString(ViewData["SelectedPhoto"]);
+                                    @Html.Label("PhotoAlert", @Localizer[firstString].Value + @Localizer[secondString].Value, new { @class = "field-validation-error" })
                                 }
-                            </span>
+                            }
                         </span>
-                        <input type="text" class="form-control" readonly>
-                    </div>
-                    @{
-                        if (Model.Photo != null)
-                        {
-                            <img id='img-upload' src="data:image;base64,@System.Convert.ToBase64String(Model.Photo)" />
-                        }
-                        else
-                        {
-                            <img id='img-upload' />
-                        }
+                    </span>
+                    <input type="text" class="form-control" readonly>
+                </div>
+                @{
+                    if (Model.Photo != null)
+                    {
+                        <img id='img-upload' src="data:image;base64,@System.Convert.ToBase64String(Model.Photo)" />
                     }
+                    else
+                    {
+                        <img id='img-upload' />
+                    }
+                }
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["Description"]</label>
+                <div class="col-sm-10 textareaContainer">
+                    <textarea asp-for="Description" class="form-control" id="Description" cols="10" rows="4" style="resize: vertical"></textarea>
+                    <span class="glyphicon form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.Description)
                 </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 control-label">@Localizer["Description"]</label>
-                    <div class="col-sm-10 textareaContainer">
-                        <textarea asp-for="Description" class="form-control" id="Description" cols="10" rows="4" style="resize: vertical"></textarea>
-                        <span class="glyphicon form-control-feedback"></span>
-                        @Html.ValidationMessageFor(m => m.Description)
-                    </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["Address"]</label>
+                <div class="col-sm-10">
+                    <input type="text" asp-for="Address" class="form-control" id="Address">
+                    <span class="glyphicon form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.Address)
                 </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 control-label">@Localizer["Address"]</label>
-                    <div class="col-sm-10">
-                        <input type="text" asp-for="Address" class="form-control" id="Address">
-                        <span class="glyphicon form-control-feedback"></span>
-                        @Html.ValidationMessageFor(m => m.Address)
-                    </div>
-                </div>
-
-                <input type="button" class="btn btn-primary btn-danger" id="Delete" value=@Localizer["Delete"] onclick="@("window.location.href='" + @Url.Action("Delete", "Pets", new {id = Model.Id}) + "'");">
-                <input type="button" class="btn btn-primary btn-warning" id="Cancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "Pets") + "'");">
-                <input type="submit" class="btn btn-primary btn-block" id="Save" value=@Localizer["Save"]>
-            </fieldset>
-        </form>
-    </div>
-</body>
+            </div>
+            <input type="submit" class="btn btn-danger btn-block" id="Delete" value=@Localizer["Delete"] onclick="@("window.location.href='" + @Url.Action("Delete", "Pets", new {id = Model.Id}) + "'");">
+            <input type="submit" class="btn btn-warning btn-block" id="Cancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "Pets") + "'");">
+            <input type="submit" class="btn btn-primary btn-block" id="Save" value=@Localizer["Save"]>
+        </fieldset>
+    </form>
+</div>

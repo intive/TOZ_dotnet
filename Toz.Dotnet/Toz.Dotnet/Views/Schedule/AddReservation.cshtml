@@ -7,36 +7,31 @@
     ViewData["Title"] = @Localizer["PageTitle"];
 }
 
-<body>
-    <div class="container-fluid center">
-        <form class="form-horizontal" asp-controller="Schedule" asp-action="AddReservation" method="POST" enctype="multipart/form-data">
-            <fieldset class="pagetitle">
-                <legend class="pagetitlelegend">@Localizer["PageTitle"]</legend>
-
-                <input type="hidden" asp-for="Date" class="form-control" id="Date" />
-                <input type="hidden" asp-for="TimeOfDay" class="form-control" id="TimeOfDay" />
-
-                <div class="form-group row">
-                    <label class="col-sm-2 control-label">@Localizer["FirstName"]</label>
-                    <div class="col-sm-10">
-                        <input type="text" asp-for="FirstName" class="form-control" id="FirstName">
-                        <span class="glyphicon form-control-feedback"></span>
-                        @Html.ValidationMessageFor(m => m.FirstName)
-                    </div>
+<div class="container-fluid center">
+    <form class="form-horizontal" asp-controller="Schedule" asp-action="AddReservation" method="POST" enctype="multipart/form-data">
+        <fieldset class="pagetitle">
+            <legend class="pagetitlelegend">@Localizer["PageTitle"]</legend>
+            <input type="hidden" asp-for="Date" class="form-control" id="Date" />
+            <input type="hidden" asp-for="TimeOfDay" class="form-control" id="TimeOfDay" />
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["FirstName"]</label>
+                <div class="col-sm-10">
+                    <input type="text" asp-for="FirstName" class="form-control" id="FirstName">
+                    <span class="glyphicon form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.FirstName)
                 </div>
-
-                <div class="form-group row">
-                    <label class="col-sm-2 control-label">@Localizer["LastName"]</label>
-                    <div class="col-sm-10">
-                        <input type="text" asp-for="LastName" class="form-control" id="LastName">
-                        <span class="glyphicon form-control-feedback"></span>
-                        @Html.ValidationMessageFor(m => m.LastName)
-                    </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["LastName"]</label>
+                <div class="col-sm-10">
+                    <input type="text" asp-for="LastName" class="form-control" id="LastName">
+                    <span class="glyphicon form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.LastName)
                 </div>
+            </div>
 
-                <input type="submit" class="btn btn-primary btn-block" id="CreateReservation" value=@Localizer["Save"]>
-                <input type="button" class="btn btn-warning btn-block" id="ReservationCancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "Schedule") + "'");">
-            </fieldset>
-        </form>
-    </div>
-</body>
+            <input type="button" class="btn btn-warning btn-block" id="ReservationCancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "Schedule") + "'");">
+            <input type="submit" class="btn btn-primary btn-block" id="CreateReservation" value=@Localizer["Save"]>
+        </fieldset>
+    </form>
+</div>

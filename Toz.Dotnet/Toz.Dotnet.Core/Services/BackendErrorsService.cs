@@ -16,7 +16,7 @@ namespace Toz.Dotnet.Core.Services
             foreach(Error error in _errorsList)
             {
                 //modelState.AddModelError(error.Field, error.Message);
-                modelState.AddModelError(error.Field, "Pole niepoprawne");
+                modelState.AddModelError(error.Field, Resources.ModelsDataValidation.InvalidField);
             }
 
             _errorsList.Clear();

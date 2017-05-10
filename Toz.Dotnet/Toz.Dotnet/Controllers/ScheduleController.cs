@@ -59,7 +59,7 @@ namespace Toz.Dotnet.Controllers
                         Date = date
                     };
                     
-                    return View(token);
+                    return PartialView(token);
                 }
             }
             return BadRequest();
@@ -88,7 +88,7 @@ namespace Toz.Dotnet.Controllers
 
                 if (await _scheduleManagementService.CreateReservation(slot, user, cancellationToken))
                 {
-                    return RedirectToAction("Index");
+                    return Json(new { success = true });
                 }
                 else
                 {
@@ -96,7 +96,7 @@ namespace Toz.Dotnet.Controllers
                 }
             }
 
-            return View(token);      
+            return PartialView(token);      
         }
         
         public async Task<ActionResult> DeleteReservation(string id, CancellationToken cancellationToken)

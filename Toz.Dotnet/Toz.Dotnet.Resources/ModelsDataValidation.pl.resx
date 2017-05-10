@@ -153,4 +153,7 @@
   <data name="LastnameLetters" xml:space="preserve">
     <value>Nazwisko może zawierać tylko litery.</value>
   </data>
+  <data name="InvalidField" xml:space="preserve">
+    <value>Pole niepoprawne</value>
+  </data>
 </root>

@@ -9,70 +9,89 @@
     var filesManagmentService = new FilesManagementService();
 }
 
-<h2>@Localizer["PageTitle"]</h2>
-<div class="table-responsive">
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <td>@Html.ActionLink(@Localizer["Add"].Value, "Add", "Pets", null, new { @style = "width: 120px;", @class = "btn btn-primary btn-block"}) </td>
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
         </div>
     </div>
-    <table class="table">
-        <tr>
-            <th>@Localizer["Name"]</th>
-            <th>@Localizer["Type"]</th>
-            <th>@Localizer["Sex"]</th>
-            <th>@Localizer["Photo"]</th>
-            <th>@Localizer["Description"]</th>
-            <th>@Localizer["Address"]</th>
-            <th>@Localizer["AddingTime"]</th>
-            <th>@Localizer["LastEditTime"]</th>
-            <th></th>
-        </tr>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Name</td>
+</div>
 
-                @if(@item.Type == PetType.Dog)
+<div class="panel panel-default panel-table">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col col-xs-6">
+                <h3 class="panel-title">@Localizer["PageTitle"]</h3>
+            </div>
+            <div class="col col-xs-6 text-right">
+                @Html.ActionLink(@Localizer["Add"].Value, "Add", "Pets", null, new { data_modal = "", @class = "btn btn-sm btn-primary btn-create" })
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped table-bordered table-list">
+            <thead>
+                <tr>
+                    <th>@Localizer["Name"]</th>
+                    <th>@Localizer["Type"]</th>
+                    <th>@Localizer["Sex"]</th>
+                    <th>@Localizer["Photo"]</th>
+                    <th>@Localizer["Description"]</th>
+                    <th>@Localizer["Address"]</th>
+                    <th>@Localizer["AddingTime"]</th>
+                    <th>@Localizer["LastEditTime"]</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
                 {
-                    <td>@Localizer["Dog"]</td>
-                }
-                else if(@item.Type == PetType.Cat)
-                {
-                    <td>@Localizer["Cat"]</td>
-                }
-                else
-                {
-                    <td>@Localizer["Unknown"]</td>
-                }
+                    <tr>
+                        <td>@item.Name</td>
 
-                @if(@item.Sex == PetSex.Male)
-                {
-                    <td>@Localizer["Male"]</td>
-                }
-                else if(@item.Sex == PetSex.Female)
-                {
-                    <td>@Localizer["Female"]</td>
-                }
-                else
-                {
-                    <td>@Localizer["Unidentified"]</td>
-                }
+                        @if (@item.Type == PetType.Dog)
+                        {
+                            <td>@Localizer["Dog"]</td>
+                        }
+                        else if (@item.Type == PetType.Cat)
+                        {
+                            <td>@Localizer["Cat"]</td>
+                        }
+                        else
+                        {
+                            <td>@Localizer["Unknown"]</td>
+                        }
 
-                <td><img src="data:image;base64,@Convert.ToBase64String(item.Photo)" alt="Pet photo"/></td>
-                <td>@item.Description</td>
-                <td>@item.Address</td>
-                <td>@item.Created</td>
-                @if(!@item.LastModified.HasValue) 
-                {
-                    <td>@Localizer["Lack"]</td>
+                        @if (@item.Sex == PetSex.Male)
+                        {
+                            <td>@Localizer["Male"]</td>
+                        }
+                        else if (@item.Sex == PetSex.Female)
+                        {
+                            <td>@Localizer["Female"]</td>
+                        }
+                        else
+                        {
+                            <td>@Localizer["Unidentified"]</td>
+                        }
+
+                        <td><img src="data:image;base64,@Convert.ToBase64String(item.Photo)" alt="Pet photo" /></td>
+                        <td>@item.Description</td>
+                        <td>@item.Address</td>
+                        <td>@item.Created</td>
+                        @if (!@item.LastModified.HasValue)
+                        {
+                            <td>@Localizer["Lack"]</td>
+                        }
+                        else
+                        {
+                            <td>@item.LastModified</td>
+                        }
+                        <td>@Html.ActionLink(@Localizer["Edit"].Value, "Edit", "Pets", new { id = item.Id }, new { data_modal = "", @class = "btn btn-primary btn-block" }) </td>
+                    </tr>
                 }
-                else
-                {
-                    <td>@item.LastModified</td>
-                }
-                <td>@Html.ActionLink(@Localizer["Edit"].Value, "Edit", "Pets", new{ id = item.Id }, new { @class = "btn btn-primary btn-block"}) </td>
-            </tr>
-        }
-    </table>
+            </tbody>
+        </table>
+        <div class="panel-footer"></div>
+    </div>
 </div>

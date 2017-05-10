@@ -57,12 +57,12 @@ namespace Toz.Dotnet.Controllers
                     {
                         _lastAcceptPhoto = null;
                         _validationPhotoAlert = null;
-                        return RedirectToAction("Index");
+                        return Json(new { success = true });
                     }
                     else
                     {
                         _backendErrorsService.UpdateModelState(ModelState);
-                        return View(pet);
+                        return PartialView(pet);
                     }
             }
             else
@@ -80,13 +80,13 @@ namespace Toz.Dotnet.Controllers
                         ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
                     }
                 }
-                return View(pet);
+                return PartialView(pet);
             }
         } 
 
         public IActionResult Add()
         {
-            return View(new Pet());
+            return PartialView(new Pet());
         }
 
         [HttpPost]
@@ -107,12 +107,12 @@ namespace Toz.Dotnet.Controllers
                     {
                         _lastAcceptPhoto = null;
                         _validationPhotoAlert = null;
-                        return RedirectToAction("Index");
+                        return Json(new { success = true });
                     }
                     else
                     {
                         _backendErrorsService.UpdateModelState(ModelState);
-                        return View(pet);
+                        return PartialView(pet);
                     }
             }
             else
@@ -130,13 +130,13 @@ namespace Toz.Dotnet.Controllers
                         ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
                     }
                 }
-                return View(pet);
+                return PartialView(pet);
             }
         } 
 
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken) 
         {
-            return View(await _petsManagementService.GetPet(id));
+            return PartialView("Edit", await _petsManagementService.GetPet(id));
         }
 
         

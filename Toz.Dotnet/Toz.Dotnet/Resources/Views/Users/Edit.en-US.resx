@@ -118,42 +118,39 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="PageTitle" xml:space="preserve">
-    <value>Nachrichtenliste</value>
+    <value>User editing</value>
   </data>
-  <data name="Title" xml:space="preserve">
-    <value>Titel</value>
+  <data name="FirstName" xml:space="preserve">
+    <value>First name</value>
   </data>
-  <data name="Photo" xml:space="preserve">
-    <value>Foto</value>
+  <data name="LastName" xml:space="preserve">
+    <value>Last name</value>
   </data>
-  <data name="ShortBody" xml:space="preserve">
-    <value>Text</value>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Phone number</value>
   </data>
-  <data name="PublishingTime" xml:space="preserve">
-    <value>Erscheinungstermin</value>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
   </data>
-  <data name="Unreleased" xml:space="preserve">
-    <value>Unveröffentlicht</value>
+  <data name="Role" xml:space="preserve">
+    <value>Puropse</value>
   </data>
-  <data name="Archived" xml:space="preserve">
-    <value>Archiviert</value>
+  <data name="Administrator" xml:space="preserve">
+    <value>Administrator</value>
   </data>
-  <data name="Details" xml:space="preserve">
-    <value>Nähere</value>
+  <data name="Volunteer" xml:space="preserve">
+    <value>Volunteer</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Bearbeiten</value>
+  <data name="TemporaryHome" xml:space="preserve">
+    <value>Temporary Home</value>
   </data>
-  <data name="Add" xml:space="preserve">
-    <value>Hinzufügen</value>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
   </data>
-  <data name="ListPanelTitle" xml:space="preserve">
-    <value>Schaltflächen</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
   </data>
-  <data name="Lack" xml:space="preserve">
-    <value>(mangel)</value>
-  </data>
-  <data name="Released" xml:space="preserve">
-    <value>Freigegeben</value>
+  <data name="Id" xml:space="preserve">
+    <value>ID</value>
   </data>
 </root>

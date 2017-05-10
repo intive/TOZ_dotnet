@@ -7,6 +7,14 @@
     ViewData["Title"] = @Localizer["PageTitle"];
 }
 
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
 <h2>@Localizer["PageTitle"]</h2>
 <br>
 
@@ -31,14 +39,14 @@
                     var slot = week.Slots[slotnumber];
                     var volunteer = slot.Volunteer;
 
-                    @if(volunteer == null)
+                    @if (volunteer == null)
                     {
-                        <td class="col-lg btn-default" onclick="@("window.location.href='" + @Url.Action("AddReservation", "Schedule", new { Date = slot.Date, TimeOfDay = slot.TimeOfDay }) + "'");">@Localizer["Morning"]<br>(08:00 - 12:00)</td>                               
+                        <td class="col-lg btn-default">@Html.ActionLink(@Localizer["Morning"].Value + " (08:00 - 12:00)", "AddReservation", "Schedule", new { Date = slot.Date, TimeOfDay = slot.TimeOfDay }, new { data_modal = "" }) </td>                           
                     }
                     else
                     {
                         <td>
-                            <button type="button" class="btn-block btn btn-danger" data-toggle="modal" data-target="#myModal" data-id=@slot.ReservationId>@volunteer.FirstName<br>@volunteer.LastName</button>     
+                            <button type="button" class="btn-block btn btn-danger" data-toggle="modal" data-target="#delete-modal" data-id=@slot.ReservationId>@volunteer.FirstName<br>@volunteer.LastName</button>     
                         </td>
                     }
                 }
@@ -52,12 +60,12 @@
 
                     @if (volunteer == null)
                     {
-                        <td class="col-lg btn-default" onclick="@("window.location.href='" + @Url.Action("AddReservation", "Schedule", new { Date = slot.Date, TimeOfDay = slot.TimeOfDay }) + "'");">@Localizer["Afternoon"]<br>(12:00 - 16:00)</td>
+                        <td class="col-lg btn-default">@Html.ActionLink(@Localizer["Afternoon"].Value + " (12:00 - 16:00)", "AddReservation", "Schedule", new { Date = slot.Date, TimeOfDay = slot.TimeOfDay }, new { data_modal = "" }) </td>
                     }
                     else
                     {
                         <td>
-                            <button type="button" class="btn-block btn btn-danger" data-toggle="modal" data-target="#myModal" data-id=@slot.ReservationId>@volunteer.FirstName<br>@volunteer.LastName</button>
+                            <button type="button" class="btn-block btn btn-danger" data-toggle="modal" data-target="#delete-modal" data-id=@slot.ReservationId>@volunteer.FirstName<br>@volunteer.LastName</button>
                         </td>      
                     }
                 }
@@ -73,7 +81,7 @@
     </div>
 </div>
 
-<div id="myModal" class="modal fade" role="dialog">
+<div id="delete-modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -98,7 +106,7 @@
     <script>     
         $(document).ready(function () 
         {
-            $('#myModal').on('show.bs.modal', function (e) 
+            $('#delete-modal').on('show.bs.modal', function (e) 
             {
                 var id = $(e.relatedTarget).data('id');
                 $('#reservationDeleteButton').click(function () {

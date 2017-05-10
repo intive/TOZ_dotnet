@@ -62,12 +62,12 @@ namespace Toz.Dotnet.Controllers
                     {
                         _lastAcceptPhoto = null;
                         _validationPhotoAlert = null;
-                        return RedirectToAction("Index");
+                        return Json(new { success = true });
                     }
                     else
                     {
                         _backendErrorsService.UpdateModelState(ModelState);
-                        return View(news);
+                        return PartialView(news);
                     }
             }
             else
@@ -85,13 +85,13 @@ namespace Toz.Dotnet.Controllers
                         ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
                     }
                 }
-                return View(news);
+                return PartialView(news);
             }
         } 
 
         public IActionResult Add()
         {
-            return View(new News());
+            return PartialView(new News());
         }
 
         [HttpPost]
@@ -115,12 +115,12 @@ namespace Toz.Dotnet.Controllers
                     {
                         _lastAcceptPhoto = null;
                         _validationPhotoAlert = null;
-                        return RedirectToAction("Index");
+                        return Json(new { success = true });
                     }
                     else
                     {
                         _backendErrorsService.UpdateModelState(ModelState);
-                        return View(news);
+                        return PartialView(news);
                     }
             }
             else
@@ -138,13 +138,13 @@ namespace Toz.Dotnet.Controllers
                         ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
                     }
                 }
-                return View(news);
+                return PartialView(news);
             }
         } 
 
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken) 
         {
-            return View(await _newsManagementService.GetNews(id));
+            return PartialView("Edit", await _newsManagementService.GetNews(id));
         }
 
         public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)
@@ -156,10 +156,6 @@ namespace Toz.Dotnet.Controllers
             }
 
             return RedirectToAction("Index");
-        }
-
-        public async Task<ActionResult> Details(string id, CancellationToken cancellationToken) {
-            return View(await _newsManagementService.GetNews(id));
         }
 
         private bool IsAcceptedPhotoType(string photoType, string[] acceptTypes)
