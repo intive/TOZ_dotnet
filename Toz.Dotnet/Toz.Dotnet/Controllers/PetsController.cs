@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models;
@@ -140,23 +141,16 @@ namespace Toz.Dotnet.Controllers
             return RedirectToAction("Index");
         }*/
 
-        private bool IsAcceptPhotoType(string photoType, string[] acceptTypes)
+        private bool IsAcceptedPhotoType(string photoType, string[] acceptedTypes)
         {
-            foreach(var type in acceptTypes)
-            {
-                if (type == photoType)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return acceptedTypes.Any(type => type.Equals(photoType, StringComparison.OrdinalIgnoreCase));
         }
 
         private bool ValidatePhoto(Pet pet, IFormFile photo)
         {
             if(photo != null)
             {
-                if(IsAcceptPhotoType(photo.ContentType, _appSettings.AcceptPhotoTypes))
+                if(IsAcceptedPhotoType(photo.ContentType, _appSettings.AcceptPhotoTypes))
                 {
                     if(photo.Length > 0)
                     {
