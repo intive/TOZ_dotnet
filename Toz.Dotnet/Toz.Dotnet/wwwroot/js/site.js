@@ -92,6 +92,7 @@ $(document).ready(function () {
 
     $('#table').DataTable({
         "dom": 't<"panel-footer"p>',
+        "pageLength": 20,
         "language": {
             "zeroRecords": "Nie znaleziono pasujących rekordów",
             "emptyTable": "Brak rekordów",
@@ -101,7 +102,8 @@ $(document).ready(function () {
                 "next": "Następna",
                 "previous": "Poprzednia"
             }
-        }
+        },
+        "responsive": true
     });
 
     $('#search').keyup(function () {
