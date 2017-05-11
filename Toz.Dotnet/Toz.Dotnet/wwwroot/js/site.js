@@ -98,7 +98,10 @@ $(document).ready(function () {
                 "previous": "Poprzednia"
             }
         },
-        "responsive": true
+        "responsive": true,
+        "columnDefs": [
+            { orderable: false, targets: -1 }
+        ]
     });
 
     $('#search').keyup(function () {
