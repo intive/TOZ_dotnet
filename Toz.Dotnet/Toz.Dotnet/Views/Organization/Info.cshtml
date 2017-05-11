@@ -26,8 +26,7 @@
                 <tr>
                     <td class="col-md-3"><label>@Localizer["Name"]:</label></td>
                     <td class="col-md-9">
-                        @if (IsEditMode)
-                        {
+                        @if (IsEditMode){
                             @Html.TextBoxFor(Model => Model.Name, new { Class = "form-control", @id = "Name" })
                         }
                         else
@@ -48,8 +47,7 @@
                 <tr>
                     <td class="col-md-3"><label>@Localizer["Street"]:</label></td>
                     <td class="col-md-9">
-                        @if (IsEditMode)
-                        {
+                        @if (IsEditMode){
                             @Html.TextBoxFor(Model => Model.Address.Street, new { Class = "form-control", @id = "Street" })
                         }
                         else
@@ -65,8 +63,7 @@
                 <tr>
                     <td class="col-md-3"><label>@Localizer["HouseNumber"]:</label></td>
                     <td class="col-md-9">
-                        @if (IsEditMode)
-                        {
+                        @if (IsEditMode){
                             @Html.TextBoxFor(Model => Model.Address.HouseNumber, new { Class = "form-control", @id = "HouseNumber" })
                         }
                         else
@@ -82,14 +79,9 @@
                 <tr>
                     <td class="col-md-3"><label>@Localizer["ApartmentNumber"]:</label></td>
                     <td class="col-md-9">
-                        @if (IsEditMode)
-                        {
-                            @Html.TextBoxFor(Model => Model.Address.ApartmentNumber, new { Class = "form-control", @id = "ApartmentNumber" })
-                        }
-                        else
-                        {
-                            @Html.TextBoxFor(Model => Model.Address.ApartmentNumber, new { Class = "form-control", @id = "ApartmentNumber", @readonly = "readonly" })
-                        }
+                        @(IsEditMode 
+                            ? Html.TextBoxFor(Model => Model.Address.ApartmentNumber, new {Class = "form-control", @id = "ApartmentNumber"}) 
+                            : Html.TextBoxFor(Model => Model.Address.ApartmentNumber, new {Class = "form-control", @id = "ApartmentNumber", @readonly = "readonly"}))
                     </td>
                 </tr>
                 <tr align="left">
@@ -100,7 +92,7 @@
                     <td class="col-md-3"><label>@Localizer["PostCode"]:</label></td>
                     <td class="col-md-9">
                         @if (IsEditMode)
-                        {
+            {
                             @Html.TextBoxFor(Model => Model.Address.PostCode, new { Class = "form-control", @id = "PostCode" })
                         }
                         else
@@ -117,7 +109,7 @@
                     <td class="col-md-3"><label>@Localizer["City"]:</label></td>
                     <td class="col-md-9">
                         @if (IsEditMode)
-                        {
+            {
                             @Html.TextBoxFor(Model => Model.Address.City, new { Class = "form-control", @id = "City" })
                         }
                         else
@@ -134,7 +126,7 @@
                     <td class="col-md-3"><label>@Localizer["Country"]:</label></td>
                     <td class="col-md-9">
                         @if (IsEditMode)
-                        {
+            {
                             @Html.TextBoxFor(Model => Model.Address.Country, new { Class = "form-control", @id = "Country" })
                         }
                         else
@@ -156,7 +148,7 @@
                     <td class="col-md-3"><label>@Localizer["Email"]:</label></td>
                     <td class="col-md-9">
                         @if (IsEditMode)
-                        {
+            {
                             @Html.TextBoxFor(Model => Model.Contact.Email, new { Class = "form-control", @id = "Email" })
                         }
                         else
@@ -173,7 +165,7 @@
                     <td class="col-md-3"><label>@Localizer["Phone"]:</label></td>
                     <td class="col-md-9">
                         @if (IsEditMode)
-                        {
+            {
                             @Html.TextBoxFor(Model => Model.Contact.Phone, new { Class = "form-control", @id = "Phone" })
                         }
                         else
@@ -190,7 +182,7 @@
                     <td class="col-md-3"><label>@Localizer["Fax"]:</label></td>
                     <td class="col-md-9">
                         @if (IsEditMode)
-                        {
+            {
                             @Html.TextBoxFor(Model => Model.Contact.Fax, new { Class = "form-control", @id = "Fax" })
                         }
                         else
@@ -207,7 +199,7 @@
                     <td class="col-md-3"><label>@Localizer["Website"]:</label></td>
                     <td class="col-md-9">
                         @if (IsEditMode)
-                        {
+            {
                             @Html.TextBoxFor(Model => Model.Contact.Website, new { Class = "form-control", @id = "Website" })
                         }
                         else
@@ -229,8 +221,8 @@
                     <td class="col-md-3"><label>@Localizer["BankAccountNumber"]:</label></td>
                     <td class="col-md-9">
                         @if (IsEditMode)
-                        {
-                            @Html.TextBoxFor(Model => Model.BankAccount.Number, new { Class = "form-control", @id = "BankAccountNumber"})
+            {
+                            @Html.TextBoxFor(Model => Model.BankAccount.Number, new { Class = "form-control", @id = "BankAccountNumber" })
                         }
                         else
                         {
@@ -246,7 +238,7 @@
                     <td class="col-md-3"><label>@Localizer["BankName"]:</label></td>
                     <td class="col-md-9">
                         @if (IsEditMode)
-                        {
+            {
                             @Html.TextBoxFor(Model => Model.BankAccount.BankName, new { Class = "form-control", @id = "BankName" })
                         }
                         else
@@ -276,3 +268,23 @@
     </div>
 
 </body>
+
+@section scripts {
+    <script>
+        (function($) {
+            var regex = /^(PL)?[0-9]{26}$/;
+
+            $.validator.addMethod("accountnumber",
+                function(value, element, params) {
+                    if (!value) return true;
+                    value = $.trim(value).replace(" ", string.empty);
+                    if (!value) return true;
+                    var match = regex.test(value);
+                    return match;
+                });
+
+            $.validator.unobtrusive.adapters.addBool("accountnumber");
+        })(jQuery);
+    </script>
+}
+

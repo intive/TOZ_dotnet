@@ -12,7 +12,7 @@ namespace Toz.Dotnet.Models.OrganizationSubtypes
 
         [JsonProperty("houseNumber")]
         [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
-        [RegularExpression("[0-9]{1,3}[a-zA-Z]{1}", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "InvalidValue")] 
+        [RegularExpression("[0-9]{1,3}[a-zA-Z]{0,1}", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "InvalidValue")] 
         public string HouseNumber { get; set; }
 
         [JsonProperty("apartmentNumber")]

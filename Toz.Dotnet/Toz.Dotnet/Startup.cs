@@ -4,12 +4,14 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Toz.Dotnet.Core.Services;
 using Toz.Dotnet.Core.Interfaces;
+using Toz.Dotnet.Models.Validation;
 
 namespace Toz.Dotnet
 {
@@ -38,6 +40,7 @@ namespace Toz.Dotnet
             services.AddSingleton<IUsersManagementService, UsersManagementService>();
             services.AddSingleton<IScheduleManagementService, ScheduleManagementService>();
             services.AddSingleton<IOrganizationManagementService, OrganizationManagementService>();
+            services.AddSingleton<IValidationAttributeAdapterProvider, CustomValidationAttributeAdapterProvider>();
 
             services.AddSession();
             services.AddMemoryCache();

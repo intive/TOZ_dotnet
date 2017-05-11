@@ -71,15 +71,6 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu This bank account number is not valid.
-        /// </summary>
-        public static string BankAccountValidationMessage {
-            get {
-                return ResourceManager.GetString("BankAccountValidationMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         /// Wyszukuje zlokalizowany ciąg podobny do ciągu Invalid Email Address.
         /// </summary>
         public static string EmailValidationMessage {
@@ -103,6 +94,15 @@ namespace Toz.Dotnet.Resources {
         public static string FirstnameLetters {
             get {
                 return ResourceManager.GetString("FirstnameLetters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu This bank account number is not valid.
+        /// </summary>
+        public static string InvalidBankAccount {
+            get {
+                return ResourceManager.GetString("InvalidBankAccount", resourceCulture);
             }
         }
         

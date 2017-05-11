@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
-using Toz.Dotnet.Models.CustomValidationAttributes;
 
 namespace Toz.Dotnet.Models.OrganizationSubtypes
 {
@@ -13,12 +12,12 @@ namespace Toz.Dotnet.Models.OrganizationSubtypes
 
         [JsonProperty("phone")]
         [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
-        [PhoneNumber(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "InvalidPhoneNumber")]
+        [RegularExpression(@"\d{9}(\d{2})?", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "InvalidPhoneNumber")]
         public string Phone { get; set; }
 
         [JsonProperty("fax")]
         [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
-        [PhoneNumber(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "InvalidFaxNumber")]
+        [RegularExpression(@"\d{9}(\d{2})?", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "InvalidFaxNumber")]
         public string Fax { get; set; }
 
         [JsonProperty("website")]

@@ -120,7 +120,7 @@
   <data name="BankAccountLength" xml:space="preserve">
     <value>Numer bankowy musi składać się dokładnie z 26 cyfr</value>
   </data>
-  <data name="BankAccountValidationMessage" xml:space="preserve">
+  <data name="InvalidBankAccount" xml:space="preserve">
     <value>Nieprawidłowy numer bankowy</value>
   </data>
   <data name="EmailValidationMessage" xml:space="preserve">

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using System.Text.RegularExpressions;
 
-namespace Toz.Dotnet.Models.CustomValidationAttributes
+namespace Toz.Dotnet.Models.Validation
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public sealed class BankAccountNumberAttribute : ValidationAttribute
@@ -12,19 +13,35 @@ namespace Toz.Dotnet.Models.CustomValidationAttributes
         public override bool IsValid(object value)
         {
             var bankAccount = value as string;
-            if (bankAccount == null)
-            {
-                return false;
-            }
-            bankAccount = $"{PolandIbanPrefix}{bankAccount}";
-            bankAccount = bankAccount.ToUpper();
             if (string.IsNullOrEmpty(bankAccount))
             {
-                return false;
+                return true;
             }
-            if (System.Text.RegularExpressions.Regex.IsMatch(bankAccount, "^[A-Z0-9]"))
+
+            // Remove all white spaces
+            bankAccount = bankAccount.Replace(" ", string.Empty);
+
+            switch (bankAccount.Length)
             {
-                bankAccount = bankAccount.Replace(" ", string.Empty);
+                // Validate length
+                case 26:
+                    bankAccount = $"{PolandIbanPrefix}{bankAccount}";
+                    break;
+                default:
+                    // Enforce Polish country prefix
+                    if (Regex.IsMatch(bankAccount, @"[\D]{2}[0-9]{26}") && bankAccount.StartsWith("PL", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        bankAccount = $"{PolandIbanPrefix}{bankAccount.Substring(2, 26)}";
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                    break;
+            }
+
+            if (Regex.IsMatch(bankAccount, "^[A-Z0-9]"))
+            {
                 string bank = bankAccount.Substring(4, bankAccount.Length - 4) + bankAccount.Substring(0, 4);
                 int asciiShift = 55;
                 var stringBuilder = new StringBuilder();

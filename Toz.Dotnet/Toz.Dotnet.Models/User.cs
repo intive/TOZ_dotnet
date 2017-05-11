@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Toz.Dotnet.Models.CustomValidationAttributes;
 using Toz.Dotnet.Models.EnumTypes;
 
 namespace Toz.Dotnet.Models
@@ -10,7 +9,7 @@ namespace Toz.Dotnet.Models
     {      
         [JsonProperty("phoneNumber")]
         [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
-        [PhoneNumber(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "InvaildPhoneNumber")]
+        [RegularExpression(@"\d{9}(\d{2})?", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "InvalidPhoneNumber")]
         public string PhoneNumber {get; set;}
         	
         [JsonProperty("email")]
