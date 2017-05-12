@@ -27,7 +27,7 @@
                 <input type="text" id="search" class="search form-control" placeholder="@Localizer["SearchPlaceholder"]">
             </div>
             <div class="col col-xs-4 text-right">
-                @Html.ActionLink(@Localizer["Add"].Value, "Add", "News", null, new { data_modal = "", @class = "btn btn-sm btn-primary btn-create" })
+                <a class="data-modal btn btn-primary btn-sm btn-create" href="@Url.Action("Add","News")"><span class="glyphicon glyphicon-plus"></span></a>
             </div>
         </div>
     </div>
@@ -40,7 +40,7 @@
                         <th>@Localizer["Photo"]</th>
                         <th>@Localizer["ShortBody"]</th>
                         <th></th>
-                        <th></th>
+                        <th class="center-column"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -81,8 +81,8 @@
                             {
                                 <td></td>
                             }
-
-                            <td>@Html.ActionLink(@Localizer["Edit"].Value, "Edit", "News", new { id = item.Id }, new { data_modal = "", @class = "btn btn-primary btn-block" })</td>
+                            
+                            <td class="center-column"><a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Edit","News")/@item.Id"><span class="glyphicon glyphicon-pencil"></span></a></td>
                         </tr>
                     }
                 </tbody>

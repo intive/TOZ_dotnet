@@ -218,3 +218,7 @@ used to vertically center elements, may need modification if you're not using de
 div.dataTables_paginate {
     text-align: center
 }
+
+.center-column {
+    text-align: center;
+}

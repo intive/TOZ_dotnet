@@ -41,7 +41,7 @@ $(document).ready(function () {
             cache: false
         });
 
-        $("a[data-modal]").on("click", function (e) {
+        $("a[class*=data-modal]").on("click", function (e) {
 
             // hide dropdown if any
             $(e.target).closest('.btn-group').children('.dropdown-toggle').dropdown('toggle');
