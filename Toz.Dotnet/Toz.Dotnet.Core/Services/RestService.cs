@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Toz.Dotnet.Core.Interfaces;
+using Toz.Dotnet.Models.Errors;
 
 namespace Toz.Dotnet.Core.Services
 {
@@ -11,10 +12,12 @@ namespace Toz.Dotnet.Core.Services
     {
         private const string RestMediaType = "application/json";
         private readonly IAuthService _authService; // TEMPORARY
+        private IBackendErrorsService _backendErrorsService;
 
-        public RestService(IAuthService authService)
+        public RestService(IAuthService authService, IBackendErrorsService backendErrorsService)
         {
             _authService = authService; // TEMPORARY
+            _backendErrorsService = backendErrorsService;
         }
 
         public async Task<bool> ExecuteDeleteAction<T>(string address, T obj, CancellationToken cancelationToken = default(CancellationToken))
@@ -95,9 +98,17 @@ namespace Toz.Dotnet.Core.Services
                     }
                     // <--
                     var response = await client.PostAsync(address, httpContent, cancelationToken);
-                    response.EnsureSuccessStatusCode();
-
-                    return true;
+                    if(response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        var stringResponse = await response.Content.ReadAsStringAsync();
+                        ErrorsList output = JsonConvert.DeserializeObject<ErrorsList>(stringResponse);
+                        _backendErrorsService.AddErrors(output);
+                        return false;
+                    }
                 }
                 catch(HttpRequestException)
                 {
@@ -129,10 +140,17 @@ namespace Toz.Dotnet.Core.Services
                     }
                     // <--
                     var response = await client.PutAsync(address, httpContent, cancelationToken);
-                    response.EnsureSuccessStatusCode();
-                    var stringResponse = await response.Content.ReadAsStringAsync();
-                    
-                    return true;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        var stringResponse = await response.Content.ReadAsStringAsync();
+                        ErrorsList output = JsonConvert.DeserializeObject<ErrorsList>(stringResponse);
+                        _backendErrorsService.AddErrors(output);
+                        return false;
+                    }
                 }
                 catch(HttpRequestException)
                 {

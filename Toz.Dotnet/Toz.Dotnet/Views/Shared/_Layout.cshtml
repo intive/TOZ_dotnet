@@ -1,5 +1,4 @@
-﻿@using Toz.Dotnet.Models.EnumTypes
-@using Microsoft.AspNetCore.Mvc.Localization
+﻿@using Microsoft.AspNetCore.Mvc.Localization
 @using Toz.Dotnet.Core.Interfaces
 
 @inject IViewLocalizer Localizer
@@ -12,78 +11,92 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - TOZ.Dotnet</title>
     
-    
-    <script src="~/js/site.min.js" asp-append-version="true"></script>
-
     <environment names="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <script src="~/js/site.js"></script>
         <link rel="stylesheet" href="~/css/site.css" />
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/lib/datatables/media/js/jquery.dataTables.js"></script>
+        <script src="~/lib/datatables/media/js/dataTables.bootstrap.js"></script>
+        <link rel="stylesheet" href="~/lib/datatables/media/css/dataTables.bootstrap.css"/>
     </environment>
-    <environment names="Staging,Production">
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
-    
-    <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
-          asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-          asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-            asp-fallback-test="window.jQuery">
-    </script>
-    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
-            asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-            asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
-    </script>
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"
-            asp-fallback-src="~/lib/jquery-validation/dist/jquery.validate.min.js"
-            asp-fallback-test="window.jQuery && window.jQuery.validator">
-    </script>
-    <script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.min.js"
-            asp-fallback-src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
-            asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive">
-    </script>
-    <script src="~/js/site.js"></script>
 
+    <environment names="Staging,Production">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"></script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"></script>
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only"
+              asp-fallback-test-property="position"
+              asp-fallback-test-value="absolute" />
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true"/>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+        <script src="~/lib/datatables/media/js/jquery.dataTables.min.js"></script>
+        <script src="~/lib/datatables/media/js/dataTables.bootstrap.min.js"></script>
+        <link rel="stylesheet" href="~/lib/datatables/media/css/dataTables.bootstrap.min.css"/>
+    </environment>    
+    
+    <!-- Environment independent: -->
+    <script src="~/lib/datatables-responsive/js/dataTables.responsive.js"></script>
+    <script src="~/lib/datatables-responsive/js/responsive.bootstrap.js"></script>
+    <script src="~/js/datatables/datatables.init.js"></script>
+    <link rel="stylesheet" href="~/lib/datatables-responsive/css/responsive.bootstrap.scss"/>
 </head>
+
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
+    <nav class="navbar navbar-inverse navbar-static-top">
+        <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">TOZ.Dotnet</a>
+                <a class="navbar-brand" href="#">TOZ.Dotnet</a>
             </div>
-            <div class="navbar-collapse collapse">
+            <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                    @{
-                        if (_iAuthService.IsAuth == true)
-                        {
-                            <li><a asp-area="" asp-controller="Pets" asp-action="Index">@Localizer["PetList"]</a></li>
-                            <li><a asp-area="" asp-controller="News" asp-action="Index">@Localizer["NewsList"]</a></li>
-                            <li><a asp-area="" asp-controller="Users" asp-action="Index">@Localizer["Users"]</a></li>
-                            <li><a asp-area="" asp-controller="Schedule" asp-action="Index">@Localizer["Schedule"]</a></li>
-                            <li><a asp-area="" asp-controller="Organization" asp-action="Info">@Localizer["OrganizationInfo"]</a></li>
-                        }
-                        else
-                        {
-                            <li><a asp-area="" asp-controller="Login" asp-action="Index">@Localizer["Login"]</a></li>
-                        }
+                    @if (_iAuthService.IsAuth == true)
+                    {
+                        <li><a asp-controller="Home" asp-action="Index">@Localizer["HomePage"]</a></li>
+                        <li><a asp-controller="Pets" asp-action="Index">@Localizer["PetList"]</a></li>
+                        <li><a asp-controller="News" asp-action="Index">@Localizer["NewsList"]</a></li>
+                        <li><a asp-controller="Users" asp-action="Index">@Localizer["Users"]</a></li>
+                        <li><a asp-controller="Schedule" asp-action="Index">@Localizer["Schedule"]</a></li>
+                        <li><a asp-controller="Organization" asp-action="Info">@Localizer["OrganizationInfo"]</a></li>
                     }
                 </ul>
-                <ul hidden class="nav" style="text-align: right;">
-                        <form id="selectLanguage" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@Context.Request.Path" method="post">
-                            <input type="hidden" name="culture" value="pl"/>
-                            <a class="flag flag-pl" href="#" onclick="$('input[name=culture]').val('pl');$(this).closest('form').submit();"></a>
-                            <a class="flag flag-gb" href="#" onclick="$('input[name=culture]').val('en-US');$(this).closest('form').submit();"></a>
-                            <a class="flag flag-de" href="#" onclick="$('input[name=culture]').val('de');$(this).closest('form').submit();"></a>
-                        </form>
+                <ul class="nav navbar-nav navbar-right">
+                    @if (_iAuthService.IsAuth == false)
+                    {
+                        <li><a asp-controller="Login" asp-action="Index"><span class="glyphicon glyphicon-log-in"></span>  @Localizer["Login"]</a></li>
+                    }
+                    else
+                    {
+                        <li><a><span class="glyphicon glyphicon-log-out"></span>  @Localizer["Logout"]</a></li>
+                    }
                 </ul>
+                <!--<ul hidden class="nav" style="text-align: right;">
+                    <form id="selectLanguage" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@Context.Request.Path" method="post">
+                        <input type="hidden" name="culture" value="pl" />
+                        <a class="flag flag-pl" href="#" onclick="$('input[name=culture]').val('pl');$(this).closest('form').submit();"></a>
+                        <a class="flag flag-gb" href="#" onclick="$('input[name=culture]').val('en-US');$(this).closest('form').submit();"></a>
+                        <a class="flag flag-de" href="#" onclick="$('input[name=culture]').val('de');$(this).closest('form').submit();"></a>
+                    </form>
+                </ul>-->
             </div>
         </div>
-    </div>
+    </nav>
+
     <div class="container body-content">
         @RenderBody()
     </div>

@@ -1,290 +1,233 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
-@using Toz.Dotnet.Models.EnumTypes
 @model Toz.Dotnet.Models.Organization
 @inject IViewLocalizer Localizer
+
 @{
     ViewData["Title"] = @Localizer["PageTitle"];
 }
+
 @{
     bool IsEditMode = Model == null || (bool)ViewData["EditMode"] == true;
 }
 
-<body>
-    <h2>@Localizer["PageTitle"]</h2>
-    <hr>
-
-    <div class="OrganizationInfo">
-        <form asp-controller="Organization" asp-action="CreateEdit" method="POST" enctype="multipart/form-data">
-
-            <h3>@Localizer["General"]:</h3>
-            <hr>
-            <table class="well forms" align="center">
-                <tr align="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Name, null, null)</td>
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["Name"]:</label></td>
-                    <td class="col-md-9">
-                        @if (IsEditMode){
-                            @Html.TextBoxFor(Model => Model.Name, new { Class = "form-control", @id = "Name" })
-                        }
-                        else
-                        {
-                            @Html.TextBoxFor(Model => Model.Name, new { Class = "form-control", @id = "Name", @readonly = "readonly" })
-                        }
-                    </td>
-                </tr>
-            </table>
-
-            <h3>@Localizer["Address"]:</h3>
-            <hr>
-            <table class="well forms" align="center">
-                <tr align="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Address.Street, null, null)</td>
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["Street"]:</label></td>
-                    <td class="col-md-9">
-                        @if (IsEditMode){
-                            @Html.TextBoxFor(Model => Model.Address.Street, new { Class = "form-control", @id = "Street" })
-                        }
-                        else
-                        {
-                            @Html.TextBoxFor(Model => Model.Address.Street, new { Class = "form-control", @id = "Street", @readonly = "readonly" })
-                        }
-                    </td>
-                </tr>
-                <tr align="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Address.HouseNumber, null, null)</td>
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["HouseNumber"]:</label></td>
-                    <td class="col-md-9">
-                        @if (IsEditMode){
-                            @Html.TextBoxFor(Model => Model.Address.HouseNumber, new { Class = "form-control", @id = "HouseNumber" })
-                        }
-                        else
-                        {
-                            @Html.TextBoxFor(Model => Model.Address.HouseNumber, new { Class = "form-control", @id = "HouseNumber", @readonly = "readonly" })
-                        }
-                    </td>
-                </tr>
-                <tr align="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Address.ApartmentNumber, null, null)</td>
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["ApartmentNumber"]:</label></td>
-                    <td class="col-md-9">
-                        @(IsEditMode 
-                            ? Html.TextBoxFor(Model => Model.Address.ApartmentNumber, new {Class = "form-control", @id = "ApartmentNumber"}) 
-                            : Html.TextBoxFor(Model => Model.Address.ApartmentNumber, new {Class = "form-control", @id = "ApartmentNumber", @readonly = "readonly"}))
-                    </td>
-                </tr>
-                <tr align="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Address.PostCode, null, null)</td>
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["PostCode"]:</label></td>
-                    <td class="col-md-9">
+<div class="container-fluid center">
+    <form class="form-horizontal" asp-controller="Organization" asp-action="CreateEdit" method="POST" enctype="multipart/form-data">
+        <fieldset class="pagetitle">
+            <legend class="pagetitlelegend">@Localizer["PageTitle"]</legend>
+            <fieldset>
+                <legend>@Localizer["General"]</legend>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">@Localizer["Name"]</label>
+                    <div class="col-sm-10">
                         @if (IsEditMode)
-            {
-                            @Html.TextBoxFor(Model => Model.Address.PostCode, new { Class = "form-control", @id = "PostCode" })
+                        {
+                            <input type="text" asp-for="Name" class="form-control" id="Name">
+                            <span asp-validation-for="Name"></span>
                         }
                         else
                         {
-                            @Html.TextBoxFor(Model => Model.Address.PostCode, new { Class = "form-control", @id = "PostCode", @readonly = "readonly" })
+                            <input type="text" asp-for="Name" class="form-control" id="Name" readonly>
                         }
-                    </td>
-                </tr>
-                <tr align="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Address.City, null, null)</td>
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["City"]:</label></td>
-                    <td class="col-md-9">
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>@Localizer["Address"]</legend>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">@Localizer["Street"]</label>
+                    <div class="col-sm-10">
                         @if (IsEditMode)
-            {
-                            @Html.TextBoxFor(Model => Model.Address.City, new { Class = "form-control", @id = "City" })
+                        {
+                            <input type="text" asp-for="Address.Street" class="form-control" id="Stret">
+                            <span asp-validation-for="Address.Street"></span>
                         }
                         else
                         {
-                            @Html.TextBoxFor(Model => Model.Address.City, new { Class = "form-control", @id = "City", @readonly = "readonly" })
+                            <input type="text" asp-for="Address.Street" class="form-control" id="Street" readonly>
                         }
-                    </td>
-                </tr>
-                <tr align="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Address.Country, null, null)</td>
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["Country"]:</label></td>
-                    <td class="col-md-9">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">@Localizer["HouseNumber"]</label>
+                    <div class="col-sm-10">
                         @if (IsEditMode)
-            {
-                            @Html.TextBoxFor(Model => Model.Address.Country, new { Class = "form-control", @id = "Country" })
+                        {
+                            <input type="text" asp-for="Address.HouseNumber" class="form-control" id="HouseNumber">
+                            <span asp-validation-for="Address.HouseNumber"></span>
                         }
                         else
                         {
-                            @Html.TextBoxFor(Model => Model.Address.Country, new { Class = "form-control", @id = "Country", @readonly = "readonly" })
+                            <input type="text" asp-for="Address.HouseNumber" class="form-control" id="HouseNumber" readonly>
                         }
-                    </td>
-                </tr>
-            </table>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">@Localizer["ApartmentNumber"]</label>
+                    <div class="col-sm-10">
+                        @if (IsEditMode)
+                        {
+                            <input type="text" asp-for="Address.ApartmentNumber" class="form-control" id="ApartmentNumber">
+                            <span asp-validation-for="Address.ApartmentNumber"></span>
+                        }
+                        else
+                        {
+                            <input type="text" asp-for="Address.ApartmentNumber" class="form-control" id="ApartmentNumber" readonly>
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">@Localizer["PostCode"]</label>
+                    <div class="col-sm-10">
+                        @if (IsEditMode)
+                        {
+                            <input type="text" asp-for="Address.PostCode" class="form-control" id="PostCode">
+                            <span asp-validation-for="Address.PostCode"></span>
+                        }
+                        else
+                        {
+                            <input type="text" asp-for="Address.PostCode" class="form-control" id="PostCode" readonly>
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">@Localizer["City"]</label>
+                    <div class="col-sm-10">
+                        @if (IsEditMode)
+                        {
+                            <input type="text" asp-for="Address.City" class="form-control" id="City">
+                            <span asp-validation-for="Address.City"></span>
+                        }
+                        else
+                        {
+                            <input type="text" asp-for="Address.City" class="form-control" id="City" readonly>
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">@Localizer["Country"]</label>
+                    <div class="col-sm-10">
+                        @if (IsEditMode)
+                        {
+                            <input type="text" asp-for="Address.Country" class="form-control" id="Country">
+                            <span asp-validation-for="Address.Country"></span>
+                        }
+                        else
+                        {
+                            <input type="text" asp-for="Address.Country" class="form-control" id="Country" readonly>
+                        }
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>@Localizer["Contact"]</legend>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">@Localizer["Email"]</label>
+                    <div class="col-sm-10">
+                        @if (IsEditMode)
+                        {
+                            <input type="text" asp-for="Contact.Email" class="form-control" id="Email">
+                            <span asp-validation-for="Contact.Email"></span>
+                        }
+                        else
+                        {
+                            <input type="text" asp-for="Contact.Email" class="form-control" id="Email" readonly>
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">@Localizer["Phone"]</label>
+                    <div class="col-sm-10">
+                        @if (IsEditMode)
+                        {
+                            <input type="text" asp-for="Contact.Phone" class="form-control" id="Phone">
+                            <span asp-validation-for="Contact.Phone"></span>
+                        }
+                        else
+                        {
+                            <input type="text" asp-for="Contact.Phone" class="form-control" id="Phone" readonly>
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">@Localizer["Fax"]</label>
+                    <div class="col-sm-10">
+                        @if (IsEditMode)
+                        {
+                            <input type="text" asp-for="Contact.Fax" class="form-control" id="Fax">
+                            <span asp-validation-for="Contact.Fax"></span>
+                        }
+                        else
+                        {
+                            <input type="text" asp-for="Contact.Fax" class="form-control" id="Fax" readonly>
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">@Localizer["Website"]</label>
+                    <div class="col-sm-10">
+                        @if (IsEditMode)
+                        {
+                            <input type="text" asp-for="Contact.Website" class="form-control" id="Website">
+                            <span asp-validation-for="Contact.Website"></span>
+                        }
+                        else
+                        {
+                            <input type="text" asp-for="Contact.Website" class="form-control" id="Website" readonly>
+                        }
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>@Localizer["BankAccount"]</legend>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">@Localizer["BankAccountNumber"]</label>
+                    <div class="col-sm-10">
+                        @if (IsEditMode)
+                        {
+                            <input type="text" asp-for="BankAccount.Number" class="form-control" id="BankAccountNumber">
+                            <span asp-validation-for="BankAccount.Number"></span>
+                        }
+                        else
+                        {
+                            <input type="text" asp-for="BankAccount.Number" class="form-control" id="BankAccountNumber" readonly>
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">@Localizer["BankName"]</label>
+                    <div class="col-sm-10">
+                        @if (IsEditMode)
+                        {
+                            <input type="text" asp-for="BankAccount.BankName" class="form-control" id="BankName">
+                            <span asp-validation-for="BankAccount.BankName"></span>
+                        }
+                        else
+                        {
+                            <input type="text" asp-for="BankAccount.BankName" class="form-control" id="BankName" readonly>
+                        }
+                    </div>
+                </div>
+            </fieldset>
+            <input type="button" class="btn btn-danger btn-block @(IsEditMode ? "" : "hidden")" id="OrganizationInfoEditFalse" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Info", "Organization", new { edit = false }) + "'");">
+            <input type="submit" class="btn btn-primary btn-block @(IsEditMode ? "" : "hidden")" id="OrganizationInfoSave" value=@Localizer["Save"]>
+            <input type="button" class="btn btn-primary btn-block @(IsEditMode ? "hidden" : "")" id="OrganizationInfoEditTrue" value=@Localizer["Edit"] onclick="@("window.location.href='" + @Url.Action("Info", "Organization", new { edit = true }) + "'");">
+        </fieldset>
+    </form>
+</div>
 
-            <h3>@Localizer["Contact"]:</h3>
-            <hr>
-            <table class="well forms" align="center">
-                <tr align="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Contact.Email, null, null)</td>
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["Email"]:</label></td>
-                    <td class="col-md-9">
-                        @if (IsEditMode)
-            {
-                            @Html.TextBoxFor(Model => Model.Contact.Email, new { Class = "form-control", @id = "Email" })
-                        }
-                        else
-                        {
-                            @Html.TextBoxFor(Model => Model.Contact.Email, new { Class = "form-control", @id = "Email", @readonly = "readonly" })
-                        }
-                    </td>
-                </tr>
-                <tr align="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Contact.Phone, null, null)</td>
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["Phone"]:</label></td>
-                    <td class="col-md-9">
-                        @if (IsEditMode)
-            {
-                            @Html.TextBoxFor(Model => Model.Contact.Phone, new { Class = "form-control", @id = "Phone" })
-                        }
-                        else
-                        {
-                            @Html.TextBoxFor(Model => Model.Contact.Phone, new { Class = "form-control", @id = "Phone", @readonly = "readonly" })
-                        }
-                    </td>
-                </tr>
-                <tr align="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Contact.Fax, null, null)</td>
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["Fax"]:</label></td>
-                    <td class="col-md-9">
-                        @if (IsEditMode)
-            {
-                            @Html.TextBoxFor(Model => Model.Contact.Fax, new { Class = "form-control", @id = "Fax" })
-                        }
-                        else
-                        {
-                            @Html.TextBoxFor(Model => Model.Contact.Fax, new { Class = "form-control", @id = "Fax", @readonly = "readonly" })
-                        }
-                    </td>
-                </tr>
-                <tr align="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Contact.Website, null, null)</td>
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["Website"]:</label></td>
-                    <td class="col-md-9">
-                        @if (IsEditMode)
-            {
-                            @Html.TextBoxFor(Model => Model.Contact.Website, new { Class = "form-control", @id = "Website" })
-                        }
-                        else
-                        {
-                            @Html.TextBoxFor(Model => Model.Contact.Website, new { Class = "form-control", @id = "Website", @readonly = "readonly" })
-                        }
-                    </td>
-                </tr>
-            </table>
-
-            <h3>@Localizer["BankAccount"]:</h3>
-            <hr>
-            <table class="well forms" align="center">
-                <tr align="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.BankAccount.Number, null, null)</td>
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["BankAccountNumber"]:</label></td>
-                    <td class="col-md-9">
-                        @if (IsEditMode)
-            {
-                            @Html.TextBoxFor(Model => Model.BankAccount.Number, new { Class = "form-control", @id = "BankAccountNumber" })
-                        }
-                        else
-                        {
-                            @Html.TextBoxFor(Model => Model.BankAccount.Number, new { Class = "form-control", @id = "BankAccountNumber", @readonly = "readonly" })
-                        }
-                    </td>
-                </tr>
-                <tr align="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.BankAccount.BankName, null, null)</td>
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["BankName"]:</label></td>
-                    <td class="col-md-9">
-                        @if (IsEditMode)
-            {
-                            @Html.TextBoxFor(Model => Model.BankAccount.BankName, new { Class = "form-control", @id = "BankName" })
-                        }
-                        else
-                        {
-                            @Html.TextBoxFor(Model => Model.BankAccount.BankName, new { Class = "form-control", @id = "BankName", @readonly = "readonly" })
-                        }
-                    </td>
-                </tr>
-            </table>
-
-            <hr>
-            <table class="forms" align="center">
-                <tr>
-                    <td colspan="2" style="text-align: center;">
-                        <input type="button" class="btn btn-danger btn-block @(IsEditMode ? "" : "hidden")" id="OrganizationInfoEditFalse" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Info", "Organization", new { edit = false }) + "'");">
-                    </td>
-                    <td colspan="2" style="text-align: center;">
-                        <input type="submit" class="btn btn-primary btn-block @(IsEditMode ? "" : "hidden")" id="OrganizationInfoSave" value=@Localizer["Save"]>
-                    </td>
-                    <td colspan="2" style="text-align: center;">
-                        <input type="button" class="btn btn-primary btn-block @(IsEditMode ? "hidden" : "")" id="OrganizationInfoEditTrue" value=@Localizer["Edit"] onclick="@("window.location.href='" + @Url.Action("Info", "Organization", new { edit = true }) + "'");">
-                    </td>
-                </tr>
-            </table>
-
-        </form>
-    </div>
-
-</body>
-
-@section scripts {
+@section Scripts {
     <script>
-        (function($) {
+        (function ($) {
             var regex = /^(PL)?[0-9]{26}$/;
-
             $.validator.addMethod("accountnumber",
-                function(value, element, params) {
+                function (value, element, params) {
                     if (!value) return true;
-                    value = $.trim(value).replace(" ", string.empty);
+                    value = String(value).replace(/\s/g, '');
                     if (!value) return true;
                     var match = regex.test(value);
                     return match;
                 });
-
             $.validator.unobtrusive.adapters.addBool("accountnumber");
         })(jQuery);
     </script>
 }
-

@@ -17,7 +17,7 @@ namespace Toz.Dotnet.Models.OrganizationSubtypes
 
         [JsonProperty("apartmentNumber")]
         [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
-        [RegularExpression("[0-9]{1,3}", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "OnlyDigits")]  
+        [RegularExpression("[0-9]{1,3}", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "InvalidValue")]  
         public string ApartmentNumber { get; set; }
 
         [JsonProperty("postCode")]

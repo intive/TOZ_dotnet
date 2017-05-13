@@ -3,121 +3,80 @@
 @model Toz.Dotnet.Models.News
 @inject IViewLocalizer Localizer
 
-@{
-    ViewData["Title"] = @Localizer["Title"];
-}
+<div class="container-fluid center">
+    <form class="form-horizontal" asp-controller="News" asp-action="Edit" method="POST" enctype="multipart/form-data">
+        <fieldset class="pagetitle">
+            <legend class="pagetitlelegend">@Localizer["PageTitle"]</legend>
+            <input type="hidden" name="status" value="Released" />
 
-<body>
-    <h2>@Localizer["PageTitle"]</h2>
-    <hr>
-    <div class="EditingNews">
-        <form asp-controller="News" asp-action="Edit" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="status" value="RELEASED"/>
-            <table class="forms" align="center">
-                <tr align="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Title, null, null)</td>
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["Title"]:</label></td>
-                    <td class="col-md-9"><textarea asp-for="Title" class="form-control" id="NewsTitle" cols="20" rows="2" style="resize: vertical"></textarea></td>
-                </tr>
-                <tr align="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Body, null, null)</td>
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["Text"]:</label></td>
-                    <td class="col-md-9"><textarea asp-for="Body" class="form-control" id="NewsBody" cols="20" rows="4" style="resize: vertical"></textarea></td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align: center;">
-                        <div class="form-group">
-                            <label>@Localizer["Photo"]</label>
-                            <div class="input-group">
-                                <span class="input-group-btn">
-                                    <span class="btn btn-default btn-file">
-                                        @Localizer["Browse"] <input type="file" id="imgInp" asp-for="Photo" accept="image/jpeg,image/png">
-                                    </span>
-                                </span>
-                                <input type="text" class="form-control" readonly>
-                            </div>
-                            @if (Model.Photo != null)
-                            {
-                               <img id='img-upload' src="data:image;base64,@System.Convert.ToBase64String(Model.Photo)" />
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["Id"]</label>
+                <div class="col-sm-10">
+                    <input type="text" asp-for="Id" class="form-control" id="Id" disabled>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["Title"]</label>
+                <div class="col-sm-10">
+                    <input type="text" asp-for="Title" class="form-control" id="Title">
+                    <span class="glyphicon form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.Title)
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["Text"]</label>
+                <div class="col-sm-10 textareaContainer">
+                    <textarea asp-for="Contents" class="form-control" id="Text" cols="20" rows="4" style="resize: vertical"></textarea>
+                    <span class="glyphicon form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.Contents)
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["Photo"]</label>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <span class="btn btn-default btn-file">
+                            @Localizer["Browse"] <input type="file" id="imgInp" asp-for="Photo" accept="image/jpeg,image/png">
+                            @{
+                                if (ViewData["ValidationPhotoAlert"] != null)
+                                {
+                                    var firstString = Convert.ToString(ViewData["ValidationPhotoAlert"]);
+                                    var secondString = Convert.ToString(ViewData["SelectedPhoto"]);
+                                    @Html.Label("PhotoAlert", @Localizer[firstString].Value + @Localizer[secondString].Value, new { @class = "field-validation-error" })
+                                }
                             }
-                            else
-                            {
-                               <img id='img-upload' />
-                            }
-        
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["AddingTime"]:</label></td>
-                    <td class="col-md-9"><input type="text" asp-for="AddingTime" class="form-control" id="NewsAddingTime" readonly></td>
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["LastEditTime"]:</label></td>
-                    @if (!@Model.LastEditTime.HasValue)
+                        </span>
+                    </span>
+                    <input type="text" class="form-control" readonly>
+                </div>
+                @{
+                    if (Model.Photo != null)
                     {
-                        <td class="col-md-9"><input type="text" value="@Localizer["Lack"]" class="form-control" id="NewsLastEditTime" readonly></td>
+                        <img id='img-upload' src="data:image;base64,@System.Convert.ToBase64String(Model.Photo)" />
                     }
                     else
                     {
-                        <td class="col-md-9"><input type="text" asp-for="LastEditTime" class="form-control" id="NewsLastEditTime" readonly></td>
+                        <img id='img-upload' />
                     }
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["PublishingTime"]:</label></td>
-                    @if (!@Model.LastEditTime.HasValue)
-                    {
-                        <td class="col-md-9"><input type="text" value="@Localizer["Lack"]" class="form-control" id="NewsPublishingTime" readonly></td>
-                    }
-                    else
-                    {
-                        <td class="col-md-9"><input type="text" asp-for="PublishingTime" class="form-control" id="NewsPublishingTime" readonly></td>
-                    }
-                    
-                </tr>
-                
-                @if (Model.Status == NewsStatus.UNRELEASED)
-                {
-                            <tr>
-                                <td colspan="2" style="text-align: center;">
-                                    <div class="row">
-                                        <div class="col-xs-6">
-                                            <input type="button" class="btn btn-primary btn-block" id="NewsCancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "News") + "'");">
-                                        </div>
-                                        <div class="col-xs-6">
-                                            <input type="submit" class="btn btn-primary btn-block" id="NewsSave" name="saveBtn" value=@Localizer["Save"]   onclick="$('input[name=status]').val('UNRELEASED');$(this).closest('form').submit();">
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
                 }
-                else if (Model.Status == NewsStatus.RELEASED)
-                {
-                    <tr>
-                        <td colspan="2" style="text-align: center;">
-                            <input type="button" class="btn btn-primary btn-block" id="NewsCancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "News") + "'");">
-                        </td>
-                    </tr>
+            </div>
 
-                }
-                
-                <tr>
-                    <td colspan="2" style="text-align: center;">
-                        <input type="button" class="btn btn-primary btn-block" style="margin-top:8px;" id="NewsDelete" value=@Localizer["Delete"] onclick="@("window.location.href='" + @Url.Action("Delete", "News", new {id = Model.Id}) + "'");">
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align: center;">
-                        <input type="submit" class="btn btn-primary btn-block" style="margin-top:8px;" id="NewsPublish" value=@Localizer["Publish"] onclick="$('input[name=status]').val('RELEASED');$(this).closest('form').submit();">
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </div>
-</body>
+            <input type="button" class="btn btn-danger btn-block" id="Delete" value=@Localizer["Delete"] onclick="@("window.location.href='" + @Url.Action("Delete", "News", new {id = Model.Id}) + "'");">
+            @if (Model.Type == NewsStatus.Unreleased)
+            {
+                <input type="button" class="btn btn-warning btn-block" id="Cancel" data-dismiss="modal" value=@Localizer["Cancel"]>
+                <input type="submit" class="btn btn-primary btn-block" id="Save" name="saveBtn" value=@Localizer["Save"] onclick="$('input[name=status]').val('Unreleased');$(this).closest('form').submit();">}
+            else if (Model.Type == NewsStatus.Released)
+            {
+                <input type="button" class="btn btn-warning btn-block" id="Cancel" data-dismiss="modal" value=@Localizer["Cancel"]>
+            }
+            <input type="submit" class="btn btn-primary btn-block" id="Publish" value=@Localizer["Publish"] onclick="$('input[name=status]').val('Released');$(this).closest('form').submit();">
+
+        </fieldset>
+    </form>
+</div>
+
+<script src="~/js/modal.scripts.js"></script>

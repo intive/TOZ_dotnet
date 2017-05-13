@@ -138,4 +138,10 @@
   <data name="OrganizationInfo" xml:space="preserve">
     <value>Organization Info</value>
   </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>Home page</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
 </root>

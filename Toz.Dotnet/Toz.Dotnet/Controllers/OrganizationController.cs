@@ -18,14 +18,17 @@ namespace Toz.Dotnet.Controllers
     public class OrganizationController : Controller
     {
         private IOrganizationManagementService _organizationManagementService;
+        private IBackendErrorsService _backendErrorsService;
         private readonly IStringLocalizer<OrganizationController> _localizer;
         private readonly AppSettings _appSettings;
 
-        public OrganizationController(IOrganizationManagementService organizationManagementService, IStringLocalizer<OrganizationController> localizer, IOptions<AppSettings> appSettings)
+        public OrganizationController(IOrganizationManagementService organizationManagementService, IStringLocalizer<OrganizationController> localizer,
+            IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService)
         {
             _organizationManagementService = organizationManagementService;
             _localizer = localizer;
             _appSettings = appSettings.Value;
+            _backendErrorsService = backendErrorsService;
         }
 
 
@@ -54,7 +57,10 @@ namespace Toz.Dotnet.Controllers
                 {
                     return RedirectToAction("Info", new RouteValueDictionary(new { edit = false }));
                 }
-                return BadRequest();       
+                else
+                {
+                    _backendErrorsService.UpdateModelState(ModelState);
+                }
             }
 
             ViewData["EditMode"] = true;

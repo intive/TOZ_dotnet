@@ -107,15 +107,6 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Invalid fax number.
-        /// </summary>
-        public static string InvalidFaxNumber {
-            get {
-                return ResourceManager.GetString("InvalidFaxNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         /// Wyszukuje zlokalizowany ciąg podobny do ciągu Invalid phone number.
         /// </summary>
         public static string InvalidPhoneNumber {
@@ -123,7 +114,15 @@ namespace Toz.Dotnet.Resources {
                 return ResourceManager.GetString("InvalidPhoneNumber", resourceCulture);
             }
         }
-        
+
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Invalid fax number.
+        /// </summary>
+        public static string InvalidFaxNumber {
+            get {
+                return ResourceManager.GetString("InvalidFaxNumber", resourceCulture);
+            }
+        }
+      
         /// <summary>
         /// Wyszukuje zlokalizowany ciąg podobny do ciągu Invalid website URL.
         /// </summary>

@@ -41,11 +41,11 @@ namespace Toz.Dotnet
             services.AddSingleton<IScheduleManagementService, ScheduleManagementService>();
             services.AddSingleton<IOrganizationManagementService, OrganizationManagementService>();
             services.AddSingleton<IValidationAttributeAdapterProvider, CustomValidationAttributeAdapterProvider>();
+            services.AddSingleton<IBackendErrorsService, BackendErrorsService>();
 
             services.AddSession();
             services.AddMemoryCache();
             services.AddSingleton<IAuthService, AuthService>(); // TEMPORARY
-            //services.AddSingleton<IOrganizationManagementService, OrganizationManagementService>();
 
             services.AddMvc()
                 .AddViewLocalization(
