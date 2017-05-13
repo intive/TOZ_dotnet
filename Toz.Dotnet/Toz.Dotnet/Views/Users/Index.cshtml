@@ -25,7 +25,7 @@
                 <input type="text" id="search" class="search form-control" placeholder="@Localizer["SearchPlaceholder"]">
             </div>
             <div class="col col-xs-4 text-right">
-                <a class="data-modal btn btn-primary btn-sm btn-create" href="@Url.Action("Add","User")"><span class="glyphicon glyphicon-plus"></span></a>
+                <a class="data-modal btn btn-primary btn-sm btn-create" href="@Url.Action("Add","Users")"><span class="glyphicon glyphicon-plus"></span></a>
             </div>
         </div>
     </div>
@@ -70,11 +70,3 @@
         </table>
     </div>
 </div>
-
-@section Scripts
-        {
-    <script src="@Url.Content("https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js")"></script>
-    <script src="@Url.Content("https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js")"></script>
-    <script src="@Url.Content("https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js")"></script>
-    <script src="@Url.Content("https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap.min.js")"></script>
-}

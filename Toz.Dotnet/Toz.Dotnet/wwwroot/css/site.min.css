@@ -209,6 +209,7 @@ used to vertically center elements, may need modification if you're not using de
 .panel-table .panel-heading .col h3 {
     line-height: 30px;
     height: 30px;
+    font-weight: 700;
 }
 
 .panel-table .panel-body .table-bordered > tbody > tr > td {

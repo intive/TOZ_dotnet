@@ -85,25 +85,6 @@ $(document).ready(function () {
         });
     }
 
-    $('#table').DataTable({
-        "dom": 't<"panel-footer"p>',
-        "pageLength": 20,
-        "language": {
-            "zeroRecords": "Nie znaleziono pasujących rekordów",
-            "emptyTable": "Brak rekordów",
-            "paginate": {
-                "first": "Pierwsza",
-                "last": "Ostatnia",
-                "next": "Następna",
-                "previous": "Poprzednia"
-            }
-        },
-        "responsive": true,
-        "columnDefs": [
-            { orderable: false, targets: -1 }
-        ]
-    });
-
     $('#search').keyup(function () {
         $('#table').DataTable().search($(this).val()).draw();
     })

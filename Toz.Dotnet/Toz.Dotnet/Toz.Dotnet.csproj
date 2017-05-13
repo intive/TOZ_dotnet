@@ -11,8 +11,8 @@
 
   <ItemGroup>
     <Content Include="wwwroot\css\mainpage.css" />
+    <Content Include="wwwroot\js\datatables\datatables.init.js" />
     <Content Include="wwwroot\js\modal.scripts.js" />
-    <Content Include="wwwroot\js\revalidate.modal.js" />
   </ItemGroup>
   <!--Libs references -->
   <ItemGroup>
