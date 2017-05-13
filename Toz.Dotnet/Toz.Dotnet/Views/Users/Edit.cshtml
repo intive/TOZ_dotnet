@@ -53,20 +53,30 @@
                     @Html.ValidationMessageFor(m => m.Email)
                 </div>
             </div>
+            
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["Password"]</label>
+                <div class="col-sm-10">
+                    <input type="password" asp-for="Password" class="form-control" id="Password">
+                    <span class="glyphicon form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.Password)
+                </div>
+            </div>
 
             <div class="form-group row">
                 <label class="col-sm-2 control-label">@Localizer["Purpose"]</label>
                 <div class="col-sm-10 selectContainer">
-                    <select asp-for="Purpose" class="form-control" id="Purpose">
-                        <option value="0">@Localizer["Volunteer"]</option>
-                        <option value="1">@Localizer["TemporaryHome"]</option>
-                        <option value="2">@Localizer["Administrator"]</option>
+                    <select asp-for="Roles" class="form-control" id="Roles" multiple="multiple" overflow-y: auto>
+                        <option value="1">@Localizer["Volunteer"]</option>
+                        <option value="2">@Localizer["TozWorker"]</option>
+                        <option value="3">@Localizer["Administrator"]</option>
                     </select>
                     <span class="glyphicon form-control-feedback"></span>
-                    @Html.ValidationMessageFor(m => m.Purpose)
+                    @Html.ValidationMessageFor(m => m.Roles)
                 </div>
             </div>
-
+            
+            <span class="field-validation-error">@ViewData["UnhandledError"]</span>
             <input type="button" class="btn btn-warning btn-block" id="Cancel" data-dismiss="modal" value=@Localizer["Cancel"]>
             <input type="submit" class="btn btn-primary btn-block" id="Save" value=@Localizer["Save"]>
         </fieldset>

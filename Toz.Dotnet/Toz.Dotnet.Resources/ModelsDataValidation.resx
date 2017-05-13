@@ -156,4 +156,7 @@
   <data name="InvalidField" xml:space="preserve">
     <value>Invalid field</value>
   </data>
+  <data name="UnknownError" xml:space="preserve">
+    <value>Unknown error occured during the validation proccess</value>
+  </data>
 </root>

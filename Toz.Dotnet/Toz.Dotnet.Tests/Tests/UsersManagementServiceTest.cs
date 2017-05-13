@@ -20,7 +20,7 @@ namespace Toz.Dotnet.Tests.Tests
                 LastName = "User",
                 PhoneNumber = "123456789",
                 Email = "test@test.com",
-                Purpose = UserType.Volunteer
+                //Roles = UserType.Volunteer
             };
 
             _userManagementService.RequestUri = RequestUriHelper.UsersUri;

@@ -153,4 +153,16 @@
   <data name="SearchPlaceholder" xml:space="preserve">
     <value>Szukaj...</value>
   </data>
+  <data name="Anonymous" xml:space="preserve">
+    <value>Anonimowy użytkownik</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Brak</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Hasło</value>
+  </data>
+  <data name="TozWorker" xml:space="preserve">
+    <value>Pracownik TOZ</value>
+  </data>
 </root>

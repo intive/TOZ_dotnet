@@ -33,7 +33,7 @@ namespace Toz.Dotnet.Tests.Sanity
                 LastName = "User",
                 PhoneNumber = "123456789",
                 Email = "test@test.com",
-                Purpose = UserType.Volunteer
+                //Roles = UserType.Volunteer
             };
 
             _petsManagementService.RequestUri = RequestUriHelper.PetsUri;

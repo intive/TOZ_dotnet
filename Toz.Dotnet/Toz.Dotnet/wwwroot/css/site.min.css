@@ -8,6 +8,10 @@ html, body {
     padding-right: 15px;
 }
 
+select {
+    overflow-y: hidden
+}
+
 .btn-file {
     position: relative;
     overflow: hidden;

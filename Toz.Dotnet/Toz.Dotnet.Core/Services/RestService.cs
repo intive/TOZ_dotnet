@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
@@ -148,6 +149,14 @@ namespace Toz.Dotnet.Core.Services
                     {
                         var stringResponse = await response.Content.ReadAsStringAsync();
                         ErrorsList output = JsonConvert.DeserializeObject<ErrorsList>(stringResponse);
+                        if (output.Errors == null)
+                        {
+                            var error = JsonConvert.DeserializeObject<Error>(stringResponse);
+                            if (error != null)
+                            {
+                                output.Errors= new List<Error>(){error};
+                            }
+                        }
                         _backendErrorsService.AddErrors(output);
                         return false;
                     }

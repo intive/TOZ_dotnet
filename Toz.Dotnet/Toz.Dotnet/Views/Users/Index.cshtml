@@ -49,18 +49,26 @@
                         <td>@item.LastName</td>
                         <td>@item.PhoneNumber</td>
                         <td>@item.Email</td>
-
-                        @if (@item.Purpose == UserType.Administrator)
+                        
+                        @if (@item.Roles.Contains(UserType.Sa))
                         {
                             <td>@Localizer["Administrator"]</td>
                         }
-                        else if (@item.Purpose == UserType.Volunteer)
+                        else if (@item.Roles.Contains(UserType.Toz))
+                        {
+                            <td>@Localizer["TozWorker"]</td>
+                        }
+                        else if (@item.Roles.Contains(UserType.Volunteer))
                         {
                             <td>@Localizer["Volunteer"]</td>
                         }
+                        else if (@item.Roles.Contains(UserType.Anonymous))
+                        {
+                            <td>@Localizer["Anynonymous"]</td>
+                        }
                         else
                         {
-                            <td>@Localizer["TemporaryHome"]</td>
+                            <td>@Localizer["None"]</td>
                         }
 
                         <td class="center-column"><a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Edit","Users")/@item.Id"><span class="glyphicon glyphicon-pencil"></span></a></td>

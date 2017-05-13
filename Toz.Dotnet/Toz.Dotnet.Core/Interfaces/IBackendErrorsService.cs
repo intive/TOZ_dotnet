@@ -7,6 +7,6 @@ namespace Toz.Dotnet.Core.Interfaces
     public interface IBackendErrorsService
     {
         void AddErrors(ErrorsList list);
-        void UpdateModelState(ModelStateDictionary modelState);
+        string UpdateModelState(ModelStateDictionary modelState);
     }
 }

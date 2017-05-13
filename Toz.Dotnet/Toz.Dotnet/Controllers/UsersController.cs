@@ -28,7 +28,7 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            List<User> users = await _usersManagementService.GetAllUsers();
+            List<User> users = await _usersManagementService.GetAllUsers(cancellationToken);
             return View(users);
         }
 
@@ -40,7 +40,7 @@ namespace Toz.Dotnet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(
-            [Bind("FirstName, LastName, PhoneNumber, Email, Purpose")] 
+            [Bind("Id, FirstName, LastName, PhoneNumber, Email, Password, Roles")]
             User user, CancellationToken cancellationToken)
         {
             if (user != null && ModelState.IsValid)
@@ -66,7 +66,7 @@ namespace Toz.Dotnet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
-            [Bind("Id, FirstName, LastName, PhoneNumber, Email, Purpose")]
+            [Bind("Id, FirstName, LastName, PhoneNumber, Email, Password, Roles")]
             User user, CancellationToken cancellationToken)
         {
             if (user != null && ModelState.IsValid)
@@ -75,11 +75,12 @@ namespace Toz.Dotnet.Controllers
                 {
                     return Json(new { success = true });
                 }
-                else
+                var overallError = _backendErrorsService.UpdateModelState(ModelState);
+                if (!string.IsNullOrEmpty(overallError))
                 {
-                    _backendErrorsService.UpdateModelState(ModelState);
-                    return PartialView(user);
+                    this.ViewData["UnhandledError"] = overallError;
                 }
+                return PartialView(user);
             }
             return PartialView(user);
         }

@@ -156,4 +156,7 @@
   <data name="InvalidField" xml:space="preserve">
     <value>Pole niepoprawne</value>
   </data>
+  <data name="UnknownError" xml:space="preserve">
+    <value>Wystąpił nieznany błąd podczas walidacji</value>
+  </data>
 </root>
