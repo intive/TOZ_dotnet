@@ -76,7 +76,10 @@
                 </div>
             </div>
             
-            <span class="field-validation-error">@ViewData["UnhandledError"]</span>
+            <div class="form-group row" style="text-align: center">
+                <span class="unhandled-error-span">@ViewData["UnhandledError"]</span>
+            </div>
+
             <input type="button" class="btn btn-warning btn-block" id="Cancel" data-dismiss="modal" value=@Localizer["Cancel"]>
             <input type="submit" class="btn btn-primary btn-block" id="Save" value=@Localizer["Save"]>
         </fieldset>
@@ -84,3 +87,4 @@
 </div>
 
 <script src="~/js/modal.scripts.js"></script>
+<script src="~/js/site.js"></script>

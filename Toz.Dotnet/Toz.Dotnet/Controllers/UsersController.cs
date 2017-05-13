@@ -49,11 +49,13 @@ namespace Toz.Dotnet.Controllers
                 {
                     return Json(new { success = true });
                 }
-                else
+
+                var overallError = _backendErrorsService.UpdateModelState(ModelState);
+                if (!string.IsNullOrEmpty(overallError))
                 {
-                    _backendErrorsService.UpdateModelState(ModelState);
-                    return PartialView(user);
+                    this.ViewData["UnhandledError"] = overallError;
                 }
+                return PartialView(user);
             }
             return PartialView(user);
         }

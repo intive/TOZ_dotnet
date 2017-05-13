@@ -55,17 +55,19 @@ namespace Toz.Dotnet.Controllers
             
             if (result && ModelState.IsValid)
             {
-                    if (await _petsManagementService.CreatePet(pet))
-                    {
-                        _lastAcceptPhoto = null;
-                        _validationPhotoAlert = null;
-                        return Json(new { success = true });
-                    }
-                    else
-                    {
-                        _backendErrorsService.UpdateModelState(ModelState);
-                        return PartialView(pet);
-                    }
+                if (await _petsManagementService.CreatePet(pet))
+                {
+                    _lastAcceptPhoto = null;
+                    _validationPhotoAlert = null;
+                    return Json(new { success = true });
+                }
+
+                var overallError = _backendErrorsService.UpdateModelState(ModelState);
+                if (!string.IsNullOrEmpty(overallError))
+                {
+                    this.ViewData["UnhandledError"] = overallError;
+                }
+                return PartialView(pet);
             }
 
             if(!result)
@@ -107,19 +109,19 @@ namespace Toz.Dotnet.Controllers
 
             if (result && ModelState.IsValid)
             {
-                    if (await _petsManagementService.UpdatePet(pet))
-                    {
-                        _lastAcceptPhoto = null;
-                        _validationPhotoAlert = null;
-                        return Json(new { success = true });
-                    }
-                    else
-                    {
-                        _backendErrorsService.UpdateModelState(ModelState);
-                        return PartialView(pet);
-                    }
-                    
-                    return BadRequest();
+                if (await _petsManagementService.UpdatePet(pet))
+                {
+                    _lastAcceptPhoto = null;
+                    _validationPhotoAlert = null;
+                    return Json(new { success = true });
+                }
+
+                var overallError = _backendErrorsService.UpdateModelState(ModelState);
+                if (!string.IsNullOrEmpty(overallError))
+                {
+                    this.ViewData["UnhandledError"] = overallError;
+                }
+                return PartialView(pet);
             }
 
             if(!result)

@@ -57,9 +57,11 @@ namespace Toz.Dotnet.Controllers
                 {
                     return RedirectToAction("Info", new RouteValueDictionary(new { edit = false }));
                 }
-                else
+
+                var overallError = _backendErrorsService.UpdateModelState(ModelState);
+                if (!string.IsNullOrEmpty(overallError))
                 {
-                    _backendErrorsService.UpdateModelState(ModelState);
+                    this.ViewData["UnhandledError"] = overallError;
                 }
             }
 

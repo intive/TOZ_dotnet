@@ -63,6 +63,10 @@
                     }
                 }
             </div>
+            
+            <div class="form-group row" style="text-align: center">
+                <span class="unhandled-error-span">@ViewData["UnhandledError"]</span>
+            </div>
 
             <input type="button" class="btn btn-danger btn-block" id="Delete" value=@Localizer["Delete"] onclick="@("window.location.href='" + @Url.Action("Delete", "News", new {id = Model.Id}) + "'");">
             @if (Model.Type == NewsStatus.Unreleased)

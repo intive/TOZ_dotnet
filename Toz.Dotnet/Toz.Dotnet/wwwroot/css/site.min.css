@@ -227,3 +227,8 @@ div.dataTables_paginate {
 .center-column {
     text-align: center;
 }
+
+.unhandled-error-span {
+    color: #A94442;
+    text-align: center;
+}
