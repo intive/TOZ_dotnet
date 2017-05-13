@@ -1,2 +1,60 @@
-﻿
-<h1>TOZ.DotNET</h1>
+﻿@using Toz.Dotnet.Core.Interfaces
+
+@inject IAuthService _iAuthService
+
+<head>
+    <link rel="stylesheet" href="~/css/mainpage.css" />
+</head>
+
+<body>
+@if (_iAuthService.IsAuth == true)
+{
+    <div class="container">
+        <div class="col-sm-4">
+            <a asp-controller="Pets" asp-action="Index">
+                <div class="tile purple">
+                    <div class="tile-icon"><img src="~/images/pets.png" /></div>
+                    <h3 class="title">Lista zwierzaków</h3>
+                    <p>Pozwala przejrzeć listę zwierzaków</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-4">
+            <a asp-controller="News" asp-action="Index">
+                <div class="tile red">
+                    <div class="tile-icon"><img src="~/images/news.png" /></div>
+                    <h3 class="title">Lista aktualności</h3>
+                    <p>Pozwala przejrzeć listę aktualności</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-4">
+            <a asp-controller="Users" asp-action="Index">
+                <div class="tile orange">
+                    <div class="tile-icon"><img src="~/images/users.png" /></div>
+                    <h3 class="title">Lista użytkowników</h3>
+                    <p>Pozwala przejrzeć listę użytkowników</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-4">
+            <a asp-controller="Schedule" asp-action="Index">
+                <div class="tile green">
+                    <div class="tile-icon"><img src="~/images/calendar.png" /></div>
+                    <h3 class="title">Kalendarz dyżurów</h3>
+                    <p>Pozwala przypisać wolontariuszy do dyżurów</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-4">
+            <a asp-controller="Organization" asp-action="Info">
+                <div class="tile blue">
+                    <div class="tile-icon"><img src="~/images/company.png" /></div>
+                    <h3 class="title">Informacje o firmie</h3>
+                    <p>Pozwala ustawić bądź zaktualizować dane o firmie</p>
+                </div>
+            </a>
+        </div>
+    </div>
+}
+</body>

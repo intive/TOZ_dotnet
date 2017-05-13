@@ -53,6 +53,7 @@
     value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
+
     mimetype: application/x-microsoft.net.object.bytearray.base64
     value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
@@ -116,50 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-    <data name="PageTitle" xml:space="preserve">
-        <value>Szczegóły</value>
-    </data>
-    <data name="Id" xml:space="preserve">
-        <value>ID</value>
-    </data>
-    <data name="Title" xml:space="preserve">
-        <value>Tytuł</value>
-    </data>
-    <data name="Photo" xml:space="preserve">
-        <value>Zdjęcie</value>
-    </data>
-    <data name="PublishingTime" xml:space="preserve">
-        <value>Data publikacji</value>
-    </data>
-    <data name="AddingTime" xml:space="preserve">
-        <value>Data utworzenia</value>
-    </data>
-    <data name="LastEditTime" xml:space="preserve">
-        <value>Data modyfikacji</value>
-    </data>
-    <data name="Body" xml:space="preserve">
-        <value>Tekst</value>
-    </data>
-    <data name="Unreleased" xml:space="preserve">
-        <value>Nieopublikowany</value>
-    </data>
-    <data name="Archived" xml:space="preserve">
-        <value>Zarchiwizowany</value>
-    </data>
-    <data name="Released" xml:space="preserve">
-        <value>Opublikowany</value>
-    </data>
-    <data name="Details" xml:space="preserve">
-        <value>Szczegóły</value>
-    </data>
-    <data name="Edit" xml:space="preserve">
-        <value>Edytuj</value>
-    </data>
-    <data name="Back" xml:space="preserve">
-        <value>Wróć</value>
-    </data>
-    <data name="Lack" xml:space="preserve">
-        <value>(brak)</value>
-    </data>
+  <data name="PageTitle" xml:space="preserve">
+    <value>Benutzer bearbeiten</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>Vorname</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Nachname</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Telefonnummer</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Purpose" xml:space="preserve">
+    <value>Rolle</value>
+  </data>
+  <data name="Administrator" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
+  <data name="Volunteer" xml:space="preserve">
+    <value>Freiwillige</value>
+  </data>
+  <data name="TemporaryHome" xml:space="preserve">
+    <value>Betreuer</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Verwerfen</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>ID</value>
+  </data>
 </root>

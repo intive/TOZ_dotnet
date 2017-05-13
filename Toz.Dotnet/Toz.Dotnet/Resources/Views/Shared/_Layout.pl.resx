@@ -124,10 +124,10 @@
     <value>Dodaj zwierzaka</value>
   </data>
   <data name="NewsList" xml:space="preserve">
-    <value>Lista newsów</value>
+    <value>Lista aktualności</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>Logowanie</value>
+    <value>Zaloguj</value>
   </data>
   <data name="Users" xml:space="preserve">
     <value>Użytkownicy</value>
@@ -137,5 +137,11 @@
   </data>
   <data name="OrganizationInfo" xml:space="preserve">
     <value>Informacje o firmie</value>
+  </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>Strona startowa</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Wyloguj</value>
   </data>
 </root>

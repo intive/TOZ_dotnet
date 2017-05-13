@@ -13,14 +13,17 @@ namespace Toz.Dotnet.Controllers
     public class UsersController : Controller
     {
         private IUsersManagementService _usersManagementService;
+        private IBackendErrorsService _backendErrorsService;
         private readonly IStringLocalizer<UsersController> _localizer;
         private readonly AppSettings _appSettings;
 
-        public UsersController(IUsersManagementService usersManagementService, IStringLocalizer<UsersController> localizer, IOptions<AppSettings> appSettings)
+        public UsersController(IUsersManagementService usersManagementService, IStringLocalizer<UsersController> localizer,
+            IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService)
         {
             _usersManagementService = usersManagementService;
             _localizer = localizer;
             _appSettings = appSettings.Value;
+            _backendErrorsService = backendErrorsService;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
@@ -31,7 +34,7 @@ namespace Toz.Dotnet.Controllers
 
         public IActionResult Add()
         {
-            return View(new User());
+            return PartialView(new User());
         }
 
         [HttpPost]
@@ -44,14 +47,41 @@ namespace Toz.Dotnet.Controllers
             {   
                 if(await _usersManagementService.CreateUser(user, cancellationToken))
                 {
-                    return RedirectToAction("Index");
+                    return Json(new { success = true });
                 }
                 else
                 {
-                    return BadRequest();
+                    _backendErrorsService.UpdateModelState(ModelState);
+                    return PartialView(user);
                 }
             }
-            return View(user);
+            return PartialView(user);
+        }
+
+        public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken)
+        {
+            return PartialView("Edit", await _usersManagementService.GetUser(id));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(
+            [Bind("Id, FirstName, LastName, PhoneNumber, Email, Purpose")]
+            User user, CancellationToken cancellationToken)
+        {
+            if (user != null && ModelState.IsValid)
+            {
+                if (await _usersManagementService.UpdateUser(user, cancellationToken))
+                {
+                    return Json(new { success = true });
+                }
+                else
+                {
+                    _backendErrorsService.UpdateModelState(ModelState);
+                    return PartialView(user);
+                }
+            }
+            return PartialView(user);
         }
     }
 }

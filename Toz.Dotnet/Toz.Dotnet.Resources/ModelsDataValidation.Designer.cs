@@ -97,7 +97,17 @@ namespace Toz.Dotnet.Resources {
             }
         }
         
-        ///   Looks up a localized string similar to Invalid phone number.
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu The firstname can only consist of letters..
+        /// </summary>
+        public static string FirstnameLetters {
+            get {
+                return ResourceManager.GetString("FirstnameLetters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Invalid phone number.
         /// </summary>
         public static string InvaildPhoneNumber {
             get {
@@ -106,11 +116,11 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The maximum length is {1} characters..
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Invalid field.
         /// </summary>
-        public static string FirstnameLetters {
+        public static string InvalidField {
             get {
-                return ResourceManager.GetString("FirstnameLetters", resourceCulture);
+                return ResourceManager.GetString("InvalidField", resourceCulture);
             }
         }
         

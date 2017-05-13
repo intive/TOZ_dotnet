@@ -147,4 +147,7 @@
   <data name="LastnameLetters" xml:space="preserve">
     <value>Der Nachname darf nur aus Buchstaben bestehen.</value>
   </data>
+  <data name="InvalidField" xml:space="preserve">
+    <value>Ungültiges Feld</value>
+  </data>
 </root>

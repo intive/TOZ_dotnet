@@ -17,17 +17,21 @@ namespace Toz.Dotnet.Controllers
     {
         private readonly IFilesManagementService _filesManagementService;
         private readonly IPetsManagementService _petsManagementService;
-		private readonly IStringLocalizer<PetsController> _localizer;
+        private readonly IBackendErrorsService _backendErrorsService;
+        private readonly IStringLocalizer<PetsController> _localizer;
+
         private readonly AppSettings _appSettings;
         private static byte[] _lastAcceptPhoto;
         private string _validationPhotoAlert;
 		
-        public PetsController(IFilesManagementService filesManagementService, IPetsManagementService petsManagementService, IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings)
+        public PetsController(IFilesManagementService filesManagementService, IPetsManagementService petsManagementService,
+            IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService)
         {
             _filesManagementService = filesManagementService;
             _petsManagementService = petsManagementService;
-			_localizer = localizer;
+			      _localizer = localizer;
             _appSettings = appSettings.Value;
+            _backendErrorsService = backendErrorsService;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
@@ -37,7 +41,7 @@ namespace Toz.Dotnet.Controllers
             var img = _filesManagementService.DownloadImage(@"http://i.pinger.pl/pgr167/7dc36d63001e9eeb4f01daf3/kot%20ze%20shreka9.jpg");
             var thumbnail = _filesManagementService.GetThumbnail(img);
             pets.ForEach(pet => pet.Photo = _filesManagementService.ImageToByteArray(thumbnail)); // temporary
-            return View(pets.OrderByDescending(x => x.AddingTime).ThenByDescending(x => x.LastEditTime).ToList());
+            return View(pets.OrderByDescending(x => x.Created).ThenByDescending(x => x.LastModified).ToList());
         }
 
         [HttpPost]
@@ -55,11 +59,12 @@ namespace Toz.Dotnet.Controllers
                     {
                         _lastAcceptPhoto = null;
                         _validationPhotoAlert = null;
-                        return RedirectToAction("Index");
+                        return Json(new { success = true });
                     }
                     else
                     {
-                        return BadRequest();
+                        _backendErrorsService.UpdateModelState(ModelState);
+                        return PartialView(pet);
                     }
             }
 
@@ -75,14 +80,17 @@ namespace Toz.Dotnet.Controllers
                 {
                     ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
                 }
+                
+                return PartialView(pet);
             }
-            return View(pet);
+            
+            return PartialView(pet);
             
         } 
 
         public IActionResult Add()
         {
-            return View(new Pet());
+            return PartialView(new Pet());
         }
 
         [HttpPost]
@@ -103,8 +111,14 @@ namespace Toz.Dotnet.Controllers
                     {
                         _lastAcceptPhoto = null;
                         _validationPhotoAlert = null;
-                        return RedirectToAction("Index");
+                        return Json(new { success = true });
                     }
+                    else
+                    {
+                        _backendErrorsService.UpdateModelState(ModelState);
+                        return PartialView(pet);
+                    }
+                    
                     return BadRequest();
             }
 
@@ -120,13 +134,16 @@ namespace Toz.Dotnet.Controllers
                 {
                     ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
                 }
+                
+                return PartialView(pet);
             }
-            return View(pet);
+
+            return PartialView(pet);
         } 
 
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken) 
         {
-            return View(await _petsManagementService.GetPet(id));
+            return PartialView("Edit", await _petsManagementService.GetPet(id));
         }
 
         
