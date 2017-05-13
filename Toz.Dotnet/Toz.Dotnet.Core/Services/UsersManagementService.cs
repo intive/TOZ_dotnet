@@ -5,8 +5,6 @@ using Microsoft.Extensions.Options;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Resources.Configuration;
-using Toz.Dotnet.Models.EnumTypes;
-using System;
 using System.Linq;
 
 namespace Toz.Dotnet.Core.Services
@@ -56,12 +54,7 @@ namespace Toz.Dotnet.Core.Services
             }
             return null;
         }
-
-        public void SetupSampleUsers(CancellationToken cancelationToken = new CancellationToken())
-        {
-            //todo wyjebac
-        }
-            
+           
         public async Task<bool> DeleteUser(User user, CancellationToken cancelationToken = default(CancellationToken))
         {
             var address = $"{RequestUri}/{user.Id}";

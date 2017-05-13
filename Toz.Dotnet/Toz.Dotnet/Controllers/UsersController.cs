@@ -34,6 +34,8 @@ namespace Toz.Dotnet.Controllers
 
         public IActionResult Add()
         {
+            var usr = new User();
+
             return PartialView(new User());
         }
 
@@ -62,7 +64,7 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken)
         {
-            return PartialView("Edit", await _usersManagementService.GetUser(id));
+            return PartialView("Edit", await _usersManagementService.GetUser(id, cancellationToken));
         }
 
         [HttpPost]
