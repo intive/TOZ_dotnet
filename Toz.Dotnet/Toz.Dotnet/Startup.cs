@@ -39,6 +39,13 @@ namespace Toz.Dotnet
             services.AddSingleton<IPetsManagementService, PetsManagementService>();
             services.AddSingleton<INewsManagementService, NewsManagementService>();
             services.AddSingleton<IUsersManagementService, UsersManagementService>();
+            services.AddSingleton<IScheduleManagementService, ScheduleManagementService>();
+            services.AddSingleton<IOrganizationManagementService, OrganizationManagementService>();
+            services.AddSingleton<IBackendErrorsService, BackendErrorsService>();
+
+            services.AddSession();
+            services.AddMemoryCache();
+            services.AddSingleton<IAuthService, AuthService>(); // TEMPORARY
 
             services.AddMvc()
                 .AddViewLocalization(
@@ -81,7 +88,7 @@ namespace Toz.Dotnet
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
+            app.UseSession();
             app.UseStaticFiles();
 
             var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();

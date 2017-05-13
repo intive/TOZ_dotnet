@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Toz.Dotnet.Models.EnumTypes;
 using Toz.Dotnet.Models.JsonConventers;
-using Toz.Dotnet.Resources.CustomValidationAttributes;
 
 namespace Toz.Dotnet.Models
 {
@@ -20,27 +19,27 @@ namespace Toz.Dotnet.Models
 
         [JsonProperty("published")]
         [JsonConverter(typeof(JsonDateTimeConventer))]
-        public DateTime? PublishingTime  {get; set;}
+        public DateTime? Published  {get; set;}
 
         [JsonProperty("created")]
         [JsonConverter(typeof(JsonDateTimeConventer))]
-        public DateTime? AddingTime  {get; set;}
+        public DateTime? Created  {get; set;}
 
         [JsonProperty("lastModified")]
         [JsonConverter(typeof(JsonDateTimeConventer))]
-        public DateTime? LastEditTime {get; set;}
+        public DateTime? LastModified {get; set;}
 
         [JsonProperty("contents")]
         [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
         [StringLength(1000, MinimumLength = 1, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]   
-        public string Body {get; set;}
+        public string Contents {get; set;}
 
         [JsonIgnore]
         public byte [] Photo {get; set;}
 
         [JsonProperty("type")]
         [JsonConverter(typeof(StringEnumConverter))]
-        public NewsStatus Status {get; set;}
+        public NewsStatus Type {get; set;}
 
         [JsonProperty("photoUrl")]
         public string PhotoUrl {get; set; }

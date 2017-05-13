@@ -1,22 +1,19 @@
-using Xunit;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Tests.Helpers;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.EnumTypes;
-using System.Linq;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace Toz.Dotnet.Tests.Tests
 {
     public class UserManagementTest
     {
-        private IUsersManagementService _UserManagementService;
+        private readonly IUsersManagementService _userManagementService;
         private User _testUser;
         public UserManagementTest()
         {
-            _UserManagementService = ServiceProvider.Instance.Resolve<IUsersManagementService>();
-            _testUser = new User()
+            _userManagementService = ServiceProvider.Instance.Resolve<IUsersManagementService>();
+
+            _testUser = new User
             {               
                 Id = System.Guid.NewGuid().ToString(),
                 FirstName = "Test",
@@ -26,77 +23,77 @@ namespace Toz.Dotnet.Tests.Tests
                 Purpose = UserType.Volunteer
             };
 
-            _UserManagementService.RequestUri = RequestUriHelper.UsersUri;
+            _userManagementService.RequestUri = RequestUriHelper.UsersUri;
         }
         
         /*[Fact]
         public void TestDependencyInjectionFromUserManagementService()
         {
-            Assert.NotNull(_UserManagementService);
+            Assert.NotNull(_userManagementService);
         }
 
         [Fact]
         public void TestRequestedUriNotEmpty()
         {
-            Assert.True(!string.IsNullOrEmpty(_UserManagementService.RequestUri));
+            Assert.True(!string.IsNullOrEmpty(_userManagementService.RequestUri));
         }
 
         [Fact]
         public void TestOfGettingAllUsers()
         {
-            Assert.NotNull(_UserManagementService.GetAllUsers().Result);
+            Assert.NotNull(_userManagementService.GetAllUsers().Result);
         }
          
         [Fact]
         public void TestOfCreatingNewUser()
         {
-            Assert.True(_UserManagementService.CreateUser(_testUser).Result);
-            _UserManagementService.DeleteUser(_testUser).Wait();
+            Assert.True(_userManagementService.CreateUser(_testUser).Result);
+            _userManagementService.DeleteUser(_testUser).Wait();
         }
 
         [Fact]
         public void TestOfDeletingSpecifiedUser()
         {
-            _UserManagementService.CreateUser(_testUser);
-            var User = _UserManagementService.GetAllUsers().Result;
+            _userManagementService.CreateUser(_testUser);
+            var User = _userManagementService.GetAllUsers().Result;
             if(User.Any())
             {
                 var firstUser = User.FirstOrDefault();
-                Assert.False(_UserManagementService.CreateUser(firstUser).Result);
-                Assert.True(_UserManagementService.DeleteUser(firstUser).Result);
-                Assert.True(_UserManagementService.CreateUser(firstUser).Result);
+                Assert.False(_userManagementService.CreateUser(firstUser).Result);
+                Assert.True(_userManagementService.DeleteUser(firstUser).Result);
+                Assert.True(_userManagementService.CreateUser(firstUser).Result);
             }
         }
 
         [Fact]
         public void TestOfGettingSpecifiedUser()
         {
-            _UserManagementService.CreateUser(_testUser);
-            var User = _UserManagementService.GetAllUsers().Result;
+            _userManagementService.CreateUser(_testUser);
+            var User = _userManagementService.GetAllUsers().Result;
             if(User.Any())
             {
                 var firstUser = User.FirstOrDefault();
-                var singleUser = _UserManagementService.GetUser(firstUser.Id).Result;
+                var singleUser = _userManagementService.GetUser(firstUser.Id).Result;
                 Assert.NotNull(singleUser);
             }
                        
-            Assert.Null(_UserManagementService.GetUser("notExistingIDThatIsNotID--1").Result);           
+            Assert.Null(_userManagementService.GetUser("notExistingIDThatIsNotID--1").Result);           
         }
 
         
         [Fact]
         public void TestOfUserUpdating()
         {
-            _UserManagementService.CreateUser(_testUser);
-            var User = _UserManagementService.GetAllUsers().Result;
+            _userManagementService.CreateUser(_testUser);
+            var User = _userManagementService.GetAllUsers().Result;
             if(User.Any())
             {
                 var firstUser = User.FirstOrDefault();
                 string userFirstName = firstUser.FirstName;
                 firstUser.FirstName = "Test";
-                Assert.True(_UserManagementService.UpdateUser(firstUser).Result);
+                Assert.True(_userManagementService.UpdateUser(firstUser).Result);
                 firstUser.FirstName = userFirstName;
-                Assert.True(_UserManagementService.UpdateUser(firstUser).Result);
+                Assert.True(_userManagementService.UpdateUser(firstUser).Result);
             }
         }
         

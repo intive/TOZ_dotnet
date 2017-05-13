@@ -9,6 +9,7 @@ RUN apt-get update \
         libgssapi-krb5-2 \
         libicu52 \
         liblttng-ust0 \
+		libgdiplus \
         libssl1.0.0 \
         libstdc++6 \
         libunwind8 \
@@ -17,7 +18,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Install .NET Core SDK
-ENV DOTNET_SDK_VERSION 1.0.0-preview4-004233
+ENV DOTNET_SDK_VERSION 1.0.3
 ENV DOTNET_SDK_DOWNLOAD_URL https://dotnetcli.blob.core.windows.net/dotnet/Sdk/$DOTNET_SDK_VERSION/dotnet-dev-debian-x64.$DOTNET_SDK_VERSION.tar.gz
 
 RUN curl -SL $DOTNET_SDK_DOWNLOAD_URL --output dotnet.tar.gz \

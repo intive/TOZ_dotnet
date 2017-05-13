@@ -1,0 +1,76 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Toz.Dotnet.Models.EnumTypes
+@model Toz.Dotnet.Models.User
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["Title"];
+}
+
+<div class="container-fluid center">
+    <form class="form-horizontal" asp-controller="Users" asp-action="Edit" method="POST" enctype="multipart/form-data">
+        <fieldset class="pagetitle">
+            <legend class="pagetitlelegend">@Localizer["PageTitle"]</legend>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["Id"]</label>
+                <div class="col-sm-10">
+                    <input type="text" asp-for="Id" class="form-control" id="Id" disabled>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["FirstName"]</label>
+                <div class="col-sm-10">
+                    <input type="text" asp-for="FirstName" class="form-control" id="FirstName">
+                    <span class="glyphicon form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.FirstName)
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["LastName"]</label>
+                <div class="col-sm-10">
+                    <input type="text" asp-for="LastName" class="form-control" id="LastName">
+                    <span class="glyphicon form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.LastName)
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["PhoneNumber"]</label>
+                <div class="col-sm-10">
+                    <input type="text" asp-for="PhoneNumber" class="form-control" id="PhoneNumber">
+                    <span class="glyphicon form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.PhoneNumber)
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["Email"]</label>
+                <div class="col-sm-10">
+                    <input type="text" asp-for="Email" class="form-control" id="Email">
+                    <span class="glyphicon form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.Email)
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["Purpose"]</label>
+                <div class="col-sm-10 selectContainer">
+                    <select asp-for="Purpose" class="form-control" id="Purpose">
+                        <option value="0">@Localizer["Volunteer"]</option>
+                        <option value="1">@Localizer["TemporaryHome"]</option>
+                        <option value="2">@Localizer["Administrator"]</option>
+                    </select>
+                    <span class="glyphicon form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.Purpose)
+                </div>
+            </div>
+
+            <input type="button" class="btn btn-warning btn-block" id="Cancel" data-dismiss="modal" value=@Localizer["Cancel"]>
+            <input type="submit" class="btn btn-primary btn-block" id="Save" value=@Localizer["Save"]>
+        </fieldset>
+    </form>
+</div>
+
+<script src="~/js/modal.scripts.js"></script>

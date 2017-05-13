@@ -8,10 +8,13 @@ namespace Toz.Dotnet.Controllers
 {
     public class HomeController : Controller
     {
+        private IBackendErrorsService _backendErrorsService;
         private IPetsManagementService _petsManagementService;
-        public HomeController(IPetsManagementService petsManagementService)
+
+        public HomeController(IPetsManagementService petsManagementService, IBackendErrorsService backendErrorsService)
         {
             _petsManagementService = petsManagementService;
+            _backendErrorsService = backendErrorsService;
         }
 
         public IActionResult Index()

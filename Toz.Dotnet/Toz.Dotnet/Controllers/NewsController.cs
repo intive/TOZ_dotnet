@@ -16,38 +16,45 @@ namespace Toz.Dotnet.Controllers
 {
     public class NewsController : Controller
     {
+        private IFilesManagementService _filesManagementService;
         private INewsManagementService _newsManagementService;
-	    private readonly IStringLocalizer<NewsController> _localizer;
+        private IBackendErrorsService _backendErrorsService;
+        private readonly IStringLocalizer<NewsController> _localizer;
         private readonly AppSettings _appSettings;
         private static byte[] _lastAcceptPhoto;
         private string _validationPhotoAlert;
 
-        public NewsController(INewsManagementService newsManagementService, IStringLocalizer<NewsController> localizer, IOptions<AppSettings> appSettings)
+        public NewsController(IFilesManagementService filesManagementService, INewsManagementService newsManagementService,
+            IStringLocalizer<NewsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService)
         {
+            _filesManagementService = filesManagementService;
             _newsManagementService = newsManagementService;
 			_localizer = localizer;
             _appSettings = appSettings.Value;
+            _backendErrorsService = backendErrorsService;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             List<News> news = await _newsManagementService.GetAllNews();
             //todo add photo if will be avaialbe on backends
-            news.ForEach(n=> n.Photo = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 }); // temporary
-            return View(news.OrderByDescending(x => x.PublishingTime ?? DateTime.MaxValue).ThenByDescending(x => x.Title).ToList());
+            var img = _filesManagementService.DownloadImage(@"http://img.cda.pl/obr/thumbs/6adb80c33f5b55df46a481b57a61c64c.png_oooooooooo_273x.png");
+            var thumbnail = _filesManagementService.GetThumbnail(img);
+            news.ForEach(n => n.Photo = _filesManagementService.ImageToByteArray(thumbnail)); // temporary
+            return View(news.OrderByDescending(x => x.Published ?? DateTime.MaxValue).ThenByDescending(x => x.Title).ToList());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(
-            [Bind("Title, Body")] 
+            [Bind("Title, Contents")] 
             News news, [Bind("Photo")] IFormFile photo, string status, CancellationToken cancellationToken)
         {
             bool result = ValidatePhoto(news, photo);
             news.PhotoUrl = "storage/a5/0d/4d/a50d4d4c-ccd2-4747-8dec-d6d7f521336e.jpg";
 
             Enum.TryParse(status, out NewsStatus newsStatus);
-            news.Status = newsStatus;
+            news.Type = newsStatus;
             
             if (news != null && result && ModelState.IsValid)
             {
@@ -55,11 +62,12 @@ namespace Toz.Dotnet.Controllers
                     {
                         _lastAcceptPhoto = null;
                         _validationPhotoAlert = null;
-                        return RedirectToAction("Index");
+                        return Json(new { success = true });
                     }
                     else
                     {
-                        return BadRequest();
+                        _backendErrorsService.UpdateModelState(ModelState);
+                        return PartialView(news);
                     }
             }
             else
@@ -77,19 +85,19 @@ namespace Toz.Dotnet.Controllers
                         ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
                     }
                 }
-                return View(news);
+                return PartialView(news);
             }
         } 
 
         public IActionResult Add()
         {
-            return View(new News());
+            return PartialView(new News());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
-            [Bind("Id, Title, Body, Status")] 
+            [Bind("Id, Title, Contents, Status, PublishingTime, AddingTime, LastEditTime")] 
             News news, [Bind("Photo")] IFormFile photo, string status, CancellationToken cancellationToken)
         {
             //todo add photo if will be available on backends
@@ -99,7 +107,7 @@ namespace Toz.Dotnet.Controllers
             news.PhotoUrl = "storage/a5/0d/4d/a50d4d4c-ccd2-4747-8dec-d6d7f521336e.jpg";
 
             Enum.TryParse(status, out NewsStatus newsStatus);
-            news.Status = newsStatus;
+            news.Type = newsStatus;
 
             if (news != null && result && ModelState.IsValid)
             {
@@ -107,11 +115,12 @@ namespace Toz.Dotnet.Controllers
                     {
                         _lastAcceptPhoto = null;
                         _validationPhotoAlert = null;
-                        return RedirectToAction("Index");
+                        return Json(new { success = true });
                     }
                     else
                     {
-                        return BadRequest();
+                        _backendErrorsService.UpdateModelState(ModelState);
+                        return PartialView(news);
                     }
             }
             else
@@ -129,14 +138,13 @@ namespace Toz.Dotnet.Controllers
                         ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
                     }
                 }
-                return View(news);
+                return PartialView(news);
             }
-            
         } 
 
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken) 
         {
-            return View(await _newsManagementService.GetNews(id));
+            return PartialView("Edit", await _newsManagementService.GetNews(id));
         }
 
         public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)
@@ -148,10 +156,6 @@ namespace Toz.Dotnet.Controllers
             }
 
             return RedirectToAction("Index");
-        }
-
-        public async Task<ActionResult> Details(string id, CancellationToken cancellationToken) {
-            return View(await _newsManagementService.GetNews(id));
         }
 
         private bool IsAcceptedPhotoType(string photoType, string[] acceptTypes)

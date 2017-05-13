@@ -32,8 +32,5 @@ namespace Toz.Dotnet.Models
 
         [JsonProperty("ownerId")]
         public string OwnerId { get; set; }
-
-        [JsonProperty("modificationMessage")]
-        public string ModificationMessage { get; set; }
     }
 }

@@ -7,42 +7,66 @@
     ViewData["Title"] = @Localizer["PageTitle"];
 }
 
-<h2>@Localizer["PageTitle"]</h2>
-<div class="table-responsive">
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <td>@Html.ActionLink(@Localizer["Add"].Value, "Add", "Users", null, new { @style = "width: 120px;", @class = "btn btn-primary btn-block"}) </td>
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
         </div>
     </div>
-    <table class="table">
-        <tr>
-            <th>@Localizer["FirstName"]</th>
-            <th>@Localizer["LastName"]</th>
-            <th>@Localizer["PhoneNumber"]</th>
-            <th>@Localizer["Email"]</th>
-            <th>@Localizer["Purpose"]</th>
-        </tr>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.FirstName</td>
-                <td>@item.LastName</td>
-                <td>@item.PhoneNumber</td>
-                <td>@item.Email</td>
+</div>
 
-                @if(@item.Purpose == UserType.Administrator)
+<div class="panel panel-default panel-table">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col col-xs-4">
+                <h3 class="panel-title">@Localizer["PageTitle"]</h3>
+            </div>
+            <div class="col col-xs-4">
+                <input type="text" id="search" class="search form-control" placeholder="@Localizer["SearchPlaceholder"]">
+            </div>
+            <div class="col col-xs-4 text-right">
+                <a class="data-modal btn btn-primary btn-sm btn-create" href="@Url.Action("Add","Users")"><span class="glyphicon glyphicon-plus"></span></a>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <table id="table" class="table table-striped table-bordered table-list dt-responsive nowrap" width="100%">
+            <thead>
+                <tr>
+                    <th>@Localizer["FirstName"]</th>
+                    <th>@Localizer["LastName"]</th>
+                    <th>@Localizer["PhoneNumber"]</th>
+                    <th>@Localizer["Email"]</th>
+                    <th>@Localizer["Purpose"]</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
                 {
-                    <td>@Localizer["Administrator"]</td>
+                    <tr>
+                        <td>@item.FirstName</td>
+                        <td>@item.LastName</td>
+                        <td>@item.PhoneNumber</td>
+                        <td>@item.Email</td>
+
+                        @if (@item.Purpose == UserType.Administrator)
+                        {
+                            <td>@Localizer["Administrator"]</td>
+                        }
+                        else if (@item.Purpose == UserType.Volunteer)
+                        {
+                            <td>@Localizer["Volunteer"]</td>
+                        }
+                        else
+                        {
+                            <td>@Localizer["TemporaryHome"]</td>
+                        }
+
+                        <td class="center-column"><a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Edit","Users")/@item.Id"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                    </tr>
                 }
-                else if(@item.Purpose == UserType.Volunteer)
-                {
-                    <td>@Localizer["Volunteer"]</td>
-                }
-                else
-                {
-                    <td>@Localizer["TemporaryHome"]</td>
-                }
-            </tr>
-        }
-    </table>
+            </tbody>
+        </table>
+    </div>
 </div>

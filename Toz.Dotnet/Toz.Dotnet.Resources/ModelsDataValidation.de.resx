@@ -123,14 +123,14 @@
   <data name="MaxLength" xml:space="preserve">
     <value>Die maximale Länge beträgt {1} Zeichen.</value>
   </data>
-  <data name="NameLetters" xml:space="preserve">
-    <value>Der Name darf nur aus Buchstaben bestehen.</value>
+  <data name="FirstnameLetters" xml:space="preserve">
+    <value>Der Vorname darf nur aus Buchstaben bestehen.</value>
   </data>
   <data name="PetTypeUndefined" xml:space="preserve">
     <value>Wählen Sie den Typ des Tiers aus.</value>
   </data>
   <data name="PetSexUndefined" xml:space="preserve">
-    <value>**Ładne niemieckie zdanie**</value>
+    <value>Wählen Sie das Geschlecht des Tiers aus.</value>
   </data>
   <data name="TypeUndefined" xml:space="preserve">
     <value>Wählen Sie den Typ des Benutzers aus.</value>
@@ -140,5 +140,14 @@
   </data>
   <data name="LastNameRequired" xml:space="preserve">
     <value>Last name is required</value>
+  </data>
+  <data name="OnlyDigits" xml:space="preserve">
+    <value>Dieses Feld kann nur aus Ziffern bestehen.</value>
+  </data>
+  <data name="LastnameLetters" xml:space="preserve">
+    <value>Der Nachname darf nur aus Buchstaben bestehen.</value>
+  </data>
+  <data name="InvalidField" xml:space="preserve">
+    <value>Ungültiges Feld</value>
   </data>
 </root>

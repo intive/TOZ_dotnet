@@ -6,87 +6,64 @@
     ViewData["Title"] = @Localizer["Title"];
 }
 
-<body>
-    <h2>@Localizer["Title"]</h2>
-    <hr>
+<div class="container-fluid center">
+    <form class="form-horizontal" asp-controller="Users" asp-action="Add" method="POST" enctype="multipart/form-data">
+        <fieldset class="pagetitle">
+            <legend class="pagetitlelegend">@Localizer["PageTitle"]</legend>
 
-    <div class="NewUser">
-        <form asp-controller="Users" asp-action="Add" method="POST" enctype="multipart/form-data">
-            <table class="forms" align="center">
-                <tr allign="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.FirstName, null, null)</td>
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["FirstName"]:</label></td>
-                    <td class="col-md-9"><input type="text" asp-for="FirstName" class="form-control" id="FirstName"></td>
-                </tr>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["FirstName"]</label>
+                <div class="col-sm-10">
+                    <input type="text" asp-for="FirstName" class="form-control" id="FirstName">
+                    <span class="glyphicon form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.FirstName)
+                </div>
+            </div>
 
-                <tr allign="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.LastName, null, null)</td>
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["LastName"]:</label></td>
-                    <td class="col-md-9"><input type="text" asp-for="LastName" class="form-control" id="LastName"></td>
-                </tr>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["LastName"]</label>
+                <div class="col-sm-10">
+                    <input type="text" asp-for="LastName" class="form-control" id="LastName">
+                    <span class="glyphicon form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.LastName)
+                </div>
+            </div>
 
-                <tr allign="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.PhoneNumber, null, null)</td>
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["PhoneNumber"]:</label></td>
-                    <td class="col-md-9"><input type="text" asp-for="PhoneNumber" class="form-control" id="PhoneNumber"></td>
-                </tr>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["PhoneNumber"]</label>
+                <div class="col-sm-10">
+                    <input type="text" asp-for="PhoneNumber" class="form-control" id="PhoneNumber">
+                    <span class="glyphicon form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.PhoneNumber)
+                </div>
+            </div>
 
-                <tr allign="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Email, null, null)</td>
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["Email"]:</label></td>
-                    <td class="col-md-9"><input type="text" asp-for="Email" class="form-control" id="Email"></td>
-                </tr>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["Email"]</label>
+                <div class="col-sm-10">
+                    <input type="text" asp-for="Email" class="form-control" id="Email">
+                    <span class="glyphicon form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.Email)
+                </div>
+            </div>
 
-                <tr allign="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Purpose, null, null)</td>
-                </tr>
-                <tr>
-                    <td class="col-md-3"><label>@Localizer["Purpose"]:</label></td>
-                    <td class="col-md-9">
-                        <select asp-for="Purpose" class="form-control" id="UserType">
-                            <option value="0">@Localizer["Administrator"]</option>
-                            <option value="1">@Localizer["Volunteer"]</option>
-                            <option value="2">@Localizer["TemporaryHome"]</option>
-                        </select>
-                    </td>
-                </tr>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["Purpose"]</label>
+                <div class="col-sm-10 selectContainer">
+                    <select asp-for="Purpose" class="form-control" id="Purpose">
+                        <option value="0">@Localizer["Volunteer"]</option>
+                        <option value="1">@Localizer["TemporaryHome"]</option>
+                        <option value="2">@Localizer["Administrator"]</option>
+                    </select>
+                    <span class="glyphicon form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.Purpose)
+                </div>
+            </div>
 
-                <tr allign="left">
-                    <td></td>
-                    <td>@Html.ValidationMessageFor(Model => Model.Passwd, null, null)</td>
-                </tr>
-                <tr>
-                    <td><label>@Localizer["Passwd"]:</label></td>
-                    <td><input type="password" asp-for="Passwd" class="form-control" id="Passwd"></td>
-                </tr>
+            <input type="button" class="btn btn-warning btn-block" id="Cancel" data-dismiss="modal" value=@Localizer["Cancel"]>
+            <input type="submit" class="btn btn-primary btn-block" id="Save" value=@Localizer["Save"]>
+        </fieldset>
+    </form>
+</div>
 
-                <tr>
-                    <td colspan="2" style="text-align: center;">
-                        <br>
-                        <input type="submit" class="btn btn-primary btn-block" id="UserSave" value=@Localizer["Save"]>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align: center;">
-                        <input type="button" class="btn btn-primary btn-block" id="UserCancel" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Index", "Users") + "'");">
-                    </td>
-                </tr>
-
-            </table>
-        </form>
-    </div>
-
-</body>
+<script src="~/js/modal.scripts.js"></script>

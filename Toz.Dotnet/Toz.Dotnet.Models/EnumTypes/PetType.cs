@@ -1,9 +1,14 @@
+using System.Runtime.Serialization;
+
 namespace Toz.Dotnet.Models.EnumTypes
 {
     public enum PetType
     {
-        UNIDENTIFIED,
-        DOG,
-        CAT
+        [EnumMember(Value = "UNIDENTIFIED")]
+        Unidentified,
+        [EnumMember(Value = "DOG")]
+        Dog,
+        [EnumMember(Value = "CAT")]
+        Cat
     };
 }

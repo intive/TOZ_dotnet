@@ -4,8 +4,6 @@ using Toz.Dotnet.Tests.Helpers;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.EnumTypes;
 using System;
-using Microsoft.Extensions.Options;
-using Toz.Dotnet.Resources.Configuration;
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,22 +12,25 @@ namespace Toz.Dotnet.Tests.Tests
 {
     public class PetsManagementTest
     {
-        private IPetsManagementService _petsManagementService;
-        private Pet _testingPet;
+        private readonly AuthService _authHelper;
+        private readonly IPetsManagementService _petsManagementService;
+        private readonly Pet _testingPet;
         public PetsManagementTest()
         {
+            _authHelper = new AuthService();
             _petsManagementService = ServiceProvider.Instance.Resolve<IPetsManagementService>();
-            _testingPet = new Pet()
+
+            _testingPet = new Pet
             {
-                Id = System.Guid.NewGuid().ToString(),
+                Id = Guid.NewGuid().ToString(),
                 Name = "TestDog",
-                Type = PetType.DOG,
-                Sex = PetSex.MALE,
+                Type = PetType.Dog,
+                Sex = PetSex.Male,
                 Photo = new byte[10],
                 Description = "Dog that eats tigers",
                 Address = "Found in the jungle",
-                AddingTime = DateTime.Now,
-                LastEditTime = DateTime.Now
+                Created = DateTime.Now,
+                LastModified = DateTime.Now
             };
 
             _petsManagementService.RequestUri = RequestUriHelper.PetsUri;
@@ -54,15 +55,23 @@ namespace Toz.Dotnet.Tests.Tests
         }
          
         [Fact]
-        public void TestOfCreatingNewPet()
+        public async void TestOfCreatingNewPet()
         {
+            if (!_authHelper.AuthHelper.IsAuth)
+            {
+                Assert.True(await _authHelper.SignIn());
+            }
             Assert.True(_petsManagementService.CreatePet(_testingPet).Result);
             _petsManagementService.DeletePet(_testingPet).Wait();
         }
 
         [Fact]
-        public void TestOfDeletingSpecifiedPet()
+        public async void TestOfDeletingSpecifiedPet()
         {
+            if (!_authHelper.AuthHelper.IsAuth)
+            {
+                Assert.True(await _authHelper.SignIn());
+            }
             var pets = _petsManagementService.GetAllPets().Result;
             if(pets.Any())
             {
@@ -73,8 +82,12 @@ namespace Toz.Dotnet.Tests.Tests
         }
 
         [Fact]
-        public void TestOfGettingSpecifiedPet()
+        public async void TestOfGettingSpecifiedPet()
         {
+            if (!_authHelper.AuthHelper.IsAuth)
+            {
+                Assert.True(await _authHelper.SignIn());
+            }
             var pets = _petsManagementService.GetAllPets().Result;
             if(pets.Any())
             {
@@ -88,8 +101,12 @@ namespace Toz.Dotnet.Tests.Tests
 
         
         [Fact]
-        public void TestOfPetUpdating()
+        public async void TestOfPetUpdating()
         {
+            if (!_authHelper.AuthHelper.IsAuth)
+            {
+                Assert.True(await _authHelper.SignIn());
+            }
             var pets = _petsManagementService.GetAllPets().Result;
             if(pets.Any())
             {
@@ -124,7 +141,7 @@ namespace Toz.Dotnet.Tests.Tests
 
             if (property.Equals("Type"))
             {
-                pet.Type = PetType.UNIDENTIFIED;
+                pet.Type = PetType.Unidentified;
             }
            
             var context = new ValidationContext(pet, null, null);
@@ -188,7 +205,7 @@ namespace Toz.Dotnet.Tests.Tests
 
         private Pet ClonePet(Pet pet)
         {
-            return new Pet()
+            return new Pet
             {
                 Id = pet.Id,
                 Name = pet.Name,
@@ -197,10 +214,9 @@ namespace Toz.Dotnet.Tests.Tests
                 Photo = (byte[])pet.Photo.Clone(),
                 Description = pet.Description,
                 Address = pet.Address,
-                AddingTime = pet.AddingTime,
-                LastEditTime = pet.LastEditTime
+                Created = pet.Created,
+                LastModified = pet.LastModified
             };
         }
-        
     }
 }
