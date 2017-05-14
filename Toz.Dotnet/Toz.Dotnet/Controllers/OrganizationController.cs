@@ -33,7 +33,7 @@ namespace Toz.Dotnet.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Info(bool edit, Organization organizationInstance = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IActionResult> Info(bool edit, CancellationToken cancellationToken = default(CancellationToken))
         {
             ViewData["EditMode"] = edit;
 

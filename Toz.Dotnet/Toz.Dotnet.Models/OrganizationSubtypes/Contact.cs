@@ -1,30 +1,28 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Toz.Dotnet.Models.CustomValidationAttributes;
-using Toz.Dotnet.Models.JsonConventers;
 
 namespace Toz.Dotnet.Models.OrganizationSubtypes
 {
     public class Contact
     {
         [JsonProperty("email")]
+        [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
         [EmailAddress(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmailValidationMessage")]
         public string Email { get; set; }
 
-        [RegularExpression("^[0-9]*$", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "OnlyDigits")]
         [JsonProperty("phone")]
-        [PhoneNumber]
+        [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
+        [RegularExpression(@"\d{9}(\d{2})?", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "InvalidPhoneNumber")]
         public string Phone { get; set; }
 
         [JsonProperty("fax")]
-        [PhoneNumber]
+        [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
+        [RegularExpression(@"\d{9}(\d{2})?", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "InvalidFaxNumber")]
         public string Fax { get; set; }
 
         [JsonProperty("website")]
+        [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
+        [Url(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "InvalidURL")]
         public string Website { get; set; }
     }
 }
