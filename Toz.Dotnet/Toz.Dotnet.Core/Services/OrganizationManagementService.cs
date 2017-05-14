@@ -21,6 +21,10 @@ namespace Toz.Dotnet.Core.Services
 
         public async Task<bool> UpdateOrCreateInfo(Organization organizationInfo, CancellationToken cancelationToken = default(CancellationToken))
         {
+            // Always pass backend-acceptable value (without country code and/or spaces)
+            string number = organizationInfo.BankAccount.Number.Replace(" ", string.Empty);
+            organizationInfo.BankAccount.Number = number.StartsWith("PL") ? number.Substring(2, 26) : number;
+
             Func<string, Organization, CancellationToken, Task<bool>> methodToExecute = _restService.ExecutePutAction;
 
             if (await GetOrganizationInfo(cancelationToken) == null)

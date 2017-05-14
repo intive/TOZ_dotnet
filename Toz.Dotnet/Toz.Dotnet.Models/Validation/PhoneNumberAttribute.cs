@@ -1,23 +1,18 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Toz.Dotnet.Models.CustomValidationAttributes
+namespace Toz.Dotnet.Models.Validation
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
     public sealed class PhoneNumberAttribute : ValidationAttribute 
     {    
         public override bool IsValid(object value) 
         {
-            if (value == null) 
-            {
-                return false;
-            }
- 
             string valueAsString = value as string;
 
             if (valueAsString == null) 
             {
-                return false;
+                return true;
             }
 
             // remove '+' character and all white spaces

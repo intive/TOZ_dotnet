@@ -1,5 +1,4 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
-@using Toz.Dotnet.Models.EnumTypes
 @model Toz.Dotnet.Models.Organization
 @inject IViewLocalizer Localizer
 
@@ -23,8 +22,8 @@
                         @if (IsEditMode)
                         {
                             <input type="text" asp-for="Name" class="form-control" id="Name">
+                            <span asp-validation-for="Name"></span>
                             <span class="glyphicon form-control-feedback"></span>
-                            @Html.ValidationMessageFor(m => m.Name)
                         }
                         else
                         {
@@ -41,8 +40,8 @@
                         @if (IsEditMode)
                         {
                             <input type="text" asp-for="Address.Street" class="form-control" id="Stret">
+                            <span asp-validation-for="Address.Street"></span>
                             <span class="glyphicon form-control-feedback"></span>
-                            @Html.ValidationMessageFor(m => m.Address.Street)
                         }
                         else
                         {
@@ -56,8 +55,8 @@
                         @if (IsEditMode)
                         {
                             <input type="text" asp-for="Address.HouseNumber" class="form-control" id="HouseNumber">
+                            <span asp-validation-for="Address.HouseNumber"></span>
                             <span class="glyphicon form-control-feedback"></span>
-                            @Html.ValidationMessageFor(m => m.Address.HouseNumber)
                         }
                         else
                         {
@@ -71,8 +70,8 @@
                         @if (IsEditMode)
                         {
                             <input type="text" asp-for="Address.ApartmentNumber" class="form-control" id="ApartmentNumber">
+                            <span asp-validation-for="Address.ApartmentNumber"></span>
                             <span class="glyphicon form-control-feedback"></span>
-                            @Html.ValidationMessageFor(m => m.Address.ApartmentNumber)
                         }
                         else
                         {
@@ -86,8 +85,8 @@
                         @if (IsEditMode)
                         {
                             <input type="text" asp-for="Address.PostCode" class="form-control" id="PostCode">
+                            <span asp-validation-for="Address.PostCode"></span>
                             <span class="glyphicon form-control-feedback"></span>
-                            @Html.ValidationMessageFor(m => m.Address.PostCode)
                         }
                         else
                         {
@@ -101,8 +100,8 @@
                         @if (IsEditMode)
                         {
                             <input type="text" asp-for="Address.City" class="form-control" id="City">
+                            <span asp-validation-for="Address.City"></span>
                             <span class="glyphicon form-control-feedback"></span>
-                            @Html.ValidationMessageFor(m => m.Address.City)
                         }
                         else
                         {
@@ -116,8 +115,8 @@
                         @if (IsEditMode)
                         {
                             <input type="text" asp-for="Address.Country" class="form-control" id="Country">
+                            <span asp-validation-for="Address.Country"></span>
                             <span class="glyphicon form-control-feedback"></span>
-                            @Html.ValidationMessageFor(m => m.Address.Country)
                         }
                         else
                         {
@@ -134,8 +133,8 @@
                         @if (IsEditMode)
                         {
                             <input type="text" asp-for="Contact.Email" class="form-control" id="Email">
+                            <span asp-validation-for="Contact.Email"></span>
                             <span class="glyphicon form-control-feedback"></span>
-                            @Html.ValidationMessageFor(m => m.Contact.Email)
                         }
                         else
                         {
@@ -149,8 +148,8 @@
                         @if (IsEditMode)
                         {
                             <input type="text" asp-for="Contact.Phone" class="form-control" id="Phone">
+                            <span asp-validation-for="Contact.Phone"></span>
                             <span class="glyphicon form-control-feedback"></span>
-                            @Html.ValidationMessageFor(m => m.Contact.Phone)
                         }
                         else
                         {
@@ -164,8 +163,8 @@
                         @if (IsEditMode)
                         {
                             <input type="text" asp-for="Contact.Fax" class="form-control" id="Fax">
+                            <span asp-validation-for="Contact.Fax"></span>
                             <span class="glyphicon form-control-feedback"></span>
-                            @Html.ValidationMessageFor(m => m.Contact.Fax)
                         }
                         else
                         {
@@ -179,8 +178,8 @@
                         @if (IsEditMode)
                         {
                             <input type="text" asp-for="Contact.Website" class="form-control" id="Website">
+                            <span asp-validation-for="Contact.Website"></span>
                             <span class="glyphicon form-control-feedback"></span>
-                            @Html.ValidationMessageFor(m => m.Contact.Website)
                         }
                         else
                         {
@@ -197,8 +196,8 @@
                         @if (IsEditMode)
                         {
                             <input type="text" asp-for="BankAccount.Number" class="form-control" id="BankAccountNumber">
+                            <span asp-validation-for="BankAccount.Number"></span>
                             <span class="glyphicon form-control-feedback"></span>
-                            @Html.ValidationMessageFor(m => m.BankAccount.Number)
                         }
                         else
                         {
@@ -212,8 +211,8 @@
                         @if (IsEditMode)
                         {
                             <input type="text" asp-for="BankAccount.BankName" class="form-control" id="BankName">
+                            <span asp-validation-for="BankAccount.Number"></span>
                             <span class="glyphicon form-control-feedback"></span>
-                            @Html.ValidationMessageFor(m => m.BankAccount.BankName)
                         }
                         else
                         {
@@ -229,10 +228,19 @@
     </form>
 </div>
 
-@section Scripts
-        {
-    <script src="@Url.Content("https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js")"></script>
-    <script src="@Url.Content("https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js")"></script>
-    <script src="@Url.Content("https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js")"></script>
-    <script src="@Url.Content("https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap.min.js")"></script>
+@section Scripts {
+    <script>
+        (function ($) {
+            var regex = /^(PL)?[0-9]{26}$/;
+            $.validator.addMethod("accountnumber",
+                function (value, element, params) {
+                    if (!value) return true;
+                    value = String(value).replace(/\s/g, '');
+                    if (!value) return true;
+                    var match = regex.test(value);
+                    return match;
+                });
+            $.validator.unobtrusive.adapters.addBool("accountnumber");
+        })(jQuery);
+    </script>
 }
