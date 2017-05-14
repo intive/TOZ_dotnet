@@ -34,15 +34,13 @@ namespace Toz.Dotnet.Controllers
 
         public IActionResult Add()
         {
-            var usr = new User();
-
             return PartialView(new User());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(
-            [Bind("Id, FirstName, LastName, PhoneNumber, Email, Password, Roles")]
+            [Bind("FirstName, LastName, PhoneNumber, Email, Password, Roles")]
             User user, CancellationToken cancellationToken)
         {
             if (user != null && ModelState.IsValid)
