@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Toz.Dotnet.Models.CustomValidationAttributes;
 using Toz.Dotnet.Models.EnumTypes;
+using Toz.Dotnet.Models.Validation;
 
 namespace Toz.Dotnet.Models
 {
