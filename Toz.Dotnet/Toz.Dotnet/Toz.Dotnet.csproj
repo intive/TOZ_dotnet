@@ -9,11 +9,6 @@
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Content Include="wwwroot\css\mainpage.css" />
-    <Content Include="wwwroot\js\datatables\datatables.init.js" />
-    <Content Include="wwwroot\js\modal.scripts.js" />
-  </ItemGroup>
   <!--Libs references -->
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="1.1.2" />
