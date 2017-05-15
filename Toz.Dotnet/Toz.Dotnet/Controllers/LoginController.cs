@@ -23,7 +23,7 @@ namespace Toz.Dotnet.Controllers
             // --> TEMPORARY
             for(int i = 0; i < 5; i++)
             {
-                await _authService.SignIn(new Models.Login() { Email = $"TOZ_user{i}.email@gmail.com", Password = $"TOZ_name_{i}" });
+                await _authService.SignIn(new Models.Login() { Email = $"toz_user{i}.email@gmail.com", Password = $"TOZ_name_{i}" });
                 if(_authService.IsAuth)
                 {
                     return RedirectToAction("Index", "Home");
