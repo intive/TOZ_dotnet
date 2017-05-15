@@ -16,10 +16,18 @@ namespace Toz.Dotnet.Tests.Helpers
 
         public async Task<bool> SignIn()
         {
-            await AuthHelper.SignIn(new Login { Email = "TOZ_user0.email@gmail.com", Password = "TOZ_name_0" });
-            if (AuthHelper.IsAuth)
+            for (int i = 0; i < 5; i++)
             {
-                return true;
+                await AuthHelper.SignIn(new Login()
+                {
+                    Email = $"TOZ_user{i}.email@gmail.com",
+                    Password = $"TOZ_name_{i}"
+                });
+
+                if (AuthHelper.IsAuth)
+                {
+                    return true;
+                }
             }
             return false;
         }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
@@ -38,7 +39,11 @@ namespace Toz.Dotnet.Core.Services
                     }
                     // <--
                     var response = await client.DeleteAsync(address, cancelationToken);
-                    response.EnsureSuccessStatusCode();
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        await PassJsonResponseToErrorService(response);
+                        return false;
+                    }
                     return true;
                 }
                 catch(HttpRequestException)
@@ -98,17 +103,12 @@ namespace Toz.Dotnet.Core.Services
                     }
                     // <--
                     var response = await client.PostAsync(address, httpContent, cancelationToken);
-                    if(response.IsSuccessStatusCode)
+                    if (!response.IsSuccessStatusCode)
                     {
-                        return true;
-                    }
-                    else
-                    {
-                        var stringResponse = await response.Content.ReadAsStringAsync();
-                        ErrorsList output = JsonConvert.DeserializeObject<ErrorsList>(stringResponse);
-                        _backendErrorsService.AddErrors(output);
+                        await PassJsonResponseToErrorService(response);
                         return false;
                     }
+                    return true;
                 }
                 catch(HttpRequestException)
                 {
@@ -140,17 +140,12 @@ namespace Toz.Dotnet.Core.Services
                     }
                     // <--
                     var response = await client.PutAsync(address, httpContent, cancelationToken);
-                    if (response.IsSuccessStatusCode)
+                    if (!response.IsSuccessStatusCode)
                     {
-                        return true;
-                    }
-                    else
-                    {
-                        var stringResponse = await response.Content.ReadAsStringAsync();
-                        ErrorsList output = JsonConvert.DeserializeObject<ErrorsList>(stringResponse);
-                        _backendErrorsService.AddErrors(output);
+                        await PassJsonResponseToErrorService(response);
                         return false;
                     }
+                    return true;
                 }
                 catch(HttpRequestException)
                 {
@@ -159,5 +154,19 @@ namespace Toz.Dotnet.Core.Services
             }
         }
 
+        private async Task PassJsonResponseToErrorService(HttpResponseMessage response)
+        {
+            var stringResponse = await response.Content.ReadAsStringAsync();
+            ErrorsList output = JsonConvert.DeserializeObject<ErrorsList>(stringResponse);
+            if (output.Errors == null)
+            {
+                var error = JsonConvert.DeserializeObject<Error>(stringResponse);
+                if (error != null)
+                {
+                    output.Errors = new List<Error>() { error };
+                }
+            }
+            _backendErrorsService.AddErrors(output);
+        }
     }
 }

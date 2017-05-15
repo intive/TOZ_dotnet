@@ -34,7 +34,9 @@
     margin: 0 auto;
     padding-top: 10px;
 }
-
+select {
+    overflow-y: hidden
+}
 .forms td {
     padding: 3px;
 }
@@ -221,5 +223,10 @@ div.dataTables_paginate {
 }
 
 .center-column {
+    text-align: center;
+}
+
+.unhandled-error-span {
+    color: #A94442;
     text-align: center;
 }

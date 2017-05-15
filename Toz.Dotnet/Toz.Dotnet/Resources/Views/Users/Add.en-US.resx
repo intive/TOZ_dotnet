@@ -150,4 +150,13 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Anonymous" xml:space="preserve">
+    <value>Anonymous user</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="TozWorker" xml:space="preserve">
+    <value>TOZ worker</value>
+  </data>
 </root>

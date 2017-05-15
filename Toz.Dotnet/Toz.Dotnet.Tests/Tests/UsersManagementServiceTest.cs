@@ -1,32 +1,57 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Tests.Helpers;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.EnumTypes;
+using Xunit;
 
 namespace Toz.Dotnet.Tests.Tests
 {
     public class UserManagementTest
     {
+        private readonly AuthService _authHelper;
         private readonly IUsersManagementService _userManagementService;
         private User _testUser;
+
+        private const string EmailBaseValue = "test";
+        private const string EmailDomainValue = "test.com";
         public UserManagementTest()
         {
             _userManagementService = ServiceProvider.Instance.Resolve<IUsersManagementService>();
-
+            _authHelper = new AuthService();
             _testUser = new User
             {               
-                Id = System.Guid.NewGuid().ToString(),
-                FirstName = "Test",
-                LastName = "User",
+                FirstName = "Mariusz",
+                LastName = "Wolonatriusz",
+                Password = "TajneHasloMariusza",
                 PhoneNumber = "123456789",
                 Email = "test@test.com",
-                Purpose = UserType.Volunteer
+                Roles = new [] {UserType.Volunteer}
             };
 
             _userManagementService.RequestUri = RequestUriHelper.UsersUri;
         }
-        
-        /*[Fact]
+
+        private string CreateNewMail(string baseValue, int number, string domain)
+        {
+            return $"{baseValue}{number}@{domain}";
+        }
+
+        private async Task<bool> UserAlreadyExists(User user)
+        {
+            if (!_authHelper.AuthHelper.IsAuth)
+            {
+                Assert.True(await _authHelper.SignIn());
+            }
+            var users = await _userManagementService.GetAllUsers();
+            return users.Any(usr => usr.Email.Equals(user.Email, StringComparison.CurrentCultureIgnoreCase));
+        }
+
+        [Fact]
         public void TestDependencyInjectionFromUserManagementService()
         {
             Assert.NotNull(_userManagementService);
@@ -39,62 +64,87 @@ namespace Toz.Dotnet.Tests.Tests
         }
 
         [Fact]
-        public void TestOfGettingAllUsers()
+        public async void TestOfGettingAllUsers()
         {
-            Assert.NotNull(_userManagementService.GetAllUsers().Result);
+            if (!_authHelper.AuthHelper.IsAuth)
+            {
+                Assert.True(await _authHelper.SignIn());
+            }
+            Assert.NotNull(await _userManagementService.GetAllUsers());
         }
          
         [Fact]
-        public void TestOfCreatingNewUser()
+        public async void TestOfCreatingNewUser()
         {
-            Assert.True(_userManagementService.CreateUser(_testUser).Result);
-            _userManagementService.DeleteUser(_testUser).Wait();
-        }
-
-        [Fact]
-        public void TestOfDeletingSpecifiedUser()
-        {
-            _userManagementService.CreateUser(_testUser);
-            var User = _userManagementService.GetAllUsers().Result;
-            if(User.Any())
+            if (!_authHelper.AuthHelper.IsAuth)
             {
-                var firstUser = User.FirstOrDefault();
-                Assert.False(_userManagementService.CreateUser(firstUser).Result);
-                Assert.True(_userManagementService.DeleteUser(firstUser).Result);
-                Assert.True(_userManagementService.CreateUser(firstUser).Result);
+                Assert.True(await _authHelper.SignIn());
             }
+            var currentEmailLevel = 0;
+            while (await UserAlreadyExists(_testUser))
+            {
+                _testUser.Email = CreateNewMail(EmailBaseValue, currentEmailLevel, EmailDomainValue);
+                currentEmailLevel++;
+            }
+            Assert.True(await _userManagementService.CreateUser(_testUser));
+            await _userManagementService.DeleteUser(_testUser);
         }
 
         [Fact]
-        public void TestOfGettingSpecifiedUser()
+        public async void TestOfGettingSpecifiedUser()
         {
-            _userManagementService.CreateUser(_testUser);
-            var User = _userManagementService.GetAllUsers().Result;
-            if(User.Any())
+            if (!_authHelper.AuthHelper.IsAuth)
             {
-                var firstUser = User.FirstOrDefault();
+                Assert.True(await _authHelper.SignIn());
+            }
+            var currentEmailLevel = 0;
+            while (await UserAlreadyExists(_testUser))
+            {
+                _testUser.Email = CreateNewMail(EmailBaseValue, currentEmailLevel, EmailDomainValue);
+                currentEmailLevel++;
+            }
+            await _userManagementService.CreateUser(_testUser);
+            var users = _userManagementService.GetAllUsers().Result;
+            if(users.Any())
+            {
+                var firstUser = users.FirstOrDefault();
                 var singleUser = _userManagementService.GetUser(firstUser.Id).Result;
                 Assert.NotNull(singleUser);
             }
                        
-            Assert.Null(_userManagementService.GetUser("notExistingIDThatIsNotID--1").Result);           
+            Assert.Null(_userManagementService.GetUser("notExistingIDThatIsNotID--1").Result);
+            await _userManagementService.DeleteUser(_testUser);
         }
 
-        
         [Fact]
-        public void TestOfUserUpdating()
+        public async void TestOfUserUpdating()
         {
-            _userManagementService.CreateUser(_testUser);
-            var User = _userManagementService.GetAllUsers().Result;
-            if(User.Any())
+            if (!_authHelper.AuthHelper.IsAuth)
             {
-                var firstUser = User.FirstOrDefault();
-                string userFirstName = firstUser.FirstName;
-                firstUser.FirstName = "Test";
-                Assert.True(_userManagementService.UpdateUser(firstUser).Result);
-                firstUser.FirstName = userFirstName;
-                Assert.True(_userManagementService.UpdateUser(firstUser).Result);
+                Assert.True(await _authHelper.SignIn());
             }
+            var currentEmailLevel = 0;
+            while (await UserAlreadyExists(_testUser))
+            {
+                _testUser.Email = CreateNewMail(EmailBaseValue, currentEmailLevel, EmailDomainValue);
+                currentEmailLevel++;
+            }
+            var creationResult = await _userManagementService.CreateUser(_testUser);
+            if (!creationResult)
+            {
+                return;
+            }
+            var users = await _userManagementService.GetAllUsers();
+            if(users != null && users.Any())
+            {
+                var testedUser = users.FirstOrDefault(u=> u.Email == _testUser.Email);
+                Assert.NotNull(testedUser);
+
+                testedUser.FirstName = "Test";
+                testedUser.Password = "TestPasswd";
+                Assert.True(await _userManagementService.UpdateUser(testedUser));
+            }
+            await _userManagementService.DeleteUser(_testUser);
         }
         
         [Fact]
@@ -119,9 +169,9 @@ namespace Toz.Dotnet.Tests.Tests
                 LastName = User.LastName,
                 PhoneNumber = User.PhoneNumber,
                 Email = User.Email,
-                Purpose = User.Purpose
+                Roles = User.Roles
             };
-        }*/
+        }
         
     }
 }

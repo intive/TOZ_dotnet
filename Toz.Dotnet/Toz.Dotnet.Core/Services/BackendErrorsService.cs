@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models.Errors;
 
@@ -9,22 +7,31 @@ namespace Toz.Dotnet.Core.Services
 {
     public class BackendErrorsService : IBackendErrorsService
     {
-        private readonly List<Error> _errorsList = new List<Error>();
+        List<Error> _errorsList = new List<Error>();
 
-        public void UpdateModelState(ModelStateDictionary modelState)
+        public string UpdateModelState(ModelStateDictionary modelState)
         {
             foreach(Error error in _errorsList)
             {
-                //modelState.AddModelError(error.Field, error.Message);
-                modelState.AddModelError(error.Field, Resources.ModelsDataValidation.InvalidValue);
+                if (!string.IsNullOrEmpty(error.Field))
+                {
+                    modelState.AddModelError(error.Field, Resources.ModelsDataValidation.InvalidField);
+                    continue;
+                }
+                return error.Message ?? Resources.ModelsDataValidation.UnknownError;
             }
-
             _errorsList.Clear();
+            return string.Empty;
         }
 
         public void AddErrors(ErrorsList list)
         {
             _errorsList.AddRange(list.Errors);
+        }
+
+        public void AddError(Error error)
+        {
+            _errorsList.Add(error);
         }
     }
 }

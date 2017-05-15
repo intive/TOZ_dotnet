@@ -162,4 +162,7 @@
   <data name="InvalidURL" xml:space="preserve">
     <value>Nieprawidłowy adres strony internetowej</value>
   </data>
+  <data name="UnknownError" xml:space="preserve">
+    <value>Wystąpił nieznany błąd podczas walidacji</value>
+  </data>
 </root>

@@ -28,10 +28,12 @@ namespace Toz.Dotnet.Controllers
                 {
                     return RedirectToAction("Index", "Home");
                 }
-                else
+                var overallError = _backendErrorsService.UpdateModelState(ModelState);
+                if (!string.IsNullOrEmpty(overallError))
                 {
-                    _backendErrorsService.UpdateModelState(ModelState);
+                    this.ViewData["UnhandledError"] = overallError;
                 }
+
             }
             //ViewData["Auth"] = "Nie zalogowano!!!";
             return View();
