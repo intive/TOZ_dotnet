@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Tests.Helpers;
 using Toz.Dotnet.Models;
@@ -13,16 +12,12 @@ namespace Toz.Dotnet.Tests.Tests
 {
     public class UserManagementTest
     {
-        private readonly AuthService _authHelper;
         private readonly IUsersManagementService _userManagementService;
-        private User _testUser;
+        private readonly User _testUser;
 
-        private const string EmailBaseValue = "test";
-        private const string EmailDomainValue = "test.com";
         public UserManagementTest()
         {
             _userManagementService = ServiceProvider.Instance.Resolve<IUsersManagementService>();
-            _authHelper = new AuthService();
             _testUser = new User
             {               
                 FirstName = "Mariusz",
@@ -34,21 +29,6 @@ namespace Toz.Dotnet.Tests.Tests
             };
 
             _userManagementService.RequestUri = RequestUriHelper.UsersUri;
-        }
-
-        private string CreateNewMail(string baseValue, int number, string domain)
-        {
-            return $"{baseValue}{number}@{domain}";
-        }
-
-        private async Task<bool> UserAlreadyExists(User user)
-        {
-            if (!_authHelper.AuthHelper.IsAuth)
-            {
-                Assert.True(await _authHelper.SignIn());
-            }
-            var users = await _userManagementService.GetAllUsers();
-            return users.Any(usr => usr.Email.Equals(user.Email, StringComparison.CurrentCultureIgnoreCase));
         }
 
         [Fact]
@@ -66,85 +46,25 @@ namespace Toz.Dotnet.Tests.Tests
         [Fact]
         public async void TestOfGettingAllUsers()
         {
-            if (!_authHelper.AuthHelper.IsAuth)
-            {
-                Assert.True(await _authHelper.SignIn());
-            }
             Assert.NotNull(await _userManagementService.GetAllUsers());
         }
          
         [Fact]
         public async void TestOfCreatingNewUser()
         {
-            if (!_authHelper.AuthHelper.IsAuth)
-            {
-                Assert.True(await _authHelper.SignIn());
-            }
-            var currentEmailLevel = 0;
-            while (await UserAlreadyExists(_testUser))
-            {
-                _testUser.Email = CreateNewMail(EmailBaseValue, currentEmailLevel, EmailDomainValue);
-                currentEmailLevel++;
-            }
             Assert.True(await _userManagementService.CreateUser(_testUser));
-            await _userManagementService.DeleteUser(_testUser);
         }
 
         [Fact]
         public async void TestOfGettingSpecifiedUser()
         {
-            if (!_authHelper.AuthHelper.IsAuth)
-            {
-                Assert.True(await _authHelper.SignIn());
-            }
-            var currentEmailLevel = 0;
-            while (await UserAlreadyExists(_testUser))
-            {
-                _testUser.Email = CreateNewMail(EmailBaseValue, currentEmailLevel, EmailDomainValue);
-                currentEmailLevel++;
-            }
-            await _userManagementService.CreateUser(_testUser);
-            var users = _userManagementService.GetAllUsers().Result;
-            if(users.Any())
-            {
-                var firstUser = users.FirstOrDefault();
-                var singleUser = _userManagementService.GetUser(firstUser.Id).Result;
-                Assert.NotNull(singleUser);
-            }
-                       
-            Assert.Null(_userManagementService.GetUser("notExistingIDThatIsNotID--1").Result);
-            await _userManagementService.DeleteUser(_testUser);
+            Assert.True(await _userManagementService.DeleteUser(_testUser));
         }
 
         [Fact]
         public async void TestOfUserUpdating()
         {
-            if (!_authHelper.AuthHelper.IsAuth)
-            {
-                Assert.True(await _authHelper.SignIn());
-            }
-            var currentEmailLevel = 0;
-            while (await UserAlreadyExists(_testUser))
-            {
-                _testUser.Email = CreateNewMail(EmailBaseValue, currentEmailLevel, EmailDomainValue);
-                currentEmailLevel++;
-            }
-            var creationResult = await _userManagementService.CreateUser(_testUser);
-            if (!creationResult)
-            {
-                return;
-            }
-            var users = await _userManagementService.GetAllUsers();
-            if(users != null && users.Any())
-            {
-                var testedUser = users.FirstOrDefault(u=> u.Email == _testUser.Email);
-                Assert.NotNull(testedUser);
-
-                testedUser.FirstName = "Test";
-                testedUser.Password = "TestPasswd";
-                Assert.True(await _userManagementService.UpdateUser(testedUser));
-            }
-            await _userManagementService.DeleteUser(_testUser);
+            Assert.True(await _userManagementService.UpdateUser(_testUser));
         }
         
         [Fact]
@@ -160,16 +80,85 @@ namespace Toz.Dotnet.Tests.Tests
             Assert.True(valid);
         }
 
-        private User CloneUser(User User)
+        [Theory]
+        [InlineData("+48123123123")]
+        [InlineData("123456789")]
+        public void TestUserPhoneValidationIfCorrectData(string value)
+        {
+            var user = CloneUser(_testUser);
+            user.PhoneNumber = value;
+
+            var context = new ValidationContext(user, null, null);
+            var result = new List<ValidationResult>();
+
+            bool valid = Validator.TryValidateObject(user, context, result, true);
+            Assert.True(valid);
+        }
+
+        [Theory]
+        [InlineData("abcd@abc.com")]
+        [InlineData("test@test.com")]
+        public void TestUserEmailValidationIfCorrectData(string value)
+        {
+            var user = CloneUser(_testUser);
+            user.Email = value;
+
+            var context = new ValidationContext(user, null, null);
+            var result = new List<ValidationResult>();
+
+            bool valid = Validator.TryValidateObject(user, context, result, true);
+            Assert.True(valid);
+        }
+
+        [Theory]
+        [InlineData("abcdabc.com")]
+        [InlineData("test@test@.com")]
+        [InlineData("http://abcd.com")]
+        public void TestUserEmailValidationIfNotCorrectData(string value)
+        {
+            var user = CloneUser(_testUser);
+            user.Email = value;
+
+            var context = new ValidationContext(user, null, null);
+            var result = new List<ValidationResult>();
+
+            bool valid = Validator.TryValidateObject(user, context, result, true);
+            Assert.False(valid);
+        }
+
+        [Theory]
+        [InlineData("FirstName")]
+        [InlineData("LastName")]
+        public void TestPetValidationIfStringIsTooLong(string propertyName)
+        {
+            const int maxLength = 30;
+
+            var user = CloneUser(_testUser);
+            var property = user.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
+
+            Assert.NotNull(property);
+
+            property.SetValue(user,new string('A',maxLength+1));
+
+            var context = new ValidationContext(user, null, null);
+            var result = new List<ValidationResult>();
+
+            bool valid = Validator.TryValidateObject(user, context, result, true);
+
+            Assert.False(valid);
+        }
+
+        private User CloneUser(User user)
         {
             return new User()
             {
-                Id = User.Id,
-                FirstName = User.FirstName,
-                LastName = User.LastName,
-                PhoneNumber = User.PhoneNumber,
-                Email = User.Email,
-                Roles = User.Roles
+                Id = Guid.NewGuid().ToString(),
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email,
+                Roles = user.Roles,
+                Password = user.Password
             };
         }
         
