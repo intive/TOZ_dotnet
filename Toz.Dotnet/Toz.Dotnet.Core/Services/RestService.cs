@@ -21,7 +21,7 @@ namespace Toz.Dotnet.Core.Services
             _backendErrorsService = backendErrorsService;
         }
 
-        public async Task<bool> ExecuteDeleteAction<T>(string address, T obj, CancellationToken cancelationToken = default(CancellationToken))
+        public async Task<bool> ExecuteDeleteAction<T>(string address, T obj, CancellationToken cancelationToken = default(CancellationToken)) where T : class
         {
             if(obj == null)
             {
@@ -53,7 +53,7 @@ namespace Toz.Dotnet.Core.Services
             }
         }
 
-        public async Task<T> ExecuteGetAction<T>(string address, CancellationToken cancelationToken = default(CancellationToken))
+        public async Task<T> ExecuteGetAction<T>(string address, CancellationToken cancelationToken = default(CancellationToken)) where T : class
         {            
             using (var client = new HttpClient())
             {
@@ -79,7 +79,7 @@ namespace Toz.Dotnet.Core.Services
             }
         }
 
-        public async Task<bool> ExecutePostAction<T>(string address, T obj, CancellationToken cancelationToken = default(CancellationToken))
+        public async Task<bool> ExecutePostAction<T>(string address, T obj, CancellationToken cancelationToken = default(CancellationToken)) where T : class
         {
             if(obj == null)
             {
@@ -117,7 +117,7 @@ namespace Toz.Dotnet.Core.Services
             }
         }
 
-        public async Task<bool> ExecutePutAction<T>(string address, T obj, CancellationToken cancelationToken = default(CancellationToken)) 
+        public async Task<bool> ExecutePutAction<T>(string address, T obj, CancellationToken cancelationToken = default(CancellationToken)) where T : class
         {
             if(string.IsNullOrEmpty(address) || obj == null)
             {

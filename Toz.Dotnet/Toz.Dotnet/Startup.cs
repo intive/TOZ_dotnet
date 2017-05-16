@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Toz.Dotnet.Core.Services;
 using Toz.Dotnet.Core.Interfaces;
@@ -33,7 +34,7 @@ namespace Toz.Dotnet
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddSingleton<IRestService, RestService>();
+            services.TryAddSingleton<IRestService, RestService>();
             services.AddSingleton<IFilesManagementService, FilesManagementService>();
             services.AddSingleton<IPetsManagementService, PetsManagementService>();
             services.AddSingleton<INewsManagementService, NewsManagementService>();
