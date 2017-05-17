@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Moq;
+﻿using Moq;
 using Toz.Dotnet.Core.Interfaces;
-using Toz.Dotnet.Models;
 
 namespace Toz.Dotnet.Tests.Tests
 {

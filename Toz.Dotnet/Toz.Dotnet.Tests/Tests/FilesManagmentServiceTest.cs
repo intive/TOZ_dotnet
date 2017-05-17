@@ -22,12 +22,12 @@ namespace Toz.Dotnet.Tests.Tests
             Assert.NotNull(_filesManagementService.DownloadImage(ImageAddress));
         }
 
-        //[Fact]
-        //public void UploadImageTest()
-        //{
-        //    Bitmap bitmap = new Bitmap(100,100);
-        //    Assert.True(_filesManagementService.UploadImage(bitmap));
-        //}
+        [Fact]
+        public void UploadImageTest()
+        {
+            Bitmap bitmap = new Bitmap(100, 100);
+            Assert.True(_filesManagementService.UploadImage(bitmap));
+        }
 
         [Fact]
         public void GetThumbnailsTest()

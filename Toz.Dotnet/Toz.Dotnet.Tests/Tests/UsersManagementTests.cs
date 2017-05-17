@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
@@ -55,7 +56,29 @@ namespace Toz.Dotnet.Tests.Tests
         {
             Assert.True(await _userManagementService.UpdateUser(_testUser));
         }
-        
+
+        [Fact]
+        public void TestOfUpdatingPetWithNullValue()
+        {
+            var exception = Record.Exception(() => _userManagementService.UpdateUser(null).Result);
+            Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
+        }
+
+        [Fact]
+        public void TestOfDeletingPetThatIsNull()
+        {
+            var exception = Record.Exception(() => _userManagementService.DeleteUser(null).Result);
+            Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
+        }
+
+        [Fact]
+        public void TestOfGettingAllPetsUsingWrongUrl()
+        {
+            _userManagementService.RequestUri = RequestUriHelper.WrongUrl;
+            Assert.Null(_userManagementService.GetAllUsers().Result);
+            _userManagementService.RequestUri = RequestUriHelper.PetsUri;
+        }
+
         [Fact]
         public void TestUserValidationIfCorrectData()
         {

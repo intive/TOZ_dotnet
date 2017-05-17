@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models;
@@ -46,6 +47,21 @@ namespace Toz.Dotnet.Tests.Tests
         public async void TestOfUpdatingOrganizationInfo()
         {
             Assert.True(await _organizationInfoManagementService.UpdateOrCreateInfo(_testingOrganization));
+        }
+
+        [Fact]
+        public void TestOfUpdatingPetWithNullValue()
+        {
+            var exception = Record.Exception(() => _organizationInfoManagementService.UpdateOrCreateInfo(null).Result);
+            Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
+        }
+
+        [Fact]
+        public void TestOfGettingAllPetsUsingWrongUrl()
+        {
+            _organizationInfoManagementService.RequestUri = RequestUriHelper.WrongUrl;
+            Assert.Null(_organizationInfoManagementService.GetOrganizationInfo().Result);
+            _organizationInfoManagementService.RequestUri = RequestUriHelper.PetsUri;
         }
 
         private Organization CloneOrganization(Organization copy)

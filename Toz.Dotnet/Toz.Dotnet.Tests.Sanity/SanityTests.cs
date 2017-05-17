@@ -1,11 +1,7 @@
 using Xunit;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Tests.Helpers;
-using Toz.Dotnet.Models;
-using Toz.Dotnet.Models.EnumTypes;
 using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Toz.Dotnet.Tests.Sanity
 {
@@ -40,6 +36,11 @@ namespace Toz.Dotnet.Tests.Sanity
             Assert.NotNull(await _petsManagementService.GetPet(pet.Id));
             Assert.True(await _petsManagementService.CreatePet(pet));
             Assert.True(await _petsManagementService.UpdatePet(pet));
+
+            var exception = Record.Exception(() => _petsManagementService.UpdatePet(null).Result);
+            Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
+
+            Assert.False(await _petsManagementService.CreatePet(null));
         }
 
         [Fact]
@@ -51,6 +52,11 @@ namespace Toz.Dotnet.Tests.Sanity
             Assert.NotNull(await _newsManagementService.GetNews(news.Id));
             Assert.True(await _newsManagementService.CreateNews(news));
             Assert.True(await _newsManagementService.DeleteNews(news));
+
+            var exception = Record.Exception(() => _newsManagementService.UpdateNews(null).Result);
+            Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
+
+            Assert.False(await _newsManagementService.CreateNews(null));
         }
 
         [Fact]
@@ -62,6 +68,11 @@ namespace Toz.Dotnet.Tests.Sanity
             Assert.NotNull(await _userManagementService.GetUser(user.Id));
             Assert.True(await _userManagementService.CreateUser(user));
             Assert.True(await _userManagementService.DeleteUser(user));
+
+            var exception = Record.Exception(() => _userManagementService.UpdateUser(null).Result);
+            Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
+
+            Assert.False(await _userManagementService.CreateUser(null));
         }
 
         [Fact]
@@ -74,7 +85,7 @@ namespace Toz.Dotnet.Tests.Sanity
         }
 
         [Fact]
-        public async void FilesFunctionalityTest()
+        public void FilesFunctionalityTest()
         {
             //Download image
             var img = _filesManagementService.DownloadImage(@"http://i.pinger.pl/pgr167/7dc36d63001e9eeb4f01daf3/kot%20ze%20shreka9.jpg");

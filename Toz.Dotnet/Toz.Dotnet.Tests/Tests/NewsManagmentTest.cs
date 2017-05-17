@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Tests.Helpers;
@@ -62,7 +63,29 @@ namespace Toz.Dotnet.Tests.Tests
         {
            Assert.True(await _newsManagementService.UpdateNews(_testingNews));
         }
-        
+
+        [Fact]
+        public void TestOfUpdatingPetWithNullValue()
+        {
+            var exception = Record.Exception(() => _newsManagementService.UpdateNews(null).Result);
+            Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
+        }
+
+        [Fact]
+        public void TestOfDeletingPetThatIsNull()
+        {
+            var exception = Record.Exception(() => _newsManagementService.DeleteNews(null).Result);
+            Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
+        }
+
+        [Fact]
+        public void TestOfGettingAllPetsUsingWrongUrl()
+        {
+            _newsManagementService.RequestUri = RequestUriHelper.WrongUrl;
+            Assert.Null(_newsManagementService.GetAllNews().Result);
+            _newsManagementService.RequestUri = RequestUriHelper.PetsUri;
+        }
+
         [Fact]
         public void TestNewsValidationIfCorrectData()
         {
