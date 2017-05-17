@@ -7,18 +7,17 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 
 namespace Toz.Dotnet.Tests.Tests
 {
     public class NewsManagementTest
     {
-        private readonly AuthService _authHelper;
         private readonly INewsManagementService _newsManagementService;
         private readonly News _testingNews;
 
         public NewsManagementTest()
         {
-            _authHelper = new AuthService();
             _newsManagementService = ServiceProvider.Instance.Resolve<INewsManagementService>();
 
             _testingNews = new News
@@ -51,76 +50,32 @@ namespace Toz.Dotnet.Tests.Tests
         [Fact]
         public async void TestOfGettingAllNews()
         {
-            if (!_authHelper.AuthHelper.IsAuth)
-            {
-                Assert.True(await _authHelper.SignIn());
-            }
-            Assert.NotNull(_newsManagementService.GetAllNews().Result);
+            Assert.NotNull(await _newsManagementService.GetAllNews());
         }
          
         [Fact]
         public async void TestOfCreatingNewNews()
         {
-            if (!_authHelper.AuthHelper.IsAuth)
-            {
-                Assert.True(await _authHelper.SignIn());
-            }
-            Assert.True(_newsManagementService.CreateNews(_testingNews).Result);
-            _newsManagementService.DeleteNews(_testingNews).Wait();
+            Assert.True(await _newsManagementService.CreateNews(_testingNews));
         }
 
         [Fact]
         public async void TestOfDeletingSpecifiedNews()
         {
-            if (!_authHelper.AuthHelper.IsAuth)
-            {
-                Assert.True(await _authHelper.SignIn());
-            }
-            var news = _newsManagementService.GetAllNews().Result;
-            if(news.Any())
-            {
-                var firstNews = news.FirstOrDefault();
-                Assert.True(_newsManagementService.DeleteNews(firstNews).Result);
-                Assert.True(_newsManagementService.CreateNews(firstNews).Result);
-            }
+            Assert.True(await _newsManagementService.DeleteNews(_testingNews));
         }
 
         [Fact]
         public async void TestOfGettingSpecifiedNews()
         {
-            if (!_authHelper.AuthHelper.IsAuth)
-            {
-                Assert.True(await _authHelper.SignIn());
-            }
-            var news = _newsManagementService.GetAllNews().Result;
-            if(news.Any())
-            {
-                var firstNews = news.FirstOrDefault();
-                var singleNews = _newsManagementService.GetNews(firstNews.Id).Result;
-                Assert.NotNull(singleNews);
-            }
-                       
-            Assert.Null(_newsManagementService.GetNews("notExistingIDThatIsNotID--1").Result);           
+            Assert.NotNull(await _newsManagementService.GetNews(_testingNews.Id));         
         }
 
         
         [Fact]
-        public async void TestOfNewsUpdating()
+        public async void TestOUpdatingNews()
         {
-            if (!_authHelper.AuthHelper.IsAuth)
-            {
-                Assert.True(await _authHelper.SignIn());
-            }
-            var news = _newsManagementService.GetAllNews().Result;
-            if(news.Any())
-            {
-                var firstNews = news.FirstOrDefault();
-                string newsTitle = firstNews.Title;
-                firstNews.Title = "Test";
-                Assert.True(_newsManagementService.UpdateNews(firstNews).Result);
-                firstNews.Title = newsTitle;
-                Assert.True(_newsManagementService.UpdateNews(firstNews).Result);
-            }
+           Assert.True(await _newsManagementService.UpdateNews(_testingNews));
         }
         
         [Fact]
@@ -134,6 +89,31 @@ namespace Toz.Dotnet.Tests.Tests
             bool valid = Validator.TryValidateObject(_testingNews, context, result, true);
 
             Assert.True(valid);
+        }
+
+        [Theory]
+        [InlineData("Contents")]
+        [InlineData("Title")]
+        public void TestPetValidationIfLengthIsNotValid(string propertyName)
+        {
+            const int maxLength = 1000;
+            const int minLength = 1;
+
+            var news = CloneNews(_testingNews);
+            var property = news.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
+
+            Assert.NotNull(property);
+
+            property.SetValue(news, new string('A', maxLength + 1));
+
+            var context = new ValidationContext(news, null, null);
+            var result = new List<ValidationResult>();
+            bool validMax = Validator.TryValidateObject(news, context, result, true);
+            property.SetValue(news, new string('A', minLength -1));
+            bool validMin = Validator.TryValidateObject(news, context, result, true);
+
+            Assert.False(validMax);
+            Assert.False(validMin);
         }
 
         private News CloneNews(News news)
