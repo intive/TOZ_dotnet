@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Tests.Helpers;
 using Toz.Dotnet.Models;
-using Toz.Dotnet.Models.EnumTypes;
 using Xunit;
 
 namespace Toz.Dotnet.Tests.Tests
@@ -18,17 +16,8 @@ namespace Toz.Dotnet.Tests.Tests
         public UserManagementTest()
         {
             _userManagementService = ServiceProvider.Instance.Resolve<IUsersManagementService>();
-            _testUser = new User
-            {               
-                FirstName = "Mariusz",
-                LastName = "Wolonatriusz",
-                Password = "TajneHasloMariusza",
-                PhoneNumber = "123456789",
-                Email = "test@test.com",
-                Roles = new [] {UserType.Volunteer}
-            };
-
             _userManagementService.RequestUri = RequestUriHelper.UsersUri;
+            _testUser = TestingObjectProvider.Instance.User;
         }
 
         [Fact]
@@ -85,7 +74,7 @@ namespace Toz.Dotnet.Tests.Tests
         [InlineData("123456789")]
         public void TestUserPhoneValidationIfCorrectData(string value)
         {
-            var user = CloneUser(_testUser);
+            var user = TestingObjectProvider.Instance.DoShallowCopy(_testUser);
             user.PhoneNumber = value;
 
             var context = new ValidationContext(user, null, null);
@@ -100,7 +89,7 @@ namespace Toz.Dotnet.Tests.Tests
         [InlineData("test@test.com")]
         public void TestUserEmailValidationIfCorrectData(string value)
         {
-            var user = CloneUser(_testUser);
+            var user = TestingObjectProvider.Instance.DoShallowCopy(_testUser);
             user.Email = value;
 
             var context = new ValidationContext(user, null, null);
@@ -116,7 +105,7 @@ namespace Toz.Dotnet.Tests.Tests
         [InlineData("http://abcd.com")]
         public void TestUserEmailValidationIfNotCorrectData(string value)
         {
-            var user = CloneUser(_testUser);
+            var user = TestingObjectProvider.Instance.DoShallowCopy(_testUser);
             user.Email = value;
 
             var context = new ValidationContext(user, null, null);
@@ -133,7 +122,7 @@ namespace Toz.Dotnet.Tests.Tests
         {
             const int maxLength = 30;
 
-            var user = CloneUser(_testUser);
+            var user = TestingObjectProvider.Instance.DoShallowCopy(_testUser);
             var property = user.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
 
             Assert.NotNull(property);
@@ -147,20 +136,6 @@ namespace Toz.Dotnet.Tests.Tests
 
             Assert.False(valid);
         }
-
-        private User CloneUser(User user)
-        {
-            return new User()
-            {
-                Id = Guid.NewGuid().ToString(),
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                PhoneNumber = user.PhoneNumber,
-                Email = user.Email,
-                Roles = user.Roles,
-                Password = user.Password
-            };
-        }
-        
+       
     }
 }

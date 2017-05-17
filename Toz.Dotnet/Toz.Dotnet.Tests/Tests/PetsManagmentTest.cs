@@ -18,20 +18,9 @@ namespace Toz.Dotnet.Tests.Tests
 
         public PetsManagementTest()
         { 
-            _testingPet = new Pet
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "TestDog",
-                Type = PetType.Dog,
-                Sex = PetSex.Male,
-                Photo = new byte[10],
-                Description = "Dog that eats tigers",
-                Address = "Found in the jungle",
-                Created = DateTime.Now,
-                LastModified = DateTime.Now
-            };
             _petsManagementService = ServiceProvider.Instance.Resolve<IPetsManagementService>();
             _petsManagementService.RequestUri = RequestUriHelper.PetsUri;
+            _testingPet = TestingObjectProvider.Instance.Pet;
         }
 
         [Fact]
@@ -117,7 +106,8 @@ namespace Toz.Dotnet.Tests.Tests
         public void TestPetValidationIfRequiredPropertyIsNotInitialized(string property)
         {
             // Arrange
-            Pet pet = ClonePet(_testingPet);
+            //Pet pet = ClonePet(_testingPet);
+            var pet = TestingObjectProvider.Instance.DoShallowCopy<Pet>(_testingPet);
 
             if (property.Equals("Type"))
             {
@@ -140,7 +130,7 @@ namespace Toz.Dotnet.Tests.Tests
         public void TestPetValidationIfStringIsTooLong(string property)
         {
             // Arrange
-            Pet pet = ClonePet(_testingPet);
+            var pet = TestingObjectProvider.Instance.DoShallowCopy(_testingPet);
 
             if (property.Equals("Name")) 
             { 
@@ -167,7 +157,7 @@ namespace Toz.Dotnet.Tests.Tests
         [Fact]
         public void TestPetValidationIfPetTypeIsUndentified()
         {
-            var pet = ClonePet(_testingPet);
+            var pet = TestingObjectProvider.Instance.DoShallowCopy(_testingPet);
             pet.Type = PetType.Unidentified;
             var validationContext = new ValidationContext(pet, null, null);
             var validationResult = new List<ValidationResult>();
@@ -178,7 +168,7 @@ namespace Toz.Dotnet.Tests.Tests
         [Fact]
         public void TestPetValidationIfPetSexIsUnknown()
         {
-            var pet = ClonePet(_testingPet);
+            var pet = TestingObjectProvider.Instance.DoShallowCopy(_testingPet);
             pet.Sex = PetSex.Unknown;
             var validationContext = new ValidationContext(pet, null, null);
             var validationResult = new List<ValidationResult>();
@@ -195,20 +185,5 @@ namespace Toz.Dotnet.Tests.Tests
             Assert.True(streamBytes.Length > 0);
         }
 
-        private Pet ClonePet(Pet pet)
-        {
-            return new Pet
-            {
-                Id = pet.Id,
-                Name = pet.Name,
-                Type = pet.Type,
-                Sex = pet.Sex,
-                Photo = (byte[])pet.Photo.Clone(),
-                Description = pet.Description,
-                Address = pet.Address,
-                Created = pet.Created,
-                LastModified = pet.LastModified
-            };
-        }
     }
 }

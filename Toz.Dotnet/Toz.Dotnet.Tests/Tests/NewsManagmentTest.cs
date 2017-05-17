@@ -2,9 +2,6 @@ using Xunit;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Tests.Helpers;
 using Toz.Dotnet.Models;
-using Toz.Dotnet.Models.EnumTypes;
-using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
@@ -19,20 +16,8 @@ namespace Toz.Dotnet.Tests.Tests
         public NewsManagementTest()
         {
             _newsManagementService = ServiceProvider.Instance.Resolve<INewsManagementService>();
-
-            _testingNews = new News
-            {               
-                Id = Guid.NewGuid().ToString(),
-                Title = "TestNews",
-                Published = DateTime.Now,
-                Created = DateTime.Now,
-                LastModified = DateTime.Now,
-                Contents = "Text",
-                Photo = new byte[10],
-                Type = NewsStatus.Released
-            };
-
             _newsManagementService.RequestUri = RequestUriHelper.NewsUri;
+            _testingNews = TestingObjectProvider.Instance.News;
         }
         
         [Fact]
@@ -99,7 +84,7 @@ namespace Toz.Dotnet.Tests.Tests
             const int maxLength = 1000;
             const int minLength = 1;
 
-            var news = CloneNews(_testingNews);
+            var news = TestingObjectProvider.Instance.DoShallowCopy(_testingNews);
             var property = news.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
 
             Assert.NotNull(property);
@@ -114,21 +99,6 @@ namespace Toz.Dotnet.Tests.Tests
 
             Assert.False(validMax);
             Assert.False(validMin);
-        }
-
-        private News CloneNews(News news)
-        {
-            return new News
-            {
-                Id = news.Id,
-                Title = news.Title,
-                Published = news.Published,
-                Created = news.Created,
-                LastModified = news.LastModified,
-                Contents = news.Contents,
-                Photo = news.Photo,
-                Type = news.Type
-            };
         }
         
     }

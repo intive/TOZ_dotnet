@@ -12,17 +12,17 @@ namespace Toz.Dotnet.Models.OrganizationSubtypes
 
         [JsonProperty("phone")]
         [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
-        [RegularExpression(@"\d{9}(\d{2})?", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "InvalidPhoneNumber")]
+        [RegularExpression(@"\d{9}(\d{2})?", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "InvaildPhoneNumber")]
         public string Phone { get; set; }
 
         [JsonProperty("fax")]
         [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
-        [RegularExpression(@"\d{9}(\d{2})?", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "InvalidFaxNumber")]
+        [RegularExpression(@"\d{9}(\d{2})?", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "InvaildPhoneNumber")]
         public string Fax { get; set; }
 
         [JsonProperty("website")]
         [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
-        [Url(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "InvalidURL")]
+        [Url(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "InvalidField")]
         public string Website { get; set; }
     }
 }
