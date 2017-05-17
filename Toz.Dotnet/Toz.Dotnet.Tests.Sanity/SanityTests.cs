@@ -11,24 +11,24 @@ namespace Toz.Dotnet.Tests.Sanity
 {
     public class SanityTests
     {
-        private readonly AuthService _authHelper;
         private readonly IPetsManagementService _petsManagementService;
         private readonly INewsManagementService _newsManagementService;
         private readonly IUsersManagementService _userManagementService;
         private readonly IFilesManagementService _filesManagementService;
-        private User _testUser;
+        private readonly IOrganizationManagementService _organizationManagementService;
 
         public SanityTests()
         {
-            _authHelper = new AuthService();
             _petsManagementService = ServiceProvider.Instance.Resolve<IPetsManagementService>();
             _newsManagementService = ServiceProvider.Instance.Resolve<INewsManagementService>();
             _userManagementService = ServiceProvider.Instance.Resolve<IUsersManagementService>();
             _filesManagementService = ServiceProvider.Instance.Resolve<IFilesManagementService>();
+            _organizationManagementService = ServiceProvider.Instance.Resolve<IOrganizationManagementService>();
 
             _petsManagementService.RequestUri = RequestUriHelper.PetsUri;
             _newsManagementService.RequestUri = RequestUriHelper.NewsUri;
             _userManagementService.RequestUri = RequestUriHelper.UsersUri;
+            _organizationManagementService.RequestUri = RequestUriHelper.OrganizationInfoUri;
         }
 
         [Fact]
@@ -62,6 +62,15 @@ namespace Toz.Dotnet.Tests.Sanity
             Assert.NotNull(await _userManagementService.GetUser(user.Id));
             Assert.True(await _userManagementService.CreateUser(user));
             Assert.True(await _userManagementService.DeleteUser(user));
+        }
+
+        [Fact]
+        public async void OrganizationFunctionalityTest()
+        {
+            var organization = TestingObjectProvider.Instance.Organization;
+
+            Assert.NotNull(await _organizationManagementService.GetOrganizationInfo());
+            Assert.True(await _organizationManagementService.UpdateOrCreateInfo(organization));
         }
 
         [Fact]
