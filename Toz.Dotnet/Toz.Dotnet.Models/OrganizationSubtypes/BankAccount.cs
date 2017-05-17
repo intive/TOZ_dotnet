@@ -8,7 +8,7 @@ namespace Toz.Dotnet.Models.OrganizationSubtypes
     {
         [JsonProperty("number")]
         [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
-        [BankAccountNumber(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "BankAccountValidationMessage")]       
+        [BankAccountNumber(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "InvalidBankAccount")]
         public string Number { get; set; }
 
         [JsonProperty("bankName")]
