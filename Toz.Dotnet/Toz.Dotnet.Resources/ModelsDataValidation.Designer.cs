@@ -71,15 +71,6 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bank account number is invaild.
-        /// </summary>
-        public static string BankAccountValidationMessage {
-            get {
-                return ResourceManager.GetString("BankAccountValidationMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Invalid Email Address.
         /// </summary>
         public static string EmailValidationMessage {
@@ -89,7 +80,7 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You can&apos;t leave this empty..
+        ///   Looks up a localized string similar to You can&apos;t leave this empty.
         /// </summary>
         public static string EmptyField {
             get {
@@ -98,7 +89,7 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The firstname can only consist of letters..
+        ///   Looks up a localized string similar to The firstname can only consist of letters.
         /// </summary>
         public static string FirstnameLetters {
             get {
@@ -107,25 +98,52 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This bank account number is not valid.
+        /// </summary>
+        public static string InvalidBankAccount {
+            get {
+                return ResourceManager.GetString("InvalidBankAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid fax number.
+        /// </summary>
+        public static string InvalidFaxNumber {
+            get {
+                return ResourceManager.GetString("InvalidFaxNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid phone number.
         /// </summary>
-        public static string InvaildPhoneNumber {
+        public static string InvalidPhoneNumber {
             get {
-                return ResourceManager.GetString("InvaildPhoneNumber", resourceCulture);
+                return ResourceManager.GetString("InvalidPhoneNumber", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid field.
+        ///   Looks up a localized string similar to Invalid website URL.
         /// </summary>
-        public static string InvalidField {
+        public static string InvalidURL {
             get {
-                return ResourceManager.GetString("InvalidField", resourceCulture);
+                return ResourceManager.GetString("InvalidURL", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The surname can only consist of letters..
+        ///   Looks up a localized string similar to The entered value is not valid.
+        /// </summary>
+        public static string InvalidValue {
+            get {
+                return ResourceManager.GetString("InvalidValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The surname can only consist of letters.
         /// </summary>
         public static string LastnameLetters {
             get {
@@ -134,7 +152,7 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The maximum length is {1} characters..
+        ///   Looks up a localized string similar to The maximum length is {1} characters.
         /// </summary>
         public static string MaxLength {
             get {
@@ -143,7 +161,7 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This field can only consist of digits..
+        ///   Looks up a localized string similar to This field can only consist of digits.
         /// </summary>
         public static string OnlyDigits {
             get {
@@ -152,7 +170,7 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a pet sex..
+        ///   Looks up a localized string similar to Select a pet sex.
         /// </summary>
         public static string PetSexUndefined {
             get {
@@ -161,7 +179,7 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a pet type..
+        ///   Looks up a localized string similar to Select a pet type.
         /// </summary>
         public static string PetTypeUndefined {
             get {
@@ -170,7 +188,7 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a user type..
+        ///   Looks up a localized string similar to Select a user type.
         /// </summary>
         public static string TypeUndefined {
             get {

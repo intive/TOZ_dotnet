@@ -15,7 +15,7 @@ namespace Toz.Dotnet.Core.Services
             {
                 if (!string.IsNullOrEmpty(error.Field))
                 {
-                    modelState.AddModelError(error.Field, Resources.ModelsDataValidation.InvalidField);
+                    modelState.AddModelError(error.Field, Resources.ModelsDataValidation.InvalidValue);
                     continue;
                 }
                 return error.Message ?? Resources.ModelsDataValidation.UnknownError;
