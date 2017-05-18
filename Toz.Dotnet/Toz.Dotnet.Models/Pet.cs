@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Toz.Dotnet.Models.EnumTypes;
@@ -28,6 +29,9 @@ namespace Toz.Dotnet.Models
 
         [JsonIgnore]
         public byte [] Photo {get; set;}
+
+        [JsonIgnore]
+        public IFormFile Photo2 { get; set; }
 
         [JsonProperty("description")]
         [StringLength(120, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]
