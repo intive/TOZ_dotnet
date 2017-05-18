@@ -48,7 +48,7 @@ namespace Toz.Dotnet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(
             [Bind("Name, Type, Sex, Description, Address")] 
-            Pet pet, [Bind("Photo2")] IFormFile photo, CancellationToken cancellationToken)
+            Pet pet, [Bind("Photo")] IFormFile photo, CancellationToken cancellationToken)
         {
             bool result = ValidatePhoto(pet, photo);
             pet.ImageUrl = "storage/a5/0d/4d/a50d4d4c-ccd2-4747-8dec-d6d7f521336e.jpg"; //temporary
