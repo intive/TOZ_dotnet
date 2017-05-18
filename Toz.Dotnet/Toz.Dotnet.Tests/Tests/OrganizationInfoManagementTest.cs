@@ -1,4 +1,7 @@
-﻿using Toz.Dotnet.Core.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.OrganizationSubtypes;
 using Toz.Dotnet.Tests.Helpers;
@@ -8,14 +11,14 @@ namespace Toz.Dotnet.Tests.Tests
 {
     public class OrganizationInfoManagementTest
     {
-        private readonly AuthService _authHelper;
         private readonly IOrganizationManagementService _organizationInfoManagementService;
+        private readonly Organization _testingOrganization;
 
         public OrganizationInfoManagementTest()
-        {
-            _authHelper = new AuthService();
+        {         
             _organizationInfoManagementService = ServiceProvider.Instance.Resolve<IOrganizationManagementService>();
             _organizationInfoManagementService.RequestUri = RequestUriHelper.OrganizationInfoUri;
+            _testingOrganization = TestingObjectProvider.Instance.Organization;
         }
 
         [Fact]
@@ -25,78 +28,71 @@ namespace Toz.Dotnet.Tests.Tests
         }
 
         [Fact]
-        public void TestOfGettingOrganizationInfo()
+        public async void TestOfGettingOrganizationInfo()
         {
-            var organizationInfo = _organizationInfoManagementService.GetOrganizationInfo().Result;
-
-            if (organizationInfo != null)
-            {
-                Assert.NotNull(organizationInfo.BankAccount);
-                Assert.NotNull(organizationInfo.Contact);
-            }
+            Assert.NotNull(await _organizationInfoManagementService.GetOrganizationInfo());
         }
 
         [Fact]
-        public async void TestAuthentication()
+        public void TestValidationWithProperData()
         {
-            if (!_authHelper.AuthHelper.IsAuth)
-            {
-                Assert.True(await _authHelper.SignIn());
-            }
-            Assert.True(_authHelper.AuthHelper.IsAuth);
-            _authHelper.AuthHelper.SighOut();
+            var context = new ValidationContext(_testingOrganization, null, null);
+            var result = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(_testingOrganization, context, result, true);
+
+            Assert.True(isValid);
         }
 
         [Fact]
         public async void TestOfUpdatingOrganizationInfo()
         {
-            var originalOrganizationInfo = _organizationInfoManagementService.GetOrganizationInfo().Result;
-
-            var customOrganizationInfo = new Organization
-            {
-                Name = "Test",
-                Address = new Address
-                {
-                    ApartmentNumber = "45",
-                    City = "TestCity",
-                    Country = "TestCountry",
-                    HouseNumber = "11",
-                    PostCode = "73-220",
-                    Street = "TestStreet"
-                },
-
-                BankAccount = new BankAccount
-                {
-                    BankName = "TestBankName",
-                    Number = "61109010140000071219812874"
-                },
-
-                Contact = new Contact
-                {
-                    Email = "testEmail@test.com",
-                    Fax = "123456789",
-                    Phone = "123456789",
-                    Website = "http://testwebsite.com"
-                }
-            };
-
-            if (!_authHelper.AuthHelper.IsAuth)
-            {
-                Assert.True(await _authHelper.SignIn());
-            }
-            else
-            {
-                var firstUpdateResult = _organizationInfoManagementService.UpdateOrCreateInfo(customOrganizationInfo).Result;
-                Assert.True(firstUpdateResult);
-
-                if (originalOrganizationInfo != null)
-                {
-                    var secondUpdateResult = _organizationInfoManagementService.UpdateOrCreateInfo(originalOrganizationInfo).Result;
-                    Assert.True(secondUpdateResult);
-                }
-            }
-
-            
+            Assert.True(await _organizationInfoManagementService.UpdateOrCreateInfo(_testingOrganization));
         }
+
+        [Fact]
+        public void TestOfUpdatingPetWithNullValue()
+        {
+            var exception = Record.Exception(() => _organizationInfoManagementService.UpdateOrCreateInfo(null).Result);
+            Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
+        }
+
+        [Fact]
+        public void TestOfGettingAllPetsUsingWrongUrl()
+        {
+            _organizationInfoManagementService.RequestUri = RequestUriHelper.WrongUrl;
+            Assert.Null(_organizationInfoManagementService.GetOrganizationInfo().Result);
+            _organizationInfoManagementService.RequestUri = RequestUriHelper.PetsUri;
+        }
+
+        private Organization CloneOrganization(Organization copy)
+        {
+            var clone = new Organization()
+            {
+                Contact = new Contact()
+                {
+                    Email = copy.Contact.Email,
+                    Website = copy.Contact.Website,
+                    Fax = copy.Contact.Fax,
+                    Phone = copy.Contact.Phone
+                },
+                Address = new Address()
+                {
+                    HouseNumber = copy.Address.HouseNumber,
+                    Country = copy.Address.Country,
+                    Street = copy.Address.Street,
+                    City = copy.Address.City,
+                    PostCode = copy.Address.PostCode,
+                    ApartmentNumber = copy.Address.ApartmentNumber
+                },
+                BankAccount = new BankAccount()
+                {
+                    Number = copy.BankAccount.Number,
+                    BankName = copy.BankAccount.BankName
+                },
+                Name = copy.Name
+            };
+            return clone;
+        }    
+     
     }
 }

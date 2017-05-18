@@ -8,6 +8,10 @@ html, body {
     padding-right: 15px;
 }
 
+select {
+    overflow-y: hidden
+}
+
 .btn-file {
     position: relative;
     overflow: hidden;
@@ -221,5 +225,10 @@ div.dataTables_paginate {
 }
 
 .center-column {
+    text-align: center;
+}
+
+.unhandled-error-span {
+    color: #A94442;
     text-align: center;
 }

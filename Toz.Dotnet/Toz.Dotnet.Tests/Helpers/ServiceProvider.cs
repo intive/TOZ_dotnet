@@ -1,13 +1,17 @@
+using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.AspNetCore.Hosting;
+using Moq;
+using Toz.Dotnet.Core.Interfaces;
+using Toz.Dotnet.Tests.Mocks;
 
 namespace Toz.Dotnet.Tests.Helpers
 {
     public class ServiceProvider
     {
         private static ServiceProvider _instance;
-        private TestServer _server;
+        private readonly TestServer _server;
         public static ServiceProvider Instance
         {
             get
@@ -18,7 +22,12 @@ namespace Toz.Dotnet.Tests.Helpers
 
         private ServiceProvider()
         {
-            _server = new TestServer(new WebHostBuilder().UseEnvironment("Development").UseStartup<Startup>());           
+            var mockedRestService = new MockedRestService();
+            _server = new TestServer(new WebHostBuilder().UseEnvironment("Development").UseStartup<Startup>().ConfigureServices(
+                services =>
+                {
+                    services.AddSingleton<IRestService>(serviceProvider => mockedRestService);
+                }));           
         }
 
         public T Resolve<T>() where T : class
@@ -29,5 +38,6 @@ namespace Toz.Dotnet.Tests.Helpers
             }
             return null;
         }
+
     }
 }

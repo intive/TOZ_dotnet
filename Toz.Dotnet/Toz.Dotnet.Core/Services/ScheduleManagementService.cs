@@ -185,7 +185,7 @@ namespace Toz.Dotnet.Core.Services
                 }
             }
             
-            // Fill the calendar with sample users
+            /*// Fill the calendar with sample users
             _usersManagementService.SetupSampleUsers();
             Random r = new Random();
             for(int i=0; i<r.Next(5,30); i++)
@@ -193,7 +193,7 @@ namespace Toz.Dotnet.Core.Services
                 Slot randomSlot = _cache[r.Next(0,5)].Slots[r.Next(0,13)];
                 randomSlot.Volunteer = _usersManagementService.GetRandomVolunteer();
                 await CreateReservation(randomSlot, randomSlot.Volunteer);
-            }
+            }*/
         }
     }
 }

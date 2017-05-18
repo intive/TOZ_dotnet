@@ -58,17 +58,19 @@ namespace Toz.Dotnet.Controllers
             
             if (news != null && result && ModelState.IsValid)
             {
-                    if (await _newsManagementService.CreateNews(news))
-                    {
-                        _lastAcceptPhoto = null;
-                        _validationPhotoAlert = null;
-                        return Json(new { success = true });
-                    }
-                    else
-                    {
-                        _backendErrorsService.UpdateModelState(ModelState);
-                        return PartialView(news);
-                    }
+                if (await _newsManagementService.CreateNews(news))
+                {
+                    _lastAcceptPhoto = null;
+                    _validationPhotoAlert = null;
+                    return Json(new { success = true });
+                }
+
+                var overallError = _backendErrorsService.UpdateModelState(ModelState);
+                if (!string.IsNullOrEmpty(overallError))
+                {
+                    this.ViewData["UnhandledError"] = overallError;
+                }
+                return PartialView(news);
             }
             else
             {
@@ -111,35 +113,37 @@ namespace Toz.Dotnet.Controllers
 
             if (news != null && result && ModelState.IsValid)
             {
-                    if (await _newsManagementService.UpdateNews(news))
-                    {
-                        _lastAcceptPhoto = null;
-                        _validationPhotoAlert = null;
-                        return Json(new { success = true });
-                    }
-                    else
-                    {
-                        _backendErrorsService.UpdateModelState(ModelState);
-                        return PartialView(news);
-                    }
-            }
-            else
-            {
-                if(!result)
+                if (await _newsManagementService.UpdateNews(news))
                 {
-                    ViewData["ValidationPhotoAlert"] = _validationPhotoAlert;
-                    if(_lastAcceptPhoto != null)
-                    {
-                        news.Photo = _lastAcceptPhoto;
-                        ViewData["SelectedPhoto"] = "PhotoAlertWithLastPhoto";
-                    }
-                    else
-                    {
-                        ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
-                    }
+                    _lastAcceptPhoto = null;
+                    _validationPhotoAlert = null;
+                    return Json(new { success = true });
                 }
+
+                var overallError = _backendErrorsService.UpdateModelState(ModelState);
+                if (!string.IsNullOrEmpty(overallError))
+                {
+                    this.ViewData["UnhandledError"] = overallError;
+                }
+
                 return PartialView(news);
             }
+
+            if(!result)
+            {
+                ViewData["ValidationPhotoAlert"] = _validationPhotoAlert;
+                if(_lastAcceptPhoto != null)
+                {
+                    news.Photo = _lastAcceptPhoto;
+                    ViewData["SelectedPhoto"] = "PhotoAlertWithLastPhoto";
+                }
+                else
+                {
+                    ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
+                }
+            }
+            return PartialView(news);
+            
         } 
 
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken) 

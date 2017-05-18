@@ -162,4 +162,7 @@
   <data name="InvalidURL" xml:space="preserve">
     <value>Invalid website URL</value>
   </data>
+  <data name="UnknownError" xml:space="preserve">
+    <value>Unknown error occured during the validation proccess</value>
+  </data>
 </root>
