@@ -3,10 +3,8 @@ using Toz.Dotnet.Models;
 using Toz.Dotnet.Resources.Configuration;
 using System.Threading.Tasks;
 using System.Net.Http;
-using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using System.Threading;
 
 namespace Toz.Dotnet.Core.Services
 {
