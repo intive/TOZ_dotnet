@@ -14,11 +14,18 @@ namespace Toz.Dotnet.Core.Services
     {
         private readonly IRestService _restService;
         public string RequestUri { get; set; }
-
+        
         public ProposalsManagementService(IRestService restService, IOptions<AppSettings> appSettings)
         {
             _restService = restService;
             RequestUri = appSettings.Value.BackendProposalsUrl;
+        }
+
+        public async Task<Proposal> GetProposal(string id, CancellationToken cancelationToken = new CancellationToken())
+        {
+
+            string address = $"{RequestUri}/{id}";
+            return await _restService.ExecuteGetAction<Proposal>(address, cancelationToken);
         }
 
         public async Task<List<Proposal>> GetAllProposals(CancellationToken cancelationToken = default(CancellationToken))
@@ -27,7 +34,7 @@ namespace Toz.Dotnet.Core.Services
             return await _restService.ExecuteGetAction<List<Proposal>>(address, cancelationToken);
         }
 
-        public async Task<bool> AddProposal(Proposal proposal, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<bool> CreateProposal(Proposal proposal, CancellationToken cancellationToken = default(CancellationToken))
         {
             var address = RequestUri;
             return await _restService.ExecutePostAction(address, proposal, cancellationToken);
@@ -35,13 +42,13 @@ namespace Toz.Dotnet.Core.Services
 
         public async Task<bool> UpdateProposal(Proposal proposal, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var address = RequestUri;
+            var address = $"{RequestUri}/{proposal.Id}";
             return await _restService.ExecutePutAction(address, proposal, cancellationToken);
         }
 
-        public async Task<bool> DeleteProposal(string proposalId,CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<bool> DeleteProposal(Proposal proposal, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var address = $"{RequestUri}/{proposalId}";
+            var address = $"{RequestUri}/{proposal.Id}";
             return await _restService.ExecuteDeleteAction(address, cancellationToken);
         }
     }

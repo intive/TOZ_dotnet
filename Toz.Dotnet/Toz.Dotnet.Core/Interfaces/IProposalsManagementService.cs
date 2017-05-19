@@ -7,10 +7,11 @@ namespace Toz.Dotnet.Core.Interfaces
 {
     public interface IProposalsManagementService
     {
-        Task<bool> DeleteProposal(string proposalId, CancellationToken cancellationToken = default(CancellationToken));
+        Task<bool> DeleteProposal(Proposal proposal, CancellationToken cancellationToken = default(CancellationToken));
         Task<bool> UpdateProposal(Proposal proposal, CancellationToken cancellationToken = default(CancellationToken));
-        Task<bool> AddProposal(Proposal proposal, CancellationToken cancellationToken = default(CancellationToken));
+        Task<bool> CreateProposal(Proposal proposal, CancellationToken cancellationToken = default(CancellationToken));
         Task<List<Proposal>> GetAllProposals(CancellationToken cancelationToken = default(CancellationToken));
+        Task<Proposal> GetProposal(string id, CancellationToken cancelationToken = default(CancellationToken));
         string RequestUri { get; set; }
     }
 }
