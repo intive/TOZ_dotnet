@@ -12,19 +12,13 @@ using Toz.Dotnet.Resources.Configuration;
 
 namespace Toz.Dotnet.Controllers
 {
-    public class ProposalsController : Controller
+    public class ProposalsController : TozControllerBase<ProposalsController>
     {
         private readonly IProposalsManagementService _proposalsManagementService;
-        private readonly IBackendErrorsService _backendErrorsService;
-        private readonly IStringLocalizer<ProposalsController> _stringLocalizer;
-        private readonly AppSettings _appSettings;
 
-        public ProposalsController(IProposalsManagementService proposalsManagementService, IBackendErrorsService backendErrorsService, IStringLocalizer<ProposalsController> localizer, IOptions<AppSettings> appSettings)
+        public ProposalsController(IProposalsManagementService proposalsManagementService, IBackendErrorsService backendErrorsService, IStringLocalizer<ProposalsController> localizer, IOptions<AppSettings> appSettings) : base(backendErrorsService, localizer, appSettings)
         {
             _proposalsManagementService = proposalsManagementService;
-            _backendErrorsService = backendErrorsService;
-            _stringLocalizer = localizer;
-            _appSettings = appSettings.Value;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
@@ -51,11 +45,7 @@ namespace Toz.Dotnet.Controllers
                 return Json(new {success = true});
             }
 
-            var overallError = _backendErrorsService.UpdateModelState(ModelState);
-            if (!string.IsNullOrEmpty(overallError))
-            {
-                ViewData["UnhandledError"] = overallError;
-            }
+            CheckUnexpectedErrors();
             return PartialView(proposal);
         }
 
@@ -77,11 +67,7 @@ namespace Toz.Dotnet.Controllers
                 return Json(new { success = true });
             }
 
-            var overallError = _backendErrorsService.UpdateModelState(ModelState);
-            if (!string.IsNullOrEmpty(overallError))
-            {
-                ViewData["UnhandledError"] = overallError;
-            }
+            CheckUnexpectedErrors();
             return PartialView(proposal);
         }
 

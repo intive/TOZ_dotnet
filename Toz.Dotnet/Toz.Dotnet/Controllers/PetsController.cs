@@ -13,30 +13,24 @@ using System.Linq;
 
 namespace Toz.Dotnet.Controllers
 {
-    public class PetsController : Controller
+    public class PetsController : TozControllerBase<PetsController>
     {
         private readonly IFilesManagementService _filesManagementService;
         private readonly IPetsManagementService _petsManagementService;
-        private readonly IBackendErrorsService _backendErrorsService;
-        private readonly IStringLocalizer<PetsController> _localizer;
 
-        private readonly AppSettings _appSettings;
         private static byte[] _lastAcceptPhoto;
         private string _validationPhotoAlert;
 		
         public PetsController(IFilesManagementService filesManagementService, IPetsManagementService petsManagementService,
-            IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService)
+            IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService) : base(backendErrorsService, localizer, appSettings)
         {
             _filesManagementService = filesManagementService;
             _petsManagementService = petsManagementService;
-			      _localizer = localizer;
-            _appSettings = appSettings.Value;
-            _backendErrorsService = backendErrorsService;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            List<Pet> pets = await _petsManagementService.GetAllPets();
+            List<Pet> pets = await _petsManagementService.GetAllPets(cancellationToken);
             //todo add photo if will be avaialbe on backends
             var img = _filesManagementService.DownloadImage(@"http://i.pinger.pl/pgr167/7dc36d63001e9eeb4f01daf3/kot%20ze%20shreka9.jpg");
             var thumbnail = _filesManagementService.GetThumbnail(img);
@@ -55,18 +49,14 @@ namespace Toz.Dotnet.Controllers
             
             if (result && ModelState.IsValid)
             {
-                if (await _petsManagementService.CreatePet(pet))
+                if (await _petsManagementService.CreatePet(pet, cancellationToken))
                 {
                     _lastAcceptPhoto = null;
                     _validationPhotoAlert = null;
                     return Json(new { success = true });
                 }
 
-                var overallError = _backendErrorsService.UpdateModelState(ModelState);
-                if (!string.IsNullOrEmpty(overallError))
-                {
-                    this.ViewData["UnhandledError"] = overallError;
-                }
+                CheckUnexpectedErrors();
                 return PartialView(pet);
             }
 
@@ -116,11 +106,7 @@ namespace Toz.Dotnet.Controllers
                     return Json(new { success = true });
                 }
 
-                var overallError = _backendErrorsService.UpdateModelState(ModelState);
-                if (!string.IsNullOrEmpty(overallError))
-                {
-                    this.ViewData["UnhandledError"] = overallError;
-                }
+                CheckUnexpectedErrors();
                 return PartialView(pet);
             }
 
@@ -169,7 +155,7 @@ namespace Toz.Dotnet.Controllers
         {
             if(photo != null)
             {
-                if(IsAcceptedPhotoType(photo.ContentType, _appSettings.AcceptPhotoTypes))
+                if(IsAcceptedPhotoType(photo.ContentType, AppSettings.AcceptPhotoTypes))
                 {
                     if(photo.Length > 0)
                     {

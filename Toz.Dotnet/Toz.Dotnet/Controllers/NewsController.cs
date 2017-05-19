@@ -14,24 +14,19 @@ using System.Linq;
 
 namespace Toz.Dotnet.Controllers
 {
-    public class NewsController : Controller
+    public class NewsController : TozControllerBase<NewsController>
     {
-        private IFilesManagementService _filesManagementService;
-        private INewsManagementService _newsManagementService;
-        private IBackendErrorsService _backendErrorsService;
-        private readonly IStringLocalizer<NewsController> _localizer;
-        private readonly AppSettings _appSettings;
+        private readonly IFilesManagementService _filesManagementService;
+        private readonly INewsManagementService _newsManagementService;
+
         private static byte[] _lastAcceptPhoto;
         private string _validationPhotoAlert;
 
         public NewsController(IFilesManagementService filesManagementService, INewsManagementService newsManagementService,
-            IStringLocalizer<NewsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService)
+            IStringLocalizer<NewsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService) : base(backendErrorsService, localizer ,appSettings)
         {
             _filesManagementService = filesManagementService;
             _newsManagementService = newsManagementService;
-			_localizer = localizer;
-            _appSettings = appSettings.Value;
-            _backendErrorsService = backendErrorsService;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
@@ -56,7 +51,7 @@ namespace Toz.Dotnet.Controllers
             Enum.TryParse(status, out NewsStatus newsStatus);
             news.Type = newsStatus;
             
-            if (news != null && result && ModelState.IsValid)
+            if (result && ModelState.IsValid)
             {
                 if (await _newsManagementService.CreateNews(news))
                 {
@@ -65,12 +60,8 @@ namespace Toz.Dotnet.Controllers
                     return Json(new { success = true });
                 }
 
-                var overallError = _backendErrorsService.UpdateModelState(ModelState);
-                if (!string.IsNullOrEmpty(overallError))
-                {
-                    this.ViewData["UnhandledError"] = overallError;
-                }
-                return PartialView(news);
+               CheckUnexpectedErrors();
+               return PartialView(news);
             }
             else
             {
@@ -111,7 +102,7 @@ namespace Toz.Dotnet.Controllers
             Enum.TryParse(status, out NewsStatus newsStatus);
             news.Type = newsStatus;
 
-            if (news != null && result && ModelState.IsValid)
+            if (result && ModelState.IsValid)
             {
                 if (await _newsManagementService.UpdateNews(news))
                 {
@@ -120,11 +111,7 @@ namespace Toz.Dotnet.Controllers
                     return Json(new { success = true });
                 }
 
-                var overallError = _backendErrorsService.UpdateModelState(ModelState);
-                if (!string.IsNullOrEmpty(overallError))
-                {
-                    this.ViewData["UnhandledError"] = overallError;
-                }
+                CheckUnexpectedErrors();
 
                 return PartialView(news);
             }
@@ -148,15 +135,15 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken) 
         {
-            return PartialView("Edit", await _newsManagementService.GetNews(id));
+            return PartialView("Edit", await _newsManagementService.GetNews(id, cancellationToken));
         }
 
         public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)
         {
-            var pet = await _newsManagementService.GetNews(id);
+            var pet = await _newsManagementService.GetNews(id, cancellationToken);
             if(pet != null)
             {
-                await _newsManagementService.DeleteNews(pet);
+                await _newsManagementService.DeleteNews(pet, cancellationToken);
             }
 
             return RedirectToAction("Index");
@@ -164,19 +151,14 @@ namespace Toz.Dotnet.Controllers
 
         private bool IsAcceptedPhotoType(string photoType, string[] acceptTypes)
         {
-            foreach(var type in acceptTypes)
-            {
-                if(type == photoType)
-                    return true;
-            }
-            return false;
+            return acceptTypes.Any(type => type == photoType);
         }
 
         private bool ValidatePhoto(News news, IFormFile photo)
         {
             if(photo != null)
             {
-                if(IsAcceptedPhotoType(photo.ContentType, _appSettings.AcceptPhotoTypes))
+                if(IsAcceptedPhotoType(photo.ContentType, AppSettings.AcceptPhotoTypes))
                 {
                     if(photo.Length > 0)
                     {
@@ -184,26 +166,19 @@ namespace Toz.Dotnet.Controllers
                         _lastAcceptPhoto = news.Photo;
                         return true;
                     }
-                    else
-                    {
-                        _validationPhotoAlert = "EmptyFile";
-                        return false;
-                    }
+                    _validationPhotoAlert = "EmptyFile";
+                    return false;
                 }
-                else
-                {
-                    _validationPhotoAlert = "WrongFileType";
-                    return false; 
-                }
+
+                _validationPhotoAlert = "WrongFileType";
+                return false;                
             }
-            else
+
+            if(_lastAcceptPhoto != null)
             {
-                if(_lastAcceptPhoto != null)
-                {
-                    news.Photo = _lastAcceptPhoto;
-                }
-                return true;
+                news.Photo = _lastAcceptPhoto;
             }
+            return true;
         }
     }
 }

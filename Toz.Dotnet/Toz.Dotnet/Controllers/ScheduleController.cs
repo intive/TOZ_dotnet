@@ -14,22 +14,16 @@ using System.Globalization;
 
 namespace Toz.Dotnet.Controllers
 {
-    public class ScheduleController : Controller
+    public class ScheduleController : TozControllerBase<ScheduleController>
     {
         private readonly IScheduleManagementService _scheduleManagementService;
         private readonly IUsersManagementService _usersManagementService;
-        private IBackendErrorsService _backendErrorsService;
-        private readonly IStringLocalizer<ScheduleController> _localizer;
-        private readonly AppSettings _appSettings;
 
         public ScheduleController(IScheduleManagementService scheduleManagementService, IUsersManagementService usersManagementService,
-                                  IStringLocalizer<ScheduleController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService)
+                                  IStringLocalizer<ScheduleController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService) : base(backendErrorsService, localizer, appSettings)
         {
             _scheduleManagementService = scheduleManagementService;
             _usersManagementService = usersManagementService;
-            _localizer = localizer;
-            _appSettings = appSettings.Value;
-            _backendErrorsService = backendErrorsService;
         }
 
         public async Task<IActionResult> Index(int offset, CancellationToken cancellationToken)
@@ -91,11 +85,7 @@ namespace Toz.Dotnet.Controllers
                     return Json(new { success = true });
                 }
 
-                var overallError = _backendErrorsService.UpdateModelState(ModelState);
-                if (!string.IsNullOrEmpty(overallError))
-                {
-                    this.ViewData["UnhandledError"] = overallError;
-                }
+                CheckUnexpectedErrors();
             }
 
             return PartialView(token);      
