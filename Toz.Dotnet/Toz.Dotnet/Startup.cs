@@ -43,6 +43,7 @@ namespace Toz.Dotnet
             services.AddSingleton<IOrganizationManagementService, OrganizationManagementService>();
             services.AddSingleton<IValidationAttributeAdapterProvider, CustomValidationAttributeAdapterProvider>();
             services.AddSingleton<IBackendErrorsService, BackendErrorsService>();
+            services.AddSingleton<IProposalsManagementService, ProposalsManagementService>();
 
             services.AddSession();
             services.AddMemoryCache();

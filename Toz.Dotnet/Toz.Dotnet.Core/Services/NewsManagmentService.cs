@@ -46,7 +46,7 @@ namespace Toz.Dotnet.Core.Services
         public async Task<bool> DeleteNews(News news, CancellationToken cancelationToken = default(CancellationToken))
         {
             var address = $"{RequestUri}/{news.Id}";
-            return await _restService.ExecuteDeleteAction(address, news, cancelationToken);
+            return await _restService.ExecuteDeleteAction(address, cancelationToken);
         }
 
         public async Task<News> GetNews(string id, CancellationToken cancelationToken = default(CancellationToken))
