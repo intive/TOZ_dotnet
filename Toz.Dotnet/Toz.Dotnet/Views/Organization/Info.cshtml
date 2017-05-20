@@ -21,7 +21,7 @@
                     <div class="col-sm-10">
                         @if (IsEditMode)
                         {
-                            <input type="text" asp-for="Name" class="form-control" id="Name">
+                            <input asp-for="Name" class="form-control" id="Name">
                             <span asp-validation-for="Name"></span>
                             <span class="glyphicon form-control-feedback"></span>
                         }
@@ -39,7 +39,7 @@
                     <div class="col-sm-10">
                         @if (IsEditMode)
                         {
-                            <input type="text" asp-for="Address.Street" class="form-control" id="Stret">
+                            <input asp-for="Address.Street" class="form-control" id="Street">
                             <span asp-validation-for="Address.Street"></span>
                             <span class="glyphicon form-control-feedback"></span>
                         }
@@ -54,13 +54,13 @@
                     <div class="col-sm-10">
                         @if (IsEditMode)
                         {
-                            <input type="text" asp-for="Address.HouseNumber" class="form-control" id="HouseNumber">
+                            <input asp-for="Address.HouseNumber" class="form-control" id="HouseNumber">
                             <span asp-validation-for="Address.HouseNumber"></span>
                             <span class="glyphicon form-control-feedback"></span>
                         }
                         else
                         {
-                            <input type="text" asp-for="Address.HouseNumber" class="form-control" id="HouseNumber" readonly>
+                            <input asp-for="Address.HouseNumber" class="form-control" id="HouseNumber" readonly>
                         }
                     </div>
                 </div>
@@ -69,13 +69,13 @@
                     <div class="col-sm-10">
                         @if (IsEditMode)
                         {
-                            <input type="text" asp-for="Address.ApartmentNumber" class="form-control" id="ApartmentNumber">
+                            <input asp-for="Address.ApartmentNumber" class="form-control" id="ApartmentNumber">
                             <span asp-validation-for="Address.ApartmentNumber"></span>
                             <span class="glyphicon form-control-feedback"></span>
                         }
                         else
                         {
-                            <input type="text" asp-for="Address.ApartmentNumber" class="form-control" id="ApartmentNumber" readonly>
+                            <input asp-for="Address.ApartmentNumber" class="form-control" id="ApartmentNumber" readonly>
                         }
                     </div>
                 </div>
@@ -84,13 +84,13 @@
                     <div class="col-sm-10">
                         @if (IsEditMode)
                         {
-                            <input type="text" asp-for="Address.PostCode" class="form-control" id="PostCode">
+                            <input asp-for="Address.PostCode" class="form-control" id="PostCode">
                             <span asp-validation-for="Address.PostCode"></span>
                             <span class="glyphicon form-control-feedback"></span>
                         }
                         else
                         {
-                            <input type="text" asp-for="Address.PostCode" class="form-control" id="PostCode" readonly>
+                            <input asp-for="Address.PostCode" class="form-control" id="PostCode" readonly>
                         }
                     </div>
                 </div>
@@ -99,13 +99,13 @@
                     <div class="col-sm-10">
                         @if (IsEditMode)
                         {
-                            <input type="text" asp-for="Address.City" class="form-control" id="City">
+                            <input asp-for="Address.City" class="form-control" id="City">
                             <span asp-validation-for="Address.City"></span>
                             <span class="glyphicon form-control-feedback"></span>
                         }
                         else
                         {
-                            <input type="text" asp-for="Address.City" class="form-control" id="City" readonly>
+                            <input asp-for="Address.City" class="form-control" id="City" readonly>
                         }
                     </div>
                 </div>
@@ -114,13 +114,13 @@
                     <div class="col-sm-10">
                         @if (IsEditMode)
                         {
-                            <input type="text" asp-for="Address.Country" class="form-control" id="Country">
+                            <input asp-for="Address.Country" class="form-control" id="Country">
                             <span asp-validation-for="Address.Country"></span>
                             <span class="glyphicon form-control-feedback"></span>
                         }
                         else
                         {
-                            <input type="text" asp-for="Address.Country" class="form-control" id="Country" readonly>
+                            <input asp-for="Address.Country" class="form-control" id="Country" readonly>
                         }
                     </div>
                 </div>
@@ -132,13 +132,13 @@
                     <div class="col-sm-10">
                         @if (IsEditMode)
                         {
-                            <input type="text" asp-for="Contact.Email" class="form-control" id="Email">
+                            <input asp-for="Contact.Email" class="form-control" id="Email">
                             <span asp-validation-for="Contact.Email"></span>
                             <span class="glyphicon form-control-feedback"></span>
                         }
                         else
                         {
-                            <input type="text" asp-for="Contact.Email" class="form-control" id="Email" readonly>
+                            <input asp-for="Contact.Email" class="form-control" id="Email" readonly>
                         }
                     </div>
                 </div>
@@ -147,13 +147,13 @@
                     <div class="col-sm-10">
                         @if (IsEditMode)
                         {
-                            <input type="text" asp-for="Contact.Phone" class="form-control" id="Phone">
+                            <input asp-for="Contact.Phone" class="form-control" id="Phone">
                             <span asp-validation-for="Contact.Phone"></span>
                             <span class="glyphicon form-control-feedback"></span>
                         }
                         else
                         {
-                            <input type="text" asp-for="Contact.Phone" class="form-control" id="Phone" readonly>
+                            <input asp-for="Contact.Phone" class="form-control" id="Phone" readonly>
                         }
                     </div>
                 </div>
@@ -162,13 +162,13 @@
                     <div class="col-sm-10">
                         @if (IsEditMode)
                         {
-                            <input type="text" asp-for="Contact.Fax" class="form-control" id="Fax">
+                            <input asp-for="Contact.Fax" class="form-control" id="Fax">
                             <span asp-validation-for="Contact.Fax"></span>
                             <span class="glyphicon form-control-feedback"></span>
                         }
                         else
                         {
-                            <input type="text" asp-for="Contact.Fax" class="form-control" id="Fax" readonly>
+                            <input asp-for="Contact.Fax" class="form-control" id="Fax" readonly>
                         }
                     </div>
                 </div>
@@ -177,13 +177,13 @@
                     <div class="col-sm-10">
                         @if (IsEditMode)
                         {
-                            <input type="text" asp-for="Contact.Website" class="form-control" id="Website">
+                            <input asp-for="Contact.Website" class="form-control" id="Website">
                             <span asp-validation-for="Contact.Website"></span>
                             <span class="glyphicon form-control-feedback"></span>
                         }
                         else
                         {
-                            <input type="text" asp-for="Contact.Website" class="form-control" id="Website" readonly>
+                            <input asp-for="Contact.Website" class="form-control" id="Website" readonly>
                         }
                     </div>
                 </div>
@@ -195,13 +195,13 @@
                     <div class="col-sm-10">
                         @if (IsEditMode)
                         {
-                            <input type="text" asp-for="BankAccount.Number" class="form-control" id="BankAccountNumber">
+                            <input asp-for="BankAccount.Number" class="form-control" id="BankAccountNumber">
                             <span asp-validation-for="BankAccount.Number"></span>
                             <span class="glyphicon form-control-feedback"></span>
                         }
                         else
                         {
-                            <input type="text" asp-for="BankAccount.Number" class="form-control" id="BankAccountNumber" readonly>
+                            <input asp-for="BankAccount.Number" class="form-control" id="BankAccountNumber" readonly>
                         }
                     </div>
                 </div>
@@ -210,13 +210,13 @@
                     <div class="col-sm-10">
                         @if (IsEditMode)
                         {
-                            <input type="text" asp-for="BankAccount.BankName" class="form-control" id="BankName">
+                            <input asp-for="BankAccount.BankName" class="form-control" id="BankName">
                             <span asp-validation-for="BankAccount.Number"></span>
                             <span class="glyphicon form-control-feedback"></span>
                         }
                         else
                         {
-                            <input type="text" asp-for="BankAccount.BankName" class="form-control" id="BankName" readonly>
+                            <input asp-for="BankAccount.BankName" class="form-control" id="BankName" readonly>
                         }
                     </div>
                 </div>

@@ -1,5 +1,4 @@
 @using Microsoft.AspNetCore.Mvc.Localization
-@using Toz.Dotnet.Models.EnumTypes
 @model Toz.Dotnet.Models.Pet
 @inject IViewLocalizer Localizer
 
@@ -14,39 +13,39 @@
             <div class="form-group row">
                 <label class="col-sm-2 control-label">@Localizer["Id"]</label>
                 <div class="col-sm-10">
-                    <input type="text" asp-for="Id" class="form-control" id="Id" disabled>
+                    <input asp-for="Id" class="form-control" id="Id" disabled>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 control-label">@Localizer["Name"]</label>
                 <div class="col-sm-10">
-                    <input type="text" asp-for="Name" class="form-control" id="Name">
+                    <input asp-for="Name" class="form-control" id="Name">
                     <span class="glyphicon form-control-feedback"></span>
-                    @Html.ValidationMessageFor(m => m.Name)
+                    <span asp-validation-for="Name"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 control-label">@Localizer["Type"]</label>
-                <div class="col-sm-10 selectContainer">
+                <div class="col-sm-10">
                     <select asp-for="Type" class="form-control" id="Type">
                         <option value="0"></option>
                         <option value="1">@Localizer["Dog"]</option>
                         <option value="2">@Localizer["Cat"]</option>
                     </select>
                     <span class="glyphicon form-control-feedback"></span>
-                    @Html.ValidationMessageFor(m => m.Type)
+                    <span asp-validation-for="Type"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 control-label">@Localizer["Sex"]</label>
-                <div class="col-sm-10 selectContainer">
+                <div class="col-sm-10">
                     <select asp-for="Sex" class="form-control" id="Sex">
                         <option value="0"></option>
                         <option value="1">@Localizer["Male"]</option>
                         <option value="2">@Localizer["Female"]</option>
                     </select>
                     <span class="glyphicon form-control-feedback"></span>
-                    @Html.ValidationMessageFor(m => m.Sex)
+                    <span asp-validation-for="Sex"></span>
                 </div>
             </div>
             <div class="form-group row">
@@ -80,18 +79,18 @@
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 control-label">@Localizer["Description"]</label>
-                <div class="col-sm-10 textareaContainer">
+                <div class="col-sm-10">
                     <textarea asp-for="Description" class="form-control" id="Description" cols="10" rows="4" style="resize: vertical"></textarea>
                     <span class="glyphicon form-control-feedback"></span>
-                    @Html.ValidationMessageFor(m => m.Description)
+                    <span asp-validation-for="Description"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 control-label">@Localizer["Address"]</label>
                 <div class="col-sm-10">
-                    <input type="text" asp-for="Address" class="form-control" id="Address">
+                    <input asp-for="Address" class="form-control" id="Address">
                     <span class="glyphicon form-control-feedback"></span>
-                    @Html.ValidationMessageFor(m => m.Address)
+                    <span asp-validation-for="Address"></span>
                 </div>
             </div>
             
