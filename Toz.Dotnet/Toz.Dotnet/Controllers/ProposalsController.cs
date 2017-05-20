@@ -14,7 +14,9 @@ namespace Toz.Dotnet.Controllers
     {
         private readonly IProposalsManagementService _proposalsManagementService;
 
-        public ProposalsController(IProposalsManagementService proposalsManagementService, IBackendErrorsService backendErrorsService, IStringLocalizer<ProposalsController> localizer, IOptions<AppSettings> appSettings) : base(backendErrorsService, localizer, appSettings)
+        public ProposalsController(IProposalsManagementService proposalsManagementService, IBackendErrorsService backendErrorsService, 
+            IStringLocalizer<ProposalsController> localizer, IOptions<AppSettings> appSettings) 
+            : base(backendErrorsService, localizer, appSettings)
         {
             _proposalsManagementService = proposalsManagementService;
         }
