@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
@@ -21,9 +22,8 @@ namespace Toz.Dotnet.Core.Services
 
         public async Task<Proposal> GetProposal(string id, CancellationToken cancelationToken = new CancellationToken())
         {
-
-            string address = $"{RequestUri}/{id}";
-            return await _restService.ExecuteGetAction<Proposal>(address, cancelationToken);
+            var proposals =await GetAllProposals(cancelationToken);
+            return proposals.Find(p => p.Id.Equals(id, StringComparison.OrdinalIgnoreCase));
         }
 
         public async Task<List<Proposal>> GetAllProposals(CancellationToken cancelationToken = default(CancellationToken))

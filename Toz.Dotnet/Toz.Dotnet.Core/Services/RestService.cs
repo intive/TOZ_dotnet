@@ -61,8 +61,9 @@ namespace Toz.Dotnet.Core.Services
                     }
                     // <--
                     var response = await client.GetAsync(address, cancelationToken);
-                    response.EnsureSuccessStatusCode();
                     var stringResponse = await response.Content.ReadAsStringAsync();
+                    response.EnsureSuccessStatusCode();
+                   
 
                     T output = JsonConvert.DeserializeObject<T>(stringResponse);
                     return output;
