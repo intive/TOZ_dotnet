@@ -117,34 +117,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="PetList" xml:space="preserve">
-    <value>Pets list</value>
+  <data name="PageTitle" xml:space="preserve">
+    <value>Zgłoszenia</value>
   </data>
-  <data name="PetAdd" xml:space="preserve">
-    <value>Add a pet</value>
+  <data name="Add" xml:space="preserve">
+    <value>Dodaj</value>
   </data>
-  <data name="NewsList" xml:space="preserve">
-    <value>News list</value>
+  <data name="FirstName" xml:space="preserve">
+    <value>Imię</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
+  <data name="LastName" xml:space="preserve">
+    <value>Nazwisko</value>
   </data>
-  <data name="Users" xml:space="preserve">
-    <value>Users</value>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Numer telefonu</value>
   </data>
-  <data name="Schedule" xml:space="preserve">
-    <value>Schedule</value>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
   </data>
-  <data name="OrganizationInfo" xml:space="preserve">
-    <value>Organization Info</value>
+  <data name="Purpose" xml:space="preserve">
+    <value>Rola</value>
   </data>
-  <data name="HomePage" xml:space="preserve">
-    <value>Home page</value>
+  <data name="Administrator" xml:space="preserve">
+    <value>Administrator</value>
   </data>
-  <data name="Logout" xml:space="preserve">
-    <value>Logout</value>
+  <data name="Volunteer" xml:space="preserve">
+    <value>Wolontariusz</value>
   </data>
-  <data name="Proposals" xml:space="preserve">
-    <value>Proposals</value>
+  <data name="TemporaryHome" xml:space="preserve">
+    <value>Opiekun tymczasowy</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edytuj</value>
+  </data>
+  <data name="SearchPlaceholder" xml:space="preserve">
+    <value>Szukaj...</value>
+  </data>
+  <data name="Anonymous" xml:space="preserve">
+    <value>Anonimowy użytkownik</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Brak</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Hasło</value>
+  </data>
+  <data name="TozWorker" xml:space="preserve">
+    <value>Pracownik TOZ</value>
+  </data>
+  <data name="Accept" xml:space="preserve">
+    <value>Akceptuj</value>
+  </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>Data utworzenia</value>
   </data>
 </root>

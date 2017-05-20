@@ -144,4 +144,7 @@
   <data name="Logout" xml:space="preserve">
     <value>Wyloguj</value>
   </data>
+  <data name="Proposals" xml:space="preserve">
+    <value>Zgłoszenia</value>
+  </data>
 </root>
