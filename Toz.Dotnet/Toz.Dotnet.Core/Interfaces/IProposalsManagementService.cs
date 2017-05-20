@@ -13,5 +13,6 @@ namespace Toz.Dotnet.Core.Interfaces
         Task<List<Proposal>> GetAllProposals(CancellationToken cancelationToken = default(CancellationToken));
         Task<Proposal> GetProposal(string id, CancellationToken cancelationToken = default(CancellationToken));
         string RequestUri { get; set; }
+        Task<bool> SendActivationEmail(string id, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

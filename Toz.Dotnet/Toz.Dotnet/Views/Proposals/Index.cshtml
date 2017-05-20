@@ -25,11 +25,20 @@
                 <input type="text" id="search" class="search form-control" placeholder="@Localizer["SearchPlaceholder"]">
             </div>
             <div class="col col-xs-4 text-right">
-                <a class="data-modal btn btn-primary btn-sm btn-create" href="@Url.Action("Add","Proposals")"><span class="glyphicon glyphicon-plus"></span></a>
+                <a class="data-modal btn btn-primary btn-sm btn-create" href="@Url.Action("Add", "Proposals")"><span class="glyphicon glyphicon-plus"></span></a>
             </div>
         </div>
     </div>
     <div class="panel-body">
+        @if (ViewData["ActivationError"] != null)
+        {
+            <script type="text/javascript">
+                window.onload = function () {
+                    alert("@ViewData["ActivationError"]");
+                };
+            </script>
+            
+        }
         <table id="table" class="table table-striped table-bordered table-list dt-responsive nowrap" width="100%">
             <thead>
             <tr>
@@ -39,6 +48,7 @@
                 <th>@Localizer["Email"]</th>
                 <th>@Localizer["Purpose"]</th>
                 <th>@Localizer["CreationDate"]</th>
+                <th>@Localizer["IsAccepted"]</th>
                 <th></th>
             </tr>
             </thead>
@@ -50,7 +60,7 @@
                     <td>@item.LastName</td>
                     <td>@item.PhoneNumber</td>
                     <td>@item.Email</td>
-                        
+
                     @if (@item.Roles.Contains(UserType.Sa))
                     {
                         <td>@Localizer["Administrator"]</td>
@@ -73,7 +83,19 @@
                     }
                     <td>@item.CreationTime</td>
 
-                    <td class="center-column"><a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Edit","Proposals")/@item.Id"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                    @if (item.IsRead)
+                    {
+                        <td>@Localizer["Yes"]</td>
+                    }
+                    else
+                    {
+                        <td>@Localizer["No"]</td>
+                    }
+
+                    <td class="center-column">
+                        <a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Edit", "Proposals")/@item.Id"><span class="glyphicon glyphicon-pencil"></span></a>
+                        <a class="btn btn-success btn-sm" href="@Url.Action("Activate", "Proposals")/@item.Id"><span class="glyphicon glyphicon-ok"></span></a>
+                    </td>
                 </tr>
             }
             </tbody>

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Toz.Dotnet.Core.Interfaces;
+using Toz.Dotnet.Extensions;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Resources.Configuration;
 
@@ -23,6 +24,11 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
+            var activationError = TempData.Get<string>("ActivationError");
+            if (!string.IsNullOrEmpty(activationError))
+            {
+                ViewData["ActivationError"] = activationError;
+            }
             var proposals = await _proposalsManagementService.GetAllProposals(cancellationToken);
             return View(proposals.OrderByDescending(prop => prop.CreationTime));
         }
@@ -79,7 +85,17 @@ namespace Toz.Dotnet.Controllers
                 return Json(new {success = true});
             }
             CheckUnexpectedErrors();
-            return PartialView("Edit",proposal);
+            return PartialView("Edit", proposal);
+        }
+
+        public async Task<IActionResult> Activate(string id, CancellationToken cancellationToken)
+        {
+            var result = await _proposalsManagementService.SendActivationEmail(id, cancellationToken);
+            if (!result)
+            {
+                TempData.Put<string>("ActivationError", StringLocalizer["FailedToSendActivationMail"]);            
+            }
+            return RedirectToAction("Index");
         }
 
     }

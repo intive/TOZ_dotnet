@@ -12,11 +12,13 @@ namespace Toz.Dotnet.Core.Services
     public class ProposalsManagementService : IProposalsManagementService
     {
         private readonly IRestService _restService;
+        private readonly AppSettings _appSettings;
         public string RequestUri { get; set; }
-        
+
         public ProposalsManagementService(IRestService restService, IOptions<AppSettings> appSettings)
         {
             _restService = restService;
+            _appSettings = appSettings.Value;
             RequestUri = appSettings.Value.BackendProposalsUrl;
         }
 
@@ -48,6 +50,17 @@ namespace Toz.Dotnet.Core.Services
         {
             var address = $"{RequestUri}/{proposal.Id}";
             return await _restService.ExecuteDeleteAction(address, cancellationToken);
+        }
+
+        public async Task<bool> SendActivationEmail(string id, CancellationToken cancellationToken = new CancellationToken())
+        {
+            var address = $"{_appSettings.BackendActivationUserUrl}/{id}";
+            var proposal =  await _restService.ExecuteGetAction<Proposal>(address, cancellationToken);
+            if (proposal == null)
+            {
+                return false;
+            }
+            return await UpdateProposal(proposal, cancellationToken);
         }
     }
 }
