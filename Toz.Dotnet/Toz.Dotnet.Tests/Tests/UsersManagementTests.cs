@@ -141,7 +141,7 @@ namespace Toz.Dotnet.Tests.Tests
         [Theory]
         [InlineData("FirstName")]
         [InlineData("LastName")]
-        public void TestPetValidationIfStringIsTooLong(string propertyName)
+        public void TestUserValidationIfStringIsTooLong(string propertyName)
         {
             const int maxLength = 30;
 

@@ -12,19 +12,19 @@ namespace Toz.Dotnet.Core.Services
     public class ProposalsManagementService : IProposalsManagementService
     {
         private readonly IRestService _restService;
-        private readonly AppSettings _appSettings;
         public string RequestUri { get; set; }
+        public string ActivationRequestUri { get; set; }
 
         public ProposalsManagementService(IRestService restService, IOptions<AppSettings> appSettings)
         {
             _restService = restService;
-            _appSettings = appSettings.Value;
             RequestUri = appSettings.Value.BackendProposalsUrl;
+            ActivationRequestUri = appSettings.Value.BackendActivationUserUrl;
         }
 
         public async Task<Proposal> GetProposal(string id, CancellationToken cancelationToken = new CancellationToken())
         {
-            var proposals =await GetAllProposals(cancelationToken);
+            var proposals = await GetAllProposals(cancelationToken);
             return proposals.Find(p => p.Id.Equals(id, StringComparison.OrdinalIgnoreCase));
         }
 
@@ -54,7 +54,7 @@ namespace Toz.Dotnet.Core.Services
 
         public async Task<bool> SendActivationEmail(string id, CancellationToken cancellationToken = new CancellationToken())
         {
-            var address = $"{_appSettings.BackendActivationUserUrl}/{id}";
+            var address = $"{ActivationRequestUri}/{id}";
             var proposal =  await _restService.ExecuteGetAction<Proposal>(address, cancellationToken);
             if (proposal == null)
             {

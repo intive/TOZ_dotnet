@@ -38,6 +38,7 @@ namespace Toz.Dotnet.Tests.Helpers
 
             this.Proposal = new Proposal()
             {
+                Id = Guid.NewGuid().ToString(),
                 FirstName = "Mariusz",
                 LastName = "Wolonatriusz",
                 PhoneNumber = "123456789",
