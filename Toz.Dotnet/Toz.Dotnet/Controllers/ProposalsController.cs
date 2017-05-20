@@ -74,11 +74,12 @@ namespace Toz.Dotnet.Controllers
         public async Task<IActionResult> Delete(string id, CancellationToken cancellationToken)
         {
             var proposal = await _proposalsManagementService.GetProposal(id, cancellationToken);
-            if (proposal != null)
+            if (proposal != null && await _proposalsManagementService.DeleteProposal(proposal, cancellationToken))
             {
-                await _proposalsManagementService.DeleteProposal(proposal, cancellationToken);
+                return Json(new {success = true});
             }
-            return View("Index");
+            CheckUnexpectedErrors();
+            return PartialView("Edit",proposal);
         }
 
     }

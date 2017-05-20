@@ -165,4 +165,7 @@
   <data name="TozWorker" xml:space="preserve">
     <value>Pracownik TOZ</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Usuń zgłoszenie</value>
+  </data>
 </root>

@@ -162,4 +162,7 @@
   <data name="TozWorker" xml:space="preserve">
     <value>TOZ worker</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
 </root>
