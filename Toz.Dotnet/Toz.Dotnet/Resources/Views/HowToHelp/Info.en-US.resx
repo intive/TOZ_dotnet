@@ -132,6 +132,9 @@
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="ModificationTime" xml:space="preserve">
+    <value>Modification time</value>
+  </data>
   <data name="PageTitle" xml:space="preserve">
     <value>TOZ helping information</value>
   </data>

@@ -8,7 +8,7 @@ namespace Toz.Dotnet.Models
     {
         [JsonProperty("modificationDate")]
         [JsonConverter(typeof(JsonDateTimeConventer))]
-        public DateTime? CreationTime { get; set; }
+        public DateTime? ModificationTime { get; set; }
 
         [JsonProperty("howToHelpDescription")]
         public string Description { get; set; }

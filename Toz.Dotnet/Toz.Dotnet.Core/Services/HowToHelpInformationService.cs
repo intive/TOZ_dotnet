@@ -33,11 +33,15 @@ namespace Toz.Dotnet.Core.Services
 
             Func<string, HowToHelpInfo, CancellationToken, Task<bool>> methodToExecute = _restService.ExecutePutAction;
 
-            if (await GetHelpInfo(type, cancelationToken) == null)
+            var oldHelpInfo = await GetHelpInfo(type, cancelationToken);
+            if (oldHelpInfo == null)
             {
                 methodToExecute = _restService.ExecutePostAction;
             }
-
+            else if(oldHelpInfo.Description.Equals(helpInfo.Description, StringComparison.Ordinal))
+            {
+                return true;
+            }
             return await methodToExecute(currentUrl, helpInfo, cancelationToken);
         }
 

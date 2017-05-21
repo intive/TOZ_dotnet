@@ -147,4 +147,7 @@
   <data name="Proposals" xml:space="preserve">
     <value>Zgłoszenia</value>
   </data>
+  <data name="HowToHelp" xml:space="preserve">
+    <value>Jak pomóc</value>
+  </data>
 </root>
