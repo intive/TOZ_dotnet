@@ -61,7 +61,7 @@
                             @if (@item.Type == NewsStatus.Unreleased)
                             {
                                 <td>
-                                    <div class="unreleased pagination-centered">
+                                    <div class="unreleased">
                                         <div class="glyphicon glyphicon-exclamation-sign"></div>
                                         @Localizer["Unreleased"]
                                     </div>
@@ -70,7 +70,7 @@
                             else if (@item.Type == NewsStatus.Archived)
                             {
                                 <td>
-                                    <div class="archived pagination-centered">
+                                    <div class="archived">
                                         <div class="glyphicon glyphicon-exclamation-sign"></div>
                                         @Localizer["Archived"]
                                     </div>

@@ -14,7 +14,8 @@ namespace Toz.Dotnet.Models
 
         [JsonProperty("title")]
         [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
-        [StringLength(100, MinimumLength = 1, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]    
+        [StringLength(100, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]
+        [RegularExpression(@"(^(?=.*[a-zA-Z])((\S)+(\s(?!$))?)+)$", ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "InvalidValue")]
         public string Title {get; set;}
 
         [JsonProperty("published")]
@@ -31,7 +32,7 @@ namespace Toz.Dotnet.Models
 
         [JsonProperty("contents")]
         [Required(ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "EmptyField")]
-        [StringLength(1000, MinimumLength = 1, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]   
+        [StringLength(1000, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]   
         public string Contents {get; set;}
 
         [JsonIgnore]
