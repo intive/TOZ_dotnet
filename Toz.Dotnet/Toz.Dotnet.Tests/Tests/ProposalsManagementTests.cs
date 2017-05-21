@@ -2,8 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
+using Moq;
 using Toz.Dotnet.Core.Interfaces;
+using Toz.Dotnet.Core.Services;
 using Toz.Dotnet.Models;
+using Toz.Dotnet.Resources.Configuration;
 using Toz.Dotnet.Tests.Helpers;
 using Xunit;
 
@@ -91,6 +97,56 @@ namespace Toz.Dotnet.Tests.Tests
             bool valid = Validator.TryValidateObject(_testingProposal, context, result, true);
 
             Assert.True(valid);
+        }
+
+        [Fact]
+        public void TestOfGettingSpecifiedProposal()
+        {
+            var restServiceMock = new Mock<IRestService>();
+            restServiceMock.Setup(s => s.ExecuteGetAction<List<Proposal>>(
+                    It.IsAny<string>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new List<Proposal>()
+                {
+                    TestingObjectProvider.Instance.DoShallowCopy(_testingProposal)
+                });
+
+            var options = ServiceProvider.Instance.Resolve<IOptions<AppSettings>>();
+            var proposalManagementService =
+                new ProposalsManagementService(restServiceMock.Object, options)
+                {
+                    RequestUri = RequestUriHelper.ProposalsUri,
+                    ActivationRequestUri = RequestUriHelper.ProposalsUri
+                };
+
+            Assert.NotNull(proposalManagementService.GetProposal(_testingProposal.Id).Result);
+        }
+
+        [Fact]
+        public void TestOfProposalActivation()
+        {
+            var restServiceMock = new Mock<IRestService>();
+            restServiceMock.Setup(s => s.ExecuteGetAction<Proposal>(
+                    It.IsAny<string>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(TestingObjectProvider.Instance.DoShallowCopy(_testingProposal));
+
+            restServiceMock.Setup(s => s.ExecutePutAction<Proposal>(
+                    It.IsAny<string>(),
+                    It.IsAny<Proposal>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
+
+            var options = ServiceProvider.Instance.Resolve<IOptions<AppSettings>>();
+            var proposalManagementService =
+                new ProposalsManagementService(restServiceMock.Object, options)
+                {
+                    RequestUri = RequestUriHelper.ProposalsUri,
+                    ActivationRequestUri = RequestUriHelper.ProposalsUri
+                };
+            Assert.NotNull(proposalManagementService.RequestUri);
+            Assert.NotNull(proposalManagementService.ActivationRequestUri);
+            Assert.True(proposalManagementService.SendActivationEmail(_testingProposal.Id).Result);
         }
 
         [Theory]
