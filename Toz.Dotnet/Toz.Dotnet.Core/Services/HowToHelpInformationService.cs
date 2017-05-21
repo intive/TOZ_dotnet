@@ -38,7 +38,7 @@ namespace Toz.Dotnet.Core.Services
             {
                 methodToExecute = _restService.ExecutePostAction;
             }
-            else if(oldHelpInfo.Description.Equals(helpInfo.Description, StringComparison.Ordinal))
+            else if(oldHelpInfo.Description != null && oldHelpInfo.Description.Equals(helpInfo?.Description, StringComparison.Ordinal))
             {
                 return true;
             }

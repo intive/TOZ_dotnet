@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Moq;
 using Toz.Dotnet.Core.Services;
 using Toz.Dotnet.Models;
+using Toz.Dotnet.Models.EnumTypes;
 using Toz.Dotnet.Resources.Configuration;
 
 namespace Toz.Dotnet.Tests.Sanity
@@ -20,6 +21,7 @@ namespace Toz.Dotnet.Tests.Sanity
         private readonly IFilesManagementService _filesManagementService;
         private readonly IOrganizationManagementService _organizationManagementService;
         private readonly IProposalsManagementService _proposalsManagementService;
+        private readonly IHowToHelpInformationService _howToHelpInformationService;
 
         public SanityTests()
         {
@@ -29,12 +31,15 @@ namespace Toz.Dotnet.Tests.Sanity
             _filesManagementService = ServiceProvider.Instance.Resolve<IFilesManagementService>();
             _organizationManagementService = ServiceProvider.Instance.Resolve<IOrganizationManagementService>();
             _proposalsManagementService = ServiceProvider.Instance.Resolve<IProposalsManagementService>();
+            _howToHelpInformationService = ServiceProvider.Instance.Resolve<IHowToHelpInformationService>();
 
             _petsManagementService.RequestUri = RequestUriHelper.PetsUri;
             _newsManagementService.RequestUri = RequestUriHelper.NewsUri;
             _userManagementService.RequestUri = RequestUriHelper.UsersUri;
             _organizationManagementService.RequestUri = RequestUriHelper.OrganizationInfoUri;
             _proposalsManagementService.RequestUri = RequestUriHelper.ProposalsUri;
+            _howToHelpInformationService.BecomeVolunteerUrl = RequestUriHelper.HowToHelpUri;
+            _howToHelpInformationService.DonateInfoUrl = RequestUriHelper.HowToHelpUri;
         }
 
         [Fact]
@@ -150,5 +155,16 @@ namespace Toz.Dotnet.Tests.Sanity
             Assert.True(proposalManagementService.SendActivationEmail(proposal.Id).Result);
             Assert.NotNull(proposalManagementService.GetProposal(proposal.Id).Result);
         }
-}
+
+        [Fact]
+        public async void HowToHelpFunctionalityTest()
+        {
+            var info = TestingObjectProvider.Instance.HowToHelpInfo;
+
+            Assert.NotNull(await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.BecomeVolunteer));
+            Assert.NotNull(await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.Donate));
+            Assert.True(await _howToHelpInformationService.UpdateOrCreateHelpInfo(info, HowToHelpInfoType.BecomeVolunteer));
+            Assert.True(await _howToHelpInformationService.UpdateOrCreateHelpInfo(info, HowToHelpInfoType.Donate));
+        }
+    }
 }
