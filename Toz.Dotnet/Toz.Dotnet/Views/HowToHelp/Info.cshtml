@@ -1,0 +1,60 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Toz.Dotnet.Models.ViewModels.HowToHelpViewModel
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Localizer["PageTitle"];
+}
+
+@{
+    bool IsEditMode = Model == null || (bool)ViewData["EditMode"];
+}
+
+<div class="container-fluid center">
+    <form class="form-horizontal" asp-controller="HowToHelp" asp-action="CreateEdit" method="POST" enctype="multipart/form-data">
+        <fieldset class="pagetitle">
+            @*Become Volunteer*@
+            <legend class="pagetitlelegend">@Localizer["PageTitle"]</legend>
+            <fieldset>
+                <legend>@Localizer["BecomeVolunteerInfo"]</legend>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">@Localizer["Description"]</label>
+                    <div class="col-sm-10">
+                        @if (IsEditMode)
+                        {
+                            <textarea asp-for="BecomeVolunteerInfo.Description" class="form-control" id="Description" cols="10" rows="4" style="resize: vertical"></textarea>
+                            <span asp-validation-for="BecomeVolunteerInfo.Description"></span>
+                            <span class="glyphicon form-control-feedback"></span>
+                        }
+                        else
+                        {
+                            <textarea asp-for="BecomeVolunteerInfo.Description" class="form-control" cols="10" rows="4" style="resize: vertical" readonly></textarea>
+                        }
+                    </div>
+                </div>
+            </fieldset>
+            @*Donate*@
+            <fieldset>
+                <legend>@Localizer["DonateInfo"]</legend>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label">@Localizer["Description"]</label>
+                    <div class="col-sm-10">
+                        @if (IsEditMode)
+                        {
+                            <textarea asp-for="DonateInfo.Description" class="form-control" cols="10" rows="4" style="resize: vertical"></textarea>
+                            <span asp-validation-for="DonateInfo.Description"></span>
+                            <span class="glyphicon form-control-feedback"></span>
+                        }
+                        else
+                        {
+                            <textarea asp-for="DonateInfo.Description" class="form-control" cols="10" rows="4" style="resize: vertical" readonly></textarea>
+                        }
+                    </div>
+                </div>
+            </fieldset>
+            <input type="button" class="btn btn-danger btn-block @(IsEditMode ? "" : "hidden")" id="OrganizationInfoEditFalse" value=@Localizer["Cancel"] onclick="@("window.location.href='" + @Url.Action("Info", "HowToHelp", new {edit = false}) + "'");">
+            <input type="submit" class="btn btn-primary btn-block @(IsEditMode ? "" : "hidden")" id="OrganizationInfoSave" value=@Localizer["Save"]>
+            <input type="button" class="btn btn-primary btn-block @(IsEditMode ? "hidden" : "")" id="OrganizationInfoEditTrue" value=@Localizer["Edit"] onclick="@("window.location.href='" + @Url.Action("Info", "HowToHelp", new {edit = true}) + "'");">
+        </fieldset>
+    </form>
+</div>

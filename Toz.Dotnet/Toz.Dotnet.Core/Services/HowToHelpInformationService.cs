@@ -60,7 +60,7 @@ namespace Toz.Dotnet.Core.Services
                     resultUrl = BecomeVolunteerUrl;
                     break;
                 case HowToHelpInfoType.Donate:
-                    resultUrl = BecomeVolunteerUrl;
+                    resultUrl = DonateInfoUrl;
                     break;
                 default:
                     resultUrl = string.Empty;

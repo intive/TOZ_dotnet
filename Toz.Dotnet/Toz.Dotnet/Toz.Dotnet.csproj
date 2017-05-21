@@ -10,7 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\images\calendar-white.png" />
+    <Content Include="wwwroot\images\helping-white.png" />
+    <Content Include="wwwroot\images\helping.png" />
+    <Content Include="wwwroot\images\news-white.png" />
+    <Content Include="wwwroot\images\organization-white.png" />
+    <Content Include="wwwroot\images\pets-white.png" />
     <Content Include="wwwroot\images\proposal.png" />
+    <Content Include="wwwroot\images\proposals-white.png" />
+    <Content Include="wwwroot\images\users-white.png" />
   </ItemGroup>
 
   <!--Libs references -->
