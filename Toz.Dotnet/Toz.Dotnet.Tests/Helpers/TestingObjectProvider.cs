@@ -85,7 +85,14 @@ namespace Toz.Dotnet.Tests.Helpers
                     Fax = "123456789",
                     Phone = "123456789",
                     Website = "http://testwebsite.com"
-                }
+                },
+                
+            };
+
+            HowToHelpInfo = new HowToHelpInfo()
+            {
+                Description = "Deskrypszyn",
+                ModificationTime = DateTime.Now
             };
         }
 
@@ -94,6 +101,7 @@ namespace Toz.Dotnet.Tests.Helpers
         public Organization Organization { get; }
         public User User { get; }
         public Proposal Proposal { get; }
+        public HowToHelpInfo HowToHelpInfo { get; set; }
 
         public T DoShallowCopy<T>(T value) where T : new()
         {

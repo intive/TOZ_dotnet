@@ -117,46 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="HowToHelpTozTileDescription" xml:space="preserve">
-    <value>Allows to set or update the information about the way of helping TOZ</value>
+  <data name="BecomeVolunteerInfo" xml:space="preserve">
+    <value>How to become a volunteeer:</value>
   </data>
-  <data name="HowToHelpTozTileTitle" xml:space="preserve">
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="DonateInfo" xml:space="preserve">
+    <value>How to donate TOZ:</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="ModificationTime" xml:space="preserve">
+    <value>Modification time</value>
+  </data>
+  <data name="PageTitle" xml:space="preserve">
     <value>TOZ helping information</value>
   </data>
-  <data name="NewsTileDescription" xml:space="preserve">
-    <value>Allows to review a list of news</value>
-  </data>
-  <data name="NewsTileTitle" xml:space="preserve">
-    <value>News list</value>
-  </data>
-  <data name="OrganizationTileDescription" xml:space="preserve">
-    <value>Allows to set or update the information about the organization</value>
-  </data>
-  <data name="OrganizationTileTitle" xml:space="preserve">
-    <value>Organization information</value>
-  </data>
-  <data name="PetTileDescription" xml:space="preserve">
-    <value>Allows to review a list of pets</value>
-  </data>
-  <data name="PetTileTitle" xml:space="preserve">
-    <value>Pets list</value>
-  </data>
-  <data name="ProposalsTileDescription" xml:space="preserve">
-    <value>Allows to review a list of proposals</value>
-  </data>
-  <data name="ProposalsTileTitle" xml:space="preserve">
-    <value>Proposals list</value>
-  </data>
-  <data name="SchedulerTileDescription" xml:space="preserve">
-    <value>Allows to assign volounteers to the duties</value>
-  </data>
-  <data name="SchedulerTileTitle" xml:space="preserve">
-    <value>Scheduler</value>
-  </data>
-  <data name="UsersTileDescription" xml:space="preserve">
-    <value>Allows to review a list of users</value>
-  </data>
-  <data name="UsersTileTitle" xml:space="preserve">
-    <value>Users list</value>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
   </data>
 </root>

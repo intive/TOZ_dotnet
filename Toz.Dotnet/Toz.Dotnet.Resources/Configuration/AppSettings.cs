@@ -13,5 +13,7 @@ namespace Toz.Dotnet.Resources.Configuration
         public string BackendJwtUrl { get; set; }
         public string BackendProposalsUrl { get; set; }
         public string BackendActivationUserUrl { get; set; }
+        public string BackendBecomeVolunteerUrl { get; set; }
+        public string BackendDonateInfoUrl { get; set; }
     }
 }
