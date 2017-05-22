@@ -11,6 +11,8 @@ using Toz.Dotnet.Models.EnumTypes;
 using Toz.Dotnet.Models.ViewModels;
 using Toz.Dotnet.Resources.Configuration;
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
+using Toz.Dotnet.Authorization;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -20,7 +22,7 @@ namespace Toz.Dotnet.Controllers
         private readonly IUsersManagementService _usersManagementService;
 
         public ScheduleController(IScheduleManagementService scheduleManagementService, IUsersManagementService usersManagementService,
-                                  IStringLocalizer<ScheduleController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService) : base(backendErrorsService, localizer, appSettings)
+                                  IStringLocalizer<ScheduleController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService, IAuthService authService) : base(backendErrorsService, localizer, appSettings, authService)
         {
             _scheduleManagementService = scheduleManagementService;
             _usersManagementService = usersManagementService;
@@ -28,7 +30,7 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<IActionResult> Index(int offset, CancellationToken cancellationToken)
         {     
-            List<Week> schedule = await _scheduleManagementService.GetSchedule(offset, cancellationToken);
+            List<Week> schedule = await _scheduleManagementService.GetSchedule(offset, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName), cancellationToken);
             return View(schedule);
         }
 
@@ -72,7 +74,7 @@ namespace Toz.Dotnet.Controllers
 
             if (ModelState.IsValid)
             {
-                Slot slot = _scheduleManagementService.FindSlot(token.Date, token.TimeOfDay);
+                Slot slot = _scheduleManagementService.FindSlot(token.Date, token.TimeOfDay, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName));
                 //User user = await _usersManagementService.FindUser(token.FirstName, token.LastName, cancellationToken);
                 UserBase user = new User()
                 {
@@ -80,7 +82,7 @@ namespace Toz.Dotnet.Controllers
                     FirstName = token.FirstName
                 };
 
-                if (await _scheduleManagementService.CreateReservation(slot, user, cancellationToken))
+                if (await _scheduleManagementService.CreateReservation(slot, user, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName), cancellationToken))
                 {
                     return Json(new { success = true });
                 }
@@ -95,7 +97,7 @@ namespace Toz.Dotnet.Controllers
         {
             if (!string.IsNullOrEmpty(id))
             {
-                await _scheduleManagementService.DeleteReservation(id, cancellationToken);
+                await _scheduleManagementService.DeleteReservation(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName), cancellationToken);
             }
 
             return RedirectToAction("Index");

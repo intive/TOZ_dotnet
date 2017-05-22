@@ -11,6 +11,8 @@ using Toz.Dotnet.Resources.Configuration;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using Toz.Dotnet.Authorization;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -23,7 +25,7 @@ namespace Toz.Dotnet.Controllers
         private string _validationPhotoAlert;
 
         public NewsController(IFilesManagementService filesManagementService, INewsManagementService newsManagementService,
-            IStringLocalizer<NewsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService) : base(backendErrorsService, localizer ,appSettings)
+            IStringLocalizer<NewsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService, IAuthService authService) : base(backendErrorsService, localizer ,appSettings, authService)
         {
             _filesManagementService = filesManagementService;
             _newsManagementService = newsManagementService;
@@ -31,9 +33,9 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            List<News> news = await _newsManagementService.GetAllNews();
+            List<News> news = await _newsManagementService.GetAllNews(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName));
             //todo add photo if will be avaialbe on backends
-            var img = _filesManagementService.DownloadImage(@"http://img.cda.pl/obr/thumbs/6adb80c33f5b55df46a481b57a61c64c.png_oooooooooo_273x.png");
+            var img = _filesManagementService.DownloadImage(@"http://img.cda.pl/obr/thumbs/6adb80c33f5b55df46a481b57a61c64c.png_oooooooooo_273x.png", AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName));
             var thumbnail = _filesManagementService.GetThumbnail(img);
             news.ForEach(n => n.Photo = _filesManagementService.ImageToByteArray(thumbnail)); // temporary
             return View(news.OrderByDescending(x => x.Published ?? DateTime.MaxValue).ThenByDescending(x => x.Title).ToList());
@@ -53,7 +55,7 @@ namespace Toz.Dotnet.Controllers
             
             if (result && ModelState.IsValid)
             {
-                if (await _newsManagementService.CreateNews(news))
+                if (await _newsManagementService.CreateNews(news, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName)))
                 {
                     _lastAcceptPhoto = null;
                     _validationPhotoAlert = null;
@@ -104,7 +106,7 @@ namespace Toz.Dotnet.Controllers
 
             if (result && ModelState.IsValid)
             {
-                if (await _newsManagementService.UpdateNews(news))
+                if (await _newsManagementService.UpdateNews(news, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName)))
                 {
                     _lastAcceptPhoto = null;
                     _validationPhotoAlert = null;
@@ -135,15 +137,15 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken) 
         {
-            return PartialView("Edit", await _newsManagementService.GetNews(id, cancellationToken));
+            return PartialView("Edit", await _newsManagementService.GetNews(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName)));
         }
 
         public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)
         {
-            var pet = await _newsManagementService.GetNews(id, cancellationToken);
+            var pet = await _newsManagementService.GetNews(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName), cancellationToken);
             if(pet != null)
             {
-                await _newsManagementService.DeleteNews(pet, cancellationToken);
+                await _newsManagementService.DeleteNews(pet, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName), cancellationToken);
             }
 
             return RedirectToAction("Index");
