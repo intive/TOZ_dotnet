@@ -46,7 +46,7 @@ namespace Toz.Dotnet.Core.Services
         public async Task<bool> DeletePet(Pet pet, CancellationToken cancelationToken = default(CancellationToken))
         {
             var address = $"{RequestUri}/{pet.Id}";
-            return await _restService.ExecuteDeleteAction(address, pet, cancelationToken);
+            return await _restService.ExecuteDeleteAction(address, cancelationToken);
         }
 
         public async Task<Pet> GetPet(string id, CancellationToken cancelationToken = default(CancellationToken))

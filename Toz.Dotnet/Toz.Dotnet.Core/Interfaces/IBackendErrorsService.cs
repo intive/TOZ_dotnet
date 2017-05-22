@@ -1,5 +1,4 @@
 ﻿using Toz.Dotnet.Models.Errors;
-using System;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Toz.Dotnet.Core.Interfaces

@@ -3,18 +3,17 @@ using Microsoft.AspNetCore.Mvc;
 using Toz.Dotnet.Core.Interfaces;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
+using Toz.Dotnet.Resources.Configuration;
 
 namespace Toz.Dotnet.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : TozControllerBase<HomeController>
     {
-        private IBackendErrorsService _backendErrorsService;
-        private IPetsManagementService _petsManagementService;
-
-        public HomeController(IPetsManagementService petsManagementService, IBackendErrorsService backendErrorsService)
+        public HomeController(IStringLocalizer<HomeController> localizer, IOptions<AppSettings> appSettings, 
+            IBackendErrorsService backendErrorsService) : base(backendErrorsService, localizer, appSettings)
         {
-            _petsManagementService = petsManagementService;
-            _backendErrorsService = backendErrorsService;
         }
 
         public IActionResult Index()

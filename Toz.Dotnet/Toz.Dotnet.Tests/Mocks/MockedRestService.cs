@@ -8,9 +8,9 @@ namespace Toz.Dotnet.Tests.Mocks
 {
     public class MockedRestService : IRestService
     {
-        public async Task<bool> ExecuteDeleteAction<T>(string address, T obj, CancellationToken cancelationToken = new CancellationToken()) where T : class
+        public async Task<bool> ExecuteDeleteAction(string address, CancellationToken cancelationToken = new CancellationToken())
         {
-            return IsValidData(address, obj);
+            return Uri.IsWellFormedUriString(address, UriKind.Absolute);
         }
 
         public async Task<T> ExecuteGetAction<T>(string address, CancellationToken cancelationToken = new CancellationToken()) where T : class

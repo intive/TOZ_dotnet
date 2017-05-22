@@ -117,34 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="PetList" xml:space="preserve">
-    <value>Pets list</value>
+  <data name="NewsTileDescription" xml:space="preserve">
+    <value>Pozwala przejrzeć listę aktualności</value>
   </data>
-  <data name="PetAdd" xml:space="preserve">
-    <value>Add a pet</value>
+  <data name="NewsTileTitle" xml:space="preserve">
+    <value>Lista aktualności</value>
   </data>
-  <data name="NewsList" xml:space="preserve">
-    <value>News list</value>
+  <data name="OrganizationTileDescription" xml:space="preserve">
+    <value>Pozwala ustawić bądź zaktualizować dane o firmie</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
+  <data name="OrganizationTileTitle" xml:space="preserve">
+    <value>Informacje o firmie</value>
   </data>
-  <data name="Users" xml:space="preserve">
-    <value>Users</value>
+  <data name="PetTileDescription" xml:space="preserve">
+    <value>Pozwala przejrzeć listę zwierzaków</value>
   </data>
-  <data name="Schedule" xml:space="preserve">
-    <value>Schedule</value>
+  <data name="PetTileTitle" xml:space="preserve">
+    <value>Lista zwierzaków</value>
   </data>
-  <data name="OrganizationInfo" xml:space="preserve">
-    <value>Organization Info</value>
+  <data name="ProposalsTileDescription" xml:space="preserve">
+    <value>Umożliwia akceptację zgłoszeń przesłanych przez użytkowników</value>
   </data>
-  <data name="HomePage" xml:space="preserve">
-    <value>Home page</value>
+  <data name="ProposalsTileTitle" xml:space="preserve">
+    <value>Lista zgłoszeń</value>
   </data>
-  <data name="Logout" xml:space="preserve">
-    <value>Logout</value>
+  <data name="SchedulerTileDescription" xml:space="preserve">
+    <value>Pozwala przypisać wolontariuszy do dyżurów</value>
   </data>
-  <data name="Proposals" xml:space="preserve">
-    <value>Proposals</value>
+  <data name="SchedulerTileTitle" xml:space="preserve">
+    <value>Kalendarz dyżurów</value>
+  </data>
+  <data name="UsersTileDescription" xml:space="preserve">
+    <value>Pozwala przejrzeć listę użytkowników</value>
+  </data>
+  <data name="UsersTileTitle" xml:space="preserve">
+    <value>Lista użytkowników</value>
   </data>
 </root>

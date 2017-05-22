@@ -1,8 +1,5 @@
-using System;
 using Microsoft.AspNetCore.Mvc;
 using Toz.Dotnet.Core.Interfaces;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
 namespace Toz.Dotnet.Controllers
