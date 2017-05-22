@@ -12,6 +12,8 @@ using Toz.Dotnet.Models.Schedule.ViewModels;
 using Toz.Dotnet.Resources.Configuration;
 using System.Globalization;
 using System.Linq;
+using Toz.Dotnet.Models.Schedule;
+using Period = Toz.Dotnet.Models.EnumTypes.Period;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -105,7 +107,8 @@ namespace Toz.Dotnet.Controllers
         {
             if (!string.IsNullOrEmpty(id))
             {
-                await _scheduleManagementService.DeleteReservation(id, cancellationToken);
+                Reservation r = await _scheduleManagementService.GetReservation(id, cancellationToken);
+                await _scheduleManagementService.DeleteReservation(r, cancellationToken);
             }
 
             return RedirectToAction("Index");

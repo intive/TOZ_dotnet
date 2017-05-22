@@ -15,7 +15,7 @@ namespace Toz.Dotnet.Core.Interfaces
         Task<Week> GetSchedule(int weekOffset, CancellationToken cancelationToken = default(CancellationToken));
         Task<Reservation> GetReservation(string id, CancellationToken cancelationToken = default(CancellationToken));
         Task<bool> CreateReservation(Slot slot, UserBase userBase, CancellationToken cancellationToken = default(CancellationToken));
-        Task<bool> DeleteReservation(string id, CancellationToken cancellationToken = default(CancellationToken));
+        Task<bool> DeleteReservation(Reservation r, CancellationToken cancellationToken = default(CancellationToken));
         Slot FindSlot(DateTime date, Period timeOfDay, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

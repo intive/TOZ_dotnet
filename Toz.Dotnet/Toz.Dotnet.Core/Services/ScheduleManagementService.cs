@@ -174,10 +174,10 @@ namespace Toz.Dotnet.Core.Services
             return await _restService.ExecutePostAction(address, reservation, cancellationToken);
         }
 
-        public async Task<bool> DeleteReservation(string id, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<bool> DeleteReservation(Reservation r, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var address = $"{RequestUri}/{id}";
-            //return await _restService.ExecuteDeleteAction<Reservation>(address, cancellationToken);
+            var address = $"{RequestUri}/{r.Id}";
+            return await _restService.ExecuteDeleteAction(address, r, cancellationToken);
         }
 
         public Slot FindSlot(DateTime date, Period timeOfDay, CancellationToken cancellationToken = default(CancellationToken))

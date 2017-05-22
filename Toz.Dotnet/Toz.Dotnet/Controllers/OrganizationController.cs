@@ -1,17 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Toz.Dotnet.Core.Interfaces;
-using Toz.Dotnet.Models;
 using Toz.Dotnet.Resources.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Localization;
 using System.Threading.Tasks;
 using System.Threading;
-using Toz.Dotnet.Models.OrganizationSubtypes;
+using Toz.Dotnet.Models.Organization;
 using System;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Routing;
-using Toz.Dotnet.Extensions;
 
 namespace Toz.Dotnet.Controllers
 {
