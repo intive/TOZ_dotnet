@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Toz.Dotnet.Models.Validation;
 
-namespace Toz.Dotnet.Models.OrganizationSubtypes
+namespace Toz.Dotnet.Models.Organization
 {
     public class BankAccount
     {

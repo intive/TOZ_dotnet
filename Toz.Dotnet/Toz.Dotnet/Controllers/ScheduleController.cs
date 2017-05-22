@@ -8,9 +8,10 @@ using Microsoft.Extensions.Options;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.EnumTypes;
-using Toz.Dotnet.Models.ViewModels;
+using Toz.Dotnet.Models.Schedule.ViewModels;
 using Toz.Dotnet.Resources.Configuration;
 using System.Globalization;
+using System.Linq;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -18,7 +19,7 @@ namespace Toz.Dotnet.Controllers
     {
         private readonly IScheduleManagementService _scheduleManagementService;
         private readonly IUsersManagementService _usersManagementService;
-        private IBackendErrorsService _backendErrorsService;
+        private readonly IBackendErrorsService _backendErrorsService;
         private readonly IStringLocalizer<ScheduleController> _localizer;
         private readonly AppSettings _appSettings;
 
@@ -34,7 +35,7 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<IActionResult> Index(int offset, CancellationToken cancellationToken)
         {     
-            List<Week> schedule = await _scheduleManagementService.GetSchedule(offset, cancellationToken);
+            List<Week> schedule = await _scheduleManagementService.GetInitialSchedule(cancellationToken);
             return View(schedule);
         }
 
@@ -48,45 +49,44 @@ namespace Toz.Dotnet.Controllers
             return RedirectToAction("Index", new {offset = +1});
         }
 
-        public IActionResult AddReservation(DateTime date, Period timeOfDay)
-        { 
-            if (date > DateTime.MinValue && date < DateTime.MaxValue)
+        public async Task<IActionResult> AddReservation(DateTime date, Period timeOfDay, CancellationToken cancellationToken)
+        {
+            if (date <= DateTime.MinValue || date >= DateTime.MaxValue)
             {
-                if (timeOfDay == Period.Afternoon || timeOfDay == Period.Morning)
-                {
-                    ReservationToken token = new ReservationToken()
-                    {
-                        Date = date
-                    };
-                    
-                    return PartialView(token);
-                }
+                return BadRequest();
             }
-            return BadRequest();
+
+            if (timeOfDay != Period.Afternoon && timeOfDay != Period.Morning)
+            {
+                return BadRequest();
+            }
+
+           List<User> volunteers = (await _usersManagementService.GetAllUsers(cancellationToken))
+                .Where(u => u.Roles.Contains(UserType.Volunteer))
+                .OrderBy(u => u.LastName)
+                .ToList();
+
+            ViewBag.Volunteers = volunteers;
+
+            var token = new ReservationToken()
+            {
+                Date = date
+            };
+
+            return PartialView(token);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddReservation(
-            [Bind("Date, TimeOfDay, FirstName, LastName")]
-            ReservationToken token, CancellationToken cancellationToken)
+        public async Task<IActionResult> AddReservation(ReservationToken token, CancellationToken cancellationToken)
         {
-            Console.WriteLine("SLOT DATE: " + token.Date + ", TIME: " + token.TimeOfDay);
-            Console.WriteLine("USER FIRST: " + token.FirstName + ", LAST: " + token.LastName);
-
-            token.Date = Convert.ToDateTime(token.Date.ToString(), CultureInfo.InvariantCulture);
+            token.Date = Convert.ToDateTime(token.Date.ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
 
             if (ModelState.IsValid)
             {
                 Slot slot = _scheduleManagementService.FindSlot(token.Date, token.TimeOfDay);
-                //User user = await _usersManagementService.FindUser(token.FirstName, token.LastName, cancellationToken);
-                UserBase user = new User()
-                {
-                    LastName = token.LastName,
-                    FirstName = token.FirstName
-                };
-
-                if (await _scheduleManagementService.CreateReservation(slot, user, cancellationToken))
+                
+                if (await _scheduleManagementService.CreateReservation(slot, token.Volunteer, cancellationToken))
                 {
                     return Json(new { success = true });
                 }
@@ -94,7 +94,7 @@ namespace Toz.Dotnet.Controllers
                 var overallError = _backendErrorsService.UpdateModelState(ModelState);
                 if (!string.IsNullOrEmpty(overallError))
                 {
-                    this.ViewData["UnhandledError"] = overallError;
+                    ViewData["UnhandledError"] = overallError;
                 }
             }
 

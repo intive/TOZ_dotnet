@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace Toz.Dotnet.Models.ViewModels
+namespace Toz.Dotnet.Models.Schedule.ViewModels
 {
     public class Week
     {

@@ -7,7 +7,9 @@ using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Resources.Configuration;
 using System.Linq;
-using Toz.Dotnet.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Toz.Dotnet.Models.Schedule;
+using Toz.Dotnet.Models.Schedule.ViewModels;
 using Period = Toz.Dotnet.Models.EnumTypes.Period;
 
 namespace Toz.Dotnet.Core.Services
@@ -19,127 +21,166 @@ namespace Toz.Dotnet.Core.Services
         private readonly IRestService _restService;
         private readonly IUsersManagementService _usersManagementService;
 
-        // Monday of the current week       
+        private const int DaysInWeek = 7;
+        private const int SlotsPerWeek = 14;
+
+        // Monday of the present calendar week       
         private DateTime _datum;
-        // Offset from the current week
-        private int _offset;        
-        // As per specification, Backend will return entries from 6 weeks based on the current date.
-        private Week[] _cache;    
-        //TODO: Delete after connecting with Backend API
-        private List<Reservation> _reservationsMockupDb;
-        
+        // Offset (in weeks) from the present calendar week to the week that is currently being viewed
+        private int _currentOffset;
+
+        // Stores all downloaded weeks to speed up browsing.
+        private List<Week> _cache;
+        // Cache index of the present calendar week
+        private int _currentWeekIndex;
+
 
         public ScheduleManagementService(IRestService restService, IUsersManagementService usersManagementService, IOptions<AppSettings> appSettings)
         {
             _restService = restService;
             _usersManagementService = usersManagementService;
-            _datum = GetFirstDayOfWeek(DateTime.Today);
             RequestUri = appSettings.Value.BackendScheduleUrl;
-            //TODO: Delete after connecting with Backend API
-            _reservationsMockupDb = new List<Reservation>();
         }
 
-        public async Task<List<Week>> GetSchedule(int weekOffset, CancellationToken cancelationToken = default(CancellationToken))
+        /// <summary>
+        /// Downloads schedule for the specified number of weeks. 
+        /// Starts with the current week and gets maximum 2 weeks from the past. The remaining weeks are always from the future.
+        /// </summary>
+        /// <param name="numberOfWeeks">Number of weeks to obtain (current week included).</param>
+        public async Task<List<Week>> GetInitialSchedule(CancellationToken cancellationToken = default(CancellationToken), int numberOfWeeks = 6)
         {
-            _offset += weekOffset;
-
-            if(_cache == null)
+            if (numberOfWeeks <= 0)
             {
-                CreateScheduleMockup();
+                throw new ArgumentException($"The specified, required number of weeks ({numberOfWeeks}) is not valid!");
             }
 
-            List<Week> schedule = new List<Week>();
+            _datum = GetFirstDayOfWeek(DateTime.Today);
+            _currentOffset = 0;
+            _cache = new List<Week>();
 
-            if (_cache.Length > _offset + 3 && _offset + 2 >= 0)
+            // Computes the required week counts:
+            int pastWeeksCount = (numberOfWeeks < 6) ? numberOfWeeks / 3 : 2;
+            int futureWeeksCount = numberOfWeeks - pastWeeksCount - 1;
+
+            // The current week will have the initial index (place in the cache) equal to pastWeeksCount:
+            _currentWeekIndex = pastWeeksCount;
+
+            // Creates the ViewModel structure for the obtained data:
+            for (int offset = -pastWeeksCount; offset <= futureWeeksCount; offset++)
             {
-                schedule.Add(_cache[2 + _offset]);
-                schedule.Add(_cache[3 + _offset]);
-            }
+                int i = offset + pastWeeksCount;
+                _cache[i] = new Week { DateFrom = _datum.AddDays(offset * DaysInWeek) };
 
-            return schedule;
-
-            //var address = $"{RequestUri}/?from={_datum.AddDays(7 * weekOffset)}&to={_datum.AddDays(8*weekOffset - 1)}";
-            //return await _restService.ExecuteGetAction<Schedule>(address, cancelationToken);
-        }
-
-        public async Task<Reservation> GetReservation(string id, CancellationToken cancelationToken = default(CancellationToken))
-        {
-            return _reservationsMockupDb.Find(p => p.Id == id);
-            //string address = $"{RequestUri}/{id}";
-            //return await _restService.ExecuteGetAction<Reservation>(address, cancelationToken);
-        }
-
-        public async Task<bool> CreateReservation(Slot slot, UserBase userData, CancellationToken cancelationToken = default(CancellationToken))
-        {
-            User user = await _usersManagementService.FindUser(userData.FirstName, userData.LastName, cancelationToken);
-
-            // Registers the user if not already registered:
-            if (user == null)
-            {
-                user = new User
+                for (int j = 0; j < SlotsPerWeek; j++)
                 {
-                    FirstName = userData.FirstName,
-                    LastName = userData.LastName
+                    _cache[i].Slots[j] = new Slot
+                    {
+                        Date = _cache[i].DateFrom.AddDays(Math.Round(j/2f)),
+                        TimeOfDay = (j % 2 == 0) ? Period.Morning : Period.Afternoon
+                    };
+                }
+            }
+
+            // Grabs all entries for specified number of weeks from Backend:
+            string dateFrom = _datum.AddDays(-pastWeeksCount * DaysInWeek).ToString("yyyy-MM-dd");
+            string dateTo = _datum.AddDays(futureWeeksCount * DaysInWeek - 1).ToString("yyyy-MM-dd");
+            var address = $"{RequestUri}/?from={dateFrom}&to={dateTo}";
+            Schedule schedule = await _restService.ExecuteGetAction<Schedule>(address, cancellationToken);
+
+            // Fills the structure with the entries:
+            foreach (var reservation in schedule.Reservations)
+            {
+                Slot s = FindSlot(DateTime.Parse(reservation.Date), reservation.StartTime.Equals("08:00") ? Period.Morning : Period.Afternoon, cancellationToken);
+                s.ReservationId = reservation.Id;
+                s.Volunteer = await _usersManagementService.GetUser(reservation.OwnerId, cancellationToken);
+            }
+
+            return _cache;
+        }
+
+        /// <summary>
+        /// Gets schedule for the selected week.
+        /// </summary>
+        /// <param name="weekOffset">Offset (in weeks) from the present calendar week to the selected one.</param>
+        public async Task<Week> GetSchedule(int weekOffset, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            // return if Week already in the cache:
+            int indexSought = _currentWeekIndex + weekOffset;
+            if (indexSought >= 0 && indexSought < _cache.Count)
+            {
+                return _cache[indexSought];
+            }
+
+            _currentOffset += weekOffset;
+            _currentWeekIndex += (weekOffset < 0) ? 1 : 0;
+
+            Week newWeek = new Week {DateFrom = _datum.AddDays(weekOffset * DaysInWeek)};
+
+            for (int j = 0; j < SlotsPerWeek; j++)
+            {
+                newWeek.Slots[j] = new Slot
+                {
+                    Date = newWeek.DateFrom.AddDays(Math.Round(j / 2f)),
+                    TimeOfDay = (j % 2 == 0) ? Period.Morning : Period.Afternoon
                 };
-                if(await _usersManagementService.CreateUser(user, cancelationToken) == false)
-                {
-                    return false;
-                }
-
-                user = await _usersManagementService.FindUser(userData.FirstName, userData.LastName, cancelationToken);
-                if (user == null)
-                {
-                    return false;
-                }
             }
+                
+            _cache.Insert(weekOffset < 0 ? 0 : _cache.Count-1, newWeek);
+
+            string dateFrom = _datum.AddDays(weekOffset * DaysInWeek).ToString("yyyy-MM-dd");
+            string dateTo = _datum.AddDays((weekOffset + 1) * DaysInWeek - 1).ToString("yyyy-MM-dd");
+            var address = $"{RequestUri}/?from={dateFrom}&to={dateTo}";
+            Schedule schedule = await _restService.ExecuteGetAction<Schedule>(address, cancellationToken);
+
+            foreach (var reservation in schedule.Reservations)
+            {
+                Slot s = FindSlot(DateTime.Parse(reservation.Date), reservation.StartTime.Equals("08:00") ? Period.Morning : Period.Afternoon, cancellationToken);
+                s.ReservationId = reservation.Id;
+                s.Volunteer = await _usersManagementService.GetUser(reservation.OwnerId, cancellationToken);
+            }
+
+            return newWeek;
+        }
+
+        public async Task<Reservation> GetReservation(string id, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            string address = $"{RequestUri}/{id}";
+            return await _restService.ExecuteGetAction<Reservation>(address, cancellationToken);
+        }
+
+        public async Task<bool> CreateReservation(Slot slot, UserBase userData, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            User user = await _usersManagementService.GetUser(userData.Id, cancellationToken);
 
             slot.Volunteer = user;
 
             // Creates a reservation for the user and adds it to reservation pool
-            Reservation r = new Reservation
+            long timeStamp = (long) (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
+            Reservation reservation = new Reservation
             {
                 OwnerId = user.Id,
-                Date = slot.Date,
+                OwnerName = user.FirstName,
+                OwnerSurname = user.LastName,
+                Date = slot.Date.ToString("yyyy-MM-dd"),
                 StartTime = (slot.TimeOfDay == Period.Morning) ? "08:00" : "12:00",
                 EndTime = (slot.TimeOfDay == Period.Morning) ? "12:00" : "16:00",
-                Created = DateTime.Today
-                //TODO: ModificationAuthorId: set to Id of the currently logged in user
+                Created = timeStamp,
+                LastModified = timeStamp
             };
 
-            //TODO: remove once BE is ready
-            _reservationsMockupDb.Add(r);
-            r.Id = _reservationsMockupDb.IndexOf(r).ToString();
-            slot.ReservationId = r.Id;
-            return true;
+            slot.ReservationId = reservation.Id;
 
-            //var address = RequestUri;
-            //return await _restService.ExecutePostAction(address, r, cancelationToken);
+            var address = RequestUri;
+            return await _restService.ExecutePostAction(address, reservation, cancellationToken);
         }
 
-        public async Task<bool> DeleteReservation(string id, CancellationToken cancelationToken = default(CancellationToken))
+        public async Task<bool> DeleteReservation(string id, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var r = await GetReservation(id, cancelationToken);
-            if(r != null)
-            {
-                foreach(Week w in _cache)
-                {
-                    Slot slot = w.Slots.FirstOrDefault(s => s.ReservationId == r.Id);
-                    if(slot != null)
-                    {
-                        slot.ReservationId = string.Empty;
-                        slot.Volunteer = null;
-                        break;
-                    }
-                }
-                _reservationsMockupDb.Remove(r);
-                return true;
-            }
-            return false;
-            //var address = $"{RequestUri}/{reservation.Id}";
-            //return await _restService.ExecuteDeleteAction(address, reservation, cancelationToken);
+            var address = $"{RequestUri}/{id}";
+            //return await _restService.ExecuteDeleteAction<Reservation>(address, cancellationToken);
         }
 
-        public Slot FindSlot(DateTime date, Period timeOfDay, CancellationToken cancelationToken = default(CancellationToken))
+        public Slot FindSlot(DateTime date, Period timeOfDay, CancellationToken cancellationToken = default(CancellationToken))
         {
             Week week = _cache.First(w => w.DateFrom == GetFirstDayOfWeek(date));
             return week.Slots.First(s => s.Date == date && s.TimeOfDay == timeOfDay);
@@ -147,53 +188,9 @@ namespace Toz.Dotnet.Core.Services
 
         private DateTime GetFirstDayOfWeek(DateTime input)
         {
-            const int countOfDaysInWeek = 7;
             int delta = DayOfWeek.Monday - input.DayOfWeek;
-            DateTime monday = input.AddDays((delta > 0) ? delta - countOfDaysInWeek : delta);
+            DateTime monday = input.AddDays(delta > 0 ? delta - DaysInWeek : delta);
             return monday;
-        }
-
-        // Creates a fake 6-weeks schedule with sample reservations
-        private async void CreateScheduleMockup()
-        {
-            const int countOfWeeks = 6;
-            const int countOfSlotsInOneWeek = 14;
-            // Set-up weeks
-            _cache = new Week[countOfWeeks];  
-            for (int i=0; i< countOfWeeks; i++)
-            {
-                _cache[i] = new Week();
-            }
-
-            _cache[0].DateFrom = _datum.AddDays(-14);
-            _cache[1].DateFrom = _datum.AddDays(-7);
-            _cache[2].DateFrom = _datum;
-            _cache[3].DateFrom = _datum.AddDays(7);
-            _cache[4].DateFrom = _datum.AddDays(14);
-            _cache[5].DateFrom = _datum.AddDays(21);
-
-            // Set-up slots for each week
-            foreach(var week in _cache)
-            {
-                for(int i=0; i< countOfSlotsInOneWeek; i++)
-                {
-                    week.Slots[i] = new Slot
-                    {
-                        Date = week.DateFrom.AddDays((int)(i/2)),
-                        TimeOfDay = (i%2 == 0) ? Period.Morning : Period.Afternoon             
-                    };
-                }
-            }
-            
-            /*// Fill the calendar with sample users
-            _usersManagementService.SetupSampleUsers();
-            Random r = new Random();
-            for(int i=0; i<r.Next(5,30); i++)
-            {
-                Slot randomSlot = _cache[r.Next(0,5)].Slots[r.Next(0,13)];
-                randomSlot.Volunteer = _usersManagementService.GetRandomVolunteer();
-                await CreateReservation(randomSlot, randomSlot.Volunteer);
-            }*/
         }
     }
 }

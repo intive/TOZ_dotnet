@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace Toz.Dotnet.Models.OrganizationSubtypes
+namespace Toz.Dotnet.Models.Organization
 {
     public class Contact
     {
