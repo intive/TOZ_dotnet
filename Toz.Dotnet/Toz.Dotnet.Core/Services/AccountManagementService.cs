@@ -23,7 +23,7 @@ namespace Toz.Dotnet.Core.Services
 
         public async Task<JwtToken> LogIn(Login login, CancellationToken cancelationToken = default(CancellationToken))
         {
-            return await _restService.ExecutePostAction<JwtToken, Login>(RequestUri, login, cancelationToken);
+            return await _restService.ExecutePostAction<JwtToken, Login>(RequestUri, login, cancelationToken: cancelationToken);
         }
     }
 }

@@ -8,34 +8,46 @@ namespace Toz.Dotnet.Tests.Mocks
 {
     public class MockedRestService : IRestService
     {
-        public async Task<bool> ExecuteDeleteAction(string address, CancellationToken cancelationToken = new CancellationToken())
+        public async Task<bool> ExecuteDeleteAction(string address, string token, CancellationToken cancelationToken = new CancellationToken())
         {
             return Uri.IsWellFormedUriString(address, UriKind.Absolute);
         }
 
-        public async Task<T> ExecuteGetAction<T>(string address, CancellationToken cancelationToken = new CancellationToken()) where T : class
+        public async Task<T> ExecuteGetAction<T>(string address, string token, CancellationToken cancelationToken = new CancellationToken()) where T : class
         {
             var mockedObject = new Mock<T>();
-            if (IsValidData(address,mockedObject.Object))
+            if (IsValidData(address,mockedObject.Object, token))
             {
                 return mockedObject.Object;
             }
             return default(T);
         }
 
-        public async Task<bool> ExecutePostAction<T>(string address, T obj, CancellationToken cancelationToken = new CancellationToken()) where T : class
+        public async Task<bool> ExecutePostAction<T>(string address, T obj, string token, CancellationToken cancelationToken = new CancellationToken()) where T : class
         {
-            return IsValidData(address, obj);
+            return IsValidData(address, obj, token);
         }
 
-        public async Task<bool> ExecutePutAction<T>(string address, T obj, CancellationToken cancelationToken = new CancellationToken()) where T : class
+        public async Task<T1> ExecutePostAction<T1, T2>(string address, T2 obj, string token = null, CancellationToken cancelationToken = default(CancellationToken))
+        where T1 : class
+        where T2 : class
         {
-            return IsValidData(address, obj);
+            var mockedObject = new Mock<T1>();
+            if (IsValidData(address, obj, token))
+            {
+                return mockedObject.Object;
+            }
+            return default(T1);
         }
 
-        private bool IsValidData<T>(string address, T obj)
+        public async Task<bool> ExecutePutAction<T>(string address, T obj, string token, CancellationToken cancelationToken = new CancellationToken()) where T : class
         {
-            if (string.IsNullOrEmpty(address) || obj == null || !Uri.IsWellFormedUriString(address, UriKind.Absolute))
+            return IsValidData(address, obj, token);
+        }
+
+        private bool IsValidData<T>(string address, T obj, string token)
+        {
+            if (string.IsNullOrEmpty(address) || obj == null || !Uri.IsWellFormedUriString(address, UriKind.Absolute) || token == null)
             {
                 return false;
             }

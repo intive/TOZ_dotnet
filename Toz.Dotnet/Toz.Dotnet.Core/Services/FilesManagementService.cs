@@ -9,14 +9,14 @@ namespace Toz.Dotnet.Core.Services
 {
     public class FilesManagementService : IFilesManagementService
     {
-        public Image DownloadImage(string address, string token)
+        public Image DownloadImage(string address)
         {
             HttpClient httpClient = new HttpClient();
             var imgBytes = httpClient.GetStreamAsync(address);
             return Image.FromStream(imgBytes.Result);
         }
 
-        public bool UploadImage(Image image, string token)
+        public bool UploadImage(Image image)
         {
             //todo: use a magic craft to send image to the backend.
             return true;

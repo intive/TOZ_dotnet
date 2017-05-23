@@ -93,7 +93,7 @@ namespace Toz.Dotnet.Core.Services
             }
         }
 
-        public async Task<T1> ExecutePostAction<T1, T2>(string address, T2 obj, CancellationToken cancelationToken = default(CancellationToken)) where T1: class where T2: class
+        public async Task<T1> ExecutePostAction<T1, T2>(string address, T2 obj, string token = default(string), CancellationToken cancelationToken = default(CancellationToken)) where T1: class where T2: class
         {
             if (obj == null)
             {
@@ -107,7 +107,7 @@ namespace Toz.Dotnet.Core.Services
 
             var httpContent = new StringContent(serializedObject, Encoding.UTF8, RestMediaType);
 
-            using (var client = new HttpClient())
+            using (var client = (token == default(string)) ? new HttpClient() : CreateHttpClient(token))
             {
                 try
                 {

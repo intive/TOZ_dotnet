@@ -15,6 +15,7 @@ namespace Toz.Dotnet.Tests.Tests
     {
         private readonly IHowToHelpInformationService _howToHelpInformationService;
         private readonly HowToHelpInfo _testingObject;
+        private readonly JwtToken _token;
 
         public HotToHelpInfoManagementTests()
         {
@@ -22,6 +23,7 @@ namespace Toz.Dotnet.Tests.Tests
             _howToHelpInformationService.BecomeVolunteerUrl = RequestUriHelper.OrganizationInfoUri;
             _howToHelpInformationService.DonateInfoUrl = RequestUriHelper.HowToHelpUri;
             _testingObject = TestingObjectProvider.Instance.HowToHelpInfo;
+            _token = TestingObjectProvider.Instance.JwtToken;
         }
 
         [Fact]
@@ -33,13 +35,13 @@ namespace Toz.Dotnet.Tests.Tests
         [Fact]
         public async void TestOfGettingBecomeVolunteerInfo()
         {
-            Assert.NotNull(await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.BecomeVolunteer));
+            Assert.NotNull(await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.BecomeVolunteer, _token.Jwt));
         }
 
         [Fact]
         public async void TestOfGettingDonateInfo()
         {
-            Assert.NotNull(await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.Donate));
+            Assert.NotNull(await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.Donate, _token.Jwt));
         }
 
         [Fact]
@@ -55,13 +57,13 @@ namespace Toz.Dotnet.Tests.Tests
         [Fact]
         public async void TestOfUpdatingBecomeVolunteerInfo()
         {
-            Assert.True(await _howToHelpInformationService.UpdateOrCreateHelpInfo(_testingObject, HowToHelpInfoType.BecomeVolunteer));
+            Assert.True(await _howToHelpInformationService.UpdateOrCreateHelpInfo(_testingObject, HowToHelpInfoType.BecomeVolunteer, _token.Jwt));
         }
 
         [Fact]
         public async void TestOfUpdatingDonateInfo()
         {
-            Assert.True(await _howToHelpInformationService.UpdateOrCreateHelpInfo(_testingObject, HowToHelpInfoType.Donate));
+            Assert.True(await _howToHelpInformationService.UpdateOrCreateHelpInfo(_testingObject, HowToHelpInfoType.Donate, _token.Jwt));
         }
 
         [Fact]
@@ -69,7 +71,7 @@ namespace Toz.Dotnet.Tests.Tests
         {
             _howToHelpInformationService.BecomeVolunteerUrl = RequestUriHelper.WrongUrl;
             _howToHelpInformationService.DonateInfoUrl = RequestUriHelper.WrongUrl;
-            Assert.Null(_howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.BecomeVolunteer).Result);
+            Assert.Null(_howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.BecomeVolunteer, _token.Jwt).Result);
 
             _howToHelpInformationService.BecomeVolunteerUrl = RequestUriHelper.HowToHelpUri;
             _howToHelpInformationService.DonateInfoUrl = RequestUriHelper.HowToHelpUri;

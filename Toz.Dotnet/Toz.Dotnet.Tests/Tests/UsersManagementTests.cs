@@ -13,12 +13,14 @@ namespace Toz.Dotnet.Tests.Tests
     {
         private readonly IUsersManagementService _userManagementService;
         private readonly User _testUser;
+        private readonly JwtToken _token;
 
         public UserManagementTest()
         {
             _userManagementService = ServiceProvider.Instance.Resolve<IUsersManagementService>();
             _userManagementService.RequestUri = RequestUriHelper.UsersUri;
             _testUser = TestingObjectProvider.Instance.User;
+            _token = TestingObjectProvider.Instance.JwtToken;
         }
 
         [Fact]
@@ -36,38 +38,38 @@ namespace Toz.Dotnet.Tests.Tests
         [Fact]
         public async void TestOfGettingAllUsers()
         {
-            Assert.NotNull(await _userManagementService.GetAllUsers());
+            Assert.NotNull(await _userManagementService.GetAllUsers(_token.Jwt));
         }
          
         [Fact]
         public async void TestOfCreatingNewUser()
         {
-            Assert.True(await _userManagementService.CreateUser(_testUser));
+            Assert.True(await _userManagementService.CreateUser(_testUser, _token.Jwt));
         }
 
         [Fact]
         public async void TestOfGettingSpecifiedUser()
         {
-            Assert.True(await _userManagementService.DeleteUser(_testUser));
+            Assert.True(await _userManagementService.DeleteUser(_testUser, _token.Jwt));
         }
 
         [Fact]
         public async void TestOfUserUpdating()
         {
-            Assert.True(await _userManagementService.UpdateUser(_testUser));
+            Assert.True(await _userManagementService.UpdateUser(_testUser, _token.Jwt));
         }
 
         [Fact]
         public void TestOfUpdatingPetWithNullValue()
         {
-            var exception = Record.Exception(() => _userManagementService.UpdateUser(null).Result);
+            var exception = Record.Exception(() => _userManagementService.UpdateUser(null, _token.Jwt).Result);
             Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
         }
 
         [Fact]
         public void TestOfDeletingPetThatIsNull()
         {
-            var exception = Record.Exception(() => _userManagementService.DeleteUser(null).Result);
+            var exception = Record.Exception(() => _userManagementService.DeleteUser(null, _token.Jwt).Result);
             Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
         }
 
@@ -75,7 +77,7 @@ namespace Toz.Dotnet.Tests.Tests
         public void TestOfGettingAllPetsUsingWrongUrl()
         {
             _userManagementService.RequestUri = RequestUriHelper.WrongUrl;
-            Assert.Null(_userManagementService.GetAllUsers().Result);
+            Assert.Null(_userManagementService.GetAllUsers(_token.Jwt).Result);
             _userManagementService.RequestUri = RequestUriHelper.PetsUri;
         }
 

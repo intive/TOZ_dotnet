@@ -94,6 +94,17 @@ namespace Toz.Dotnet.Tests.Helpers
                 Description = "Deskrypszyn",
                 ModificationTime = DateTime.Now
             };
+
+            JwtToken = new JwtToken()
+            {
+                UserId = Guid.NewGuid().ToString(),
+                Name = "TestName",
+                Surname = "TestSurname",
+                Roles = new string[] { "TestRole1" },
+                Email = "testEmail@test.com",
+                ExpirationDateSeconds = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + 360,
+                Jwt = "Token"
+            };
         }
 
         public Pet Pet { get; }
@@ -102,6 +113,7 @@ namespace Toz.Dotnet.Tests.Helpers
         public User User { get; }
         public Proposal Proposal { get; }
         public HowToHelpInfo HowToHelpInfo { get; set; }
+        public JwtToken JwtToken { get; set; }
 
         public T DoShallowCopy<T>(T value) where T : new()
         {

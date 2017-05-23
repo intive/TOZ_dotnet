@@ -24,6 +24,7 @@ namespace Toz.Dotnet.Tests.Helpers
             _server = new TestServer(new WebHostBuilder().UseEnvironment("Development").UseStartup<Startup>().ConfigureServices(
                 services =>
                 {
+
                     services.AddSingleton<IRestService>(serviceProvider => mockedRestService);
                 }));           
         }

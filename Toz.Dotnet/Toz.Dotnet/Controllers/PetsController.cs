@@ -34,7 +34,7 @@ namespace Toz.Dotnet.Controllers
         {
             List<Pet> pets = await _petsManagementService.GetAllPets(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName));
             //todo add photo if will be avaialbe on backends
-            var img = _filesManagementService.DownloadImage(@"http://i.pinger.pl/pgr167/7dc36d63001e9eeb4f01daf3/kot%20ze%20shreka9.jpg", AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName));
+            var img = _filesManagementService.DownloadImage(@"http://i.pinger.pl/pgr167/7dc36d63001e9eeb4f01daf3/kot%20ze%20shreka9.jpg");
             var thumbnail = _filesManagementService.GetThumbnail(img);
             pets.ForEach(pet => pet.Photo = _filesManagementService.ImageToByteArray(thumbnail)); // temporary
             return View(pets.OrderByDescending(x => x.Created).ThenByDescending(x => x.LastModified).ToList());

@@ -5,7 +5,8 @@ namespace Toz.Dotnet.Tests.Tests
 {
     public class AuthorizationServiceTests
     {
-        private Mock<IAuthService> _authServiceMock;
+        //private Mock<IAuthService> _authServiceMock;
+
         public AuthorizationServiceTests()
         {
             //TODO: add implementation when service will be finished

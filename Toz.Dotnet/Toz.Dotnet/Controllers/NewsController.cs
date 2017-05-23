@@ -35,7 +35,7 @@ namespace Toz.Dotnet.Controllers
         {
             List<News> news = await _newsManagementService.GetAllNews(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName));
             //todo add photo if will be avaialbe on backends
-            var img = _filesManagementService.DownloadImage(@"http://img.cda.pl/obr/thumbs/6adb80c33f5b55df46a481b57a61c64c.png_oooooooooo_273x.png", AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName));
+            var img = _filesManagementService.DownloadImage(@"http://img.cda.pl/obr/thumbs/6adb80c33f5b55df46a481b57a61c64c.png_oooooooooo_273x.png");
             var thumbnail = _filesManagementService.GetThumbnail(img);
             news.ForEach(n => n.Photo = _filesManagementService.ImageToByteArray(thumbnail)); // temporary
             return View(news.OrderByDescending(x => x.Published ?? DateTime.MaxValue).ThenByDescending(x => x.Title).ToList());

@@ -13,12 +13,14 @@ namespace Toz.Dotnet.Tests.Tests
     {
         private readonly INewsManagementService _newsManagementService;
         private readonly News _testingNews;
+        private readonly JwtToken _token;
 
         public NewsManagementTest()
         {
             _newsManagementService = ServiceProvider.Instance.Resolve<INewsManagementService>();
             _newsManagementService.RequestUri = RequestUriHelper.NewsUri;
             _testingNews = TestingObjectProvider.Instance.News;
+            _token = TestingObjectProvider.Instance.JwtToken;
         }
         
         [Fact]
@@ -36,45 +38,45 @@ namespace Toz.Dotnet.Tests.Tests
         [Fact]
         public async void TestOfGettingAllNews()
         {
-            Assert.NotNull(await _newsManagementService.GetAllNews());
+            Assert.NotNull(await _newsManagementService.GetAllNews(_token.Jwt));
         }
          
         [Fact]
         public async void TestOfCreatingNewNews()
         {
-            Assert.True(await _newsManagementService.CreateNews(_testingNews));
+            Assert.True(await _newsManagementService.CreateNews(_testingNews, _token.Jwt));
         }
 
         [Fact]
         public async void TestOfDeletingSpecifiedNews()
         {
-            Assert.True(await _newsManagementService.DeleteNews(_testingNews));
+            Assert.True(await _newsManagementService.DeleteNews(_testingNews, _token.Jwt));
         }
 
         [Fact]
         public async void TestOfGettingSpecifiedNews()
         {
-            Assert.NotNull(await _newsManagementService.GetNews(_testingNews.Id));         
+            Assert.NotNull(await _newsManagementService.GetNews(_testingNews.Id, _token.Jwt));         
         }
 
         
         [Fact]
         public async void TestOUpdatingNews()
         {
-           Assert.True(await _newsManagementService.UpdateNews(_testingNews));
+           Assert.True(await _newsManagementService.UpdateNews(_testingNews, _token.Jwt));
         }
 
         [Fact]
         public void TestOfUpdatingPetWithNullValue()
         {
-            var exception = Record.Exception(() => _newsManagementService.UpdateNews(null).Result);
+            var exception = Record.Exception(() => _newsManagementService.UpdateNews(null, _token.Jwt).Result);
             Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
         }
 
         [Fact]
         public void TestOfDeletingPetThatIsNull()
         {
-            var exception = Record.Exception(() => _newsManagementService.DeleteNews(null).Result);
+            var exception = Record.Exception(() => _newsManagementService.DeleteNews(null, _token.Jwt).Result);
             Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
         }
 
@@ -82,7 +84,7 @@ namespace Toz.Dotnet.Tests.Tests
         public void TestOfGettingAllPetsUsingWrongUrl()
         {
             _newsManagementService.RequestUri = RequestUriHelper.WrongUrl;
-            Assert.Null(_newsManagementService.GetAllNews().Result);
+            Assert.Null(_newsManagementService.GetAllNews(_token.Jwt).Result);
             _newsManagementService.RequestUri = RequestUriHelper.PetsUri;
         }
 
