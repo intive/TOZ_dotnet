@@ -17,7 +17,7 @@ namespace Toz.Dotnet.Core.Services
         public UsersManagementService(IRestService restService, IOptions<AppSettings> appSettings)
         {
             _restService = restService;
-            RequestUri = appSettings.Value.BackendUsersUrl;
+            RequestUri = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendUsersUrl;
         }
 
 		public async Task<List<User>> GetAllUsers(CancellationToken cancelationToken = default(CancellationToken))
@@ -58,7 +58,7 @@ namespace Toz.Dotnet.Core.Services
         public async Task<bool> DeleteUser(User user, CancellationToken cancelationToken = default(CancellationToken))
         {
             var address = $"{RequestUri}/{user.Id}";
-            return await _restService.ExecuteDeleteAction(address, user, cancelationToken);
+            return await _restService.ExecuteDeleteAction(address, cancelationToken);
         }
 
         public async Task<User> GetUser(string id, CancellationToken cancelationToken = default(CancellationToken))

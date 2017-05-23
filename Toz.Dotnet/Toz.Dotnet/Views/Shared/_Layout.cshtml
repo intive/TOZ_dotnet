@@ -61,18 +61,19 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">TOZ.Dotnet</a>
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">TOZ.Dotnet</a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
                     @if (_iAuthService.IsAuth == true)
                     {
-                        <li><a asp-controller="Home" asp-action="Index">@Localizer["HomePage"]</a></li>
                         <li><a asp-controller="Pets" asp-action="Index">@Localizer["PetList"]</a></li>
                         <li><a asp-controller="News" asp-action="Index">@Localizer["NewsList"]</a></li>
                         <li><a asp-controller="Users" asp-action="Index">@Localizer["Users"]</a></li>
                         <li><a asp-controller="Schedule" asp-action="Index">@Localizer["Schedule"]</a></li>
                         <li><a asp-controller="Organization" asp-action="Info">@Localizer["OrganizationInfo"]</a></li>
+                        <li><a asp-controller="Proposals" asp-action="Index">@Localizer["Proposals"]</a></li>
+                        <li><a asp-controller="HowToHelp" asp-action="Info">@Localizer["HowToHelp"]</a></li>
                     }
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

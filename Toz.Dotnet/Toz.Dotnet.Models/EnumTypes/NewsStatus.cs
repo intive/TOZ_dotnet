@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using System.Runtime.Serialization;
 
 namespace Toz.Dotnet.Models.EnumTypes

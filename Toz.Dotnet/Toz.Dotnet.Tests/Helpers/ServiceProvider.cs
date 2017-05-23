@@ -1,8 +1,6 @@
-using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.AspNetCore.Hosting;
-using Moq;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Tests.Mocks;
 

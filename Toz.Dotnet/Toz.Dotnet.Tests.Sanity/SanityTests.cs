@@ -2,6 +2,14 @@ using Xunit;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Tests.Helpers;
 using System;
+using System.Collections.Generic;
+using System.Threading;
+using Microsoft.Extensions.Options;
+using Moq;
+using Toz.Dotnet.Core.Services;
+using Toz.Dotnet.Models;
+using Toz.Dotnet.Models.EnumTypes;
+using Toz.Dotnet.Resources.Configuration;
 
 namespace Toz.Dotnet.Tests.Sanity
 {
@@ -12,6 +20,8 @@ namespace Toz.Dotnet.Tests.Sanity
         private readonly IUsersManagementService _userManagementService;
         private readonly IFilesManagementService _filesManagementService;
         private readonly IOrganizationManagementService _organizationManagementService;
+        private readonly IProposalsManagementService _proposalsManagementService;
+        private readonly IHowToHelpInformationService _howToHelpInformationService;
 
         public SanityTests()
         {
@@ -20,11 +30,16 @@ namespace Toz.Dotnet.Tests.Sanity
             _userManagementService = ServiceProvider.Instance.Resolve<IUsersManagementService>();
             _filesManagementService = ServiceProvider.Instance.Resolve<IFilesManagementService>();
             _organizationManagementService = ServiceProvider.Instance.Resolve<IOrganizationManagementService>();
+            _proposalsManagementService = ServiceProvider.Instance.Resolve<IProposalsManagementService>();
+            _howToHelpInformationService = ServiceProvider.Instance.Resolve<IHowToHelpInformationService>();
 
             _petsManagementService.RequestUri = RequestUriHelper.PetsUri;
             _newsManagementService.RequestUri = RequestUriHelper.NewsUri;
             _userManagementService.RequestUri = RequestUriHelper.UsersUri;
             _organizationManagementService.RequestUri = RequestUriHelper.OrganizationInfoUri;
+            _proposalsManagementService.RequestUri = RequestUriHelper.ProposalsUri;
+            _howToHelpInformationService.BecomeVolunteerUrl = RequestUriHelper.HowToHelpUri;
+            _howToHelpInformationService.DonateInfoUrl = RequestUriHelper.HowToHelpUri;
         }
 
         [Fact]
@@ -88,7 +103,8 @@ namespace Toz.Dotnet.Tests.Sanity
         public void FilesFunctionalityTest()
         {
             //Download image
-            var img = _filesManagementService.DownloadImage(@"http://i.pinger.pl/pgr167/7dc36d63001e9eeb4f01daf3/kot%20ze%20shreka9.jpg");
+            var img = _filesManagementService.DownloadImage(
+                @"http://i.pinger.pl/pgr167/7dc36d63001e9eeb4f01daf3/kot%20ze%20shreka9.jpg");
             Assert.NotNull(img);
             //Get thumbnail
             Assert.NotNull(_filesManagementService.GetThumbnail(img));
@@ -97,6 +113,58 @@ namespace Toz.Dotnet.Tests.Sanity
             //Byte array to image
             var imgBytes = _filesManagementService.ImageToByteArray(img);
             Assert.NotNull(_filesManagementService.ByteArrayToImage(imgBytes));
+        }
+
+        [Fact]
+        public void ProposalsFunctionalityTest()
+        {
+            var proposal = TestingObjectProvider.Instance.Proposal;
+
+            var restServiceMock = new Mock<IRestService>();
+            restServiceMock.Setup(s => s.ExecuteGetAction<List<Proposal>>(
+                    It.IsAny<string>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new List<Proposal>()
+                {
+                    TestingObjectProvider.Instance.DoShallowCopy(proposal)
+                });
+            restServiceMock.Setup(s => s.ExecuteGetAction<Proposal>(
+                    It.IsAny<string>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(TestingObjectProvider.Instance.DoShallowCopy(proposal));
+
+            restServiceMock.Setup(s => s.ExecutePutAction<Proposal>(
+                    It.IsAny<string>(),
+                    It.IsAny<Proposal>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
+
+            var options = ServiceProvider.Instance.Resolve<IOptions<AppSettings>>();
+            var proposalManagementService =
+                new ProposalsManagementService(restServiceMock.Object, options)
+                {
+                    RequestUri = RequestUriHelper.ProposalsUri,
+                    ActivationRequestUri = RequestUriHelper.ProposalsUri
+                };
+
+            Assert.NotNull(_proposalsManagementService.CreateProposal(proposal).Result);
+            Assert.True(_proposalsManagementService.DeleteProposal(proposal).Result);
+            Assert.True(_proposalsManagementService.UpdateProposal(proposal).Result);
+            Assert.NotNull(proposalManagementService.RequestUri);
+            Assert.NotNull(proposalManagementService.ActivationRequestUri);
+            Assert.True(proposalManagementService.SendActivationEmail(proposal.Id).Result);
+            Assert.NotNull(proposalManagementService.GetProposal(proposal.Id).Result);
+        }
+
+        [Fact]
+        public async void HowToHelpFunctionalityTest()
+        {
+            var info = TestingObjectProvider.Instance.HowToHelpInfo;
+
+            Assert.NotNull(await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.BecomeVolunteer));
+            Assert.NotNull(await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.Donate));
+            Assert.True(await _howToHelpInformationService.UpdateOrCreateHelpInfo(info, HowToHelpInfoType.BecomeVolunteer));
+            Assert.True(await _howToHelpInformationService.UpdateOrCreateHelpInfo(info, HowToHelpInfoType.Donate));
         }
     }
 }

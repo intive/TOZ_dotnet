@@ -10,20 +10,14 @@ using Toz.Dotnet.Resources.Configuration;
 
 namespace Toz.Dotnet.Controllers
 {
-    public class UsersController : Controller
+    public class UsersController : TozControllerBase<UsersController>
     {
-        private IUsersManagementService _usersManagementService;
-        private IBackendErrorsService _backendErrorsService;
-        private readonly IStringLocalizer<UsersController> _localizer;
-        private readonly AppSettings _appSettings;
+        private readonly IUsersManagementService _usersManagementService;
 
         public UsersController(IUsersManagementService usersManagementService, IStringLocalizer<UsersController> localizer,
-            IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService)
+            IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService) : base(backendErrorsService,localizer,appSettings)
         {
             _usersManagementService = usersManagementService;
-            _localizer = localizer;
-            _appSettings = appSettings.Value;
-            _backendErrorsService = backendErrorsService;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
@@ -50,11 +44,7 @@ namespace Toz.Dotnet.Controllers
                     return Json(new { success = true });
                 }
 
-                var overallError = _backendErrorsService.UpdateModelState(ModelState);
-                if (!string.IsNullOrEmpty(overallError))
-                {
-                    this.ViewData["UnhandledError"] = overallError;
-                }
+                CheckUnexpectedErrors();
                 return PartialView(user);
             }
             return PartialView(user);
@@ -77,7 +67,7 @@ namespace Toz.Dotnet.Controllers
                 {
                     return Json(new { success = true });
                 }
-                var overallError = _backendErrorsService.UpdateModelState(ModelState);
+                var overallError = BackendErrorsService.UpdateModelState(ModelState);
                 if (!string.IsNullOrEmpty(overallError))
                 {
                     this.ViewData["UnhandledError"] = overallError;

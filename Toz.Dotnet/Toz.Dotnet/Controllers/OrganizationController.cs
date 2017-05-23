@@ -6,29 +6,19 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Localization;
 using System.Threading.Tasks;
 using System.Threading;
-using Toz.Dotnet.Models.OrganizationSubtypes;
 using System;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Routing;
-using Toz.Dotnet.Extensions;
 
 namespace Toz.Dotnet.Controllers
 {
-    public class OrganizationController : Controller
+    public class OrganizationController : TozControllerBase<OrganizationController>
     {
-        private IOrganizationManagementService _organizationManagementService;
-        private IBackendErrorsService _backendErrorsService;
-        private readonly IStringLocalizer<OrganizationController> _localizer;
-        private readonly AppSettings _appSettings;
+        private readonly IOrganizationManagementService _organizationManagementService;
 
         public OrganizationController(IOrganizationManagementService organizationManagementService, IStringLocalizer<OrganizationController> localizer,
-            IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService)
+            IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService) : base(backendErrorsService, localizer, appSettings)
         {
             _organizationManagementService = organizationManagementService;
-            _localizer = localizer;
-            _appSettings = appSettings.Value;
-            _backendErrorsService = backendErrorsService;
         }
 
 
@@ -58,11 +48,7 @@ namespace Toz.Dotnet.Controllers
                     return RedirectToAction("Info", new RouteValueDictionary(new { edit = false }));
                 }
 
-                var overallError = _backendErrorsService.UpdateModelState(ModelState);
-                if (!string.IsNullOrEmpty(overallError))
-                {
-                    this.ViewData["UnhandledError"] = overallError;
-                }
+                CheckUnexpectedErrors();
             }
 
             ViewData["EditMode"] = true;

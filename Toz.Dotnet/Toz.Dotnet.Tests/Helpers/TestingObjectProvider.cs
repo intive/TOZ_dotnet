@@ -36,6 +36,18 @@ namespace Toz.Dotnet.Tests.Helpers
                 Roles = new[] { UserType.Volunteer }
             };
 
+            this.Proposal = new Proposal()
+            {
+                Id = Guid.NewGuid().ToString(),
+                FirstName = "Mariusz",
+                LastName = "Wolonatriusz",
+                PhoneNumber = "123456789",
+                Email = "test@test.com",
+                Roles = new[] { UserType.Volunteer },
+                CreationTime = DateTime.Now,
+                IsRead = false
+            };
+
             News = new News
             {
                 Id = Guid.NewGuid().ToString(),
@@ -73,7 +85,14 @@ namespace Toz.Dotnet.Tests.Helpers
                     Fax = "123456789",
                     Phone = "123456789",
                     Website = "http://testwebsite.com"
-                }
+                },
+                
+            };
+
+            HowToHelpInfo = new HowToHelpInfo()
+            {
+                Description = "Deskrypszyn",
+                ModificationTime = DateTime.Now
             };
         }
 
@@ -81,6 +100,8 @@ namespace Toz.Dotnet.Tests.Helpers
         public News News { get; }
         public Organization Organization { get; }
         public User User { get; }
+        public Proposal Proposal { get; }
+        public HowToHelpInfo HowToHelpInfo { get; set; }
 
         public T DoShallowCopy<T>(T value) where T : new()
         {
