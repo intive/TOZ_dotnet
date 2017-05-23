@@ -20,7 +20,7 @@ namespace Toz.Dotnet.Core.Services
             _filesManagementService = filesManagementService;
             _restService = restService;
 
-            RequestUri = appSettings.Value.BackendPetsUrl;
+            RequestUri = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendPetsUrl;
         }
 
 		public async Task<List<Pet>> GetAllPets(CancellationToken cancelationToken = default(CancellationToken))

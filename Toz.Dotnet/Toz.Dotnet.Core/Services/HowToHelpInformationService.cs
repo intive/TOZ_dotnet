@@ -19,8 +19,8 @@ namespace Toz.Dotnet.Core.Services
         public HowToHelpInformationService(IRestService restService, IOptions<AppSettings> appSettings)
         {
             _restService = restService;
-            BecomeVolunteerUrl = appSettings.Value.BackendBecomeVolunteerUrl;
-            DonateInfoUrl = appSettings.Value.BackendDonateInfoUrl;
+            BecomeVolunteerUrl = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendBecomeVolunteerUrl;
+            DonateInfoUrl = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendDonateInfoUrl;
         }
 
         public async Task<bool> UpdateOrCreateHelpInfo(HowToHelpInfo helpInfo, HowToHelpInfoType type, CancellationToken cancelationToken = new CancellationToken())
