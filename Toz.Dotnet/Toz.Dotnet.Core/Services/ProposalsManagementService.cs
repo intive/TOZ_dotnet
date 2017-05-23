@@ -18,8 +18,8 @@ namespace Toz.Dotnet.Core.Services
         public ProposalsManagementService(IRestService restService, IOptions<AppSettings> appSettings)
         {
             _restService = restService;
-            RequestUri = appSettings.Value.BackendProposalsUrl;
-            ActivationRequestUri = appSettings.Value.BackendActivationUserUrl;
+            RequestUri = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendProposalsUrl;
+            ActivationRequestUri = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendActivationUserUrl;
         }
 
         public async Task<Proposal> GetProposal(string id, CancellationToken cancelationToken = new CancellationToken())

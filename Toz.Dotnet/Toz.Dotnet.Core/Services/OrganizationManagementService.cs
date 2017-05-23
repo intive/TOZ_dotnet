@@ -16,7 +16,7 @@ namespace Toz.Dotnet.Core.Services
         public OrganizationManagementService(IRestService restService, IOptions<AppSettings> appSettings)
         {
             _restService = restService;
-            RequestUri = appSettings.Value.BackendOrganizationInfoUrl;
+            RequestUri = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendOrganizationInfoUrl;
         }
 
         public async Task<bool> UpdateOrCreateInfo(Organization organizationInfo, CancellationToken cancelationToken = default(CancellationToken))

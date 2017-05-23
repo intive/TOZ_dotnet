@@ -17,7 +17,7 @@ namespace Toz.Dotnet.Core.Services
         public UsersManagementService(IRestService restService, IOptions<AppSettings> appSettings)
         {
             _restService = restService;
-            RequestUri = appSettings.Value.BackendUsersUrl;
+            RequestUri = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendUsersUrl;
         }
 
 		public async Task<List<User>> GetAllUsers(CancellationToken cancelationToken = default(CancellationToken))
