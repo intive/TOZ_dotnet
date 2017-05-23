@@ -13,8 +13,8 @@ namespace Toz.Dotnet.Controllers
 {
     public class OrganizationController : Controller
     {
-        private IOrganizationManagementService _organizationManagementService;
-        private IBackendErrorsService _backendErrorsService;
+        private readonly IOrganizationManagementService _organizationManagementService;
+        private readonly IBackendErrorsService _backendErrorsService;
         private readonly IStringLocalizer<OrganizationController> _localizer;
         private readonly AppSettings _appSettings;
 

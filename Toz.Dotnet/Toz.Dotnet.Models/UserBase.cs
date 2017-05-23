@@ -25,10 +25,9 @@ namespace Toz.Dotnet.Models
         /// </summary>
         public override string ToString()
         {
-            return string.Format("{0} {1} ({2})",
+            return string.Format("{0} {1}",
                 string.IsNullOrEmpty(LastName) ? string.Empty : LastName + ", ",
-                string.IsNullOrEmpty(FirstName) ? string.Empty : FirstName,
-                Email);
+                string.IsNullOrEmpty(FirstName) ? string.Empty : FirstName);
         }
     }
 }

@@ -35,20 +35,22 @@ namespace Toz.Dotnet.Controllers
             _backendErrorsService = backendErrorsService;
         }
 
-        public async Task<IActionResult> Index(int offset, CancellationToken cancellationToken)
+        public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {     
             List<Week> schedule = await _scheduleManagementService.GetInitialSchedule(cancellationToken);
             return View(schedule);
         }
 
-        public IActionResult Earlier()
+        public async Task<IActionResult> Earlier(CancellationToken cancellationToken)
         {
-            return RedirectToAction("Index", new {offset = -1});
+            List<Week> earlierSchedule = await _scheduleManagementService.GetEarlierSchedule(cancellationToken);
+            return View("Index", earlierSchedule);
         }
 
-        public IActionResult Later()
+        public async Task<IActionResult> Later(CancellationToken cancellationToken)
         {
-            return RedirectToAction("Index", new {offset = +1});
+            List<Week> laterSchedule = await _scheduleManagementService.GetLaterSchedule(cancellationToken);
+            return View("Index", laterSchedule);
         }
 
         public async Task<IActionResult> AddReservation(DateTime date, Period timeOfDay, CancellationToken cancellationToken)
@@ -82,8 +84,6 @@ namespace Toz.Dotnet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddReservation(ReservationToken token, CancellationToken cancellationToken)
         {
-            token.Date = Convert.ToDateTime(token.Date.ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
-
             if (ModelState.IsValid)
             {
                 Slot slot = _scheduleManagementService.FindSlot(token.Date, token.TimeOfDay);
@@ -110,7 +110,6 @@ namespace Toz.Dotnet.Controllers
                 Reservation r = await _scheduleManagementService.GetReservation(id, cancellationToken);
                 await _scheduleManagementService.DeleteReservation(r, cancellationToken);
             }
-
             return RedirectToAction("Index");
         }
     }
