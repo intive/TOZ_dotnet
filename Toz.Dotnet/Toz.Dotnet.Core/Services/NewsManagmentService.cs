@@ -20,7 +20,7 @@ namespace Toz.Dotnet.Core.Services
             _filesManagementService = filesManagementService;
             _restService = restService;
 
-            RequestUri = appSettings.Value.BackendNewsUrl;
+            RequestUri = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendNewsUrl;
         }
 
         public async Task<List<News>> GetAllNews(string token, CancellationToken cancelationToken = default(CancellationToken))

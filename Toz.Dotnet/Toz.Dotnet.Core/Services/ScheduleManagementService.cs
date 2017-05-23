@@ -34,7 +34,7 @@ namespace Toz.Dotnet.Core.Services
             _restService = restService;
             _usersManagementService = usersManagementService;
             _datum = GetFirstDayOfWeek(DateTime.Today);
-            RequestUri = appSettings.Value.BackendScheduleUrl;
+            RequestUri = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendScheduleUrl;
             //TODO: Delete after connecting with Backend API
             _reservationsMockupDb = new List<Reservation>();
         }
