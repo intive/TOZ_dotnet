@@ -12,6 +12,7 @@ using Toz.Dotnet.Models.Schedule.ViewModels;
 using Toz.Dotnet.Resources.Configuration;
 using System.Globalization;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Toz.Dotnet.Models.Schedule;
 using Period = Toz.Dotnet.Models.EnumTypes.Period;
 
@@ -70,11 +71,11 @@ namespace Toz.Dotnet.Controllers
                 .OrderBy(u => u.LastName)
                 .ToList();
 
-            ViewBag.Volunteers = volunteers;
-
             var token = new ReservationToken()
             {
-                Date = date
+                Date = date,
+                TimeOfDay = timeOfDay,
+                Volunteers = new SelectList(volunteers, "Id", "CombinedName")
             };
 
             return PartialView(token);
@@ -84,13 +85,13 @@ namespace Toz.Dotnet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddReservation(ReservationToken token, CancellationToken cancellationToken)
         {
-            if (ModelState.IsValid)
+            if (token != null && ModelState.IsValid)
             {
                 Slot slot = _scheduleManagementService.FindSlot(token.Date, token.TimeOfDay);
-                
-                if (await _scheduleManagementService.CreateReservation(slot, token.Volunteer, cancellationToken))
+
+                if (await _scheduleManagementService.CreateReservation(slot, token.VolunteerId, cancellationToken))
                 {
-                    return Json(new { success = true });
+                    return Json(new {success = true});
                 }
 
                 var overallError = _backendErrorsService.UpdateModelState(ModelState);

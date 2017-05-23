@@ -17,7 +17,7 @@ namespace Toz.Dotnet.Core.Services
     {
         private const string RestMediaType = "application/json";
         private readonly IAuthService _authService; // TEMPORARY
-        private IBackendErrorsService _backendErrorsService;
+        private readonly IBackendErrorsService _backendErrorsService;
 
         public RestService(IAuthService authService, IBackendErrorsService backendErrorsService)
         {

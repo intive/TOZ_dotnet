@@ -19,5 +19,10 @@
   <ItemGroup>
     <ProjectReference Include="../Toz.Dotnet.Resources/Toz.Dotnet.Resources.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Mvc.ViewFeatures">
+      <HintPath>..\..\..\..\.nuget\packages\microsoft.aspnetcore.mvc.viewfeatures\1.1.2\lib\netstandard1.6\Microsoft.AspNetCore.Mvc.ViewFeatures.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
 </Project>

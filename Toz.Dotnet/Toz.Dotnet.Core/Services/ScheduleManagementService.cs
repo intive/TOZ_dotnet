@@ -8,6 +8,7 @@ using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Resources.Configuration;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Toz.Dotnet.Models.Schedule;
 using Toz.Dotnet.Models.Schedule.ViewModels;
 using Period = Toz.Dotnet.Models.EnumTypes.Period;
@@ -138,9 +139,17 @@ namespace Toz.Dotnet.Core.Services
             return await _restService.ExecuteGetAction<Reservation>(address, cancellationToken);
         }
 
-        public async Task<bool> CreateReservation(Slot slot, UserBase userData, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<bool> CreateReservation(Slot slot, string userId, CancellationToken cancellationToken = default(CancellationToken))
         {
-            User user = await _usersManagementService.GetUser(userData.Id, cancellationToken);
+            // Verify correct userId:
+            Regex regex = new Regex("(?:\"id\":\")([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})(?:\")");
+            Match match = regex.Match(userId);
+            if (!match.Success)
+            {
+                return false;
+            }
+            
+            User user = await _usersManagementService.GetUser(userId, cancellationToken);
 
             var timeStamp = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
             Reservation reservation = new Reservation
