@@ -10,18 +10,17 @@ namespace Toz.Dotnet.Core.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly AppSettings _appSettings;
+        //private readonly AppSettings _appSettings;
         private JwtToken _token;
 
         public bool IsAuth { get; private set; }
         public string ActiveUser { get; private set; }
         public string RequestUri { get; set; }
 
-        public AuthService(IOptions<AppSettings> appsettings)
+        public AuthService(IOptions<AppSettings> appSettings)
         {
-            _appSettings = appsettings.Value;
             IsAuth = false;
-            RequestUri = _appSettings.BackendJwtUrl;
+            RequestUri = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendJwtUrl;
         }
 
         public async Task SignIn(Login login)
