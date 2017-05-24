@@ -142,7 +142,7 @@ namespace Toz.Dotnet.Core.Services
         public async Task<bool> CreateReservation(Slot slot, string userId, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Verify correct userId:
-            Regex regex = new Regex("(?:\"id\":\")([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})(?:\")");
+            Regex regex = new Regex("([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})");
             Match match = regex.Match(userId);
             if (!match.Success)
             {

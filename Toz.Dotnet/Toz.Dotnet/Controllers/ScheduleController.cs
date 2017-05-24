@@ -14,6 +14,7 @@ using System.Globalization;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Toz.Dotnet.Models.Schedule;
+using Toz.Dotnet.Models.ViewModels;
 using Period = Toz.Dotnet.Models.EnumTypes.Period;
 
 namespace Toz.Dotnet.Controllers
@@ -71,21 +72,32 @@ namespace Toz.Dotnet.Controllers
                 .OrderBy(u => u.LastName)
                 .ToList();
 
-            var token = new ReservationToken()
+            var viewModel = new ReservationViewModel()
             {
-                Date = date,
-                TimeOfDay = timeOfDay,
-                Volunteers = new SelectList(volunteers, "Id", "CombinedName")
+                Token= new ReservationToken()
+                {
+                    TimeOfDay = timeOfDay,
+                    Volunteers = new SelectList(volunteers, "Id", "CombinedName")
+                },
+                SafeDateContainer = date.ToString(CultureInfo.CurrentCulture)
             };
 
-            return PartialView(token);
+            return PartialView(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddReservation(ReservationToken token, CancellationToken cancellationToken)
+        public async Task<IActionResult> AddReservation(ReservationViewModel viewModel, CancellationToken cancellationToken)
         {
-            if (token != null && ModelState.IsValid)
+            var token = viewModel.Token;
+            DateTime tokenDate;
+            var isValid = DateTime.TryParse(viewModel.SafeDateContainer, out tokenDate);
+            if (!isValid)
+            {
+                ModelState.AddModelError("Date", $"Invalid date ({viewModel.SafeDateContainer})");
+            }
+            token.Date = tokenDate;
+            if (ModelState.IsValid)
             {
                 Slot slot = _scheduleManagementService.FindSlot(token.Date, token.TimeOfDay);
 
@@ -101,7 +113,7 @@ namespace Toz.Dotnet.Controllers
                 }
             }
 
-            return PartialView(token);      
+            return PartialView(viewModel);      
         }
         
         public async Task<ActionResult> DeleteReservation(string id, CancellationToken cancellationToken)
