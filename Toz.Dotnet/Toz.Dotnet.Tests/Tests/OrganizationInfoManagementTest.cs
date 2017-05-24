@@ -49,14 +49,14 @@ namespace Toz.Dotnet.Tests.Tests
         }
 
         [Fact]
-        public void TestOfUpdatingPetWithNullValue()
+        public void TestOfUpdatingOrganizationWithNullValue()
         {
             var exception = Record.Exception(() => _organizationInfoManagementService.UpdateOrCreateInfo(null).Result);
             Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
         }
 
         [Fact]
-        public void TestOfGettingAllPetsUsingWrongUrl()
+        public void TestOfGettingOrganizationUsingWrongUrl()
         {
             _organizationInfoManagementService.RequestUri = RequestUriHelper.WrongUrl;
             Assert.Null(_organizationInfoManagementService.GetOrganizationInfo().Result);

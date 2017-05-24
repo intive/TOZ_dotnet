@@ -25,13 +25,8 @@ namespace Toz.Dotnet.Core.Services
             _backendErrorsService = backendErrorsService;
         }
 
-        public async Task<bool> ExecuteDeleteAction<T>(string address, T obj, CancellationToken cancelationToken = default(CancellationToken)) where T : class
+        public async Task<bool> ExecuteDeleteAction(string address, CancellationToken cancelationToken = default(CancellationToken))
         {
-            if(obj == null)
-            {
-                return false;
-            }
-
             using (var client = new HttpClient())
             {
                 try
@@ -70,8 +65,9 @@ namespace Toz.Dotnet.Core.Services
                     }
                     // <--
                     var response = await client.GetAsync(address, cancelationToken);
-                    response.EnsureSuccessStatusCode();
                     var stringResponse = await response.Content.ReadAsStringAsync();
+                    response.EnsureSuccessStatusCode();
+                   
 
                     T output = JsonConvert.DeserializeObject<T>(stringResponse);
                     return output;

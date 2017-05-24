@@ -13,25 +13,19 @@ using System.Linq;
 
 namespace Toz.Dotnet.Controllers
 {
-    public class PetsController : Controller
+    public class PetsController : TozControllerBase<PetsController>
     {
         private readonly IFilesManagementService _filesManagementService;
         private readonly IPetsManagementService _petsManagementService;
-        private readonly IBackendErrorsService _backendErrorsService;
-        private readonly IStringLocalizer<PetsController> _localizer;
 
-        private readonly AppSettings _appSettings;
         private static byte[] _lastAcceptPhoto;
         private string _validationPhotoAlert;
 		
         public PetsController(IFilesManagementService filesManagementService, IPetsManagementService petsManagementService,
-            IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService)
+            IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService) : base(backendErrorsService, localizer, appSettings)
         {
             _filesManagementService = filesManagementService;
             _petsManagementService = petsManagementService;
-			      _localizer = localizer;
-            _appSettings = appSettings.Value;
-            _backendErrorsService = backendErrorsService;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
@@ -62,11 +56,7 @@ namespace Toz.Dotnet.Controllers
                     return Json(new { success = true });
                 }
 
-                var overallError = _backendErrorsService.UpdateModelState(ModelState);
-                if (!string.IsNullOrEmpty(overallError))
-                {
-                    this.ViewData["UnhandledError"] = overallError;
-                }
+                CheckUnexpectedErrors();
                 return PartialView(pet);
             }
 
@@ -116,11 +106,7 @@ namespace Toz.Dotnet.Controllers
                     return Json(new { success = true });
                 }
 
-                var overallError = _backendErrorsService.UpdateModelState(ModelState);
-                if (!string.IsNullOrEmpty(overallError))
-                {
-                    this.ViewData["UnhandledError"] = overallError;
-                }
+                CheckUnexpectedErrors();
                 return PartialView(pet);
             }
 
@@ -169,7 +155,7 @@ namespace Toz.Dotnet.Controllers
         {
             if(photo != null)
             {
-                if(IsAcceptedPhotoType(photo.ContentType, _appSettings.AcceptPhotoTypes))
+                if(IsAcceptedPhotoType(photo.ContentType, AppSettings.AcceptPhotoTypes))
                 {
                     if(photo.Length > 0)
                     {
