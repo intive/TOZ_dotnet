@@ -19,14 +19,17 @@ namespace Toz.Dotnet.Tests.Tests
     {
         private readonly Proposal _testingProposal;
         private readonly IProposalsManagementService _proposalsManagementService;
+        private readonly IAccountManagementService _accountManagementService;
         private readonly JwtToken _token;
 
         public ProposalsManagementTests()
         {
             _proposalsManagementService = ServiceProvider.Instance.Resolve<IProposalsManagementService>();
+            _accountManagementService = ServiceProvider.Instance.Resolve<IAccountManagementService>();
             _proposalsManagementService.RequestUri = RequestUriHelper.ProposalsUri;
+            _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUrl;
             _testingProposal = TestingObjectProvider.Instance.Proposal;
-            _token = TestingObjectProvider.Instance.JwtToken;
+            _token = _accountManagementService.LogIn(TestingObjectProvider.Instance.Login).Result;
         }
 
         [Fact]

@@ -15,15 +15,18 @@ namespace Toz.Dotnet.Tests.Tests
     {
         private readonly IHowToHelpInformationService _howToHelpInformationService;
         private readonly HowToHelpInfo _testingObject;
+        private readonly IAccountManagementService _accountManagementService;
         private readonly JwtToken _token;
 
         public HotToHelpInfoManagementTests()
         {
             _howToHelpInformationService = ServiceProvider.Instance.Resolve<IHowToHelpInformationService>();
+            _accountManagementService = ServiceProvider.Instance.Resolve<IAccountManagementService>();
             _howToHelpInformationService.BecomeVolunteerUrl = RequestUriHelper.OrganizationInfoUri;
             _howToHelpInformationService.DonateInfoUrl = RequestUriHelper.HowToHelpUri;
+            _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUrl;
             _testingObject = TestingObjectProvider.Instance.HowToHelpInfo;
-            _token = TestingObjectProvider.Instance.JwtToken;
+            _token = _accountManagementService.LogIn(TestingObjectProvider.Instance.Login).Result;
         }
 
         [Fact]

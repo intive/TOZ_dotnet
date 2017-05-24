@@ -3,6 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 using Toz.Dotnet.Core.Interfaces;
+using Toz.Dotnet.Models;
+using Toz.Dotnet.Tests.Helpers;
 
 namespace Toz.Dotnet.Tests.Mocks
 {
@@ -32,12 +34,23 @@ namespace Toz.Dotnet.Tests.Mocks
         where T1 : class
         where T2 : class
         {
-            var mockedObject = new Mock<T1>();
-            if (IsValidData(address, obj, token))
+            if (typeof(T1) == typeof(JwtToken) && typeof(T2) == typeof(Login))
             {
-                return mockedObject.Object;
+                if (IsValidData(address, obj))
+                {
+                    return (T1)Convert.ChangeType(TestingObjectProvider.Instance.JwtToken, typeof(T1));
+                }
+                return default(T1);
             }
-            return default(T1);
+            else
+            {
+                var mockedObject = new Mock<T1>();
+                if (IsValidData(address, obj, token))
+                {
+                    return mockedObject.Object;
+                }
+                return default(T1);
+            }
         }
 
         public async Task<bool> ExecutePutAction<T>(string address, T obj, string token, CancellationToken cancelationToken = new CancellationToken()) where T : class
@@ -48,6 +61,15 @@ namespace Toz.Dotnet.Tests.Mocks
         private bool IsValidData<T>(string address, T obj, string token)
         {
             if (string.IsNullOrEmpty(address) || obj == null || !Uri.IsWellFormedUriString(address, UriKind.Absolute) || token == null)
+            {
+                return false;
+            }
+            return true;
+        }
+        
+        private bool IsValidData<T>(string address, T obj)
+        {
+            if (string.IsNullOrEmpty(address) || obj == null || !Uri.IsWellFormedUriString(address, UriKind.Absolute))
             {
                 return false;
             }

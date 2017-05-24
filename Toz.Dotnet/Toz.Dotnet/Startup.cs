@@ -51,7 +51,7 @@ namespace Toz.Dotnet
             services.AddSingleton<IBackendErrorsService, BackendErrorsService>();
             services.AddSingleton<IProposalsManagementService, ProposalsManagementService>();
             services.AddSingleton<IHowToHelpInformationService, HowToHelpInformationService>();
-            services.AddSingleton<IAuthService, AuthService>();
+            services.TryAddSingleton<IAuthService, AuthService>();
             services.AddSingleton<IAccountManagementService, AccountManagementService>();
 
             services.AddSession();

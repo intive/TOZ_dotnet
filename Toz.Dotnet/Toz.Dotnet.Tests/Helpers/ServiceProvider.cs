@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.AspNetCore.Hosting;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Tests.Mocks;
+using Toz.Dotnet.Authorization;
 
 namespace Toz.Dotnet.Tests.Helpers
 {
@@ -21,10 +22,11 @@ namespace Toz.Dotnet.Tests.Helpers
         private ServiceProvider()
         {
             var mockedRestService = new MockedRestService();
+            var mockedAuthService = new MockedAuthService();
             _server = new TestServer(new WebHostBuilder().UseEnvironment("Development").UseStartup<Startup>().ConfigureServices(
                 services =>
                 {
-
+                    services.AddSingleton<IAuthService>(serviceProvider => mockedAuthService);
                     services.AddSingleton<IRestService>(serviceProvider => mockedRestService);
                 }));           
         }

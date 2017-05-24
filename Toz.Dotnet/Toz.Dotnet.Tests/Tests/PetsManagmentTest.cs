@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Toz.Dotnet.Tests.Tests
 {
@@ -15,14 +16,17 @@ namespace Toz.Dotnet.Tests.Tests
     {
         private readonly Pet _testingPet;
         private readonly IPetsManagementService _petsManagementService;
+        private readonly IAccountManagementService _accountManagementService;
         private readonly JwtToken _token;
 
         public PetsManagementTest()
         { 
             _petsManagementService = ServiceProvider.Instance.Resolve<IPetsManagementService>();
+            _accountManagementService = ServiceProvider.Instance.Resolve<IAccountManagementService>();
             _petsManagementService.RequestUri = RequestUriHelper.PetsUri;
+            _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUrl;
             _testingPet = TestingObjectProvider.Instance.Pet;
-            _token = TestingObjectProvider.Instance.JwtToken;
+            _token = _accountManagementService.LogIn(TestingObjectProvider.Instance.Login).Result;
         }
 
         [Fact]

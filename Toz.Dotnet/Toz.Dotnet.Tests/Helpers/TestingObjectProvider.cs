@@ -105,6 +105,12 @@ namespace Toz.Dotnet.Tests.Helpers
                 ExpirationDateSeconds = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + 360,
                 Jwt = "Token"
             };
+
+            Login = new Login()
+            {
+                Email = "testEmail@test.com",
+                Password = "SecretPassword"
+            };
         }
 
         public Pet Pet { get; }
@@ -114,6 +120,7 @@ namespace Toz.Dotnet.Tests.Helpers
         public Proposal Proposal { get; }
         public HowToHelpInfo HowToHelpInfo { get; set; }
         public JwtToken JwtToken { get; set; }
+        public Login Login { get; set; }
 
         public T DoShallowCopy<T>(T value) where T : new()
         {

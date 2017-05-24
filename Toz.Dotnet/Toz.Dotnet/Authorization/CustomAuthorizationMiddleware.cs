@@ -35,13 +35,22 @@ namespace Toz.Dotnet.Authorization
             _authService = cookieService;
             _accountManagementService = accountManagementService;
 
-            string[] files = Directory.GetFiles(_env.ContentRootPath + Path.DirectorySeparatorChar + "Controllers");
-            _controllers = new List<string>();
-            for (int i = 0; i < files.Length; i++)
+            string[] files;
+
+            try
             {
-                _controllers.Add(Path.GetFileNameWithoutExtension(files[i]).Replace("Controller", ""));
+                files = Directory.GetFiles(_env.ContentRootPath + Path.DirectorySeparatorChar + "Controllers");
+                _controllers = new List<string>();
+                for (int i = 0; i < files.Length; i++)
+                {
+                    _controllers.Add(Path.GetFileNameWithoutExtension(files[i]).Replace("Controller", ""));
+                }
+                _controllers.Remove(_appSettings.LoginControllerName);
             }
-            _controllers.Remove(_appSettings.LoginControllerName);
+            catch
+            {
+                files = new string[] { };
+            }
         }
 
         public async Task Invoke(HttpContext httpContext, IAuthorizationService authorizationService)

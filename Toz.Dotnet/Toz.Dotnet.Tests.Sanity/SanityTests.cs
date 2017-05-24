@@ -13,7 +13,7 @@ using Toz.Dotnet.Resources.Configuration;
 
 namespace Toz.Dotnet.Tests.Sanity
 {
-    public class SanityTests
+    public class SanityTests : IDisposable
     {
         private readonly IPetsManagementService _petsManagementService;
         private readonly INewsManagementService _newsManagementService;
@@ -22,7 +22,8 @@ namespace Toz.Dotnet.Tests.Sanity
         private readonly IOrganizationManagementService _organizationManagementService;
         private readonly IProposalsManagementService _proposalsManagementService;
         private readonly IHowToHelpInformationService _howToHelpInformationService;
-        private readonly JwtToken _token;
+        private readonly IAccountManagementService _accountManagementService;
+        private JwtToken _token;
 
         public SanityTests()
         {
@@ -33,6 +34,7 @@ namespace Toz.Dotnet.Tests.Sanity
             _organizationManagementService = ServiceProvider.Instance.Resolve<IOrganizationManagementService>();
             _proposalsManagementService = ServiceProvider.Instance.Resolve<IProposalsManagementService>();
             _howToHelpInformationService = ServiceProvider.Instance.Resolve<IHowToHelpInformationService>();
+            _accountManagementService = ServiceProvider.Instance.Resolve<IAccountManagementService>();
 
             _petsManagementService.RequestUri = RequestUriHelper.PetsUri;
             _newsManagementService.RequestUri = RequestUriHelper.NewsUri;
@@ -41,13 +43,16 @@ namespace Toz.Dotnet.Tests.Sanity
             _proposalsManagementService.RequestUri = RequestUriHelper.ProposalsUri;
             _howToHelpInformationService.BecomeVolunteerUrl = RequestUriHelper.HowToHelpUri;
             _howToHelpInformationService.DonateInfoUrl = RequestUriHelper.HowToHelpUri;
-
-            _token = TestingObjectProvider.Instance.JwtToken;
+            _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUrl;
         }
 
         [Fact]
         public async void PetsFunctionalityTest()
         {
+            _token = await _accountManagementService.LogIn(TestingObjectProvider.Instance.Login);
+
+            Assert.NotNull(_token);
+
             var pet = TestingObjectProvider.Instance.Pet;
 
             Assert.NotNull(await _petsManagementService.GetAllPets(_token.Jwt));
@@ -64,6 +69,10 @@ namespace Toz.Dotnet.Tests.Sanity
         [Fact]
         public async void NewsFunctionalityTest()
         {
+            _token = await _accountManagementService.LogIn(TestingObjectProvider.Instance.Login);
+
+            Assert.NotNull(_token);
+
             var news = TestingObjectProvider.Instance.News;
 
             Assert.NotNull(await _newsManagementService.GetAllNews(_token.Jwt));
@@ -80,6 +89,10 @@ namespace Toz.Dotnet.Tests.Sanity
         [Fact]
         public async void UsersFunctionalityTest()
         {
+            _token = await _accountManagementService.LogIn(TestingObjectProvider.Instance.Login);
+
+            Assert.NotNull(_token);
+
             var user = TestingObjectProvider.Instance.User;
 
             Assert.NotNull(await _userManagementService.GetAllUsers(_token.Jwt));
@@ -96,6 +109,10 @@ namespace Toz.Dotnet.Tests.Sanity
         [Fact]
         public async void OrganizationFunctionalityTest()
         {
+            _token = await _accountManagementService.LogIn(TestingObjectProvider.Instance.Login);
+
+            Assert.NotNull(_token);
+
             var organization = TestingObjectProvider.Instance.Organization;
 
             Assert.NotNull(await _organizationManagementService.GetOrganizationInfo(_token.Jwt));
@@ -119,8 +136,12 @@ namespace Toz.Dotnet.Tests.Sanity
         }
 
         [Fact]
-        public void ProposalsFunctionalityTest()
+        public async void ProposalsFunctionalityTest()
         {
+            _token = await _accountManagementService.LogIn(TestingObjectProvider.Instance.Login);
+
+            Assert.NotNull(_token);
+
             var proposal = TestingObjectProvider.Instance.Proposal;
 
             var restServiceMock = new Mock<IRestService>();
@@ -165,12 +186,21 @@ namespace Toz.Dotnet.Tests.Sanity
         [Fact]
         public async void HowToHelpFunctionalityTest()
         {
+            _token = await _accountManagementService.LogIn(TestingObjectProvider.Instance.Login);
+
+            Assert.NotNull(_token);
+
             var info = TestingObjectProvider.Instance.HowToHelpInfo;
 
             Assert.NotNull(await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.BecomeVolunteer, _token.Jwt));
             Assert.NotNull(await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.Donate, _token.Jwt));
             Assert.True(await _howToHelpInformationService.UpdateOrCreateHelpInfo(info, HowToHelpInfoType.BecomeVolunteer, _token.Jwt));
             Assert.True(await _howToHelpInformationService.UpdateOrCreateHelpInfo(info, HowToHelpInfoType.Donate, _token.Jwt));
+        }
+
+        public void Dispose()
+        {
+            _token = null;
         }
     }
 }

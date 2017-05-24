@@ -13,14 +13,17 @@ namespace Toz.Dotnet.Tests.Tests
     {
         private readonly IOrganizationManagementService _organizationInfoManagementService;
         private readonly Organization _testingOrganization;
+        private readonly IAccountManagementService _accountManagementService;
         private readonly JwtToken _token;
 
         public OrganizationInfoManagementTest()
         {         
             _organizationInfoManagementService = ServiceProvider.Instance.Resolve<IOrganizationManagementService>();
+            _accountManagementService = ServiceProvider.Instance.Resolve<IAccountManagementService>();
             _organizationInfoManagementService.RequestUri = RequestUriHelper.OrganizationInfoUri;
+            _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUrl;
             _testingOrganization = TestingObjectProvider.Instance.Organization;
-            _token = TestingObjectProvider.Instance.JwtToken;
+            _token = _accountManagementService.LogIn(TestingObjectProvider.Instance.Login).Result;
         }
 
         [Fact]
