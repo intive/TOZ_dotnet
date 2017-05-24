@@ -107,7 +107,7 @@ namespace Toz.Dotnet.Core.Services
 
             var httpContent = new StringContent(serializedObject, Encoding.UTF8, RestMediaType);
 
-            using (var client = (token == default(string)) ? new HttpClient() : CreateHttpClient(token))
+            using (var client = CreateHttpClient(token))
             {
                 try
                 {
@@ -173,10 +173,13 @@ namespace Toz.Dotnet.Core.Services
             _backendErrorsService.AddErrors(output);
         }
 
-        private HttpClient CreateHttpClient(string token)
+        private HttpClient CreateHttpClient(string token = default(string))
         {
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+            if (token != default(string))
+            {
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+            }
             return client;
         }
     }
