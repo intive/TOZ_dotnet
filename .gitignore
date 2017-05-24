@@ -246,3 +246,4 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+Toz.Dotnet/Toz.Dotnet/Keys/
