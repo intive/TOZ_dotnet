@@ -51,7 +51,7 @@ namespace Toz.Dotnet.Controllers
 
             JwtToken jwtToken;
 
-            jwtToken = await _accountManagementService.LogIn(login);
+            jwtToken = await _accountManagementService.SignIn(login);
 
             if (jwtToken == null)
             {

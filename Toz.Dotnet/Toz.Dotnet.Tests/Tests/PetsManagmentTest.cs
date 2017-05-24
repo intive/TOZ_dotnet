@@ -26,7 +26,7 @@ namespace Toz.Dotnet.Tests.Tests
             _petsManagementService.RequestUri = RequestUriHelper.PetsUri;
             _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUrl;
             _testingPet = TestingObjectProvider.Instance.Pet;
-            _token = _accountManagementService.LogIn(TestingObjectProvider.Instance.Login).Result;
+            _token = _accountManagementService.SignIn(TestingObjectProvider.Instance.Login).Result;
         }
 
         [Fact]

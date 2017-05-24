@@ -60,7 +60,7 @@ namespace Toz.Dotnet.Authorization
             {
                 var jsonLogin = _authService.DecryptValue(httpContext.User.FindFirst(ClaimTypes.Hash).Value);
                 Login login = JsonConvert.DeserializeObject<Login>(jsonLogin);
-                JwtToken newJwtToken = await _accountManagementService.LogIn(login);
+                JwtToken newJwtToken = await _accountManagementService.SignIn(login);
                 if (newJwtToken != null)
                 {
                     _authService.RemoveCookie(httpContext, _appSettings.CookieTokenName);

@@ -29,7 +29,7 @@ namespace Toz.Dotnet.Tests.Tests
             _proposalsManagementService.RequestUri = RequestUriHelper.ProposalsUri;
             _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUrl;
             _testingProposal = TestingObjectProvider.Instance.Proposal;
-            _token = _accountManagementService.LogIn(TestingObjectProvider.Instance.Login).Result;
+            _token = _accountManagementService.SignIn(TestingObjectProvider.Instance.Login).Result;
         }
 
         [Fact]

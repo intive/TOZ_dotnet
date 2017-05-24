@@ -21,7 +21,7 @@ namespace Toz.Dotnet.Core.Services
             RequestUri = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendJwtUrl;
         }
 
-        public async Task<JwtToken> LogIn(Login login, CancellationToken cancelationToken = default(CancellationToken))
+        public async Task<JwtToken> SignIn(Login login, CancellationToken cancelationToken = default(CancellationToken))
         {
             return await _restService.ExecutePostAction<JwtToken, Login>(RequestUri, login, cancelationToken: cancelationToken);
         }

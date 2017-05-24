@@ -49,7 +49,7 @@ namespace Toz.Dotnet.Tests.Sanity
         [Fact]
         public async void PetsFunctionalityTest()
         {
-            _token = await _accountManagementService.LogIn(TestingObjectProvider.Instance.Login);
+            _token = await _accountManagementService.SignIn(TestingObjectProvider.Instance.Login);
 
             Assert.NotNull(_token);
 
@@ -69,7 +69,7 @@ namespace Toz.Dotnet.Tests.Sanity
         [Fact]
         public async void NewsFunctionalityTest()
         {
-            _token = await _accountManagementService.LogIn(TestingObjectProvider.Instance.Login);
+            _token = await _accountManagementService.SignIn(TestingObjectProvider.Instance.Login);
 
             Assert.NotNull(_token);
 
@@ -89,7 +89,7 @@ namespace Toz.Dotnet.Tests.Sanity
         [Fact]
         public async void UsersFunctionalityTest()
         {
-            _token = await _accountManagementService.LogIn(TestingObjectProvider.Instance.Login);
+            _token = await _accountManagementService.SignIn(TestingObjectProvider.Instance.Login);
 
             Assert.NotNull(_token);
 
@@ -109,7 +109,7 @@ namespace Toz.Dotnet.Tests.Sanity
         [Fact]
         public async void OrganizationFunctionalityTest()
         {
-            _token = await _accountManagementService.LogIn(TestingObjectProvider.Instance.Login);
+            _token = await _accountManagementService.SignIn(TestingObjectProvider.Instance.Login);
 
             Assert.NotNull(_token);
 
@@ -138,7 +138,7 @@ namespace Toz.Dotnet.Tests.Sanity
         [Fact]
         public async void ProposalsFunctionalityTest()
         {
-            _token = await _accountManagementService.LogIn(TestingObjectProvider.Instance.Login);
+            _token = await _accountManagementService.SignIn(TestingObjectProvider.Instance.Login);
 
             Assert.NotNull(_token);
 
@@ -186,7 +186,7 @@ namespace Toz.Dotnet.Tests.Sanity
         [Fact]
         public async void HowToHelpFunctionalityTest()
         {
-            _token = await _accountManagementService.LogIn(TestingObjectProvider.Instance.Login);
+            _token = await _accountManagementService.SignIn(TestingObjectProvider.Instance.Login);
 
             Assert.NotNull(_token);
 

@@ -23,7 +23,7 @@ namespace Toz.Dotnet.Tests.Tests
             _userManagementService.RequestUri = RequestUriHelper.UsersUri;
             _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUrl;
             _testUser = TestingObjectProvider.Instance.User;
-            _token = _accountManagementService.LogIn(TestingObjectProvider.Instance.Login).Result;
+            _token = _accountManagementService.SignIn(TestingObjectProvider.Instance.Login).Result;
         }
 
         [Fact]
