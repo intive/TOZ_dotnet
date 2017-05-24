@@ -1,5 +1,13 @@
 ﻿// Write your Javascript code.
 $(document).ready(function () {
+    var image;
+    var canvas;
+    var jcropApi;
+    var context;
+    var prefSize;
+    var cropMaxWidth = 600;
+    var cropMaxHeight = 600;
+
     $(document).on('change', '.btn-file :file', function () {
         var input = $(this),
             label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
@@ -7,7 +15,6 @@ $(document).ready(function () {
     });
 
     $('.btn-file :file').on('fileselect', function (event, label) {
-
         var input = $(this).parents('.input-group').find(':text'),
             log = label;
 
@@ -16,36 +23,83 @@ $(document).ready(function () {
         } else {
             if (log) alert(log);
         }
-
     });
 
-    function readURL(input) {
+    function loadImage(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
-
+            canvas = null;
             reader.onload = function (e) {
-                $('#img-upload').attr('src', e.target.result);
-            }
-
+                image = new Image();
+                image.onload = validateImage();
+                image.src = e.target.result;
+                //$('#img-upload').attr('src', e.target.result);
+                //$('#img-upload').attr('onload', validateImage);
+            };
             reader.readAsDataURL(input.files[0]);
         }
     }
 
+    function validateImage() {
+        if (canvas != null) {
+            image = new Image();
+            image.onload = restartJcrop;
+            image.src = canvas.toDataURL('image/png');
+        } else restartJcrop();
+    }
+
+    function restartJcrop() {
+        if (jcropApi != null) {
+            jcropApi.destroy();
+        }
+        $("#img-upload").empty();
+        $("#img-upload").append("<canvas id=\"canvas\">");
+        canvas = $("#canvas")[0];
+        context = canvas.getContext("2d");
+        canvas.width = image.width;
+        canvas.height = image.height;
+        context.drawImage(image, 0, 0);
+        $("#canvas").Jcrop({
+            onSelect: selectcanvas,
+            onRelease: clearcanvas,
+            boxWidth: cropMaxWidth,
+            boxHeight: cropMaxHeight
+        }, function () {
+            jcropApi = this;
+        });
+        clearcanvas();
+    }
+
+    function clearcanvas() {
+        prefSize = {
+            x: 0,
+            y: 0,
+            w: canvas.width,
+            h: canvas.height
+        };
+    }
+
+    function selectcanvas(coords) {
+        prefSize = {
+            x: Math.round(coords.x),
+            y: Math.round(coords.y),
+            w: Math.round(coords.w),
+            h: Math.round(coords.h)
+        };
+    }
+
     $("#imgInp").change(function () {
-        readURL(this);
+        loadImage(this);
     });
 
     $(function () {
-
         $.ajaxSetup({
             cache: false
         });
 
         $("a[class*=data-modal]").on("click", function (e) {
-
             // hide dropdown if any
             $(e.target).closest('.btn-group').children('.dropdown-toggle').dropdown('toggle');
-
 
             $('#myModalContent').load(this.href, function () {
                 $.validator.unobtrusive.parse(this);
@@ -54,14 +108,10 @@ $(document).ready(function () {
                     /*backdrop: 'static',*/
                     keyboard: true
                 }, 'show');
-
                 bindForm(this);
             });
-
             return false;
         });
-
-
     });
 
     function bindForm(dialog) {
@@ -85,9 +135,9 @@ $(document).ready(function () {
         });
     }
 
-    $('#search').keyup(function () {
+    $('#search').keyup(function() {
         $('#table').DataTable().search($(this).val()).draw();
-    })
+    });
 
     jQuery.validator.setDefaults({
         highlight: function (element, errorClass, validClass) {
@@ -116,7 +166,6 @@ $(document).ready(function () {
     });
 
     $(function () {
-
         $("span.field-validation-valid, span.field-validation-error").addClass('help-block');
         $("div.form-group").has("span.field-validation-error").addClass('has-error');
         $("div.validation-summary-errors").has("li:visible").addClass("alert");
