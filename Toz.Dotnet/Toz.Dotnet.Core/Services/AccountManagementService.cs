@@ -18,7 +18,7 @@ namespace Toz.Dotnet.Core.Services
         public AccountManagementService(IRestService restService, IOptions<AppSettings> appSettings)
         {
             _restService = restService;
-            RequestUri = appSettings.Value.BackendJwtUrl;
+            RequestUri = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendJwtUrl;
         }
 
         public async Task<JwtToken> LogIn(Login login, CancellationToken cancelationToken = default(CancellationToken))
