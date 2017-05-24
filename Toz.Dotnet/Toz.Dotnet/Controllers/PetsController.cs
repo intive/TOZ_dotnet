@@ -17,9 +17,6 @@ namespace Toz.Dotnet.Controllers
     {
         private readonly IFilesManagementService _filesManagementService;
         private readonly IPetsManagementService _petsManagementService;
-
-        private static byte[] _lastAcceptPhoto;
-        private string _validationPhotoAlert;
 		
         public PetsController(IFilesManagementService filesManagementService, IPetsManagementService petsManagementService,
             IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService) : base(backendErrorsService, localizer, appSettings)
@@ -42,37 +39,16 @@ namespace Toz.Dotnet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(
             [Bind("Name, Type, Sex, Description, Address")] 
-            Pet pet, [Bind("Photo")] IFormFile photo, CancellationToken cancellationToken)
-        {
-            bool result = ValidatePhoto(pet, photo);
-            pet.ImageUrl = "storage/a5/0d/4d/a50d4d4c-ccd2-4747-8dec-d6d7f521336e.jpg"; //temporary
-            
-            if (result && ModelState.IsValid)
+            Pet pet, CancellationToken cancellationToken)
+        {            
+            if (ModelState.IsValid)
             {
                 if (await _petsManagementService.CreatePet(pet, cancellationToken))
                 {
-                    _lastAcceptPhoto = null;
-                    _validationPhotoAlert = null;
                     return Json(new { success = true });
                 }
 
                 CheckUnexpectedErrors();
-                return PartialView(pet);
-            }
-
-            if(!result)
-            {
-                ViewData["ValidationPhotoAlert"] = _validationPhotoAlert;
-                if(_lastAcceptPhoto != null)
-                {
-                    pet.Photo = _lastAcceptPhoto;
-                    ViewData["SelectedPhoto"] = "PhotoAlertWithLastPhoto";
-                }
-                else
-                {
-                    ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
-                }
-                
                 return PartialView(pet);
             }
             
@@ -89,40 +65,16 @@ namespace Toz.Dotnet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
             [Bind("Id, Name, Type, Sex, Description, Address, AddingTime")] 
-            Pet pet, [Bind("Photo")] IFormFile photo, CancellationToken cancellationToken)
+            Pet pet, CancellationToken cancellationToken)
         {
-            //todo add photo if will be available on backends
-            _lastAcceptPhoto = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 }; //get photo from backend, if available
-            pet.ImageUrl = "storage/a5/0d/4d/a50d4d4c-ccd2-4747-8dec-d6d7f521336e.jpg"; //temporary
-
-            bool result = ValidatePhoto(pet, photo);
-
-            if (result && ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 if (await _petsManagementService.UpdatePet(pet))
                 {
-                    _lastAcceptPhoto = null;
-                    _validationPhotoAlert = null;
                     return Json(new { success = true });
                 }
 
                 CheckUnexpectedErrors();
-                return PartialView(pet);
-            }
-
-            if(!result)
-            {
-                ViewData["ValidationPhotoAlert"] = _validationPhotoAlert;
-                if(_lastAcceptPhoto != null)
-                {
-                    pet.Photo = _lastAcceptPhoto;
-                    ViewData["SelectedPhoto"] = "PhotoAlertWithLastPhoto";
-                }
-                else
-                {
-                    ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
-                }
-                
                 return PartialView(pet);
             }
 
@@ -134,9 +86,9 @@ namespace Toz.Dotnet.Controllers
             return PartialView("Edit", await _petsManagementService.GetPet(id));
         }
 
-        public async Task<ActionResult> UploadImage(string id, CancellationToken cancellationToken)
+        public async Task<ActionResult> Images(string id, CancellationToken cancellationToken)
         {
-            return PartialView("UploadImage", await _petsManagementService.GetPet(id));
+            return PartialView("Images", await _petsManagementService.GetPet(id));
         }
 
 
@@ -150,38 +102,6 @@ namespace Toz.Dotnet.Controllers
 
                     return RedirectToAction("Index");
                 }*/
-
-        private bool IsAcceptedPhotoType(string photoType, string[] acceptedTypes)
-        {
-            return acceptedTypes.Any(type => type.Equals(photoType, StringComparison.OrdinalIgnoreCase));
-        }
-
-        private bool ValidatePhoto(Pet pet, IFormFile photo)
-        {
-            if(photo != null)
-            {
-                if(IsAcceptedPhotoType(photo.ContentType, AppSettings.AcceptPhotoTypes))
-                {
-                    if(photo.Length > 0)
-                    {
-                        pet.Photo = _petsManagementService.ConvertPhotoToByteArray(photo.OpenReadStream());
-                        _lastAcceptPhoto = pet.Photo;
-                        return true;
-                    }
-
-                    _validationPhotoAlert = "EmptyFile";
-                    return false;
-                }
-
-                _validationPhotoAlert = "WrongFileType";
-                return false; 
-            }
-            if(_lastAcceptPhoto != null)
-            {
-                pet.Photo = _lastAcceptPhoto;
-            }
-            return true;
-        }
     }
 	
 }
