@@ -22,7 +22,7 @@ namespace Toz.Dotnet.Controllers
 
         private static byte[] _lastAcceptPhoto;
         private string _validationPhotoAlert;
-		
+
         public PetsController(IFilesManagementService filesManagementService, IPetsManagementService petsManagementService,
             IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService, IAuthService authService) : base(backendErrorsService, localizer, appSettings, authService)
         {
@@ -32,7 +32,7 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            List<Pet> pets = await _petsManagementService.GetAllPets(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName));
+            List<Pet> pets = await _petsManagementService.GetAllPets(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true));
             //todo add photo if will be avaialbe on backends
             var img = _filesManagementService.DownloadImage(@"http://i.pinger.pl/pgr167/7dc36d63001e9eeb4f01daf3/kot%20ze%20shreka9.jpg");
             var thumbnail = _filesManagementService.GetThumbnail(img);
@@ -43,7 +43,7 @@ namespace Toz.Dotnet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(
-            [Bind("Name, Type, Sex, Description, Address")] 
+            [Bind("Name, Type, Sex, Description, Address")]
             Pet pet, [Bind("Photo")] IFormFile photo, CancellationToken cancellationToken)
         {
             bool result = ValidatePhoto(pet, photo);
@@ -51,7 +51,7 @@ namespace Toz.Dotnet.Controllers
 
             if (result && ModelState.IsValid)
             {
-                if (await _petsManagementService.CreatePet(pet, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName)))
+                if (await _petsManagementService.CreatePet(pet, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true)))
                 {
                     _lastAcceptPhoto = null;
                     _validationPhotoAlert = null;
@@ -79,7 +79,7 @@ namespace Toz.Dotnet.Controllers
             }
 
             return PartialView(pet);
-            
+
         }
 
         public IActionResult Add()
@@ -90,7 +90,7 @@ namespace Toz.Dotnet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
-            [Bind("Id, Name, Type, Sex, Description, Address, AddingTime")] 
+            [Bind("Id, Name, Type, Sex, Description, Address, AddingTime")]
             Pet pet, [Bind("Photo")] IFormFile photo, CancellationToken cancellationToken)
         {
             //todo add photo if will be available on backends
@@ -101,7 +101,7 @@ namespace Toz.Dotnet.Controllers
 
             if (result && ModelState.IsValid)
             {
-                if (await _petsManagementService.UpdatePet(pet, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName)))
+                if (await _petsManagementService.UpdatePet(pet, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true)))
                 {
                     _lastAcceptPhoto = null;
                     _validationPhotoAlert = null;
@@ -112,10 +112,10 @@ namespace Toz.Dotnet.Controllers
                 return PartialView(pet);
             }
 
-            if(!result)
+            if (!result)
             {
                 ViewData["ValidationPhotoAlert"] = _validationPhotoAlert;
-                if(_lastAcceptPhoto != null)
+                if (_lastAcceptPhoto != null)
                 {
                     pet.Photo = _lastAcceptPhoto;
                     ViewData["SelectedPhoto"] = "PhotoAlertWithLastPhoto";
@@ -124,29 +124,29 @@ namespace Toz.Dotnet.Controllers
                 {
                     ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
                 }
-                
+
                 return PartialView(pet);
             }
 
             return PartialView(pet);
-        } 
-
-        public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken) 
-        {
-            return PartialView("Edit", await _petsManagementService.GetPet(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName)));
         }
 
-        
-/*        public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)
+        public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken)
         {
-            var pet = await _petsManagementService.GetPet(id);
-            if(pet != null)
-            {
-                await _petsManagementService.DeletePet(pet);
-            }
+            return PartialView("Edit", await _petsManagementService.GetPet(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true)));
+        }
 
-            return RedirectToAction("Index");
-        }*/
+
+        /*        public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)
+                {
+                    var pet = await _petsManagementService.GetPet(id);
+                    if(pet != null)
+                    {
+                        await _petsManagementService.DeletePet(pet);
+                    }
+
+                    return RedirectToAction("Index");
+                }*/
 
         private bool IsAcceptedPhotoType(string photoType, string[] acceptedTypes)
         {
@@ -155,11 +155,11 @@ namespace Toz.Dotnet.Controllers
 
         private bool ValidatePhoto(Pet pet, IFormFile photo)
         {
-            if(photo != null)
+            if (photo != null)
             {
-                if(IsAcceptedPhotoType(photo.ContentType, AppSettings.AcceptPhotoTypes))
+                if (IsAcceptedPhotoType(photo.ContentType, AppSettings.AcceptPhotoTypes))
                 {
-                    if(photo.Length > 0)
+                    if (photo.Length > 0)
                     {
                         pet.Photo = _petsManagementService.ConvertPhotoToByteArray(photo.OpenReadStream());
                         _lastAcceptPhoto = pet.Photo;
@@ -171,14 +171,14 @@ namespace Toz.Dotnet.Controllers
                 }
 
                 _validationPhotoAlert = "WrongFileType";
-                return false; 
+                return false;
             }
-            if(_lastAcceptPhoto != null)
+            if (_lastAcceptPhoto != null)
             {
                 pet.Photo = _lastAcceptPhoto;
             }
             return true;
         }
     }
-	
+
 }

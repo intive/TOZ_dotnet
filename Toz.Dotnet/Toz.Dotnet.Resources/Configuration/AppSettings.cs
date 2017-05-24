@@ -21,5 +21,7 @@ namespace Toz.Dotnet.Resources.Configuration
         public string DataProtectorName { get; set; }
         public string LoginControllerName { get; set; }
         public string CookieTokenName { get; set; }
+        public string CookieRefreshName { get; set; }
+        public int CookieRefreshTimeInMinutes { get; set; }
     }
 }

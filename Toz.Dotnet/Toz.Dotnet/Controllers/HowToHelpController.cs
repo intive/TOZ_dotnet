@@ -19,7 +19,7 @@ namespace Toz.Dotnet.Controllers
     {
         private readonly IHowToHelpInformationService _howToHelpInformationService;
 
-        public HowToHelpController(IHowToHelpInformationService howToHelpInformationService, IBackendErrorsService backendErrorsService, 
+        public HowToHelpController(IHowToHelpInformationService howToHelpInformationService, IBackendErrorsService backendErrorsService,
             IStringLocalizer<HowToHelpController> localizer, IOptions<AppSettings> settings, IAuthService authService)
             : base(backendErrorsService, localizer, settings, authService)
         {
@@ -30,8 +30,8 @@ namespace Toz.Dotnet.Controllers
         {
             ViewData["EditMode"] = edit;
 
-            var becomeVolunteerInfo = await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.BecomeVolunteer, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName), cancellationToken);
-            var donateInfo = await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.Donate, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName), cancellationToken);
+            var becomeVolunteerInfo = await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.BecomeVolunteer, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+            var donateInfo = await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.Donate, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
             if (becomeVolunteerInfo != null && donateInfo != null)
             {
                 return View(new HowToHelpViewModel()
@@ -50,10 +50,10 @@ namespace Toz.Dotnet.Controllers
             if (howToHelpViewModel != null && ModelState.IsValid)
             {
                 var updateVolunteerInfoResult = await _howToHelpInformationService.UpdateOrCreateHelpInfo(
-                    howToHelpViewModel.BecomeVolunteerInfo, HowToHelpInfoType.BecomeVolunteer, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName), cancellationToken);
+                    howToHelpViewModel.BecomeVolunteerInfo, HowToHelpInfoType.BecomeVolunteer, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
 
                 var updateDonateInfoResult = await _howToHelpInformationService.UpdateOrCreateHelpInfo(
-                    howToHelpViewModel.DonateInfo, HowToHelpInfoType.Donate, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName), cancellationToken);
+                    howToHelpViewModel.DonateInfo, HowToHelpInfoType.Donate, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
 
                 if (updateDonateInfoResult && updateVolunteerInfoResult)
                 {

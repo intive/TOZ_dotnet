@@ -5,6 +5,7 @@
 
 @{
     ViewData["Title"] = @Localizer["PageTitle"];
+
 }
 
 <div class="container-fluid center">
@@ -28,9 +29,23 @@
                         <span asp-validation-for="Password"></span>
                     </div>
                 </div>
-                <div class="form-group row" style="text-align: center">
-                    <span class="unhandled-error-span">@TempData["UnhandledError"]</span>
-                </div>
+                @{
+                    if (TempData["UnhandledError"] != null)
+                    {
+                        if (TempData["UnhandledError"].ToString() == "NotConnected")
+                        {
+                        <div class="form-group row" style="text-align: center">
+                            <span class="unhandled-error-span">@Localizer[@TempData["UnhandledError"].ToString()]</span>
+                        </div>
+                        }
+                        else
+                        {
+                        <div class="form-group row" style="text-align: center">
+                            <span class="unhandled-error-span">@TempData["UnhandledError"]</span>
+                        </div>
+                        }
+                    }
+                }
             </fieldset>
             <input type="submit" class="btn btn-primary btn-block" id="SignIn" value=@Localizer["SignIn"]>
         </fieldset>

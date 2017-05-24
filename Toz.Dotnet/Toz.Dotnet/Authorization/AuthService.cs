@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.DataProtection;
+﻿using System;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Toz.Dotnet.Resources.Configuration;
@@ -20,15 +21,22 @@ namespace Toz.Dotnet.Authorization
 
         public void AddToCookie(HttpContext httpContext, string key, string value, CookieOptions cookieOptions)
         {
-            httpContext.Response.Cookies.Append(key, _protector.Protect(value), cookieOptions);
+            httpContext.Response.Cookies.Append(key, EncryptValue(value), cookieOptions);
         }
 
-        public string ReadCookie(HttpContext httpContext, string key)
+        public string ReadCookie(HttpContext httpContext, string key, bool encrypt = false)
         {
             string value;
             try
             {
-                value = _protector.Unprotect(httpContext.Request.Cookies[key]);
+                if (encrypt)
+                {
+                    value = DecryptValue(httpContext.Request.Cookies[key]);
+                }
+                else
+                {
+                    value = httpContext.Request.Cookies[key];
+                }
             }
             catch
             {
@@ -46,6 +54,16 @@ namespace Toz.Dotnet.Authorization
         public void SetIsAuth(bool value)
         {
             IsAuth = value;
+        }
+
+        public string EncryptValue(string value)
+        {
+            return _protector.Protect(value);
+        }
+
+        public string DecryptValue(string value)
+        {
+            return _protector.Unprotect(value);
         }
     }
 }

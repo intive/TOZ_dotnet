@@ -132,4 +132,7 @@
   <data name="SignOut" xml:space="preserve">
     <value>Wyloguj</value>
   </data>
+  <data name="NotConnected" xml:space="preserve">
+    <value>Błąd połączenia z serwerem uwierzyteniania, spróbuj jeszcze raz.</value>
+  </data>
 </root>

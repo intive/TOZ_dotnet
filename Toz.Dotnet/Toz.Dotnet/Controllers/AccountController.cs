@@ -26,14 +26,12 @@ namespace Toz.Dotnet.Controllers
     {
         private readonly IAccountManagementService _accountManagementService;
         private IBackendErrorsService _backendErrorsService;
-        private readonly AppSettings _appSettings;
         private readonly IAuthService _authService;
 
         public AccountController(IAccountManagementService accountManagementService, IBackendErrorsService backendErrorsService, IStringLocalizer<AccountController> localizer, IOptions<AppSettings> appSettings, IAuthService authService) : base(backendErrorsService, localizer, appSettings, authService)
         {
             _accountManagementService = accountManagementService;
             _backendErrorsService = backendErrorsService;
-            _appSettings = appSettings.Value;
             _authService = authService;
         }
 
@@ -47,19 +45,32 @@ namespace Toz.Dotnet.Controllers
         [HttpPost]
         public async Task<IActionResult> SignIn([Bind("Email", "Password")] Login login, string returnUrl = null)
         {
+            await HttpContext.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            AuthService.RemoveCookie(HttpContext, AppSettings.CookieTokenName);
+            AuthService.RemoveCookie(HttpContext, AppSettings.CookieRefreshName);
+
             JwtToken jwtToken;
 
             jwtToken = await _accountManagementService.LogIn(login);
 
-            if(jwtToken == null)
+            if (jwtToken == null)
             {
                 var overallError = BackendErrorsService.UpdateModelState(ModelState);
                 if (!string.IsNullOrEmpty(overallError))
                 {
                     TempData["UnhandledError"] = overallError;
                 }
+                else
+                {
+                    TempData["UnhandledError"] = "NotConnect";
+                }
                 return RedirectToAction("SignIn", new RouteValueDictionary(new { returnUrl = returnUrl }));
             }
+
+            string serializedObject = JsonConvert.SerializeObject(login, Formatting.Indented, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
 
             List<Claim> claims = new List<Claim>();
 
@@ -72,18 +83,25 @@ namespace Toz.Dotnet.Controllers
                 claims.Add(new Claim(ClaimTypes.Role, jwtToken.Roles[i]));
             }
 
+            claims.Add(new Claim(ClaimTypes.Hash, AuthService.EncryptValue(serializedObject)));
+
             var identity = new ClaimsIdentity(claims);
             var principal = new ClaimsPrincipal(identity);
 
             await HttpContext.Authentication.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties
             {
-                ExpiresUtc = DateTimeOffset.FromUnixTimeSeconds(jwtToken.ExpirationDateSeconds),
+                ExpiresUtc = DateTimeOffset.FromUnixTimeSeconds(DateTimeOffset.MaxValue.ToUnixTimeSeconds()),//FromUnixTimeSeconds(jwtToken.ExpirationDateSeconds),
                 IsPersistent = true,
                 AllowRefresh = false
             });
 
-            _authService.AddToCookie(HttpContext, _appSettings.CookieTokenName, jwtToken.Jwt, new CookieOptions() { Expires = DateTimeOffset.FromUnixTimeSeconds(jwtToken.ExpirationDateSeconds) });
-            _authService.SetIsAuth(true);
+            // Token
+            AuthService.AddToCookie(HttpContext, AppSettings.CookieTokenName, jwtToken.Jwt, new CookieOptions() { Expires = DateTimeOffset.FromUnixTimeSeconds(jwtToken.ExpirationDateSeconds) });
+
+            // Refresh token
+            AuthService.AddToCookie(HttpContext, AppSettings.CookieRefreshName, "", new CookieOptions() { Expires = DateTimeOffset.FromUnixTimeSeconds(DateTimeOffset.UtcNow.ToUnixTimeSeconds() + Convert.ToInt64(TimeSpan.FromMinutes(AppSettings.CookieRefreshTimeInMinutes).TotalSeconds)) });
+
+            AuthService.SetIsAuth(true);
 
             if (!string.IsNullOrEmpty(returnUrl))
             {
@@ -99,7 +117,8 @@ namespace Toz.Dotnet.Controllers
         public async Task<IActionResult> SignOut()
         {
             await HttpContext.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            HttpContext.Response.Cookies.Delete(_appSettings.CookieTokenName);
+            HttpContext.Response.Cookies.Delete(AppSettings.CookieTokenName);
+            HttpContext.Response.Cookies.Delete(AppSettings.CookieRefreshName);
             return RedirectToAction("Index", "Home");
         }
     }

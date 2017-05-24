@@ -114,7 +114,7 @@ namespace Toz.Dotnet
             app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {
                 AuthenticationScheme = CookieAuthenticationDefaults.AuthenticationScheme,
-                CookieName = CookieAuthenticationDefaults.CookiePrefix + "Cookie",
+                CookieName = CookieAuthenticationDefaults.CookiePrefix + CookieAuthenticationDefaults.AuthenticationScheme,
                 LoginPath = new PathString("/Account/SignIn"),
                 AccessDeniedPath = new PathString("/Account/SignIn"),
                 LogoutPath = new PathString("/Account/SignOut"),

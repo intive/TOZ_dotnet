@@ -29,23 +29,23 @@ namespace Toz.Dotnet.Controllers
         }
 
         public async Task<IActionResult> Index(int offset, CancellationToken cancellationToken)
-        {     
-            List<Week> schedule = await _scheduleManagementService.GetSchedule(offset, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName), cancellationToken);
+        {
+            List<Week> schedule = await _scheduleManagementService.GetSchedule(offset, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
             return View(schedule);
         }
 
         public IActionResult Earlier()
         {
-            return RedirectToAction("Index", new {offset = -1});
+            return RedirectToAction("Index", new { offset = -1 });
         }
 
         public IActionResult Later()
         {
-            return RedirectToAction("Index", new {offset = +1});
+            return RedirectToAction("Index", new { offset = +1 });
         }
 
         public IActionResult AddReservation(DateTime date, Period timeOfDay)
-        { 
+        {
             if (date > DateTime.MinValue && date < DateTime.MaxValue)
             {
                 if (timeOfDay == Period.Afternoon || timeOfDay == Period.Morning)
@@ -54,7 +54,7 @@ namespace Toz.Dotnet.Controllers
                     {
                         Date = date
                     };
-                    
+
                     return PartialView(token);
                 }
             }
@@ -74,7 +74,7 @@ namespace Toz.Dotnet.Controllers
 
             if (ModelState.IsValid)
             {
-                Slot slot = _scheduleManagementService.FindSlot(token.Date, token.TimeOfDay, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName));
+                Slot slot = _scheduleManagementService.FindSlot(token.Date, token.TimeOfDay, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true));
                 //User user = await _usersManagementService.FindUser(token.FirstName, token.LastName, cancellationToken);
                 UserBase user = new User()
                 {
@@ -82,7 +82,7 @@ namespace Toz.Dotnet.Controllers
                     FirstName = token.FirstName
                 };
 
-                if (await _scheduleManagementService.CreateReservation(slot, user, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName), cancellationToken))
+                if (await _scheduleManagementService.CreateReservation(slot, user, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
                 {
                     return Json(new { success = true });
                 }
@@ -90,14 +90,14 @@ namespace Toz.Dotnet.Controllers
                 CheckUnexpectedErrors();
             }
 
-            return PartialView(token);      
+            return PartialView(token);
         }
-        
+
         public async Task<ActionResult> DeleteReservation(string id, CancellationToken cancellationToken)
         {
             if (!string.IsNullOrEmpty(id))
             {
-                await _scheduleManagementService.DeleteReservation(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName), cancellationToken);
+                await _scheduleManagementService.DeleteReservation(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
             }
 
             return RedirectToAction("Index");

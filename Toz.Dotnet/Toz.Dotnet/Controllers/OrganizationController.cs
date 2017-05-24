@@ -30,7 +30,7 @@ namespace Toz.Dotnet.Controllers
         {
             ViewData["EditMode"] = edit;
 
-            var organizationInfo = await _organizationManagementService.GetOrganizationInfo(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName), cancellationToken);
+            var organizationInfo = await _organizationManagementService.GetOrganizationInfo(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
             if (organizationInfo != null)
             {
                 return View(organizationInfo);
@@ -46,7 +46,7 @@ namespace Toz.Dotnet.Controllers
             if (organization != null && ModelState.IsValid)
             {
                 organization.Contact.Website = new UriBuilder(organization.Contact.Website).Uri.ToString();
-                if (await _organizationManagementService.UpdateOrCreateInfo(organization, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName), cancellationToken))
+                if (await _organizationManagementService.UpdateOrCreateInfo(organization, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
                 {
                     return RedirectToAction("Info", new RouteValueDictionary(new { edit = false }));
                 }
@@ -55,7 +55,7 @@ namespace Toz.Dotnet.Controllers
             }
 
             ViewData["EditMode"] = true;
-            return View("Info", organization);  
+            return View("Info", organization);
         }
     }
 }

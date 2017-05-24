@@ -17,7 +17,7 @@ namespace Toz.Dotnet.Controllers
         private readonly IUsersManagementService _usersManagementService;
 
         public UsersController(IUsersManagementService usersManagementService, IStringLocalizer<UsersController> localizer,
-            IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService, IAuthService authService) : base(backendErrorsService,localizer,appSettings, authService)
+            IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService, IAuthService authService) : base(backendErrorsService, localizer, appSettings, authService)
         {
             _usersManagementService = usersManagementService;
         }
@@ -40,8 +40,8 @@ namespace Toz.Dotnet.Controllers
             User user, CancellationToken cancellationToken)
         {
             if (user != null && ModelState.IsValid)
-            {   
-                if(await _usersManagementService.CreateUser(user, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName), cancellationToken))
+            {
+                if (await _usersManagementService.CreateUser(user, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName), cancellationToken))
                 {
                     return Json(new { success = true });
                 }
@@ -54,7 +54,7 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken)
         {
-            return PartialView("Edit", await _usersManagementService.GetUser(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName), cancellationToken));
+            return PartialView("Edit", await _usersManagementService.GetUser(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken));
         }
 
         [HttpPost]
@@ -65,7 +65,7 @@ namespace Toz.Dotnet.Controllers
         {
             if (user != null && ModelState.IsValid)
             {
-                if (await _usersManagementService.UpdateUser(user, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName), cancellationToken))
+                if (await _usersManagementService.UpdateUser(user, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
                 {
                     return Json(new { success = true });
                 }

@@ -12,6 +12,9 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using System.Security.Claims;
+using Toz.Dotnet.Models;
+using Toz.Dotnet.Core.Interfaces;
 
 namespace Toz.Dotnet.Authorization
 {
@@ -21,14 +24,16 @@ namespace Toz.Dotnet.Authorization
         private readonly AppSettings _appSettings;
         private readonly IHostingEnvironment _env;
         private readonly List<string> _controllers;
-        private readonly IAuthService _cookieService;
+        private readonly IAuthService _authService;
+        private readonly IAccountManagementService _accountManagementService;
 
-        public CustomAuthorizationMiddleware(RequestDelegate next, IOptions<AppSettings> appSettings, IHostingEnvironment env, IAuthService cookieService)
+        public CustomAuthorizationMiddleware(RequestDelegate next, IOptions<AppSettings> appSettings, IHostingEnvironment env, IAuthService cookieService, IAccountManagementService accountManagementService)
         {
             _next = next;
             _appSettings = appSettings.Value;
             _env = env;
-            _cookieService = cookieService;
+            _authService = cookieService;
+            _accountManagementService = accountManagementService;
 
             string[] files = Directory.GetFiles(_env.ContentRootPath + Path.DirectorySeparatorChar + "Controllers");
             _controllers = new List<string>();
@@ -41,11 +46,25 @@ namespace Toz.Dotnet.Authorization
 
         public async Task Invoke(HttpContext httpContext, IAuthorizationService authorizationService)
         {
+            // Refresh token
+            if (_authService.ReadCookie(httpContext, CookieAuthenticationDefaults.CookiePrefix + CookieAuthenticationDefaults.AuthenticationScheme) != null && _authService.ReadCookie(httpContext, _appSettings.CookieRefreshName, true) == null)
+            {
+                var jsonLogin = _authService.DecryptValue(httpContext.User.FindFirst(ClaimTypes.Hash).Value);
+                Login login = JsonConvert.DeserializeObject<Login>(jsonLogin);
+                JwtToken newJwtToken = await _accountManagementService.LogIn(login);
+                if (newJwtToken != null)
+                {
+                    _authService.RemoveCookie(httpContext, _appSettings.CookieTokenName);
+                    _authService.AddToCookie(httpContext, _appSettings.CookieTokenName, newJwtToken.Jwt, new CookieOptions() { Expires = DateTimeOffset.FromUnixTimeSeconds(newJwtToken.ExpirationDateSeconds) });
+                    _authService.AddToCookie(httpContext, _appSettings.CookieRefreshName, "", new CookieOptions() { Expires = DateTimeOffset.FromUnixTimeSeconds(DateTimeOffset.UtcNow.ToUnixTimeSeconds() + Convert.ToInt64(TimeSpan.FromMinutes(_appSettings.CookieRefreshTimeInMinutes).TotalSeconds)) });
+                }
+            }
+
             bool isUrlValid = false;
 
-            if(httpContext.Request.PathBase.HasValue)
+            if (httpContext.Request.PathBase.HasValue)
             {
-                if(httpContext.Request.Path.HasValue)
+                if (httpContext.Request.Path.HasValue)
                 {
                     isUrlValid = _controllers.Contains<string>(httpContext.Request.Path.Value.Split('/')[1]);
                 }
@@ -63,7 +82,7 @@ namespace Toz.Dotnet.Authorization
                 {
                     await httpContext.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                     await httpContext.Authentication.ChallengeAsync();
-                    _cookieService.RemoveCookie(httpContext, _appSettings.CookieTokenName);
+                    _authService.RemoveCookie(httpContext, _appSettings.CookieTokenName);
                     return;
                 }
 
@@ -73,7 +92,7 @@ namespace Toz.Dotnet.Authorization
                 if (!authorized)
                 {
                     await httpContext.Authentication.ChallengeAsync();
-                    _cookieService.RemoveCookie(httpContext, _appSettings.CookieTokenName);
+                    _authService.RemoveCookie(httpContext, _appSettings.CookieTokenName);
                     return;
                 }
             }
@@ -84,7 +103,7 @@ namespace Toz.Dotnet.Authorization
 
         private bool IsCorrectRoleInToken(HttpContext httpContext)
         {
-            var token = _cookieService.ReadCookie(httpContext, _appSettings.CookieTokenName);
+            var token = _authService.ReadCookie(httpContext, _appSettings.CookieTokenName, true);
 
             if (token != null)
             {

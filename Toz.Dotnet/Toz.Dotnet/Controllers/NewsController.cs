@@ -25,7 +25,7 @@ namespace Toz.Dotnet.Controllers
         private string _validationPhotoAlert;
 
         public NewsController(IFilesManagementService filesManagementService, INewsManagementService newsManagementService,
-            IStringLocalizer<NewsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService, IAuthService authService) : base(backendErrorsService, localizer ,appSettings, authService)
+            IStringLocalizer<NewsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService, IAuthService authService) : base(backendErrorsService, localizer, appSettings, authService)
         {
             _filesManagementService = filesManagementService;
             _newsManagementService = newsManagementService;
@@ -33,7 +33,7 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            List<News> news = await _newsManagementService.GetAllNews(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName));
+            List<News> news = await _newsManagementService.GetAllNews(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true));
             //todo add photo if will be avaialbe on backends
             var img = _filesManagementService.DownloadImage(@"http://img.cda.pl/obr/thumbs/6adb80c33f5b55df46a481b57a61c64c.png_oooooooooo_273x.png");
             var thumbnail = _filesManagementService.GetThumbnail(img);
@@ -44,7 +44,7 @@ namespace Toz.Dotnet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(
-            [Bind("Title, Contents")] 
+            [Bind("Title, Contents")]
             News news, [Bind("Photo")] IFormFile photo, string status, CancellationToken cancellationToken)
         {
             bool result = ValidatePhoto(news, photo);
@@ -52,25 +52,25 @@ namespace Toz.Dotnet.Controllers
 
             Enum.TryParse(status, out NewsStatus newsStatus);
             news.Type = newsStatus;
-            
+
             if (result && ModelState.IsValid)
             {
-                if (await _newsManagementService.CreateNews(news, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName)))
+                if (await _newsManagementService.CreateNews(news, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true)))
                 {
                     _lastAcceptPhoto = null;
                     _validationPhotoAlert = null;
                     return Json(new { success = true });
                 }
 
-               CheckUnexpectedErrors();
-               return PartialView(news);
+                CheckUnexpectedErrors();
+                return PartialView(news);
             }
             else
             {
-                if(!result)
+                if (!result)
                 {
                     ViewData["ValidationPhotoAlert"] = _validationPhotoAlert;
-                    if(_lastAcceptPhoto != null)
+                    if (_lastAcceptPhoto != null)
                     {
                         news.Photo = _lastAcceptPhoto;
                         ViewData["SelectedPhoto"] = "PhotoAlertWithLastPhoto";
@@ -82,7 +82,7 @@ namespace Toz.Dotnet.Controllers
                 }
                 return PartialView(news);
             }
-        } 
+        }
 
         public IActionResult Add()
         {
@@ -92,7 +92,7 @@ namespace Toz.Dotnet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
-            [Bind("Id, Title, Contents, Status, PublishingTime, AddingTime, LastEditTime")] 
+            [Bind("Id, Title, Contents, Status, PublishingTime, AddingTime, LastEditTime")]
             News news, [Bind("Photo")] IFormFile photo, string status, CancellationToken cancellationToken)
         {
             //todo add photo if will be available on backends
@@ -106,7 +106,7 @@ namespace Toz.Dotnet.Controllers
 
             if (result && ModelState.IsValid)
             {
-                if (await _newsManagementService.UpdateNews(news, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName)))
+                if (await _newsManagementService.UpdateNews(news, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true)))
                 {
                     _lastAcceptPhoto = null;
                     _validationPhotoAlert = null;
@@ -118,10 +118,10 @@ namespace Toz.Dotnet.Controllers
                 return PartialView(news);
             }
 
-            if(!result)
+            if (!result)
             {
                 ViewData["ValidationPhotoAlert"] = _validationPhotoAlert;
-                if(_lastAcceptPhoto != null)
+                if (_lastAcceptPhoto != null)
                 {
                     news.Photo = _lastAcceptPhoto;
                     ViewData["SelectedPhoto"] = "PhotoAlertWithLastPhoto";
@@ -132,20 +132,20 @@ namespace Toz.Dotnet.Controllers
                 }
             }
             return PartialView(news);
-            
-        } 
 
-        public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken) 
+        }
+
+        public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken)
         {
-            return PartialView("Edit", await _newsManagementService.GetNews(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName)));
+            return PartialView("Edit", await _newsManagementService.GetNews(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true)));
         }
 
         public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)
         {
-            var pet = await _newsManagementService.GetNews(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName), cancellationToken);
-            if(pet != null)
+            var pet = await _newsManagementService.GetNews(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+            if (pet != null)
             {
-                await _newsManagementService.DeleteNews(pet, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName), cancellationToken);
+                await _newsManagementService.DeleteNews(pet, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
             }
 
             return RedirectToAction("Index");
@@ -158,11 +158,11 @@ namespace Toz.Dotnet.Controllers
 
         private bool ValidatePhoto(News news, IFormFile photo)
         {
-            if(photo != null)
+            if (photo != null)
             {
-                if(IsAcceptedPhotoType(photo.ContentType, AppSettings.AcceptPhotoTypes))
+                if (IsAcceptedPhotoType(photo.ContentType, AppSettings.AcceptPhotoTypes))
                 {
-                    if(photo.Length > 0)
+                    if (photo.Length > 0)
                     {
                         news.Photo = _newsManagementService.ConvertPhotoToByteArray(photo.OpenReadStream());
                         _lastAcceptPhoto = news.Photo;
@@ -173,10 +173,10 @@ namespace Toz.Dotnet.Controllers
                 }
 
                 _validationPhotoAlert = "WrongFileType";
-                return false;                
+                return false;
             }
 
-            if(_lastAcceptPhoto != null)
+            if (_lastAcceptPhoto != null)
             {
                 news.Photo = _lastAcceptPhoto;
             }
