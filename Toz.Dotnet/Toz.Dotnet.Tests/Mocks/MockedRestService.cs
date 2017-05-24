@@ -28,6 +28,16 @@ namespace Toz.Dotnet.Tests.Mocks
             return IsValidData(address, obj);
         }
 
+        public async Task<string> ExecutePostActionAndReturnId<T>(string address, T obj,
+            CancellationToken cancelationToken = new CancellationToken()) where T : class
+        {
+            if (IsValidData(address, obj))
+            {
+                return "yes"; //temp cuz of build fixing
+            }
+            return null;
+        }
+
         public async Task<bool> ExecutePutAction<T>(string address, T obj, CancellationToken cancelationToken = new CancellationToken()) where T : class
         {
             return IsValidData(address, obj);
