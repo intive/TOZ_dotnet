@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Toz.Dotnet.Core.Interfaces;
-using Toz.Dotnet.Models;
 using Toz.Dotnet.Resources.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Localization;
@@ -8,6 +7,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System;
 using Microsoft.AspNetCore.Routing;
+using Toz.Dotnet.Models.Organization;
 
 namespace Toz.Dotnet.Controllers
 {

@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Newtonsoft.Json;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models.Errors;

@@ -40,7 +40,7 @@ namespace Toz.Dotnet.Core.Services
         {
             _restService = restService;
             _usersManagementService = usersManagementService;
-            RequestUri = appSettings.Value.BackendScheduleUrl;
+            RequestUri = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendScheduleUrl;
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace Toz.Dotnet.Core.Services
         public async Task<bool> DeleteReservation(Reservation r, CancellationToken cancellationToken = default(CancellationToken))
         {
             var address = $"{RequestUri}/{r.Id}";
-            return await _restService.ExecuteDeleteAction(address, r, cancellationToken);
+            return await _restService.ExecuteDeleteAction(address, cancellationToken);
         }
 
         public Slot FindSlot(DateTime date, Period timeOfDay, CancellationToken cancellationToken = default(CancellationToken))

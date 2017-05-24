@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.Schedule;
 using Toz.Dotnet.Models.Schedule.ViewModels;
 using Period = Toz.Dotnet.Models.EnumTypes.Period;
