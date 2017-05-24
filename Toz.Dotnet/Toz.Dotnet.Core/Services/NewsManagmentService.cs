@@ -63,5 +63,10 @@ namespace Toz.Dotnet.Core.Services
                 return memoryStream.ToArray();
             }
         }
+
+        public Task<bool> UploadImage(News news, CancellationToken cancelationToken = new CancellationToken())
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

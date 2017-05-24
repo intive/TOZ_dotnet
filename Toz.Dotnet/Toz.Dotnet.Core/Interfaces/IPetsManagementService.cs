@@ -14,6 +14,7 @@ namespace Toz.Dotnet.Core.Interfaces
         Task<bool> UpdatePet(Pet pet, CancellationToken cancelationToken = default(CancellationToken));
         Task<bool> DeletePet(Pet pet, CancellationToken cancelationToken = default(CancellationToken));
         Task<bool> CreatePet(Pet pet, CancellationToken cancelationToken = default(CancellationToken));
+        Task<bool> UploadImage(Pet pet, CancellationToken cancellationToken = default(CancellationToken));
         byte[] ConvertPhotoToByteArray(Stream fileStream);
         string RequestUri { get; set; }
     }

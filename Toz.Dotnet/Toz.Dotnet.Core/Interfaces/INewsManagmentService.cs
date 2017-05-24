@@ -13,6 +13,7 @@ namespace Toz.Dotnet.Core.Interfaces
         Task<bool> UpdateNews(News news, CancellationToken cancelationToken = default(CancellationToken));
         Task<bool> DeleteNews(News news, CancellationToken cancelationToken = default(CancellationToken));
         Task<bool> CreateNews(News news, CancellationToken cancelationToken = default(CancellationToken));
+        Task<bool> UploadImage(News news, CancellationToken cancelationToken = default(CancellationToken));
         byte[] ConvertPhotoToByteArray(Stream fileStream);
         string RequestUri { get; set; }
     }

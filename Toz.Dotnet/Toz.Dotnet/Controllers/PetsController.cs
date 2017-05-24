@@ -134,17 +134,22 @@ namespace Toz.Dotnet.Controllers
             return PartialView("Edit", await _petsManagementService.GetPet(id));
         }
 
-        
-/*        public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)
+        public async Task<ActionResult> UploadImage(string id, CancellationToken cancellationToken)
         {
-            var pet = await _petsManagementService.GetPet(id);
-            if(pet != null)
-            {
-                await _petsManagementService.DeletePet(pet);
-            }
+            return PartialView("UploadImage", await _petsManagementService.GetPet(id));
+        }
 
-            return RedirectToAction("Index");
-        }*/
+
+        /*        public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)
+                {
+                    var pet = await _petsManagementService.GetPet(id);
+                    if(pet != null)
+                    {
+                        await _petsManagementService.DeletePet(pet);
+                    }
+
+                    return RedirectToAction("Index");
+                }*/
 
         private bool IsAcceptedPhotoType(string photoType, string[] acceptedTypes)
         {

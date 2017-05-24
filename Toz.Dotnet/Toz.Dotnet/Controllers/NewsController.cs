@@ -138,6 +138,11 @@ namespace Toz.Dotnet.Controllers
             return PartialView("Edit", await _newsManagementService.GetNews(id, cancellationToken));
         }
 
+        public async Task<ActionResult> UploadImage(string id, CancellationToken cancellationToken)
+        {
+            return PartialView("UploadImage", await _newsManagementService.GetNews(id, cancellationToken));
+        }
+
         public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)
         {
             var pet = await _newsManagementService.GetNews(id, cancellationToken);

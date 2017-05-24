@@ -55,6 +55,11 @@ namespace Toz.Dotnet.Core.Services
             return await _restService.ExecuteGetAction<Pet>(address, cancelationToken);
         }
 
+        public Task<bool> UploadImage(Pet pet, CancellationToken cancellationToken = new CancellationToken())
+        {
+            throw new System.NotImplementedException();
+        }
+
         public byte[] ConvertPhotoToByteArray(Stream fileStream)
         {
             using (var memoryStream = new MemoryStream())
