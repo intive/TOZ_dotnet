@@ -21,7 +21,7 @@ namespace Toz.Dotnet.Tests.Tests
             _organizationInfoManagementService = ServiceProvider.Instance.Resolve<IOrganizationManagementService>();
             _accountManagementService = ServiceProvider.Instance.Resolve<IAccountManagementService>();
             _organizationInfoManagementService.RequestUri = RequestUriHelper.OrganizationInfoUri;
-            _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUrl;
+            _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUri;
             _testingOrganization = TestingObjectProvider.Instance.Organization;
             _token = _accountManagementService.SignIn(TestingObjectProvider.Instance.Login).Result;
         }

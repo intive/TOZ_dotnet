@@ -43,7 +43,7 @@ namespace Toz.Dotnet.Tests.Sanity
             _proposalsManagementService.RequestUri = RequestUriHelper.ProposalsUri;
             _howToHelpInformationService.BecomeVolunteerUrl = RequestUriHelper.HowToHelpUri;
             _howToHelpInformationService.DonateInfoUrl = RequestUriHelper.HowToHelpUri;
-            _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUrl;
+            _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUri;
         }
 
         [Fact]
@@ -64,6 +64,15 @@ namespace Toz.Dotnet.Tests.Sanity
             Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
 
             Assert.False(await _petsManagementService.CreatePet(null, _token.Jwt));
+        }
+
+        [Fact]
+        public async void AccountFunctionalityTest()
+        {
+            var login = TestingObjectProvider.Instance.Login;
+
+            Assert.NotNull(await _accountManagementService.SignIn(login));
+            Assert.Null(await _accountManagementService.SignIn(null));
         }
 
         [Fact]
