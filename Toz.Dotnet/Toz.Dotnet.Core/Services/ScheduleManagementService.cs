@@ -39,7 +39,7 @@ namespace Toz.Dotnet.Core.Services
             _reservationsMockupDb = new List<Reservation>();
         }
 
-        public async Task<List<Week>> GetSchedule(int weekOffset, CancellationToken cancelationToken = default(CancellationToken))
+        public async Task<List<Week>> GetSchedule(int weekOffset, string token, CancellationToken cancelationToken = default(CancellationToken))
         {
             _offset += weekOffset;
 
@@ -62,16 +62,16 @@ namespace Toz.Dotnet.Core.Services
             //return await _restService.ExecuteGetAction<Schedule>(address, cancelationToken);
         }
 
-        public async Task<Reservation> GetReservation(string id, CancellationToken cancelationToken = default(CancellationToken))
+        public async Task<Reservation> GetReservation(string id, string token, CancellationToken cancelationToken = default(CancellationToken))
         {
             return _reservationsMockupDb.Find(p => p.Id == id);
             //string address = $"{RequestUri}/{id}";
             //return await _restService.ExecuteGetAction<Reservation>(address, cancelationToken);
         }
 
-        public async Task<bool> CreateReservation(Slot slot, UserBase userData, CancellationToken cancelationToken = default(CancellationToken))
+        public async Task<bool> CreateReservation(Slot slot, UserBase userData, string token, CancellationToken cancelationToken = default(CancellationToken))
         {
-            User user = await _usersManagementService.FindUser(userData.FirstName, userData.LastName, cancelationToken);
+            User user = await _usersManagementService.FindUser(userData.FirstName, userData.LastName, token, cancelationToken);
 
             // Registers the user if not already registered:
             if (user == null)
@@ -81,12 +81,12 @@ namespace Toz.Dotnet.Core.Services
                     FirstName = userData.FirstName,
                     LastName = userData.LastName
                 };
-                if(await _usersManagementService.CreateUser(user, cancelationToken) == false)
+                if(await _usersManagementService.CreateUser(user, token, cancelationToken) == false)
                 {
                     return false;
                 }
 
-                user = await _usersManagementService.FindUser(userData.FirstName, userData.LastName, cancelationToken);
+                user = await _usersManagementService.FindUser(userData.FirstName, userData.LastName, token, cancelationToken);
                 if (user == null)
                 {
                     return false;
@@ -116,9 +116,9 @@ namespace Toz.Dotnet.Core.Services
             //return await _restService.ExecutePostAction(address, r, cancelationToken);
         }
 
-        public async Task<bool> DeleteReservation(string id, CancellationToken cancelationToken = default(CancellationToken))
+        public async Task<bool> DeleteReservation(string id, string token, CancellationToken cancelationToken = default(CancellationToken))
         {
-            var r = await GetReservation(id, cancelationToken);
+            var r = await GetReservation(id, token, cancelationToken);
             if(r != null)
             {
                 foreach(Week w in _cache)
@@ -139,7 +139,7 @@ namespace Toz.Dotnet.Core.Services
             //return await _restService.ExecuteDeleteAction(address, reservation, cancelationToken);
         }
 
-        public Slot FindSlot(DateTime date, Period timeOfDay, CancellationToken cancelationToken = default(CancellationToken))
+        public Slot FindSlot(DateTime date, Period timeOfDay, string token, CancellationToken cancelationToken = default(CancellationToken))
         {
             Week week = _cache.First(w => w.DateFrom == GetFirstDayOfWeek(date));
             return week.Slots.First(s => s.Date == date && s.TimeOfDay == timeOfDay);
@@ -186,7 +186,8 @@ namespace Toz.Dotnet.Core.Services
             }
             
             /*// Fill the calendar with sample users
-            _usersManagementService.SetupSampleUsers();
+            _usersManagementService.SetupSampleUsers(token);
+
             Random r = new Random();
             for(int i=0; i<r.Next(5,30); i++)
             {
@@ -194,6 +195,7 @@ namespace Toz.Dotnet.Core.Services
                 randomSlot.Volunteer = _usersManagementService.GetRandomVolunteer();
                 await CreateReservation(randomSlot, randomSlot.Volunteer);
             }*/
+
         }
     }
 }

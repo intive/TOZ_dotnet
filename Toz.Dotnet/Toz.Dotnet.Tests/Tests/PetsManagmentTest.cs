@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Toz.Dotnet.Tests.Tests
 {
@@ -15,12 +16,17 @@ namespace Toz.Dotnet.Tests.Tests
     {
         private readonly Pet _testingPet;
         private readonly IPetsManagementService _petsManagementService;
+        private readonly IAccountManagementService _accountManagementService;
+        private readonly JwtToken _token;
 
         public PetsManagementTest()
         { 
             _petsManagementService = ServiceProvider.Instance.Resolve<IPetsManagementService>();
+            _accountManagementService = ServiceProvider.Instance.Resolve<IAccountManagementService>();
             _petsManagementService.RequestUri = RequestUriHelper.PetsUri;
+            _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUri;
             _testingPet = TestingObjectProvider.Instance.Pet;
+            _token = _accountManagementService.SignIn(TestingObjectProvider.Instance.Login).Result;
         }
 
         [Fact]
@@ -38,45 +44,45 @@ namespace Toz.Dotnet.Tests.Tests
         [Fact]
         public void TestOfGettingAllPets()
         {
-            Assert.NotNull(_petsManagementService.GetAllPets().Result);
+            Assert.NotNull(_petsManagementService.GetAllPets(_token.Jwt).Result);
         }
          
         [Fact]
         public void TestOfCreatingNewPet()
         {
-            var result = _petsManagementService.CreatePet(_testingPet).Result;
+            var result = _petsManagementService.CreatePet(_testingPet, _token.Jwt).Result;
             Assert.True(result);
         }
         
         [Fact]
         public void TestOfDeletingSpecifiedPet()
         {
-            Assert.True(_petsManagementService.DeletePet(_testingPet).Result);
+            Assert.True(_petsManagementService.DeletePet(_testingPet, _token.Jwt).Result);
         }
         
         [Fact]
         public void TestOfGettingSpecifiedPet()
         {
-            Assert.NotNull(_petsManagementService.GetPet(_testingPet.Id).Result);        
+            Assert.NotNull(_petsManagementService.GetPet(_testingPet.Id, _token.Jwt).Result);        
         }
 
         [Fact]
         public void TestOfUpdatingPet()
         {
-            Assert.True(_petsManagementService.UpdatePet(_testingPet).Result);
+            Assert.True(_petsManagementService.UpdatePet(_testingPet, _token.Jwt).Result);
         }
 
         [Fact]
         public void TestOfUpdatingPetWithNullValue()
         {
-            var exception = Record.Exception(() => _petsManagementService.UpdatePet(null).Result);
+            var exception = Record.Exception(() => _petsManagementService.UpdatePet(null, _token.Jwt).Result);
             Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
         }
 
         [Fact]
         public void TestOfDeletingPetThatIsNull()
         {
-            var exception = Record.Exception(() => _petsManagementService.DeletePet(null).Result);
+            var exception = Record.Exception(() => _petsManagementService.DeletePet(null, _token.Jwt).Result);
             Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
         }
 
@@ -84,7 +90,7 @@ namespace Toz.Dotnet.Tests.Tests
         public void TestOfGettingAllPetsUsingWrongUrl()
         {
             _petsManagementService.RequestUri = RequestUriHelper.WrongUrl;
-            Assert.Null(_petsManagementService.GetAllPets().Result);
+            Assert.Null(_petsManagementService.GetAllPets(_token.Jwt).Result);
             _petsManagementService.RequestUri = RequestUriHelper.PetsUri;
         }
 

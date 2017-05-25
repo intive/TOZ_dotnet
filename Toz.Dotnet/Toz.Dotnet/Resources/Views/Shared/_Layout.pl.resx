@@ -126,7 +126,7 @@
   <data name="NewsList" xml:space="preserve">
     <value>Lista aktualności</value>
   </data>
-  <data name="Login" xml:space="preserve">
+  <data name="SignIn" xml:space="preserve">
     <value>Zaloguj</value>
   </data>
   <data name="Users" xml:space="preserve">
@@ -141,7 +141,7 @@
   <data name="HomePage" xml:space="preserve">
     <value>Strona startowa</value>
   </data>
-  <data name="Logout" xml:space="preserve">
+  <data name="SignOut" xml:space="preserve">
     <value>Wyloguj</value>
   </data>
   <data name="Proposals" xml:space="preserve">

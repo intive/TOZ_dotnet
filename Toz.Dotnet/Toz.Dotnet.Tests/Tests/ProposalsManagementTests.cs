@@ -19,12 +19,17 @@ namespace Toz.Dotnet.Tests.Tests
     {
         private readonly Proposal _testingProposal;
         private readonly IProposalsManagementService _proposalsManagementService;
+        private readonly IAccountManagementService _accountManagementService;
+        private readonly JwtToken _token;
 
         public ProposalsManagementTests()
         {
             _proposalsManagementService = ServiceProvider.Instance.Resolve<IProposalsManagementService>();
+            _accountManagementService = ServiceProvider.Instance.Resolve<IAccountManagementService>();
             _proposalsManagementService.RequestUri = RequestUriHelper.ProposalsUri;
+            _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUri;
             _testingProposal = TestingObjectProvider.Instance.Proposal;
+            _token = _accountManagementService.SignIn(TestingObjectProvider.Instance.Login).Result;
         }
 
         [Fact]
@@ -42,39 +47,39 @@ namespace Toz.Dotnet.Tests.Tests
         [Fact]
         public void TestOfGettingAllProposals()
         {
-            Assert.NotNull(_proposalsManagementService.GetAllProposals().Result);
+            Assert.NotNull(_proposalsManagementService.GetAllProposals(_token.Jwt).Result);
         }
 
         [Fact]
         public void TestOfCreatingNewProposal()
         {
-            var result = _proposalsManagementService.CreateProposal(_testingProposal).Result;
+            var result = _proposalsManagementService.CreateProposal(_testingProposal, _token.Jwt).Result;
             Assert.True(result);
         }
 
         [Fact]
         public void TestOfDeletingSpecifiedProposal()
         {
-            Assert.True(_proposalsManagementService.DeleteProposal(_testingProposal).Result);
+            Assert.True(_proposalsManagementService.DeleteProposal(_testingProposal, _token.Jwt).Result);
         }
 
         [Fact]
         public void TestOfUpdatingProposal()
         {
-            Assert.True(_proposalsManagementService.UpdateProposal(_testingProposal).Result);
+            Assert.True(_proposalsManagementService.UpdateProposal(_testingProposal, _token.Jwt).Result);
         }
 
         [Fact]
         public void TestOfUpdatingProposalWithNullValue()
         {
-            var exception = Record.Exception(() => _proposalsManagementService.UpdateProposal(null).Result);
+            var exception = Record.Exception(() => _proposalsManagementService.UpdateProposal(null, _token.Jwt).Result);
             Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
         }
 
         [Fact]
         public void TestOfDeletingProposalThatIsNull()
         {
-            var exception = Record.Exception(() => _proposalsManagementService.DeleteProposal(null).Result);
+            var exception = Record.Exception(() => _proposalsManagementService.DeleteProposal(null, _token.Jwt).Result);
             Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
         }
 
@@ -82,7 +87,7 @@ namespace Toz.Dotnet.Tests.Tests
         public void TestOfGettingAllProposalsUsingWrongUrl()
         {
             _proposalsManagementService.RequestUri = RequestUriHelper.WrongUrl;
-            Assert.Null(_proposalsManagementService.GetAllProposals().Result);
+            Assert.Null(_proposalsManagementService.GetAllProposals(_token.Jwt).Result);
             _proposalsManagementService.RequestUri = RequestUriHelper.PetsUri;
         }
 
@@ -105,7 +110,8 @@ namespace Toz.Dotnet.Tests.Tests
             var restServiceMock = new Mock<IRestService>();
             restServiceMock.Setup(s => s.ExecuteGetAction<List<Proposal>>(
                     It.IsAny<string>(),
-                    It.IsAny<CancellationToken>()))
+                    It.IsAny<string>(),
+                    It.IsAny<CancellationToken> ()))
                 .ReturnsAsync(new List<Proposal>()
                 {
                     TestingObjectProvider.Instance.DoShallowCopy(_testingProposal)
@@ -119,7 +125,7 @@ namespace Toz.Dotnet.Tests.Tests
                     ActivationRequestUri = RequestUriHelper.ProposalsUri
                 };
 
-            Assert.NotNull(proposalManagementService.GetProposal(_testingProposal.Id).Result);
+            Assert.NotNull(proposalManagementService.GetProposal(_testingProposal.Id, _token.Jwt).Result);
         }
 
         [Fact]
@@ -128,12 +134,14 @@ namespace Toz.Dotnet.Tests.Tests
             var restServiceMock = new Mock<IRestService>();
             restServiceMock.Setup(s => s.ExecuteGetAction<Proposal>(
                     It.IsAny<string>(),
+                    It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
                 .ReturnsAsync(TestingObjectProvider.Instance.DoShallowCopy(_testingProposal));
 
             restServiceMock.Setup(s => s.ExecutePutAction<Proposal>(
                     It.IsAny<string>(),
                     It.IsAny<Proposal>(),
+                    It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
                 .ReturnsAsync(true);
 
@@ -146,7 +154,7 @@ namespace Toz.Dotnet.Tests.Tests
                 };
             Assert.NotNull(proposalManagementService.RequestUri);
             Assert.NotNull(proposalManagementService.ActivationRequestUri);
-            Assert.True(proposalManagementService.SendActivationEmail(_testingProposal.Id).Result);
+            Assert.True(proposalManagementService.SendActivationEmail(_testingProposal.Id, _token.Jwt).Result);
         }
 
         [Theory]
