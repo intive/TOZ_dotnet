@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
     $('#table').DataTable({
         "dom": 't<"panel-footer"p>',
-        "pageLength": 10,
+        "pageLength": 8,
         "language":
         {
             "processing": "Przetwarzanie...",
