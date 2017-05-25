@@ -19,9 +19,6 @@ namespace Toz.Dotnet.Controllers
         private readonly IFilesManagementService _filesManagementService;
         private readonly INewsManagementService _newsManagementService;
 
-        private static byte[] _lastAcceptPhoto;
-        private string _validationPhotoAlert;
-
         public NewsController(IFilesManagementService filesManagementService, INewsManagementService newsManagementService,
             IStringLocalizer<NewsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService) : base(backendErrorsService, localizer ,appSettings)
         {
@@ -43,43 +40,22 @@ namespace Toz.Dotnet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(
             [Bind("Title, Contents")] 
-            News news, [Bind("Photo")] IFormFile photo, string status, CancellationToken cancellationToken)
+            News news, string status, CancellationToken cancellationToken)
         {
-            bool result = ValidatePhoto(news, photo);
-            news.PhotoUrl = "storage/a5/0d/4d/a50d4d4c-ccd2-4747-8dec-d6d7f521336e.jpg";
-
             Enum.TryParse(status, out NewsStatus newsStatus);
             news.Type = newsStatus;
             
-            if (result && ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 if (await _newsManagementService.CreateNews(news))
                 {
-                    _lastAcceptPhoto = null;
-                    _validationPhotoAlert = null;
                     return Json(new { success = true });
                 }
 
-               CheckUnexpectedErrors();
-               return PartialView(news);
+               CheckUnexpectedErrors(); 
             }
-            else
-            {
-                if(!result)
-                {
-                    ViewData["ValidationPhotoAlert"] = _validationPhotoAlert;
-                    if(_lastAcceptPhoto != null)
-                    {
-                        news.Photo = _lastAcceptPhoto;
-                        ViewData["SelectedPhoto"] = "PhotoAlertWithLastPhoto";
-                    }
-                    else
-                    {
-                        ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
-                    }
-                }
-                return PartialView(news);
-            }
+
+            return PartialView(news);
         } 
 
         public IActionResult Add()
@@ -91,56 +67,27 @@ namespace Toz.Dotnet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
             [Bind("Id, Title, Contents, Status, PublishingTime, AddingTime, LastEditTime")] 
-            News news, [Bind("Photo")] IFormFile photo, string status, CancellationToken cancellationToken)
+            News news, string status, CancellationToken cancellationToken)
         {
-            //todo add photo if will be available on backends
-            _lastAcceptPhoto = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 }; //get photo from backend, if available
-
-            bool result = ValidatePhoto(news, photo);
-            news.PhotoUrl = "storage/a5/0d/4d/a50d4d4c-ccd2-4747-8dec-d6d7f521336e.jpg";
-
             Enum.TryParse(status, out NewsStatus newsStatus);
             news.Type = newsStatus;
 
-            if (result && ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 if (await _newsManagementService.UpdateNews(news))
                 {
-                    _lastAcceptPhoto = null;
-                    _validationPhotoAlert = null;
                     return Json(new { success = true });
                 }
 
                 CheckUnexpectedErrors();
-
-                return PartialView(news);
             }
 
-            if(!result)
-            {
-                ViewData["ValidationPhotoAlert"] = _validationPhotoAlert;
-                if(_lastAcceptPhoto != null)
-                {
-                    news.Photo = _lastAcceptPhoto;
-                    ViewData["SelectedPhoto"] = "PhotoAlertWithLastPhoto";
-                }
-                else
-                {
-                    ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
-                }
-            }
-            return PartialView(news);
-            
+            return PartialView(news); 
         } 
 
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken) 
         {
             return PartialView("Edit", await _newsManagementService.GetNews(id, cancellationToken));
-        }
-
-        public async Task<ActionResult> UploadImage(string id, CancellationToken cancellationToken)
-        {
-            return PartialView("UploadImage", await _newsManagementService.GetNews(id, cancellationToken));
         }
 
         public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)
@@ -154,36 +101,9 @@ namespace Toz.Dotnet.Controllers
             return RedirectToAction("Index");
         }
 
-        private bool IsAcceptedPhotoType(string photoType, string[] acceptTypes)
+        public async Task<ActionResult> Images(string id, CancellationToken cancellationToken)
         {
-            return acceptTypes.Any(type => type == photoType);
-        }
-
-        private bool ValidatePhoto(News news, IFormFile photo)
-        {
-            if(photo != null)
-            {
-                if(IsAcceptedPhotoType(photo.ContentType, AppSettings.AcceptPhotoTypes))
-                {
-                    if(photo.Length > 0)
-                    {
-                        news.Photo = _newsManagementService.ConvertPhotoToByteArray(photo.OpenReadStream());
-                        _lastAcceptPhoto = news.Photo;
-                        return true;
-                    }
-                    _validationPhotoAlert = "EmptyFile";
-                    return false;
-                }
-
-                _validationPhotoAlert = "WrongFileType";
-                return false;                
-            }
-
-            if(_lastAcceptPhoto != null)
-            {
-                news.Photo = _lastAcceptPhoto;
-            }
-            return true;
+            return PartialView("Images", await _newsManagementService.GetNews(id));
         }
     }
 }

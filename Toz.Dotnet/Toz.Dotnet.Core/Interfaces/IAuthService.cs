@@ -12,5 +12,6 @@ namespace Toz.Dotnet.Core.Interfaces
         void AddTokenToHttpClient(HttpClient httpClient);
         string ActiveUser { get; }
         string RequestUri { get; set; }
+        JwtToken Token { get; set; }
     }
 }

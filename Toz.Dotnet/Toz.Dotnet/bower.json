@@ -6,7 +6,8 @@
     "jquery-validation": "1.16.0",
     "jquery-validation-unobtrusive": "3.2.6",
     "datatables-bootstrap": "1.0.0",
-    "datatables-responsive": "2.1.1"
+    "datatables-responsive": "2.1.1",
+    "fine-uploader": "5.13.0"
   },
   "resolutions": {
     "jquery-validation": "1.16.0"

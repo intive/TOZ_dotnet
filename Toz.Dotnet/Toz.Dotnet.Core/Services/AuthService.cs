@@ -5,17 +5,16 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using System;
 
 namespace Toz.Dotnet.Core.Services
 {
     public class AuthService : IAuthService
     {
-        //private readonly AppSettings _appSettings;
-        private JwtToken _token;
-
         public bool IsAuth { get; private set; }
         public string ActiveUser { get; private set; }
         public string RequestUri { get; set; }
+        public JwtToken Token { get; set; }
 
         public AuthService(IOptions<AppSettings> appSettings)
         {
@@ -40,7 +39,7 @@ namespace Toz.Dotnet.Core.Services
                     var response = await client.PostAsync(RequestUri, httpContent);
                     response.EnsureSuccessStatusCode();
                     string responseString = await response.Content.ReadAsStringAsync();
-                    _token = Newtonsoft.Json.JsonConvert.DeserializeObject<JwtToken>(responseString);
+                    Token = Newtonsoft.Json.JsonConvert.DeserializeObject<JwtToken>(responseString);
                     IsAuth = true;
                     ActiveUser = login.Email;
                 }
@@ -53,13 +52,13 @@ namespace Toz.Dotnet.Core.Services
 
         public void SighOut()
         {
-            _token = null;
+            Token = null;
             IsAuth = false;
         }
 
         public void AddTokenToHttpClient(HttpClient httpClient)
         {
-            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_token.JWT}");
+            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {Token.JWT}");
         }
     }
 }
