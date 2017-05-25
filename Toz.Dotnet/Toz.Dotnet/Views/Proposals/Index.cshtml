@@ -56,42 +56,37 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.FirstName</td>
-                    <td>@item.LastName</td>
+                    <td class="overflow-ellipsis">@item.FirstName</td>
+                    <td class="overflow-ellipsis">@item.LastName</td>
                     <td>@item.PhoneNumber</td>
-                    <td>@item.Email</td>
-
-                    @if (@item.Roles.Contains(UserType.Sa))
-                    {
-                        <td>@Localizer["Administrator"]</td>
+                    <td class="overflow-ellipsis">@item.Email</td>
+                    @{
+                        string highestRole;
+                        if (@item.Roles.Contains(UserType.Sa))
+                        {
+                            highestRole = "Administrator";
+                        }
+                        else if (@item.Roles.Contains(UserType.Toz))
+                        {
+                            highestRole = "TozWorker";
+                        }
+                        else if (@item.Roles.Contains(UserType.Volunteer))
+                        {
+                            highestRole = "Volunteer";
+                        }
+                        else if (@item.Roles.Contains(UserType.Anonymous))
+                        {
+                            highestRole = "Anynonymous";
+                        }
+                        else
+                        {
+                            highestRole = "None";
+                        }
                     }
-                    else if (@item.Roles.Contains(UserType.Toz))
-                    {
-                        <td>@Localizer["TozWorker"]</td>
-                    }
-                    else if (@item.Roles.Contains(UserType.Volunteer))
-                    {
-                        <td>@Localizer["Volunteer"]</td>
-                    }
-                    else if (@item.Roles.Contains(UserType.Anonymous))
-                    {
-                        <td>@Localizer["Anynonymous"]</td>
-                    }
-                    else
-                    {
-                        <td>@Localizer["None"]</td>
-                    }
+                    <td>@Localizer[highestRole]</td>
                     <td>@item.CreationTime</td>
-
-                    @if (item.IsRead)
-                    {
-                        <td>@Localizer["Yes"]</td>
-                    }
-                    else
-                    {
-                        <td>@Localizer["No"]</td>
-                    }
-
+                    <td>@Localizer[item.IsRead ? "Yes" : "No"]</td>
+                    
                     <td class="center-column">
                         <a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Edit", "Proposals")/@item.Id"><span class="glyphicon glyphicon-pencil"></span></a>
                         <a class="btn btn-success btn-sm" href="@Url.Action("Activate", "Proposals")/@item.Id"><span class="glyphicon glyphicon-ok"></span></a>

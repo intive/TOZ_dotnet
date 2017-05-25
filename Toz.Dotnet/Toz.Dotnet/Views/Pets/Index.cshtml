@@ -50,7 +50,7 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.Name</td>
+                        <td class="overflow-ellipsis">@item.Name</td>
 
                         @if (@item.Type == PetType.Dog)
                         {
@@ -79,8 +79,8 @@
                         }
 
                         <td><img src="data:image;base64,@Convert.ToBase64String(item.Photo)" alt="Pet photo" /></td>
-                        <td>@item.Description</td>
-                        <td>@item.Address</td>
+                        <td class="overflow-ellipsis">@item.Description</td>
+                        <td class="overflow-ellipsis">@item.Address</td>
                         <td>@item.Created</td>
                         @if (!@item.LastModified.HasValue)
                         {

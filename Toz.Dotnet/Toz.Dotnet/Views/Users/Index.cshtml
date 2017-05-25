@@ -45,10 +45,10 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.FirstName</td>
-                        <td>@item.LastName</td>
+                        <td class="overflow-ellipsis">@item.FirstName</td>
+                        <td class="overflow-ellipsis">@item.LastName</td>
                         <td>@item.PhoneNumber</td>
-                        <td>@item.Email</td>
+                        <td class="overflow-ellipsis">@item.Email</td>
                         
                         @if (@item.Roles.Contains(UserType.Sa))
                         {
