@@ -32,18 +32,9 @@
                 @{
                     if (TempData["UnhandledError"] != null)
                     {
-                        if (TempData["UnhandledError"].ToString() == "NotConnected")
-                        {
                         <div class="form-group row" style="text-align: center">
                             <span class="unhandled-error-span">@Localizer[@TempData["UnhandledError"].ToString()]</span>
                         </div>
-                        }
-                        else
-                        {
-                        <div class="form-group row" style="text-align: center">
-                            <span class="unhandled-error-span">@TempData["UnhandledError"]</span>
-                        </div>
-                        }
                     }
                 }
             </fieldset>
