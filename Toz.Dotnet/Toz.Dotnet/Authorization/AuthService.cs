@@ -24,12 +24,12 @@ namespace Toz.Dotnet.Authorization
             httpContext.Response.Cookies.Append(key, EncryptValue(value), cookieOptions);
         }
 
-        public string ReadCookie(HttpContext httpContext, string key, bool encrypt = false)
+        public string ReadCookie(HttpContext httpContext, string key, bool encrypted = false)
         {
             string value;
             try
             {
-                if (encrypt)
+                if (encrypted)
                 {
                     value = DecryptValue(httpContext.Request.Cookies[key]);
                 }
