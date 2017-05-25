@@ -14,8 +14,5 @@ namespace Toz.Dotnet.Authorization
         void RemoveCookie(HttpContext httpContext, string key);
         string EncryptValue(string value);
         string DecryptValue(string value);
-
-        bool IsAuth { get; }
-        void SetIsAuth(bool value);
     }
 }

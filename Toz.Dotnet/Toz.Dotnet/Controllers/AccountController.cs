@@ -25,14 +25,10 @@ namespace Toz.Dotnet.Controllers
     public class AccountController : TozControllerBase<AccountController>
     {
         private readonly IAccountManagementService _accountManagementService;
-        private IBackendErrorsService _backendErrorsService;
-        private readonly IAuthService _authService;
 
         public AccountController(IAccountManagementService accountManagementService, IBackendErrorsService backendErrorsService, IStringLocalizer<AccountController> localizer, IOptions<AppSettings> appSettings, IAuthService authService) : base(backendErrorsService, localizer, appSettings, authService)
         {
             _accountManagementService = accountManagementService;
-            _backendErrorsService = backendErrorsService;
-            _authService = authService;
         }
 
         public IActionResult SignIn(string returnUrl)
@@ -100,8 +96,6 @@ namespace Toz.Dotnet.Controllers
 
             // Refresh token
             AuthService.AddToCookie(HttpContext, AppSettings.CookieRefreshName, "", new CookieOptions() { Expires = DateTimeOffset.FromUnixTimeSeconds(DateTimeOffset.UtcNow.ToUnixTimeSeconds() + Convert.ToInt64(TimeSpan.FromMinutes(AppSettings.CookieRefreshTimeInMinutes).TotalSeconds)) });
-
-            AuthService.SetIsAuth(true);
 
             if (!string.IsNullOrEmpty(returnUrl))
             {

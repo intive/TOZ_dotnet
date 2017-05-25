@@ -58,7 +58,6 @@ namespace Toz.Dotnet
             services.AddMemoryCache();
 
             services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo("Keys"));
-
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("AdminOnly", policy => policy.RequireRole("TOZ", "SA"));
@@ -91,7 +90,7 @@ namespace Toz.Dotnet
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IDataProtectionProvider provider)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -119,7 +118,8 @@ namespace Toz.Dotnet
                 AccessDeniedPath = new PathString("/Account/SignIn"),
                 LogoutPath = new PathString("/Account/SignOut"),
                 AutomaticAuthenticate = true,
-                AutomaticChallenge = true
+                AutomaticChallenge = true,
+                DataProtectionProvider = provider.CreateProtector("CustomDataProtector")
             });
 
             app.UseCustomAuthorization();

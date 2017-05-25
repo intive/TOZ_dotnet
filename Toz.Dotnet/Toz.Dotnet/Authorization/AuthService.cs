@@ -11,8 +11,6 @@ namespace Toz.Dotnet.Authorization
         private IDataProtector _protector;
         private AppSettings _appSettings;
 
-        public bool IsAuth { get; private set; }
-
         public AuthService(IDataProtectionProvider provider, IOptions<AppSettings> appSettings)
         {
             _appSettings = appSettings.Value;
@@ -49,11 +47,6 @@ namespace Toz.Dotnet.Authorization
         public void RemoveCookie(HttpContext httpContext, string key)
         {
             httpContext.Response.Cookies.Delete(key);
-        }
-
-        public void SetIsAuth(bool value)
-        {
-            IsAuth = value;
         }
 
         public string EncryptValue(string value)

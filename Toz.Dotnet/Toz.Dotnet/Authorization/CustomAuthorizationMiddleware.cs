@@ -58,27 +58,24 @@ namespace Toz.Dotnet.Authorization
             // Refresh token
             if (_authService.ReadCookie(httpContext, CookieAuthenticationDefaults.CookiePrefix + CookieAuthenticationDefaults.AuthenticationScheme) != null && _authService.ReadCookie(httpContext, _appSettings.CookieRefreshName, true) == null)
             {
-                var jsonLogin = _authService.DecryptValue(httpContext.User.FindFirst(ClaimTypes.Hash).Value);
-                Login login = JsonConvert.DeserializeObject<Login>(jsonLogin);
-                JwtToken newJwtToken = await _accountManagementService.SignIn(login);
-                if (newJwtToken != null)
+                try
                 {
-                    _authService.RemoveCookie(httpContext, _appSettings.CookieTokenName);
-                    _authService.AddToCookie(httpContext, _appSettings.CookieTokenName, newJwtToken.Jwt, new CookieOptions() { Expires = DateTimeOffset.FromUnixTimeSeconds(newJwtToken.ExpirationDateSeconds) });
-                    _authService.AddToCookie(httpContext, _appSettings.CookieRefreshName, "", new CookieOptions() { Expires = DateTimeOffset.FromUnixTimeSeconds(DateTimeOffset.UtcNow.ToUnixTimeSeconds() + Convert.ToInt64(TimeSpan.FromMinutes(_appSettings.CookieRefreshTimeInMinutes).TotalSeconds)) });
+                    var jsonLogin = _authService.DecryptValue(httpContext.User.FindFirst(ClaimTypes.Hash).Value);
+                    Login login = JsonConvert.DeserializeObject<Login>(jsonLogin);
+                    JwtToken newJwtToken = await _accountManagementService.SignIn(login);
+                    if (newJwtToken != null)
+                    {
+                        _authService.RemoveCookie(httpContext, _appSettings.CookieTokenName);
+                        _authService.AddToCookie(httpContext, _appSettings.CookieTokenName, newJwtToken.Jwt, new CookieOptions() { Expires = DateTimeOffset.FromUnixTimeSeconds(newJwtToken.ExpirationDateSeconds) });
+                        _authService.AddToCookie(httpContext, _appSettings.CookieRefreshName, "", new CookieOptions() { Expires = DateTimeOffset.FromUnixTimeSeconds(DateTimeOffset.UtcNow.ToUnixTimeSeconds() + Convert.ToInt64(TimeSpan.FromMinutes(_appSettings.CookieRefreshTimeInMinutes).TotalSeconds)) });
+                    }
                 }
+                catch { };
             }
 
             bool isUrlValid = false;
 
-            if (httpContext.Request.PathBase.HasValue)
-            {
-                if (httpContext.Request.Path.HasValue)
-                {
-                    isUrlValid = _controllers.Contains<string>(httpContext.Request.Path.Value.Split('/')[1]);
-                }
-            }
-            else
+            if (httpContext.Request.Path.HasValue)
             {
                 isUrlValid = _controllers.Contains<string>(httpContext.Request.Path.Value.Split('/')[1]);
             }
@@ -112,28 +109,28 @@ namespace Toz.Dotnet.Authorization
 
         private bool IsCorrectRoleInToken(HttpContext httpContext)
         {
-            var token = _authService.ReadCookie(httpContext, _appSettings.CookieTokenName, true);
-
-            if (token != null)
+            try
             {
-                var jwtPayload = JwtPayload.Base64UrlDeserialize(token.Split('.')[1]);
+                var token = _authService.ReadCookie(httpContext, _appSettings.CookieTokenName, true);
 
-                var roles = JsonConvert.DeserializeObject<ScopesInToken>(jwtPayload.SerializeToJson());
-
-                for (int i = 0; i < _appSettings.AcceptUserRole.Length; i++)
+                if (token != null)
                 {
-                    if (roles.Scopes.Contains<string>(_appSettings.AcceptUserRole[i]))
+                    var jwtPayload = JwtPayload.Base64UrlDeserialize(token.Split('.')[1]);
+
+                    var roles = JsonConvert.DeserializeObject<ScopesInToken>(jwtPayload.SerializeToJson());
+
+                    for (int i = 0; i < _appSettings.AcceptUserRole.Length; i++)
                     {
-                        return true;
+                        if (roles.Scopes.Contains<string>(_appSettings.AcceptUserRole[i]))
+                        {
+                            return true;
+                        }
                     }
                 }
+            }
+            catch { };
 
-                return false;
-            }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         private class ScopesInToken

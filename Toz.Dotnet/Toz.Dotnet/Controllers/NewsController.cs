@@ -162,7 +162,7 @@ namespace Toz.Dotnet.Controllers
             {
                 if (IsAcceptedPhotoType(photo.ContentType, AppSettings.AcceptPhotoTypes))
                 {
-                    if (photo.Length > 0)
+                    if (photo.Length > default(long))
                     {
                         news.Photo = _newsManagementService.ConvertPhotoToByteArray(photo.OpenReadStream());
                         _lastAcceptPhoto = news.Photo;

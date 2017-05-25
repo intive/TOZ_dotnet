@@ -159,7 +159,7 @@ namespace Toz.Dotnet.Controllers
             {
                 if (IsAcceptedPhotoType(photo.ContentType, AppSettings.AcceptPhotoTypes))
                 {
-                    if (photo.Length > 0)
+                    if (photo.Length > default(long))
                     {
                         pet.Photo = _petsManagementService.ConvertPhotoToByteArray(photo.OpenReadStream());
                         _lastAcceptPhoto = pet.Photo;
