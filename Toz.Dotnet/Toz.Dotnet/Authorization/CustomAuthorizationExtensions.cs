@@ -8,7 +8,7 @@ namespace Toz.Dotnet.Authorization
 {
     public static class CustomAuthorizationExtensions
     {
-        public static IApplicationBuilder UseCustiomAuthorization(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseCustomAuthorization(this IApplicationBuilder builder)
         {
             return builder.UseMiddleware<CustomAuthorizationMiddleware>();
         }

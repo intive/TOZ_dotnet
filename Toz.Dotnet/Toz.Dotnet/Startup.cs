@@ -122,7 +122,7 @@ namespace Toz.Dotnet
                 AutomaticChallenge = true
             });
 
-            app.UseCustiomAuthorization();
+            app.UseCustomAuthorization();
 
             app.UseMvc(routes =>
             {
