@@ -35,17 +35,7 @@ namespace Toz.Dotnet.Authorization
             _authService = cookieService;
             _accountManagementService = accountManagementService;
 
-            _blockedControllers = new List<string>()
-            {
-                "Home",
-                "HowToHelp",
-                "News",
-                "Organization",
-                "Pets",
-                "Proposals",
-                "Schedule",
-                "Users"
-            };
+            _blockedControllers = appSettings.Value.BlockedControllers;
         }
 
         public async Task Invoke(HttpContext httpContext, IAuthorizationService authorizationService)
