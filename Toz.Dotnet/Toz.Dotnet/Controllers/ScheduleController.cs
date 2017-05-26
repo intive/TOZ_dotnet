@@ -7,11 +7,10 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models;
+using Toz.Dotnet.Models.ViewModels;
 using Toz.Dotnet.Models.EnumTypes;
 using Toz.Dotnet.Models.Schedule.ViewModels;
-using Toz.Dotnet.Models.ViewModels;
 using Toz.Dotnet.Resources.Configuration;
-using System.Globalization;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Toz.Dotnet.Authorization;
@@ -71,14 +70,20 @@ namespace Toz.Dotnet.Controllers
                 .OrderBy(u => u.LastName)
                 .ToList();
 
+            List<UserViewModel> listedUsers = new List<UserViewModel>();
+            foreach (var user in volunteers)
+            {
+                listedUsers.Add(new UserViewModel
+                {
+                    TheUser = user
+                });
+            }
+
             var viewModel = new ReservationViewModel()
             {
-                Token= new ReservationToken()
-                {
-                    TimeOfDay = timeOfDay,
-                    Volunteers = new SelectList(volunteers, "Id", "CombinedName")
-                },
-                SafeDateContainer = date.ToString(CultureInfo.CurrentCulture)
+                ReservationDate = date.ToString("yyyy-MM-dd"),
+                TimeOfDay = timeOfDay,
+                Volunteers = new SelectList(listedUsers, "TheUser.Id", "ReadableName")
             };
 
             return PartialView(viewModel);
@@ -88,18 +93,16 @@ namespace Toz.Dotnet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddReservation(ReservationViewModel viewModel, CancellationToken cancellationToken)
         {
-            var token = viewModel.Token;
-            var isValid = DateTime.TryParse(viewModel.SafeDateContainer, out DateTime tokenDate);
+            var isValid = DateTime.TryParse(viewModel.ReservationDate, out DateTime tokenDate);
             if (!isValid)
             {
-                ModelState.AddModelError("Date", $"Invalid date ({viewModel.SafeDateContainer})");
+                ModelState.AddModelError("Date", $"Invalid date ({viewModel.ReservationDate})");
             }
-            token.Date = tokenDate;
             if (ModelState.IsValid)
             {
-                Slot slot = _scheduleManagementService.FindSlot(token.Date, token.TimeOfDay);
+                Slot slot = _scheduleManagementService.FindSlot(tokenDate, viewModel.TimeOfDay);
 
-                if (await _scheduleManagementService.CreateReservation(slot, token.VolunteerId, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
+                if (await _scheduleManagementService.CreateReservation(slot, viewModel.VolunteerId, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
                 {
                     return Json(new {success = true});
                 }
