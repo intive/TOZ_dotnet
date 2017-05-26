@@ -35,10 +35,6 @@ namespace Toz.Dotnet.Models
         [StringLength(35, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]
         public string LastName { get; set; }
 
-        public string CombinedName => string.Format("{0} {1}",
-            string.IsNullOrEmpty(LastName) ? string.Empty : LastName + ", ",
-            string.IsNullOrEmpty(FirstName) ? string.Empty : FirstName);
-
         /// <summary>
         /// Returns a human-readable user description
         /// </summary>

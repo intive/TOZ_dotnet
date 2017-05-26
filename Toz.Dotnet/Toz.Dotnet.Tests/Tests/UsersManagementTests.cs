@@ -148,7 +148,7 @@ namespace Toz.Dotnet.Tests.Tests
         [InlineData("LastName")]
         public void TestUserValidationIfStringIsTooLong(string propertyName)
         {
-            const int maxLength = 30;
+            const int maxLength = 35;
 
             var user = TestingObjectProvider.Instance.DoShallowCopy(_testUser);
             var property = user.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy);

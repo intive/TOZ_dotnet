@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Toz.Dotnet.Core.Interfaces;
+using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.Organization;
 using Toz.Dotnet.Tests.Helpers;
 using Xunit;
