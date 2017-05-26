@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
 using System.Net.Http;
+using Toz.Dotnet.Authorization;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -21,7 +22,8 @@ namespace Toz.Dotnet.Controllers
         private readonly IOptions<AppSettings> _appSettings;
 
         public PetsController(IFilesManagementService filesManagementService, IPetsManagementService petsManagementService,
-            IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService) : base(backendErrorsService, localizer, appSettings)
+            IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings,
+            IBackendErrorsService backendErrorsService, IAuthService authService) : base(backendErrorsService, localizer, appSettings, authService)
         {
             _filesManagementService = filesManagementService;
             _petsManagementService = petsManagementService;
@@ -30,7 +32,7 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            List<Pet> pets = await _petsManagementService.GetAllPets(cancellationToken);
+            List<Pet> pets = await _petsManagementService.GetAllPets(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
             foreach (var pet in pets)
             {
                 if (!string.IsNullOrEmpty(pet.ImageUrl))
@@ -66,7 +68,7 @@ namespace Toz.Dotnet.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (await _petsManagementService.CreatePet(pet, cancellationToken))
+                if (await _petsManagementService.CreatePet(pet, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
                 {
                     return Json(new { success = true });
                 }
@@ -92,7 +94,7 @@ namespace Toz.Dotnet.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (await _petsManagementService.UpdatePet(pet))
+                if (await _petsManagementService.UpdatePet(pet, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true),cancellationToken))
                 {
                     return Json(new { success = true });
                 }
@@ -106,12 +108,12 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken)
         {
-            return PartialView("Edit", await _petsManagementService.GetPet(id));
+            return PartialView("Edit", await _petsManagementService.GetPet(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true),cancellationToken));
         }
 
         public async Task<ActionResult> Images(string id, CancellationToken cancellationToken)
         {
-            return PartialView("Images", await _petsManagementService.GetPet(id));
+            return PartialView("Images", await _petsManagementService.GetPet(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken));
         }
 
 
