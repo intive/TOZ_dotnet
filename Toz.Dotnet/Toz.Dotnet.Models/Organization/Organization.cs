@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
-using Toz.Dotnet.Models.OrganizationSubtypes;
 
-namespace Toz.Dotnet.Models
+namespace Toz.Dotnet.Models.Organization
 {
     public class Organization
     {

@@ -53,6 +53,7 @@
     value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
+
     mimetype: application/x-microsoft.net.object.bytearray.base64
     value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
@@ -116,20 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-    <data name="PageTitle" xml:space="preserve">
-        <value>Przypisz wolontariusza do dyżuru:</value>
-    </data>
-    <data name="FirstName" xml:space="preserve">
-        <value>Imię</value>
-    </data>
-    <data name="LastName" xml:space="preserve">
-        <value>Nazwisko</value>
-    </data>
-    <data name="Save" xml:space="preserve">
-        <value>Zapisz</value>
-    </data>
-    <data name="Cancel" xml:space="preserve">
-        <value>Anuluj</value>
-    </data>   
+  <data name="PageTitle" xml:space="preserve">
+    <value>Przypisz wolontariusza do dyżuru:</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>Imię</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Nazwisko</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Zapisz</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Anuluj</value>
+  </data>
+  <data name="Volunteer" xml:space="preserve">
+    <value>Wolontariusz</value>
+  </data>
+  <data name="SelectVolunteer" xml:space="preserve">
+    <value>Wybierz wolontariusza...</value>
+  </data>
 </root>

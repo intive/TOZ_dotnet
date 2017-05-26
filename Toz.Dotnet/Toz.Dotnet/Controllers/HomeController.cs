@@ -6,13 +6,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Toz.Dotnet.Resources.Configuration;
+using Toz.Dotnet.Authorization;
 
 namespace Toz.Dotnet.Controllers
 {
     public class HomeController : TozControllerBase<HomeController>
     {
         public HomeController(IStringLocalizer<HomeController> localizer, IOptions<AppSettings> appSettings, 
-            IBackendErrorsService backendErrorsService) : base(backendErrorsService, localizer, appSettings)
+            IBackendErrorsService backendErrorsService, IAuthService authService) : base(backendErrorsService, localizer, appSettings, authService)
         {
         }
 

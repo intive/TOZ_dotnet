@@ -11,6 +11,7 @@
 
   <!--Libs references -->
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Tools" Version="1.0.0-preview2-final" />
@@ -28,6 +29,8 @@
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink.Loader" Version="14.1.0" />
     <PackageReference Include="CoreCompat.System.Drawing" Version="1.0.0-beta006" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.3" />
   </ItemGroup>
   <!--Project references -->
   <ItemGroup>
@@ -36,6 +39,6 @@
     <ProjectReference Include="../Toz.Dotnet.Resources/Toz.Dotnet.Resources.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\lib\" />
+    <Folder Include="Keys\" />
   </ItemGroup>
 </Project>
