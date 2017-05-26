@@ -1,5 +1,5 @@
 @using Microsoft.AspNetCore.Mvc.Localization
-@model Toz.Dotnet.Models.ViewModels.ReservationToken
+@model Toz.Dotnet.Models.ViewModels.ReservationViewModel
 @inject IViewLocalizer Localizer
 
 @{
@@ -10,33 +10,28 @@
     <form class="form-horizontal" asp-controller="Schedule" asp-action="AddReservation" method="POST" enctype="multipart/form-data">
         <fieldset class="pagetitle">
             <legend class="pagetitlelegend">@Localizer["PageTitle"]</legend>
-            <input type="hidden" asp-for="Date" class="form-control" id="Date" />
-            <input type="hidden" asp-for="TimeOfDay" class="form-control" id="TimeOfDay" />
+            <input type="hidden" asp-for="SafeDateContainer" class="form-control" id="Date" />
+            <input type="hidden" asp-for="Token.TimeOfDay" class="form-control" id="TimeOfDay" />
+
             <div class="form-group row">
-                <label class="col-sm-2 control-label">@Localizer["FirstName"]</label>
+                <label class="col-sm-2 control-label">@Localizer["Volunteer"]</label>
                 <div class="col-sm-10">
-                    <input asp-for="FirstName" class="form-control" id="FirstName">
+                    <select asp-for="Token.VolunteerId"
+                            class="form-control"
+                            asp-items="@Model.Token.Volunteers">
+                        <option disabled selected>@Localizer["SelectVolunteer"]</option>
+                    </select>
                     <span class="glyphicon form-control-feedback"></span>
-                    <span asp-validation-for="FirstName"></span>
+                    <span class="control-label" asp-validation-for="Token.VolunteerId"></span>
                 </div>
             </div>
-            <div class="form-group row">
-                <label class="col-sm-2 control-label">@Localizer["LastName"]</label>
-                <div class="col-sm-10">
-                    <input asp-for="LastName" class="form-control" id="LastName">
-                    <span class="glyphicon form-control-feedback"></span>
-                    <span asp-validation-for="LastName"></span>
-                </div>
-            </div>
-            
+
             <div class="form-group row" style="text-align: center">
                 <span class="unhandled-error-span">@ViewData["UnhandledError"]</span>
             </div>
-            
+
             <input type="button" class="btn btn-warning btn-block" id="Cancel" data-dismiss="modal" value=@Localizer["Cancel"]>
-            <input type="submit" class="btn btn-primary btn-block" id="CreateReservation" value=@Localizer["Save"]>
+            <input type="submit" class="btn btn-primary btn-block" id="AddReservation" value=@Localizer["Save"]>
         </fieldset>
     </form>
 </div>
-
-<script src="~/js/modal.scripts.js"></script>

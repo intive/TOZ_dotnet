@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Toz.Dotnet.Models;
+using Toz.Dotnet.Models.Organization;
 
 namespace Toz.Dotnet.Core.Interfaces
 {

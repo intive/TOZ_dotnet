@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Toz.Dotnet.Core.Interfaces;
-using Toz.Dotnet.Models;
+using Toz.Dotnet.Models.Organization;
 using Toz.Dotnet.Resources.Configuration;
 
 namespace Toz.Dotnet.Core.Services

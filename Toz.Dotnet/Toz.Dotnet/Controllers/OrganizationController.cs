@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Toz.Dotnet.Core.Interfaces;
-using Toz.Dotnet.Models;
 using Toz.Dotnet.Resources.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Localization;
@@ -8,8 +7,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System;
 using Microsoft.AspNetCore.Routing;
-using Toz.Dotnet.Extensions;
-using Microsoft.AspNetCore.Authorization;
+using Toz.Dotnet.Models.Organization;
 using Toz.Dotnet.Authorization;
 
 namespace Toz.Dotnet.Controllers
@@ -18,8 +16,12 @@ namespace Toz.Dotnet.Controllers
     {
         private readonly IOrganizationManagementService _organizationManagementService;
 
-        public OrganizationController(IOrganizationManagementService organizationManagementService, IStringLocalizer<OrganizationController> localizer,
-            IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService, IAuthService authService) : base(backendErrorsService, localizer, appSettings, authService)
+        public OrganizationController(
+            IOrganizationManagementService organizationManagementService, 
+            IStringLocalizer<OrganizationController> localizer,
+            IOptions<AppSettings> appSettings, 
+            IBackendErrorsService backendErrorsService, 
+            IAuthService authService) : base(backendErrorsService, localizer, appSettings, authService)
         {
             _organizationManagementService = organizationManagementService;
         }

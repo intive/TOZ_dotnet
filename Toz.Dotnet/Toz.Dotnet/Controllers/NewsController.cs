@@ -11,7 +11,6 @@ using Toz.Dotnet.Resources.Configuration;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
-using Microsoft.AspNetCore.Authorization;
 using Toz.Dotnet.Authorization;
 
 namespace Toz.Dotnet.Controllers

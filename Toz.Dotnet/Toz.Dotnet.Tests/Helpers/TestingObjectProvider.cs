@@ -2,7 +2,7 @@
 using System.Reflection;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.EnumTypes;
-using Toz.Dotnet.Models.OrganizationSubtypes;
+using Toz.Dotnet.Models.Organization;
 
 namespace Toz.Dotnet.Tests.Helpers
 {

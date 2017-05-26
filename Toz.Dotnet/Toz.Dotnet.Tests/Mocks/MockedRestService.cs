@@ -30,6 +30,16 @@ namespace Toz.Dotnet.Tests.Mocks
             return IsValidData(address, obj, token);
         }
 
+        public async Task<string> ExecutePostActionAndReturnId<T>(string address, T obj, string token,
+            CancellationToken cancelationToken = new CancellationToken()) where T : class
+        {
+            if (IsValidData(address, obj))
+            {
+                return "ok";
+            }
+            return null;
+        }
+
         public async Task<T1> ExecutePostAction<T1, T2>(string address, T2 obj, string token = null, CancellationToken cancelationToken = default(CancellationToken))
         where T1 : class
         where T2 : class

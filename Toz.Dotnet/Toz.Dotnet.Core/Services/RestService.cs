@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -12,7 +13,7 @@ namespace Toz.Dotnet.Core.Services
     public class RestService : IRestService
     {
         private const string RestMediaType = "application/json";
-        private IBackendErrorsService _backendErrorsService;
+        private readonly IBackendErrorsService _backendErrorsService;
 
         public RestService(IBackendErrorsService backendErrorsService)
         {
@@ -33,7 +34,7 @@ namespace Toz.Dotnet.Core.Services
                     }
                     return true;
                 }
-                catch(HttpRequestException)
+                catch (HttpRequestException)
                 {
                     return false;
                 }
@@ -41,7 +42,7 @@ namespace Toz.Dotnet.Core.Services
         }
 
         public async Task<T> ExecuteGetAction<T>(string address, string token, CancellationToken cancelationToken = default(CancellationToken)) where T : class
-{            
+        {
             using (var client = CreateHttpClient(token))
             {
                 try
@@ -49,12 +50,12 @@ namespace Toz.Dotnet.Core.Services
                     var response = await client.GetAsync(address, cancelationToken);
                     var stringResponse = await response.Content.ReadAsStringAsync();
                     response.EnsureSuccessStatusCode();
-                   
+
 
                     T output = JsonConvert.DeserializeObject<T>(stringResponse);
                     return output;
                 }
-                catch(HttpRequestException)
+                catch (HttpRequestException)
                 {
                     return default(T);
                 }
@@ -63,15 +64,16 @@ namespace Toz.Dotnet.Core.Services
 
         public async Task<bool> ExecutePostAction<T>(string address, T obj, string token, CancellationToken cancelationToken = default(CancellationToken)) where T : class
         {
-            if(obj == null)
+            if (obj == null)
             {
                 return false;
             }
 
-            string serializedObject = JsonConvert.SerializeObject(obj, Formatting.Indented, new JsonSerializerSettings {
+            string serializedObject = JsonConvert.SerializeObject(obj, Formatting.Indented, new JsonSerializerSettings
+            {
                 NullValueHandling = NullValueHandling.Ignore
             });
-            
+
             var httpContent = new StringContent(serializedObject, Encoding.UTF8, RestMediaType);
 
             using (var client = CreateHttpClient(token))
@@ -86,14 +88,50 @@ namespace Toz.Dotnet.Core.Services
                     }
                     return true;
                 }
-                catch(HttpRequestException)
+                catch (HttpRequestException)
                 {
                     return false;
                 }
             }
         }
 
-        public async Task<T1> ExecutePostAction<T1, T2>(string address, T2 obj, string token = default(string), CancellationToken cancelationToken = default(CancellationToken)) where T1: class where T2: class
+        public async Task<string> ExecutePostActionAndReturnId<T>(string address, T obj, string token = default(string), CancellationToken cancelationToken = default(CancellationToken)) where T : class
+        {
+            if (obj == null)
+            {
+                return string.Empty;
+            }
+
+            string serializedObject = JsonConvert.SerializeObject(obj, Formatting.Indented, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            var httpContent = new StringContent(serializedObject, Encoding.UTF8, RestMediaType);
+
+            using (var client = CreateHttpClient(token))
+            {
+                try
+                {
+                    var response = await client.PostAsync(address, httpContent, cancelationToken);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        await PassJsonResponseToErrorService(response);
+                        return null;
+                    }
+                    string resultContent = await response.Content.ReadAsStringAsync();
+                    Regex regex = new Regex("(?:\"id\":\")([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})(?:\")");
+                    Match match = regex.Match(resultContent);
+                    return match.Groups[1].Value;
+                }
+                catch (HttpRequestException)
+                {
+                    return string.Empty;
+                }
+            }
+        }
+        
+        public async Task<T1> ExecutePostAction<T1, T2>(string address, T2 obj, string token = default(string), CancellationToken cancelationToken = default(CancellationToken)) where T1 : class where T2 : class
         {
             if (obj == null)
             {
@@ -128,13 +166,14 @@ namespace Toz.Dotnet.Core.Services
         }
 
         public async Task<bool> ExecutePutAction<T>(string address, T obj, string token, CancellationToken cancelationToken = default(CancellationToken)) where T : class
-{
-            if(string.IsNullOrEmpty(address) || obj == null)
+        {
+            if (string.IsNullOrEmpty(address) || obj == null)
             {
                 return false;
             }
-            
-            string serializedObject = JsonConvert.SerializeObject(obj, Formatting.Indented, new JsonSerializerSettings {
+
+            string serializedObject = JsonConvert.SerializeObject(obj, Formatting.Indented, new JsonSerializerSettings
+            {
                 NullValueHandling = NullValueHandling.Ignore
             });
 
@@ -151,7 +190,7 @@ namespace Toz.Dotnet.Core.Services
                     }
                     return true;
                 }
-                catch(HttpRequestException)
+                catch (HttpRequestException)
                 {
                     return false;
                 }
