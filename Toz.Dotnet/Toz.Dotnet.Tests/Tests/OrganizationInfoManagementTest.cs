@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models;
-using Toz.Dotnet.Models.OrganizationSubtypes;
+using Toz.Dotnet.Models.Organization;
 using Toz.Dotnet.Tests.Helpers;
 using Xunit;
 
@@ -13,12 +13,17 @@ namespace Toz.Dotnet.Tests.Tests
     {
         private readonly IOrganizationManagementService _organizationInfoManagementService;
         private readonly Organization _testingOrganization;
+        private readonly IAccountManagementService _accountManagementService;
+        private readonly JwtToken _token;
 
         public OrganizationInfoManagementTest()
         {         
             _organizationInfoManagementService = ServiceProvider.Instance.Resolve<IOrganizationManagementService>();
+            _accountManagementService = ServiceProvider.Instance.Resolve<IAccountManagementService>();
             _organizationInfoManagementService.RequestUri = RequestUriHelper.OrganizationInfoUri;
+            _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUri;
             _testingOrganization = TestingObjectProvider.Instance.Organization;
+            _token = _accountManagementService.SignIn(TestingObjectProvider.Instance.Login).Result;
         }
 
         [Fact]
@@ -30,7 +35,7 @@ namespace Toz.Dotnet.Tests.Tests
         [Fact]
         public async void TestOfGettingOrganizationInfo()
         {
-            Assert.NotNull(await _organizationInfoManagementService.GetOrganizationInfo());
+            Assert.NotNull(await _organizationInfoManagementService.GetOrganizationInfo(_token.Jwt));
         }
 
         [Fact]
@@ -46,13 +51,13 @@ namespace Toz.Dotnet.Tests.Tests
         [Fact]
         public async void TestOfUpdatingOrganizationInfo()
         {
-            Assert.True(await _organizationInfoManagementService.UpdateOrCreateInfo(_testingOrganization));
+            Assert.True(await _organizationInfoManagementService.UpdateOrCreateInfo(_testingOrganization, _token.Jwt));
         }
 
         [Fact]
         public void TestOfUpdatingOrganizationWithNullValue()
         {
-            var exception = Record.Exception(() => _organizationInfoManagementService.UpdateOrCreateInfo(null).Result);
+            var exception = Record.Exception(() => _organizationInfoManagementService.UpdateOrCreateInfo(null, _token.Jwt).Result);
             Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
         }
 
@@ -60,7 +65,7 @@ namespace Toz.Dotnet.Tests.Tests
         public void TestOfGettingOrganizationUsingWrongUrl()
         {
             _organizationInfoManagementService.RequestUri = RequestUriHelper.WrongUrl;
-            Assert.Null(_organizationInfoManagementService.GetOrganizationInfo().Result);
+            Assert.Null(_organizationInfoManagementService.GetOrganizationInfo(_token.Jwt).Result);
             _organizationInfoManagementService.RequestUri = RequestUriHelper.PetsUri;
         }
 

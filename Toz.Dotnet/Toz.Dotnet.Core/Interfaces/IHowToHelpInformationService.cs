@@ -7,8 +7,8 @@ namespace Toz.Dotnet.Core.Interfaces
 {
     public interface IHowToHelpInformationService
     {
-        Task<bool> UpdateOrCreateHelpInfo(HowToHelpInfo helpInfo, HowToHelpInfoType type, CancellationToken cancelationToken = default(CancellationToken));
-        Task<HowToHelpInfo> GetHelpInfo(HowToHelpInfoType type, CancellationToken cancellationToken = default(CancellationToken));
+        Task<bool> UpdateOrCreateHelpInfo(HowToHelpInfo helpInfo, HowToHelpInfoType type, string token, CancellationToken cancelationToken = default(CancellationToken));
+        Task<HowToHelpInfo> GetHelpInfo(HowToHelpInfoType type, string token, CancellationToken cancellationToken = default(CancellationToken));
         string BecomeVolunteerUrl { get; set; }
         string DonateInfoUrl { get; set; }
     }
