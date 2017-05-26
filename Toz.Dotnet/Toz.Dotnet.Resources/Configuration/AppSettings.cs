@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Toz.Dotnet.Resources.Configuration
 {
     public class AppSettings
@@ -16,6 +18,7 @@ namespace Toz.Dotnet.Resources.Configuration
         public string BackendBecomeVolunteerUrl { get; set; }
         public string BackendDonateInfoUrl { get; set; }
 
+        public List<string> BlockedControllers { get; set; }
         public string PolicyName { get; set; }
         public string[] AcceptUserRole { get; set; }
         public string DataProtectorName { get; set; }
