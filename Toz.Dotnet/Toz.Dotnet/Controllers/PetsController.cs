@@ -10,6 +10,7 @@ using Toz.Dotnet.Resources.Configuration;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
+using System.Net.Http;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -17,30 +18,52 @@ namespace Toz.Dotnet.Controllers
     {
         private readonly IFilesManagementService _filesManagementService;
         private readonly IPetsManagementService _petsManagementService;
-		
+        private readonly IOptions<AppSettings> _appSettings;
+
         public PetsController(IFilesManagementService filesManagementService, IPetsManagementService petsManagementService,
             IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService) : base(backendErrorsService, localizer, appSettings)
         {
             _filesManagementService = filesManagementService;
             _petsManagementService = petsManagementService;
+            _appSettings = appSettings;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             List<Pet> pets = await _petsManagementService.GetAllPets(cancellationToken);
-            //todo add photo if will be avaialbe on backends
-            var img = _filesManagementService.DownloadImage(@"http://i.pinger.pl/pgr167/7dc36d63001e9eeb4f01daf3/kot%20ze%20shreka9.jpg");
-            var thumbnail = _filesManagementService.GetThumbnail(img);
-            pets.ForEach(pet => pet.Photo = _filesManagementService.ImageToByteArray(thumbnail)); // temporary
+            foreach (var pet in pets)
+            {
+                if (!string.IsNullOrEmpty(pet.ImageUrl))
+                {
+                    try
+                    {
+                        var downloadedImg = _filesManagementService.DownloadImage(_appSettings.Value.BaseUrl + pet.ImageUrl);
+
+                        if (downloadedImg != null)
+                        {
+                            var thumbnail = _filesManagementService.GetThumbnail(downloadedImg);
+                            pet.Photo = _filesManagementService.ImageToByteArray(thumbnail);
+                        }
+                    }
+                    catch (HttpRequestException)
+                    {
+                        pet.Photo = null;
+                    }
+                    catch (AggregateException)
+                    {
+                        pet.Photo = null;
+                    }
+                }
+            }
             return View(pets.OrderByDescending(x => x.Created).ThenByDescending(x => x.LastModified).ToList());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(
-            [Bind("Name, Type, Sex, Description, Address")] 
+            [Bind("Name, Type, Sex, Description, Address")]
             Pet pet, CancellationToken cancellationToken)
-        {            
+        {
             if (ModelState.IsValid)
             {
                 if (await _petsManagementService.CreatePet(pet, cancellationToken))
@@ -51,10 +74,10 @@ namespace Toz.Dotnet.Controllers
                 CheckUnexpectedErrors();
                 return PartialView(pet);
             }
-            
+
             return PartialView(pet);
-            
-        } 
+
+        }
 
         public IActionResult Add()
         {
@@ -64,7 +87,7 @@ namespace Toz.Dotnet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
-            [Bind("Id, Name, Type, Sex, Description, Address, AddingTime")] 
+            [Bind("Id, Name, Type, Sex, Description, Address, AddingTime")]
             Pet pet, CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
@@ -79,9 +102,9 @@ namespace Toz.Dotnet.Controllers
             }
 
             return PartialView(pet);
-        } 
+        }
 
-        public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken) 
+        public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken)
         {
             return PartialView("Edit", await _petsManagementService.GetPet(id));
         }
@@ -103,5 +126,5 @@ namespace Toz.Dotnet.Controllers
                     return RedirectToAction("Index");
                 }*/
     }
-	
+
 }

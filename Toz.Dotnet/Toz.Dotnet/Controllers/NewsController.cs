@@ -11,6 +11,7 @@ using Toz.Dotnet.Resources.Configuration;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
+using System.Net.Http;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -18,21 +19,43 @@ namespace Toz.Dotnet.Controllers
     {
         private readonly IFilesManagementService _filesManagementService;
         private readonly INewsManagementService _newsManagementService;
+        private readonly IOptions<AppSettings> _appSettings;
 
         public NewsController(IFilesManagementService filesManagementService, INewsManagementService newsManagementService,
             IStringLocalizer<NewsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService) : base(backendErrorsService, localizer ,appSettings)
         {
             _filesManagementService = filesManagementService;
             _newsManagementService = newsManagementService;
+            _appSettings = appSettings;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             List<News> news = await _newsManagementService.GetAllNews();
-            //todo add photo if will be avaialbe on backends
-            var img = _filesManagementService.DownloadImage(@"http://img.cda.pl/obr/thumbs/6adb80c33f5b55df46a481b57a61c64c.png_oooooooooo_273x.png");
-            var thumbnail = _filesManagementService.GetThumbnail(img);
-            news.ForEach(n => n.Photo = _filesManagementService.ImageToByteArray(thumbnail)); // temporary
+            foreach (var n in news)
+            {
+                if (!string.IsNullOrEmpty(n.PhotoUrl))
+                {
+                    try
+                    {
+                        var downloadedImg = _filesManagementService.DownloadImage(_appSettings.Value.BaseUrl + n.PhotoUrl);
+
+                        if (downloadedImg != null)
+                        {
+                            var thumbnail = _filesManagementService.GetThumbnail(downloadedImg);
+                            n.Photo = _filesManagementService.ImageToByteArray(thumbnail);
+                        }
+                    }
+                    catch (HttpRequestException)
+                    {
+                        n.Photo = null;
+                    }
+                    catch (AggregateException)
+                    {
+                        n.Photo = null;
+                    }
+                }
+            }
             return View(news.OrderByDescending(x => x.Published ?? DateTime.MaxValue).ThenByDescending(x => x.Title).ToList());
         }
 

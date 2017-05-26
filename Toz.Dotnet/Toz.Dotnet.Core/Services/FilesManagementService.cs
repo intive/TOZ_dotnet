@@ -16,12 +16,6 @@ namespace Toz.Dotnet.Core.Services
             return Image.FromStream(imgBytes.Result);
         }
 
-        public bool UploadImage(Image image)
-        {
-            //todo: use a magic craft to send image to the backend.
-            return true;
-        }
-
         public Image GetThumbnail(Image image)
         {
             var thumbnail = image.GetThumbnailImage(Thumbnails.Width, Thumbnails.Height, () => true, new IntPtr());
