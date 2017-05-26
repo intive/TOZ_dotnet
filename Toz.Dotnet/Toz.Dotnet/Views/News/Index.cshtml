@@ -45,7 +45,7 @@
             <tbody>
                 @foreach (var item in Model)
             {
-                    <tr id="@Model.IndexOf(item)">
+                    <tr id="News_@Model.IndexOf(item)">
                         @if (!@item.Published.HasValue)
                         {
                             <td>@Localizer["Lack"]</td>
