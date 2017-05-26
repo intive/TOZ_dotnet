@@ -31,6 +31,6 @@ namespace Toz.Dotnet.Controllers
             }
         }
 
-        protected string CurrentCookiesToken => AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName);
+        protected string CurrentCookiesToken => AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true);
     }
 }

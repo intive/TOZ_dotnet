@@ -32,7 +32,7 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            List<Pet> pets = await _petsManagementService.GetAllPets(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+            List<Pet> pets = await _petsManagementService.GetAllPets(CurrentCookiesToken, cancellationToken);
             foreach (var pet in pets)
             {
                 if (!string.IsNullOrEmpty(pet.ImageUrl))
@@ -68,7 +68,7 @@ namespace Toz.Dotnet.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (await _petsManagementService.CreatePet(pet, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
+                if (await _petsManagementService.CreatePet(pet, CurrentCookiesToken, cancellationToken))
                 {
                     return Json(new { success = true });
                 }
@@ -94,7 +94,7 @@ namespace Toz.Dotnet.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (await _petsManagementService.UpdatePet(pet, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true),cancellationToken))
+                if (await _petsManagementService.UpdatePet(pet, CurrentCookiesToken, cancellationToken))
                 {
                     return Json(new { success = true });
                 }
@@ -108,12 +108,12 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken)
         {
-            return PartialView("Edit", await _petsManagementService.GetPet(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true),cancellationToken));
+            return PartialView("Edit", await _petsManagementService.GetPet(id, CurrentCookiesToken,cancellationToken));
         }
 
         public async Task<ActionResult> Images(string id, CancellationToken cancellationToken)
         {
-            return PartialView("Images", await _petsManagementService.GetPet(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken));
+            return PartialView("Images", await _petsManagementService.GetPet(id, CurrentCookiesToken, cancellationToken));
         }
 
 

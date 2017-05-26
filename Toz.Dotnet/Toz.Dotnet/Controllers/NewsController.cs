@@ -34,7 +34,7 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            List<News> news = await _newsManagementService.GetAllNews(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+            List<News> news = await _newsManagementService.GetAllNews(CurrentCookiesToken, cancellationToken);
             foreach (var n in news)
             {
                 if (!string.IsNullOrEmpty(n.PhotoUrl))
@@ -73,7 +73,7 @@ namespace Toz.Dotnet.Controllers
             
             if (ModelState.IsValid)
             {
-                if (await _newsManagementService.CreateNews(news, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
+                if (await _newsManagementService.CreateNews(news, CurrentCookiesToken, cancellationToken))
                 {
                     return Json(new { success = true });
                 }
@@ -100,7 +100,7 @@ namespace Toz.Dotnet.Controllers
 
             if (ModelState.IsValid)
             {
-                if (await _newsManagementService.UpdateNews(news, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
+                if (await _newsManagementService.UpdateNews(news, CurrentCookiesToken, cancellationToken))
                 {
                     return Json(new { success = true });
                 }
@@ -113,15 +113,15 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken) 
         {
-            return PartialView("Edit", await _newsManagementService.GetNews(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken));
+            return PartialView("Edit", await _newsManagementService.GetNews(id, CurrentCookiesToken, cancellationToken));
         }
 
         public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)
         {
-            var pet = await _newsManagementService.GetNews(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+            var pet = await _newsManagementService.GetNews(id, CurrentCookiesToken, cancellationToken);
             if(pet != null)
             {
-                await _newsManagementService.DeleteNews(pet, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+                await _newsManagementService.DeleteNews(pet, CurrentCookiesToken, cancellationToken);
             }
 
             return RedirectToAction("Index");
@@ -129,7 +129,7 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<ActionResult> Images(string id, CancellationToken cancellationToken)
         {
-            return PartialView("Images", await _newsManagementService.GetNews(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true),cancellationToken));
+            return PartialView("Images", await _newsManagementService.GetNews(id, CurrentCookiesToken, cancellationToken));
         }
     }
 }

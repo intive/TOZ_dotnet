@@ -38,19 +38,19 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {     
-            List<Week> schedule = await _scheduleManagementService.GetInitialSchedule(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+            List<Week> schedule = await _scheduleManagementService.GetInitialSchedule(CurrentCookiesToken, cancellationToken);
             return View(schedule);
         }
 
         public async Task<IActionResult> Earlier(CancellationToken cancellationToken)
         {
-            List<Week> earlierSchedule = await _scheduleManagementService.GetEarlierSchedule(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+            List<Week> earlierSchedule = await _scheduleManagementService.GetEarlierSchedule(CurrentCookiesToken, cancellationToken);
             return RedirectToAction("Index", earlierSchedule);
         }
 
         public async Task<IActionResult> Later(CancellationToken cancellationToken)
         {
-            List<Week> laterSchedule = await _scheduleManagementService.GetLaterSchedule(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+            List<Week> laterSchedule = await _scheduleManagementService.GetLaterSchedule(CurrentCookiesToken, cancellationToken);
             return RedirectToAction("Index", laterSchedule);
         }
 
@@ -66,7 +66,7 @@ namespace Toz.Dotnet.Controllers
                 return BadRequest();
             }
 
-           List<User> volunteers = (await _usersManagementService.GetAllUsers(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
+           List<User> volunteers = (await _usersManagementService.GetAllUsers(CurrentCookiesToken, cancellationToken))
                 .Where(u => u.Roles.Contains(UserType.Volunteer))
                 .OrderBy(u => u.LastName)
                 .ToList();
@@ -99,7 +99,7 @@ namespace Toz.Dotnet.Controllers
             {
                 Slot slot = _scheduleManagementService.FindSlot(token.Date, token.TimeOfDay);
 
-                if (await _scheduleManagementService.CreateReservation(slot, token.VolunteerId, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
+                if (await _scheduleManagementService.CreateReservation(slot, token.VolunteerId, CurrentCookiesToken, cancellationToken))
                 {
                     return Json(new {success = true});
                 }
@@ -112,7 +112,7 @@ namespace Toz.Dotnet.Controllers
         {
             if (!string.IsNullOrEmpty(id))
             {
-                await _scheduleManagementService.DeleteReservation(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+                await _scheduleManagementService.DeleteReservation(id, CurrentCookiesToken, cancellationToken);
             }
             return RedirectToAction("Index");
         }
