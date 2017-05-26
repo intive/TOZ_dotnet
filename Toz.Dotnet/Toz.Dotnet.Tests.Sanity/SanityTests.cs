@@ -13,7 +13,7 @@ using Toz.Dotnet.Resources.Configuration;
 
 namespace Toz.Dotnet.Tests.Sanity
 {
-    public class SanityTests
+    public class SanityTests : IDisposable
     {
         private readonly IPetsManagementService _petsManagementService;
         private readonly INewsManagementService _newsManagementService;
@@ -22,6 +22,8 @@ namespace Toz.Dotnet.Tests.Sanity
         private readonly IOrganizationManagementService _organizationManagementService;
         private readonly IProposalsManagementService _proposalsManagementService;
         private readonly IHowToHelpInformationService _howToHelpInformationService;
+        private readonly IAccountManagementService _accountManagementService;
+        private JwtToken _token;
 
         public SanityTests()
         {
@@ -32,6 +34,7 @@ namespace Toz.Dotnet.Tests.Sanity
             _organizationManagementService = ServiceProvider.Instance.Resolve<IOrganizationManagementService>();
             _proposalsManagementService = ServiceProvider.Instance.Resolve<IProposalsManagementService>();
             _howToHelpInformationService = ServiceProvider.Instance.Resolve<IHowToHelpInformationService>();
+            _accountManagementService = ServiceProvider.Instance.Resolve<IAccountManagementService>();
 
             _petsManagementService.RequestUri = RequestUriHelper.PetsUri;
             _newsManagementService.RequestUri = RequestUriHelper.NewsUri;
@@ -40,63 +43,89 @@ namespace Toz.Dotnet.Tests.Sanity
             _proposalsManagementService.RequestUri = RequestUriHelper.ProposalsUri;
             _howToHelpInformationService.BecomeVolunteerUrl = RequestUriHelper.HowToHelpUri;
             _howToHelpInformationService.DonateInfoUrl = RequestUriHelper.HowToHelpUri;
+            _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUri;
         }
 
         [Fact]
         public async void PetsFunctionalityTest()
         {
+            _token = await _accountManagementService.SignIn(TestingObjectProvider.Instance.Login);
+
+            Assert.NotNull(_token);
+
             var pet = TestingObjectProvider.Instance.Pet;
 
-            Assert.NotNull(await _petsManagementService.GetAllPets());
-            Assert.NotNull(await _petsManagementService.GetPet(pet.Id));
-            Assert.True(await _petsManagementService.CreatePet(pet));
-            Assert.True(await _petsManagementService.UpdatePet(pet));
+            Assert.NotNull(await _petsManagementService.GetAllPets(_token.Jwt));
+            Assert.NotNull(await _petsManagementService.GetPet(pet.Id, _token.Jwt));
+            Assert.True(await _petsManagementService.CreatePet(pet, _token.Jwt));
+            Assert.True(await _petsManagementService.UpdatePet(pet, _token.Jwt));
 
-            var exception = Record.Exception(() => _petsManagementService.UpdatePet(null).Result);
+            var exception = Record.Exception(() => _petsManagementService.UpdatePet(null, _token.Jwt).Result);
             Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
 
-            Assert.False(await _petsManagementService.CreatePet(null));
+            Assert.False(await _petsManagementService.CreatePet(null, _token.Jwt));
+        }
+
+        [Fact]
+        public async void AccountFunctionalityTest()
+        {
+            var login = TestingObjectProvider.Instance.Login;
+
+            Assert.NotNull(await _accountManagementService.SignIn(login));
+            Assert.Null(await _accountManagementService.SignIn(null));
         }
 
         [Fact]
         public async void NewsFunctionalityTest()
         {
+            _token = await _accountManagementService.SignIn(TestingObjectProvider.Instance.Login);
+
+            Assert.NotNull(_token);
+
             var news = TestingObjectProvider.Instance.News;
 
-            Assert.NotNull(await _newsManagementService.GetAllNews());
-            Assert.NotNull(await _newsManagementService.GetNews(news.Id));
-            Assert.True(await _newsManagementService.CreateNews(news));
-            Assert.True(await _newsManagementService.DeleteNews(news));
+            Assert.NotNull(await _newsManagementService.GetAllNews(_token.Jwt));
+            Assert.NotNull(await _newsManagementService.GetNews(news.Id, _token.Jwt));
+            Assert.True(await _newsManagementService.CreateNews(news, _token.Jwt));
+            Assert.True(await _newsManagementService.DeleteNews(news, _token.Jwt));
 
-            var exception = Record.Exception(() => _newsManagementService.UpdateNews(null).Result);
+            var exception = Record.Exception(() => _newsManagementService.UpdateNews(null, _token.Jwt).Result);
             Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
 
-            Assert.False(await _newsManagementService.CreateNews(null));
+            Assert.False(await _newsManagementService.CreateNews(null, _token.Jwt));
         }
 
         [Fact]
         public async void UsersFunctionalityTest()
         {
+            _token = await _accountManagementService.SignIn(TestingObjectProvider.Instance.Login);
+
+            Assert.NotNull(_token);
+
             var user = TestingObjectProvider.Instance.User;
 
-            Assert.NotNull(await _userManagementService.GetAllUsers());
-            Assert.NotNull(await _userManagementService.GetUser(user.Id));
-            Assert.True(await _userManagementService.CreateUser(user));
-            Assert.True(await _userManagementService.DeleteUser(user));
+            Assert.NotNull(await _userManagementService.GetAllUsers(_token.Jwt));
+            Assert.NotNull(await _userManagementService.GetUser(user.Id, _token.Jwt));
+            Assert.True(await _userManagementService.CreateUser(user, _token.Jwt));
+            Assert.True(await _userManagementService.DeleteUser(user, _token.Jwt));
 
-            var exception = Record.Exception(() => _userManagementService.UpdateUser(null).Result);
+            var exception = Record.Exception(() => _userManagementService.UpdateUser(null, _token.Jwt).Result);
             Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
 
-            Assert.False(await _userManagementService.CreateUser(null));
+            Assert.False(await _userManagementService.CreateUser(null, _token.Jwt));
         }
 
         [Fact]
         public async void OrganizationFunctionalityTest()
         {
+            _token = await _accountManagementService.SignIn(TestingObjectProvider.Instance.Login);
+
+            Assert.NotNull(_token);
+
             var organization = TestingObjectProvider.Instance.Organization;
 
-            Assert.NotNull(await _organizationManagementService.GetOrganizationInfo());
-            Assert.True(await _organizationManagementService.UpdateOrCreateInfo(organization));
+            Assert.NotNull(await _organizationManagementService.GetOrganizationInfo(_token.Jwt));
+            Assert.True(await _organizationManagementService.UpdateOrCreateInfo(organization, _token.Jwt));
         }
 
         [Fact]
@@ -116,12 +145,17 @@ namespace Toz.Dotnet.Tests.Sanity
         }
 
         [Fact]
-        public void ProposalsFunctionalityTest()
+        public async void ProposalsFunctionalityTest()
         {
+            _token = await _accountManagementService.SignIn(TestingObjectProvider.Instance.Login);
+
+            Assert.NotNull(_token);
+
             var proposal = TestingObjectProvider.Instance.Proposal;
 
             var restServiceMock = new Mock<IRestService>();
             restServiceMock.Setup(s => s.ExecuteGetAction<List<Proposal>>(
+                    It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new List<Proposal>()
@@ -130,12 +164,14 @@ namespace Toz.Dotnet.Tests.Sanity
                 });
             restServiceMock.Setup(s => s.ExecuteGetAction<Proposal>(
                     It.IsAny<string>(),
+                    It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
                 .ReturnsAsync(TestingObjectProvider.Instance.DoShallowCopy(proposal));
 
             restServiceMock.Setup(s => s.ExecutePutAction<Proposal>(
                     It.IsAny<string>(),
                     It.IsAny<Proposal>(),
+                    It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
                 .ReturnsAsync(true);
 
@@ -147,24 +183,33 @@ namespace Toz.Dotnet.Tests.Sanity
                     ActivationRequestUri = RequestUriHelper.ProposalsUri
                 };
 
-            Assert.NotNull(_proposalsManagementService.CreateProposal(proposal).Result);
-            Assert.True(_proposalsManagementService.DeleteProposal(proposal).Result);
-            Assert.True(_proposalsManagementService.UpdateProposal(proposal).Result);
+            Assert.NotNull(_proposalsManagementService.CreateProposal(proposal, _token.Jwt).Result);
+            Assert.True(_proposalsManagementService.DeleteProposal(proposal, _token.Jwt).Result);
+            Assert.True(_proposalsManagementService.UpdateProposal(proposal, _token.Jwt).Result);
             Assert.NotNull(proposalManagementService.RequestUri);
             Assert.NotNull(proposalManagementService.ActivationRequestUri);
-            Assert.True(proposalManagementService.SendActivationEmail(proposal.Id).Result);
-            Assert.NotNull(proposalManagementService.GetProposal(proposal.Id).Result);
+            Assert.True(proposalManagementService.SendActivationEmail(proposal.Id, _token.Jwt).Result);
+            Assert.NotNull(proposalManagementService.GetProposal(proposal.Id, _token.Jwt).Result);
         }
 
         [Fact]
         public async void HowToHelpFunctionalityTest()
         {
+            _token = await _accountManagementService.SignIn(TestingObjectProvider.Instance.Login);
+
+            Assert.NotNull(_token);
+
             var info = TestingObjectProvider.Instance.HowToHelpInfo;
 
-            Assert.NotNull(await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.BecomeVolunteer));
-            Assert.NotNull(await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.Donate));
-            Assert.True(await _howToHelpInformationService.UpdateOrCreateHelpInfo(info, HowToHelpInfoType.BecomeVolunteer));
-            Assert.True(await _howToHelpInformationService.UpdateOrCreateHelpInfo(info, HowToHelpInfoType.Donate));
+            Assert.NotNull(await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.BecomeVolunteer, _token.Jwt));
+            Assert.NotNull(await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.Donate, _token.Jwt));
+            Assert.True(await _howToHelpInformationService.UpdateOrCreateHelpInfo(info, HowToHelpInfoType.BecomeVolunteer, _token.Jwt));
+            Assert.True(await _howToHelpInformationService.UpdateOrCreateHelpInfo(info, HowToHelpInfoType.Donate, _token.Jwt));
+        }
+
+        public void Dispose()
+        {
+            _token = null;
         }
     }
 }

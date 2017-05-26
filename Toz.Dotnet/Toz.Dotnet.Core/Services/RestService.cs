@@ -13,27 +13,19 @@ namespace Toz.Dotnet.Core.Services
     public class RestService : IRestService
     {
         private const string RestMediaType = "application/json";
-        private readonly IAuthService _authService; // TEMPORARY
         private readonly IBackendErrorsService _backendErrorsService;
 
-        public RestService(IAuthService authService, IBackendErrorsService backendErrorsService)
+        public RestService(IBackendErrorsService backendErrorsService)
         {
-            _authService = authService; // TEMPORARY
             _backendErrorsService = backendErrorsService;
         }
 
-        public async Task<bool> ExecuteDeleteAction(string address, CancellationToken cancelationToken = default(CancellationToken))
+        public async Task<bool> ExecuteDeleteAction(string address, string token, CancellationToken cancelationToken = default(CancellationToken))
         {
-            using (var client = new HttpClient())
+            using (var client = CreateHttpClient(token))
             {
                 try
                 {
-                    // --> TEMPORARY
-                    if (_authService.IsAuth)
-                    {
-                        _authService.AddTokenToHttpClient(client);
-                    }
-                    // <--
                     var response = await client.DeleteAsync(address, cancelationToken);
                     if (!response.IsSuccessStatusCode)
                     {
@@ -42,41 +34,35 @@ namespace Toz.Dotnet.Core.Services
                     }
                     return true;
                 }
-                catch(HttpRequestException)
+                catch (HttpRequestException)
                 {
                     return false;
                 }
             }
         }
 
-        public async Task<T> ExecuteGetAction<T>(string address, CancellationToken cancelationToken = default(CancellationToken)) where T : class
-        {            
-            using (var client = new HttpClient())
+        public async Task<T> ExecuteGetAction<T>(string address, string token, CancellationToken cancelationToken = default(CancellationToken)) where T : class
+        {
+            using (var client = CreateHttpClient(token))
             {
                 try
                 {
-                    // --> TEMPORARY
-                    if (_authService.IsAuth)
-                    {
-                        _authService.AddTokenToHttpClient(client);
-                    }
-                    // <--
                     var response = await client.GetAsync(address, cancelationToken);
                     var stringResponse = await response.Content.ReadAsStringAsync();
                     response.EnsureSuccessStatusCode();
-                   
+
 
                     T output = JsonConvert.DeserializeObject<T>(stringResponse);
                     return output;
                 }
-                catch(HttpRequestException)
+                catch (HttpRequestException)
                 {
                     return default(T);
                 }
             }
         }
 
-        public async Task<bool> ExecutePostAction<T>(string address, T obj, CancellationToken cancelationToken = default(CancellationToken)) where T : class
+        public async Task<bool> ExecutePostAction<T>(string address, T obj, string token, CancellationToken cancelationToken = default(CancellationToken)) where T : class
         {
             if (obj == null)
             {
@@ -90,16 +76,10 @@ namespace Toz.Dotnet.Core.Services
 
             var httpContent = new StringContent(serializedObject, Encoding.UTF8, RestMediaType);
 
-            using (var client = new HttpClient())
+            using (var client = CreateHttpClient(token))
             {
                 try
                 {
-                    // --> TEMPORARY
-                    if (_authService.IsAuth)
-                    {
-                        _authService.AddTokenToHttpClient(client);
-                    }
-                    // <--
                     var response = await client.PostAsync(address, httpContent, cancelationToken);
                     if (!response.IsSuccessStatusCode)
                     {
@@ -115,69 +95,93 @@ namespace Toz.Dotnet.Core.Services
             }
         }
 
-        public async Task<string> ExecutePostActionAndReturnId<T>(string address, T obj, CancellationToken cancelationToken = default(CancellationToken)) where T : class
+        public async Task<string> ExecutePostActionAndReturnId<T>(string address, T obj, string token = default(string), CancellationToken cancelationToken = default(CancellationToken)) where T : class
         {
-            if(obj == null)
+            if (obj == null)
             {
                 return string.Empty;
             }
 
-            string serializedObject = JsonConvert.SerializeObject(obj, Formatting.Indented, new JsonSerializerSettings {
+            string serializedObject = JsonConvert.SerializeObject(obj, Formatting.Indented, new JsonSerializerSettings
+            {
                 NullValueHandling = NullValueHandling.Ignore
             });
-            
+
             var httpContent = new StringContent(serializedObject, Encoding.UTF8, RestMediaType);
 
-            using (var client = new HttpClient())
+            using (var client = CreateHttpClient(token))
             {
                 try
                 {
-                    // --> TEMPORARY
-                    if (_authService.IsAuth)
-                    {
-                        _authService.AddTokenToHttpClient(client);
-                    }
-                    // <--
                     var response = await client.PostAsync(address, httpContent, cancelationToken);
                     if (!response.IsSuccessStatusCode)
                     {
                         await PassJsonResponseToErrorService(response);
-                        return string.Empty;
+                        return null;
                     }
                     string resultContent = await response.Content.ReadAsStringAsync();
                     Regex regex = new Regex("(?:\"id\":\")([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})(?:\")");
                     Match match = regex.Match(resultContent);
                     return match.Groups[1].Value;
                 }
-                catch(HttpRequestException)
+                catch (HttpRequestException)
                 {
                     return string.Empty;
                 }
             }
         }
         
-        public async Task<bool> ExecutePutAction<T>(string address, T obj, CancellationToken cancelationToken = default(CancellationToken)) where T : class
+        public async Task<T1> ExecutePostAction<T1, T2>(string address, T2 obj, string token = default(string), CancellationToken cancelationToken = default(CancellationToken)) where T1 : class where T2 : class
         {
-            if(string.IsNullOrEmpty(address) || obj == null)
+            if (obj == null)
             {
-                return false;
+                return null;
             }
-            
-            string serializedObject = JsonConvert.SerializeObject(obj, Formatting.Indented, new JsonSerializerSettings {
+
+            string serializedObject = JsonConvert.SerializeObject(obj, Formatting.Indented, new JsonSerializerSettings
+            {
                 NullValueHandling = NullValueHandling.Ignore
             });
 
             var httpContent = new StringContent(serializedObject, Encoding.UTF8, RestMediaType);
-            using (var client = new HttpClient())
+
+            using (var client = CreateHttpClient(token))
             {
                 try
                 {
-                    // --> TEMPORARY
-                    if (_authService.IsAuth)
+                    var response = await client.PostAsync(address, httpContent, cancelationToken);
+                    if (!response.IsSuccessStatusCode)
                     {
-                        _authService.AddTokenToHttpClient(client);
+                        await PassJsonResponseToErrorService(response);
+                        return null;
                     }
-                    // <--
+                    string responseString = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<T1>(responseString);
+                }
+                catch (HttpRequestException)
+                {
+                    return null;
+                }
+            }
+        }
+
+        public async Task<bool> ExecutePutAction<T>(string address, T obj, string token, CancellationToken cancelationToken = default(CancellationToken)) where T : class
+        {
+            if (string.IsNullOrEmpty(address) || obj == null)
+            {
+                return false;
+            }
+
+            string serializedObject = JsonConvert.SerializeObject(obj, Formatting.Indented, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            var httpContent = new StringContent(serializedObject, Encoding.UTF8, RestMediaType);
+            using (var client = CreateHttpClient(token))
+            {
+                try
+                {
                     var response = await client.PutAsync(address, httpContent, cancelationToken);
                     if (!response.IsSuccessStatusCode)
                     {
@@ -186,7 +190,7 @@ namespace Toz.Dotnet.Core.Services
                     }
                     return true;
                 }
-                catch(HttpRequestException)
+                catch (HttpRequestException)
                 {
                     return false;
                 }
@@ -206,6 +210,16 @@ namespace Toz.Dotnet.Core.Services
                 }
             }
             _backendErrorsService.AddErrors(output);
+        }
+
+        private HttpClient CreateHttpClient(string token = default(string))
+        {
+            var client = new HttpClient();
+            if (token != default(string))
+            {
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+            }
+            return client;
         }
     }
 }

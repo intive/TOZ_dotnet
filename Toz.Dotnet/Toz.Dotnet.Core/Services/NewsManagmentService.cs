@@ -23,36 +23,36 @@ namespace Toz.Dotnet.Core.Services
             RequestUri = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendNewsUrl;
         }
 
-        public async Task<List<News>> GetAllNews(CancellationToken cancelationToken = default(CancellationToken))
+        public async Task<List<News>> GetAllNews(string token, CancellationToken cancelationToken = default(CancellationToken))
         {
             string address = RequestUri;
-            return await _restService.ExecuteGetAction<List<News>>(address, cancelationToken);
+            return await _restService.ExecuteGetAction<List<News>>(address, token, cancelationToken);
         }
 		
         
-        public async Task<bool> UpdateNews(News news, CancellationToken cancelationToken = default(CancellationToken))
+        public async Task<bool> UpdateNews(News news, string token, CancellationToken cancelationToken = default(CancellationToken))
         {
            var address = $"{RequestUri}/{news.Id}";
-           return await _restService.ExecutePutAction(address, news, cancelationToken);
+           return await _restService.ExecutePutAction(address, news, token, cancelationToken);
         }
 
         
-        public async Task<bool> CreateNews(News news, CancellationToken cancelationToken = default(CancellationToken))
+        public async Task<bool> CreateNews(News news, string token, CancellationToken cancelationToken = default(CancellationToken))
         {
             var address = RequestUri;
-            return await _restService.ExecutePostAction(address, news, cancelationToken);
+            return await _restService.ExecutePostAction(address, news, token, cancelationToken);
         }
 
-        public async Task<bool> DeleteNews(News news, CancellationToken cancelationToken = default(CancellationToken))
+        public async Task<bool> DeleteNews(News news, string token, CancellationToken cancelationToken = default(CancellationToken))
         {
             var address = $"{RequestUri}/{news.Id}";
-            return await _restService.ExecuteDeleteAction(address, cancelationToken);
+            return await _restService.ExecuteDeleteAction(address, token, cancelationToken);
         }
 
-        public async Task<News> GetNews(string id, CancellationToken cancelationToken = default(CancellationToken))
+        public async Task<News> GetNews(string id, string token, CancellationToken cancelationToken = default(CancellationToken))
         {
             string address = $"{RequestUri}/{id}";
-            return await _restService.ExecuteGetAction<News>(address, cancelationToken);
+            return await _restService.ExecuteGetAction<News>(address, token, cancelationToken);
         }
 
         public byte[] ConvertPhotoToByteArray(Stream fileStream)

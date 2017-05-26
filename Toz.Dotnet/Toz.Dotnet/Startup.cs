@@ -13,6 +13,12 @@ using Microsoft.Extensions.Logging;
 using Toz.Dotnet.Core.Services;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models.Validation;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using Toz.Dotnet.Authorization;
+using Toz.Dotnet.Resources.Configuration;
+using Microsoft.AspNetCore.DataProtection;
+using System.IO;
 
 namespace Toz.Dotnet
 {
@@ -45,10 +51,17 @@ namespace Toz.Dotnet
             services.AddSingleton<IBackendErrorsService, BackendErrorsService>();
             services.AddSingleton<IProposalsManagementService, ProposalsManagementService>();
             services.AddSingleton<IHowToHelpInformationService, HowToHelpInformationService>();
+            services.TryAddSingleton<IAuthService, AuthService>();
+            services.AddSingleton<IAccountManagementService, AccountManagementService>();
 
             services.AddSession();
             services.AddMemoryCache();
-            services.AddSingleton<IAuthService, AuthService>(); // TEMPORARY
+
+            services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo("Keys"));
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminOnly", policy => policy.RequireRole("TOZ", "SA"));
+            });
 
             services.AddMvc()
                 .AddViewLocalization(
@@ -73,11 +86,11 @@ namespace Toz.Dotnet
 
             var appSettings = Configuration.GetSection("AppSettings");
 
-            services.Configure<Toz.Dotnet.Resources.Configuration.AppSettings>(appSettings);
+            services.Configure<AppSettings>(appSettings);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IDataProtectionProvider provider)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -96,6 +109,20 @@ namespace Toz.Dotnet
 
             var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
             app.UseRequestLocalization(options.Value);
+
+            app.UseCookieAuthentication(new CookieAuthenticationOptions()
+            {
+                AuthenticationScheme = CookieAuthenticationDefaults.AuthenticationScheme,
+                CookieName = CookieAuthenticationDefaults.CookiePrefix + CookieAuthenticationDefaults.AuthenticationScheme,
+                LoginPath = new PathString("/Account/SignIn"),
+                AccessDeniedPath = new PathString("/Account/SignIn"),
+                LogoutPath = new PathString("/Account/SignOut"),
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                DataProtectionProvider = provider.CreateProtector("CustomDataProtector")
+            });
+
+            app.UseCustomAuthorization();
 
             app.UseMvc(routes =>
             {

@@ -11,6 +11,7 @@ using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models.EnumTypes;
 using Toz.Dotnet.Models.ViewModels;
 using Toz.Dotnet.Resources.Configuration;
+using Toz.Dotnet.Authorization;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -18,9 +19,9 @@ namespace Toz.Dotnet.Controllers
     {
         private readonly IHowToHelpInformationService _howToHelpInformationService;
 
-        public HowToHelpController(IHowToHelpInformationService howToHelpInformationService, IBackendErrorsService backendErrorsService, 
-            IStringLocalizer<HowToHelpController> localizer, IOptions<AppSettings> settings)
-            : base(backendErrorsService, localizer, settings)
+        public HowToHelpController(IHowToHelpInformationService howToHelpInformationService, IBackendErrorsService backendErrorsService,
+            IStringLocalizer<HowToHelpController> localizer, IOptions<AppSettings> settings, IAuthService authService)
+            : base(backendErrorsService, localizer, settings, authService)
         {
             _howToHelpInformationService = howToHelpInformationService;
         }
@@ -29,8 +30,8 @@ namespace Toz.Dotnet.Controllers
         {
             ViewData["EditMode"] = edit;
 
-            var becomeVolunteerInfo = await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.BecomeVolunteer, cancellationToken);
-            var donateInfo = await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.Donate, cancellationToken);
+            var becomeVolunteerInfo = await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.BecomeVolunteer, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+            var donateInfo = await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.Donate, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
             if (becomeVolunteerInfo != null && donateInfo != null)
             {
                 return View(new HowToHelpViewModel()
@@ -49,10 +50,10 @@ namespace Toz.Dotnet.Controllers
             if (howToHelpViewModel != null && ModelState.IsValid)
             {
                 var updateVolunteerInfoResult = await _howToHelpInformationService.UpdateOrCreateHelpInfo(
-                    howToHelpViewModel.BecomeVolunteerInfo, HowToHelpInfoType.BecomeVolunteer, cancellationToken);
+                    howToHelpViewModel.BecomeVolunteerInfo, HowToHelpInfoType.BecomeVolunteer, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
 
                 var updateDonateInfoResult = await _howToHelpInformationService.UpdateOrCreateHelpInfo(
-                    howToHelpViewModel.DonateInfo, HowToHelpInfoType.Donate, cancellationToken);
+                    howToHelpViewModel.DonateInfo, HowToHelpInfoType.Donate, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
 
                 if (updateDonateInfoResult && updateVolunteerInfoResult)
                 {

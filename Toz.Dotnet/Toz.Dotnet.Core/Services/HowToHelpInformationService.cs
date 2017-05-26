@@ -23,7 +23,7 @@ namespace Toz.Dotnet.Core.Services
             DonateInfoUrl = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendDonateInfoUrl;
         }
 
-        public async Task<bool> UpdateOrCreateHelpInfo(HowToHelpInfo helpInfo, HowToHelpInfoType type, CancellationToken cancelationToken = new CancellationToken())
+        public async Task<bool> UpdateOrCreateHelpInfo(HowToHelpInfo helpInfo, HowToHelpInfoType type, string token, CancellationToken cancelationToken = new CancellationToken())
         {
             string currentUrl;
             if (!GetCurrentUrl(type, out currentUrl))
@@ -31,9 +31,9 @@ namespace Toz.Dotnet.Core.Services
                 return false;
             }
 
-            Func<string, HowToHelpInfo, CancellationToken, Task<bool>> methodToExecute = _restService.ExecutePutAction;
+            Func<string, HowToHelpInfo, string, CancellationToken, Task<bool>> methodToExecute = _restService.ExecutePutAction;
 
-            var oldHelpInfo = await GetHelpInfo(type, cancelationToken);
+            var oldHelpInfo = await GetHelpInfo(type, token, cancelationToken);
             if (oldHelpInfo == null)
             {
                 methodToExecute = _restService.ExecutePostAction;
@@ -42,10 +42,10 @@ namespace Toz.Dotnet.Core.Services
             {
                 return true;
             }
-            return await methodToExecute(currentUrl, helpInfo, cancelationToken);
+            return await methodToExecute(currentUrl, helpInfo, token, cancelationToken);
         }
 
-        public async Task<HowToHelpInfo> GetHelpInfo(HowToHelpInfoType type, CancellationToken cancellationToken = new CancellationToken())
+        public async Task<HowToHelpInfo> GetHelpInfo(HowToHelpInfoType type, string token, CancellationToken cancellationToken = new CancellationToken())
         {
             string currentUrl;
             if (!GetCurrentUrl(type, out currentUrl))
@@ -53,7 +53,7 @@ namespace Toz.Dotnet.Core.Services
                 return null;
             }
 
-            return await _restService.ExecuteGetAction<HowToHelpInfo>(currentUrl, cancellationToken);
+            return await _restService.ExecuteGetAction<HowToHelpInfo>(currentUrl, token, cancellationToken);
         }
 
         private bool GetCurrentUrl(HowToHelpInfoType type, out string resultUrl)
