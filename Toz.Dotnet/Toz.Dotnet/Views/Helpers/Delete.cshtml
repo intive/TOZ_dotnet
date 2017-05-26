@@ -1,0 +1,19 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model Toz.Dotnet.Models.Helper
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["Title"];
+}
+<div class="container-fluid center">
+    <form class="form-horizontal" asp-controller="Helpers" asp-action="Delete" method="POST" enctype="multipart/form-data">
+        <fieldset class="pagetitle">
+            <legend class="pagetitlelegend">@Localizer["Question"]</legend>
+            <div class="form-group row" style="text-align: center">
+                <span class="unhandled-error-span">@ViewData["UnhandledError"]</span>
+            </div>
+            <input type="button" class="btn btn-warning btn-block" id="Cancel" data-dismiss="modal" value=@Localizer["Cancel"]>
+            <input type="submit" class="btn btn-primary btn-block" id="Save" value=@Localizer["Yes"]>
+        </fieldset>
+    </form>
+</div>
+<script src="~/js/modal.scripts.js"></script>

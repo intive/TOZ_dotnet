@@ -46,6 +46,15 @@
             </a>
         </div>
         <div class="col-sm-4">
+            <a asp-controller="Helpers" asp-action="Index">
+                <div class="tile orange">
+                    <div class="tile-icon"><img src="~/images/helping-white.png" /></div>
+                    <h3 class="title">@Localizer["HelpersTileTitle"]</h3>
+                    <p>@Localizer["HelpersTileDescription"]</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-4">
             <a asp-controller="Schedule" asp-action="Index">
                 <div class="tile green">
                     <div class="tile-icon"><img src="~/images/calendar-white.png" /></div>

@@ -1,0 +1,86 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Toz.Dotnet.Models.EnumTypes
+@model IEnumerable<Toz.Dotnet.Models.Helper>
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["PageTitle"];
+}
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default panel-table">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col col-xs-4">
+                <h3 class="panel-title">@Localizer["PageTitle"]</h3>
+            </div>
+            <div class="col col-xs-4">
+                <input type="text" id="search" class="search form-control" placeholder="@Localizer["SearchPlaceholder"]">
+            </div>
+            <div class="col col-xs-4 text-right">
+                <a class="data-modal btn btn-primary btn-sm btn-create" href="@Url.Action("Add","Helpers")"><span class="glyphicon glyphicon-plus"></span></a>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <table id="table" class="table table-striped table-bordered table-list dt-responsive nowrap" width="100%">
+            <thead>
+                <tr>
+                    <th>@Localizer["Category"]</th>
+                    <th>@Localizer["FirstName"]</th>
+                    <th>@Localizer["LastName"]</th>
+                    <th>@Localizer["PhoneNumber"]</th>
+                    <th>@Localizer["Email"]</th>
+                    <th>@Localizer["Address"]</th>
+                    <th>@Localizer["Notes"]</th>
+                    <th></th>
+               </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        @if (@item.Category.Equals(HelperCategory.Guardian))
+                        {
+                            <td>@Localizer["Guardian"]</td>
+                        }
+                        else if (@item.Category.Equals(HelperCategory.TemporaryHouseCat))
+                        {
+                            <td>@Localizer["TemporaryHouseCat"]</td>
+                        }
+                        else if (@item.Category.Equals(HelperCategory.TemporaryHouseDog))
+                        {
+                            <td>@Localizer["TemporaryHouseDog"]</td>
+                        }
+                        else if (@item.Category.Equals(HelperCategory.TemporaryHouseOther))
+                        {
+                            <td>@Localizer["TemporaryHouseOther"]</td>
+                        }
+                        else
+
+                        {
+                            <td> </td>
+                        }
+
+                        <td>@item.Name</td>
+                        <td>@item.Surname</td>
+                        <td>@item.PhoneNumber</td>
+                        <td>@item.Email</td>
+                        <td>@item.Address</td>
+                        <td>@item.Notes</td>
+                        <td> 
+                            <div class="glyphicon-align-center">
+                                <a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Edit","Helpers")/@item.Id"><span class="glyphicon glyphicon-pencil"></span></a>
+                                <a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Delete","Helpers")/@item.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                            </div> 
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
