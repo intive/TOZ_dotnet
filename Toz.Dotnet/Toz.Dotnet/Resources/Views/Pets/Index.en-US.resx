@@ -139,10 +139,10 @@
     <value>Description</value>
   </data>
   <data name="Address" xml:space="preserve">
-    <value>Address</value>
+    <value>Origin</value>
   </data>
   <data name="AddingTime" xml:space="preserve">
-    <value>Adding time</value>
+    <value>Added</value>
   </data>
   <data name="LastEditTime" xml:space="preserve">
     <value>Last modification time</value>
@@ -182,5 +182,8 @@
   </data>
   <data name="SearchPlaceholder" xml:space="preserve">
     <value>Search...</value>
+  </data>
+  <data name="CurrentPlace" xml:space="preserve">
+    <value>Current shelter</value>
   </data>
 </root>

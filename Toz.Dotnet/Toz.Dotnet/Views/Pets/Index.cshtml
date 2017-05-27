@@ -39,10 +39,9 @@
                     <th>@Localizer["Type"]</th>
                     <th>@Localizer["Sex"]</th>
                     <th>@Localizer["Photo"]</th>
-                    <th>@Localizer["Description"]</th>
                     <th>@Localizer["Address"]</th>
                     <th>@Localizer["AddingTime"]</th>
-                    <th>@Localizer["LastEditTime"]</th>
+                    <th>@Localizer["CurrentPlace"]</th>
                     <th></th>
                 </tr>
             </thead>
@@ -79,17 +78,9 @@
                         }
 
                         <td><img src="data:image;base64,@Convert.ToBase64String(item.Photo)" alt="Pet photo" /></td>
-                        <td class="overflow-ellipsis">@item.Description</td>
                         <td class="overflow-ellipsis">@item.Address</td>
                         <td>@item.Created</td>
-                        @if (!@item.LastModified.HasValue)
-                        {
-                            <td>@Localizer["Lack"]</td>
-                        }
-                        else
-                        {
-                            <td>@item.LastModified</td>
-                        }
+                        <td>Miejsce pobytu zwierzaka</td> @*TEMPORARY*@
                         <td class="center-column"><a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Edit","Pets")/@item.Id"><span class="glyphicon glyphicon-pencil"></span></a></td>
                     </tr>
                 }
