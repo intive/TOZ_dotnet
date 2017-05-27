@@ -23,6 +23,7 @@ namespace Toz.Dotnet.Tests.Sanity
         private readonly IProposalsManagementService _proposalsManagementService;
         private readonly IHowToHelpInformationService _howToHelpInformationService;
         private readonly IAccountManagementService _accountManagementService;
+        private readonly IHelpersManagementService _helpersManagementService;
         private JwtToken _token;
 
         public SanityTests()
@@ -35,6 +36,7 @@ namespace Toz.Dotnet.Tests.Sanity
             _proposalsManagementService = ServiceProvider.Instance.Resolve<IProposalsManagementService>();
             _howToHelpInformationService = ServiceProvider.Instance.Resolve<IHowToHelpInformationService>();
             _accountManagementService = ServiceProvider.Instance.Resolve<IAccountManagementService>();
+            _helpersManagementService = ServiceProvider.Instance.Resolve<IHelpersManagementService>();
 
             _petsManagementService.RequestUri = RequestUriHelper.PetsUri;
             _newsManagementService.RequestUri = RequestUriHelper.NewsUri;
@@ -44,6 +46,7 @@ namespace Toz.Dotnet.Tests.Sanity
             _howToHelpInformationService.BecomeVolunteerUrl = RequestUriHelper.HowToHelpUri;
             _howToHelpInformationService.DonateInfoUrl = RequestUriHelper.HowToHelpUri;
             _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUri;
+            _helpersManagementService.RequestUri = RequestUriHelper.HelpersUri;
         }
 
         [Fact]
@@ -205,6 +208,22 @@ namespace Toz.Dotnet.Tests.Sanity
             Assert.NotNull(await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.Donate, _token.Jwt));
             Assert.True(await _howToHelpInformationService.UpdateOrCreateHelpInfo(info, HowToHelpInfoType.BecomeVolunteer, _token.Jwt));
             Assert.True(await _howToHelpInformationService.UpdateOrCreateHelpInfo(info, HowToHelpInfoType.Donate, _token.Jwt));
+        }
+
+        [Fact]
+        public async void HeleprsFunctinalityTest()
+        {
+            _token = await _accountManagementService.SignIn(TestingObjectProvider.Instance.Login);
+
+            Assert.NotNull(_token);
+
+            var helper = TestingObjectProvider.Instance.Helper;
+
+            Assert.NotNull(_helpersManagementService.GetAllHelpers(_token.Jwt).Result);
+            Assert.True(_helpersManagementService.CreateHelper(helper, _token.Jwt).Result);
+            Assert.True(_helpersManagementService.DeleteHelper(helper.Id, _token.Jwt).Result);
+            Assert.NotNull(_helpersManagementService.GetHelper(helper.Id, _token.Jwt).Result);
+            Assert.True(_helpersManagementService.UpdateHelper(helper, _token.Jwt).Result);
         }
 
         public void Dispose()
