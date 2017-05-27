@@ -23,7 +23,7 @@ namespace Toz.Dotnet.Authorization
         private readonly RequestDelegate _next;
         private readonly AppSettings _appSettings;
         private readonly IHostingEnvironment _env;
-        private readonly List<string> _controllers;
+        private readonly List<string> _blockedControllers;
         private readonly IAuthService _authService;
         private readonly IAccountManagementService _accountManagementService;
 
@@ -35,22 +35,7 @@ namespace Toz.Dotnet.Authorization
             _authService = cookieService;
             _accountManagementService = accountManagementService;
 
-            string[] files;
-
-            try
-            {
-                files = Directory.GetFiles(_env.ContentRootPath + Path.DirectorySeparatorChar + "Controllers");
-                _controllers = new List<string>();
-                for (int i = 0; i < files.Length; i++)
-                {
-                    _controllers.Add(Path.GetFileNameWithoutExtension(files[i]).Replace("Controller", ""));
-                }
-                _controllers.Remove(_appSettings.LoginControllerName);
-            }
-            catch
-            {
-                files = new string[] { };
-            }
+            _blockedControllers = appSettings.Value.BlockedControllers;
         }
 
         public async Task Invoke(HttpContext httpContext, IAuthorizationService authorizationService)
@@ -77,7 +62,7 @@ namespace Toz.Dotnet.Authorization
 
             if (httpContext.Request.Path.HasValue)
             {
-                isUrlValid = _controllers.Contains<string>(httpContext.Request.Path.Value.Split('/')[1]);
+                isUrlValid = _blockedControllers.Contains<string>(httpContext.Request.Path.Value.Split('/')[1]);
             }
 
             if (isUrlValid)
@@ -93,7 +78,7 @@ namespace Toz.Dotnet.Authorization
                 }
 
                 bool authorized = await authorizationService.AuthorizeAsync(
-                                        httpContext.User, _appSettings.PolicyName);
+                    httpContext.User, _appSettings.PolicyName);
 
                 if (!authorized)
                 {
