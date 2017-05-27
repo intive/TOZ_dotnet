@@ -10,8 +10,8 @@ using Toz.Dotnet.Resources.Configuration;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
-using Microsoft.AspNetCore.Authorization;
 using Toz.Dotnet.Authorization;
+using Toz.Dotnet.Models.ViewModels;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -19,25 +19,38 @@ namespace Toz.Dotnet.Controllers
     {
         private readonly IFilesManagementService _filesManagementService;
         private readonly IPetsManagementService _petsManagementService;
+        private readonly IHelpersManagementService _helpersManagementService;
 
         private static byte[] _lastAcceptPhoto;
         private string _validationPhotoAlert;
 
-        public PetsController(IFilesManagementService filesManagementService, IPetsManagementService petsManagementService,
+        public PetsController(IFilesManagementService filesManagementService, IPetsManagementService petsManagementService, IHelpersManagementService helpersManagementService,
             IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService, IAuthService authService) : base(backendErrorsService, localizer, appSettings, authService)
         {
             _filesManagementService = filesManagementService;
             _petsManagementService = petsManagementService;
+            _helpersManagementService = helpersManagementService;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            List<Pet> pets = await _petsManagementService.GetAllPets(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true));
-            //todo add photo if will be avaialbe on backends
+            List<Pet> pets = await _petsManagementService.GetAllPets(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+            List<PetViewModel> viewModel = new List<PetViewModel>();
+            foreach (var pet in pets)
+            {
+                viewModel.Add(new PetViewModel
+                {
+                    ThePet = pet,
+                    TheHelper = string.IsNullOrEmpty(pet.HelperId)
+                        ? new Helper { Address = "TOZ" }
+                        : await _helpersManagementService.GetHelper(pet.HelperId, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken)
+                });
+            }
+            //TODO: add photo if will be available on backends
             var img = _filesManagementService.DownloadImage(@"http://i.pinger.pl/pgr167/7dc36d63001e9eeb4f01daf3/kot%20ze%20shreka9.jpg");
             var thumbnail = _filesManagementService.GetThumbnail(img);
-            pets.ForEach(pet => pet.Photo = _filesManagementService.ImageToByteArray(thumbnail)); // temporary
-            return View(pets.OrderByDescending(x => x.Created).ThenByDescending(x => x.LastModified).ToList());
+            viewModel.ForEach(vm => vm.ThePet.Photo = _filesManagementService.ImageToByteArray(thumbnail)); // temporary
+            return View(viewModel.OrderByDescending(x => x.ThePet.Created).ThenByDescending(x => x.ThePet.LastModified).ToList());
         }
 
         [HttpPost]
@@ -51,7 +64,7 @@ namespace Toz.Dotnet.Controllers
 
             if (result && ModelState.IsValid)
             {
-                if (await _petsManagementService.CreatePet(pet, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true)))
+                if (await _petsManagementService.CreatePet(pet, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
                 {
                     _lastAcceptPhoto = null;
                     _validationPhotoAlert = null;
@@ -101,7 +114,7 @@ namespace Toz.Dotnet.Controllers
 
             if (result && ModelState.IsValid)
             {
-                if (await _petsManagementService.UpdatePet(pet, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true)))
+                if (await _petsManagementService.UpdatePet(pet, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
                 {
                     _lastAcceptPhoto = null;
                     _validationPhotoAlert = null;
@@ -133,7 +146,7 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken)
         {
-            return PartialView("Edit", await _petsManagementService.GetPet(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true)));
+            return PartialView("Edit", await _petsManagementService.GetPet(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken));
         }
 
 

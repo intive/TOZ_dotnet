@@ -1,7 +1,7 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Toz.Dotnet.Core.Services
 @using Toz.Dotnet.Models.EnumTypes
-@model IEnumerable<Toz.Dotnet.Models.Pet>
+@model IEnumerable<Toz.Dotnet.Models.ViewModels.PetViewModel>
 @inject IViewLocalizer Localizer
 
 @{
@@ -49,13 +49,13 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td class="overflow-ellipsis">@item.Name</td>
+                        <td class="overflow-ellipsis">@item.ThePet.Name</td>
 
-                        @if (@item.Type == PetType.Dog)
+                        @if (@item.ThePet.Type == PetType.Dog)
                         {
                             <td>@Localizer["Dog"]</td>
                         }
-                        else if (@item.Type == PetType.Cat)
+                        else if (@item.ThePet.Type == PetType.Cat)
                         {
                             <td>@Localizer["Cat"]</td>
                         }
@@ -64,11 +64,11 @@
                             <td>@Localizer["Unknown"]</td>
                         }
 
-                        @if (@item.Sex == PetSex.Male)
+                        @if (@item.ThePet.Sex == PetSex.Male)
                         {
                             <td>@Localizer["Male"]</td>
                         }
-                        else if (@item.Sex == PetSex.Female)
+                        else if (@item.ThePet.Sex == PetSex.Female)
                         {
                             <td>@Localizer["Female"]</td>
                         }
@@ -77,11 +77,11 @@
                             <td>@Localizer["Unidentified"]</td>
                         }
 
-                        <td><img src="data:image;base64,@Convert.ToBase64String(item.Photo)" alt="Pet photo" /></td>
-                        <td class="overflow-ellipsis">@item.Address</td>
-                        <td>@item.Created</td>
-                        <td>Miejsce pobytu zwierzaka</td> @*TEMPORARY*@
-                        <td class="center-column"><a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Edit","Pets")/@item.Id"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                        <td><img src="data:image;base64,@Convert.ToBase64String(item.ThePet.Photo)" alt="Pet photo" /></td>
+                        <td class="overflow-ellipsis">@item.ThePet.Address</td>
+                        <td>@item.ThePet.Created</td>
+                        <td>@item.TheHelper.Address</td>
+                        <td class="center-column"><a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Edit","Pets")/@item.ThePet.Id"><span class="glyphicon glyphicon-pencil"></span></a></td>
                     </tr>
                 }
             </tbody>
