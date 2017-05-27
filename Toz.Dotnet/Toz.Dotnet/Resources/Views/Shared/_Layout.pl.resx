@@ -150,4 +150,7 @@
   <data name="HowToHelp" xml:space="preserve">
     <value>Jak pomóc</value>
   </data>
+  <data name="Helpers" xml:space="preserve">
+    <value>Pomocnicy</value>
+  </data>
 </root>

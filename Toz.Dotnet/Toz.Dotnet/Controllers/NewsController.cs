@@ -141,10 +141,10 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)
         {
-            var pet = await _newsManagementService.GetNews(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
-            if (pet != null)
+            var news = await _newsManagementService.GetNews(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+            if (news != null)
             {
-                await _newsManagementService.DeleteNews(pet, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+                await _newsManagementService.DeleteNews(news, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
             }
 
             return RedirectToAction("Index");

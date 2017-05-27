@@ -53,6 +53,7 @@ namespace Toz.Dotnet
             services.AddSingleton<IHowToHelpInformationService, HowToHelpInformationService>();
             services.TryAddSingleton<IAuthService, AuthService>();
             services.AddSingleton<IAccountManagementService, AccountManagementService>();
+            services.AddSingleton<IHelpersManagementService, HelpersManagementService>();
 
             services.AddSession();
             services.AddMemoryCache();

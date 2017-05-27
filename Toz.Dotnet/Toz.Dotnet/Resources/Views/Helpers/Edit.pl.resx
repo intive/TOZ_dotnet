@@ -117,52 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BankAccountLength" xml:space="preserve">
-    <value>Numer bankowy musi składać się dokładnie z 26 cyfr</value>
+  <data name="Address" xml:space="preserve">
+    <value>Adres</value>
   </data>
-  <data name="InvalidBankAccount" xml:space="preserve">
-    <value>Nieprawidłowy numer bankowy</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Anuluj</value>
   </data>
-  <data name="EmailValidationMessage" xml:space="preserve">
-    <value>Błędny adres email</value>
+  <data name="Category" xml:space="preserve">
+    <value>Kategoria</value>
   </data>
-  <data name="EmptyField" xml:space="preserve">
-    <value>To pole nie może być puste</value>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
   </data>
-  <data name="InvalidPhoneNumber" xml:space="preserve">
-    <value>Nieprawidłowy numer telefonu</value>
+  <data name="FirstName" xml:space="preserve">
+    <value>Imię</value>
   </data>
-  <data name="MaxLength" xml:space="preserve">
-    <value>Maksymalna długość to {1} znaków</value>
+  <data name="Guardian" xml:space="preserve">
+    <value>Opiekun</value>
   </data>
-  <data name="FirstnameLetters" xml:space="preserve">
-    <value>Imię może zawierać tylko litery</value>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
   </data>
-  <data name="OnlyDigits" xml:space="preserve">
-    <value>To pole może zawierać tylko cyfry</value>
+  <data name="LastName" xml:space="preserve">
+    <value>Nazwisko</value>
   </data>
-  <data name="PetSexUndefined" xml:space="preserve">
-    <value>Wybierz płeć zwierzaka</value>
+  <data name="Notes" xml:space="preserve">
+    <value>Uwagi</value>
   </data>
-  <data name="PetTypeUndefined" xml:space="preserve">
-    <value>Wybierz typ zwierzaka</value>
+  <data name="PageTitle" xml:space="preserve">
+    <value>Edytowanie pomocnika</value>
   </data>
-  <data name="TypeUndefined" xml:space="preserve">
-    <value>Wybierz typ użytkownika</value>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Telefon</value>
   </data>
-  <data name="LastnameLetters" xml:space="preserve">
-    <value>Nazwisko może zawierać tylko litery</value>
+  <data name="Save" xml:space="preserve">
+    <value>Zapisz</value>
   </data>
-  <data name="InvalidValue" xml:space="preserve">
-    <value>Nieprawidłowa wartość</value>
+  <data name="SearchPlaceholder" xml:space="preserve">
+    <value>Szukaj ...</value>
   </data>
-  <data name="InvalidFaxNumber" xml:space="preserve">
-    <value>Nieprawidłowy numer fax</value>
+  <data name="TemporaryHouseCat" xml:space="preserve">
+    <value>Tymczasowy dom dla kota</value>
   </data>
-  <data name="InvalidURL" xml:space="preserve">
-    <value>Nieprawidłowy adres strony internetowej</value>
+  <data name="TemporaryHouseDog" xml:space="preserve">
+    <value>Tymczasowy dom dla psa</value>
   </data>
-  <data name="HelperCategoryUndefined" xml:space="preserve">
-    <value>Wybierz typ pomocnika</value>
+  <data name="TemporaryHouseOther" xml:space="preserve">
+    <value>Tymczasowy dom dla innego zwierzaka</value>
   </data>
 </root>

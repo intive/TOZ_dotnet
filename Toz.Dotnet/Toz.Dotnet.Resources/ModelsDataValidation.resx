@@ -165,4 +165,7 @@
   <data name="UnknownError" xml:space="preserve">
     <value>Unknown error occured during the validation proccess</value>
   </data>
+  <data name="HelperCategoryUndefined" xml:space="preserve">
+    <value>Choose helper category</value>
+  </data>
 </root>
