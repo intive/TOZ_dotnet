@@ -98,6 +98,15 @@ namespace Toz.Dotnet.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose helper category.
+        /// </summary>
+        public static string HelperCategoryUndefined {
+            get {
+                return ResourceManager.GetString("HelperCategoryUndefined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This bank account number is not valid.
         /// </summary>
         public static string InvalidBankAccount {

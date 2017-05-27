@@ -6,7 +6,7 @@
 
 @inject IViewLocalizer Localizer
 @inject IAuthorizationService AuthorizationService
-@inject IOptions<AppSettings> appSettings
+@inject IOptions<AppSettings> AppSettings
 
 <!DOCTYPE html>
 <html>
@@ -70,11 +70,12 @@
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                @if (await AuthorizationService.AuthorizeAsync(User, appSettings.Value.PolicyName))
+                @if (await AuthorizationService.AuthorizeAsync(User, AppSettings.Value.PolicyName))
                 {
                     <li><a asp-controller="Pets" asp-action="Index">@Localizer["PetList"]</a></li>
                     <li><a asp-controller="News" asp-action="Index">@Localizer["NewsList"]</a></li>
                     <li><a asp-controller="Users" asp-action="Index">@Localizer["Users"]</a></li>
+                    <li><a asp-controller="Helpers" asp-action="Index">@Localizer["Helpers"]</a></li>
                     <li><a asp-controller="Schedule" asp-action="Index">@Localizer["Schedule"]</a></li>
                     <li><a asp-controller="Organization" asp-action="Info">@Localizer["OrganizationInfo"]</a></li>
                     <li><a asp-controller="Proposals" asp-action="Index">@Localizer["Proposals"]</a></li>
@@ -82,7 +83,7 @@
                 }
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    @if (await AuthorizationService.AuthorizeAsync(User, appSettings.Value.PolicyName))
+                    @if (await AuthorizationService.AuthorizeAsync(User, AppSettings.Value.PolicyName))
                     {
                         <li><a>@User.Identity.Name</a></li>
                         <li><a asp-controller="Account" asp-action="SignOut"><span class="glyphicon glyphicon-log-out"></span>  @Localizer["SignOut"]</a></li>

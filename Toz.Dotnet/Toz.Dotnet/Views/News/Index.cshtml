@@ -31,7 +31,7 @@
         </div>
     </div>
     <div class="panel-body">
-        <table id="table" class="table table-striped table-bordered table-list dt-responsive nowrap" width="100%">
+        <table id="table" class="table table-striped table-bordered table-list dt-responsive compact">
             <thead>
                 <tr>
                     <th></th>
@@ -61,30 +61,30 @@
                         @switch (item.Type)
                         {
                             case NewsStatus.Unreleased:
-                            {
-                                <td>
-                                    <div class="unreleased">
-                                        <div class="glyphicon glyphicon-exclamation-sign"></div>
-                                        @Localizer["Unreleased"]
-                                    </div>
-                                </td>
-                                break;
-                            }
+                                {
+                                    <td>
+                                        <div class="unreleased">
+                                            <div class="glyphicon glyphicon-exclamation-sign"></div>
+                                            @Localizer["Unreleased"]
+                                        </div>
+                                    </td>
+                                    break;
+                                }
                             case NewsStatus.Archived:
-                            {
-                                <td>
-                                    <div class="archived">
-                                        <div class="glyphicon glyphicon-exclamation-sign"></div>
-                                        @Localizer["Archived"]
-                                    </div>
-                                </td>
-                                break;
-                            }
+                                {
+                                    <td>
+                                        <div class="archived">
+                                            <div class="glyphicon glyphicon-exclamation-sign"></div>
+                                            @Localizer["Archived"]
+                                        </div>
+                                    </td>
+                                    break;
+                                }
                             default:
-                            {
-                                <td></td>
-                                break;
-                            }
+                                {
+                                    <td></td>
+                                    break;
+                                }
                         }
                         <td class="center-column"><a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Edit","News")/@item.Id"><span class="glyphicon glyphicon-pencil"></span></a></td>
                     </tr>
