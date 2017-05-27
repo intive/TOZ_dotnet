@@ -71,6 +71,15 @@ namespace Toz.Dotnet.Resources.Views.Helpers {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Usuń.
+        /// </summary>
+        internal static string DeleteConfirm {
+            get {
+                return ResourceManager.GetString("DeleteConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Czy chcesz usunąć tego pomocnika?.
         /// </summary>
         internal static string Question {
@@ -85,15 +94,6 @@ namespace Toz.Dotnet.Resources.Views.Helpers {
         internal static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Tak.
-        /// </summary>
-        internal static string Yes {
-            get {
-                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

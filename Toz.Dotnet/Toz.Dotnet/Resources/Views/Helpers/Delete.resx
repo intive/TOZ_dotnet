@@ -120,13 +120,13 @@
   <data name="Cancel" xml:space="preserve">
     <value>Anuluj</value>
   </data>
+  <data name="DeleteConfirm" xml:space="preserve">
+    <value>Usuń</value>
+  </data>
   <data name="Question" xml:space="preserve">
     <value>Czy chcesz usunąć tego pomocnika?</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Usuwanie pomocnika</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Tak</value>
   </data>
 </root>
