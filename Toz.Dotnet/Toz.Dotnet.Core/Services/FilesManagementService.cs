@@ -16,14 +16,20 @@ namespace Toz.Dotnet.Core.Services
     public class FilesManagementService : IFilesManagementService
     {
         private readonly IRestService _restService;
+        public string PetBaseUri { get; set; }
         public string PetAvatarUri { get; set; }
+        public string PetGalleryUri { get; set; }
+        public string NewsBaseUrl { get; set; }
         public string NewsAvatarUri { get; set; }
 
         public FilesManagementService(IRestService restService, IOptions<AppSettings> appSettings)
         {
             _restService = restService;
-            PetAvatarUri = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendPetsUrl + "/{id}" + appSettings.Value.BackendImagesUrl;
-            NewsAvatarUri = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendNewsUrl + "/{id}" + appSettings.Value.BackendImagesUrl;
+            PetBaseUri = $"{appSettings.Value.BackendBaseUrl}{appSettings.Value.BackendPetsUrl}" + "/{id}";
+            PetAvatarUri = $"{PetAvatarUri}{appSettings.Value.BackendImagesUrl}";
+            PetGalleryUri = $"{PetBaseUri}{appSettings.Value.BackendGalleryUrl}";
+            NewsAvatarUri = $"{appSettings.Value.BackendBaseUrl}{appSettings.Value.BackendNewsUrl}" + "/{id}";
+            NewsAvatarUri = $"{NewsAvatarUri}{appSettings.Value.BackendImagesUrl}";
         }
 
         public Image DownloadImage(string address)
@@ -60,6 +66,18 @@ namespace Toz.Dotnet.Core.Services
         {
             var address = PetAvatarUri.Replace("{id}", id);
             return await _restService.ExecutePostMultipartAction(address, files, id, token, cancelationToken);
+        }
+
+        public async Task<bool> UploadPetGalleryImage(string id, string token, IEnumerable<IFormFile> files, CancellationToken cancelationToken = default(CancellationToken))
+        {
+            var address = PetGalleryUri.Replace("{id}", id);
+            return await _restService.ExecutePostMultipartAction(address, files, id, token, cancelationToken);
+        }
+
+        public async Task<bool> DeletePetGalleryImage(string id, string imageId, string token, CancellationToken cancelationToken = default(CancellationToken))
+        {
+            var address = PetGalleryUri.Replace("{id}", id) + $"/{imageId}";
+            return await _restService.ExecuteDeleteAction(address, token, cancelationToken);
         }
 
         public async Task<bool> UploadNewsAvatar(string id, string token, IEnumerable<IFormFile> files, CancellationToken cancelationToken = default(CancellationToken))

@@ -29,6 +29,7 @@ namespace Toz.Dotnet.Core.Services
                 try
                 {
                     var response = await client.DeleteAsync(address, cancelationToken);
+
                     if (!response.IsSuccessStatusCode)
                     {
                         await PassJsonResponseToErrorService(response);

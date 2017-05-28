@@ -12,6 +12,7 @@ using System.Threading;
 using System.Linq;
 using System.Net.Http;
 using Toz.Dotnet.Authorization;
+using Toz.Dotnet.Models.Images;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -119,11 +120,45 @@ namespace Toz.Dotnet.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Gallery(string id)
+        public async Task<IActionResult> Gallery(string id, CancellationToken cancellationToken)
         {
-            return Json(new { success = true });
+            Pet pet = await _petsManagementService.GetPet(id, CurrentCookiesToken, cancellationToken);
+            List<Photo> gallery = pet.Gallery;
+            List<FineUploader> json = new List<FineUploader>();
+
+            foreach (var photo in gallery)
+            {
+                json.Add(new FineUploader { UUID = photo.Id, Name = $"{photo.Id}.jpg", ThumbnailUrl = $"{_appSettings.Value.BaseUrl}{photo.FileUrl}" });
+            }
+
+            CheckUnexpectedErrors();
+            return Json(json);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Gallery(string id, string imageId, CancellationToken cancellationToken)
+        {
+            var files = Request.Form.Files;
+            if (await _filesManagementService.UploadPetGalleryImage(id, CurrentCookiesToken, files, cancellationToken))
+            {
+                return Json(new { success = true });
+            }
+
+            CheckUnexpectedErrors();
+            return Json(new { success = false });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> GalleryDelete(string id, CancellationToken cancellationToken)
+        {
+            var imageId = Request.Form["qquuid"].ToString();
+            if (await _filesManagementService.DeletePetGalleryImage(id, imageId, CurrentCookiesToken, cancellationToken))
+            {
+                return Json(new { success = true });
+            }
+
+            CheckUnexpectedErrors();
+            return Json(new { success = false });
         }
 
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken)

@@ -8,7 +8,8 @@
     "datatables-bootstrap": "1.0.0",
     "datatables-responsive": "2.1.1",
     "jquery": "2.2.4",
-    "cropit": "v0.5.1"
+    "cropit": "v0.5.1",
+    "fine-uploader": "5.13.0"
   },
   "resolutions": {
     "jquery-validation": "1.16.0"

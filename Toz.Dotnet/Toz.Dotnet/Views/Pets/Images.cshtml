@@ -23,6 +23,9 @@
     }
 </style>
 
+<link rel="stylesheet" href="~/lib/fine-uploader/dist/fine-uploader-new.min.css">
+<link rel="stylesheet" href="~/lib/fine-uploader/dist/fine-uploader-gallery.min.css">
+
 <div class="container-fluid center">
 
     <fieldset class="pagetitle">
@@ -59,10 +62,9 @@
             </div>
 
             <div class="tab-pane" id="gallery">
-                <form class="form-horizontal" asp-controller="Pets" asp-action="Gallery" method="POST" enctype="multipart/form-data">
+                <br />
 
-                    <input type="button" class="btn btn-primary btn-block" id="SaveGallery" value=@Localizer["Save"]>
-                </form>
+                <div id="fine-uploader-gallery"></div>
             </div>
 
             <div class="form-group row" style="text-align: center">
@@ -72,7 +74,85 @@
     </fieldset>
 </div>
 
+<script type="text/template" id="qq-template-gallery">
+    <div class="qq-uploader-selector qq-uploader qq-gallery" qq-drop-area-text="@Localizer["Drop"]">
+        <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">
+            <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar"></div>
+        </div>
+        <div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
+            <span class="qq-upload-drop-area-text-selector"></span>
+        </div>
+        <div class="qq-upload-button-selector qq-upload-button">
+            <div>@Localizer["Browse"]</div>
+        </div>
+        <span class="qq-drop-processing-selector qq-drop-processing">
+            <span>@Localizer["Processing"]</span>
+            <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+        </span>
+        <ul class="qq-upload-list-selector qq-upload-list" role="region" aria-live="polite" aria-relevant="additions removals">
+            <li>
+                <span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span>
+                <div class="qq-progress-bar-container-selector qq-progress-bar-container">
+                    <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-progress-bar-selector qq-progress-bar"></div>
+                </div>
+                <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+                <div class="qq-thumbnail-wrapper">
+                    <img class="qq-thumbnail-selector" qq-max-size="120" qq-server-scale>
+                </div>
+                <button type="button" class="qq-upload-cancel-selector qq-upload-cancel">@Localizer["X"]</button>
+                <button type="button" class="qq-upload-retry-selector qq-upload-retry">
+                    <span class="qq-btn qq-retry-icon" aria-label="Retry"></span>
+                    @Localizer["Retry"]
+                </button>
+
+                <div class="qq-file-info">
+                    <div class="qq-file-name">
+                        <span class="qq-upload-file-selector qq-upload-file"></span>
+                        <span class="qq-edit-filename-icon-selector qq-edit-filename-icon" aria-label="Edit filename"></span>
+                    </div>
+                    <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+                    <span class="qq-upload-size-selector qq-upload-size"></span>
+                    <button type="button" class="qq-btn qq-upload-delete-selector qq-upload-delete">
+                        <span class="qq-btn qq-delete-icon" aria-label="Delete"></span>
+                    </button>
+                    <button type="button" class="qq-btn qq-upload-pause-selector qq-upload-pause">
+                        <span class="qq-btn qq-pause-icon" aria-label="Pause"></span>
+                    </button>
+                    <button type="button" class="qq-btn qq-upload-continue-selector qq-upload-continue">
+                        <span class="qq-btn qq-continue-icon" aria-label="Continue"></span>
+                    </button>
+                </div>
+            </li>
+        </ul>
+
+        <dialog class="qq-alert-dialog-selector">
+            <div class="qq-dialog-message-selector"></div>
+            <div class="qq-dialog-buttons">
+                <button type="button" class="qq-cancel-button-selector">@Localizer["Close"]</button>
+            </div>
+        </dialog>
+
+        <dialog class="qq-confirm-dialog-selector">
+            <div class="qq-dialog-message-selector"></div>
+            <div class="qq-dialog-buttons">
+                <button type="button" class="qq-cancel-button-selector">@Localizer["No"]</button>
+                <button type="button" class="qq-ok-button-selector">@Localizer["Yes"]</button>
+            </div>
+        </dialog>
+
+        <dialog class="qq-prompt-dialog-selector">
+            <div class="qq-dialog-message-selector"></div>
+            <input type="text">
+            <div class="qq-dialog-buttons">
+                <button type="button" class="qq-cancel-button-selector">@Localizer["Cancel"]</button>
+                <button type="button" class="qq-ok-button-selector">@Localizer["Ok"]</button>
+            </div>
+        </dialog>
+    </div>
+</script>
+
 <script src="~/lib/cropit/dist/jquery.cropit.js"></script>
+<script src="~/lib/fine-uploader/dist/jquery.fine-uploader.js"></script>
 <script src="~/js/modal.scripts.js"></script>
 
 <script>
@@ -90,16 +170,16 @@
     });
 
     $("#SaveAvatar").click(function (evt) {
-            var fileUpload = $("#file").get(0);
-            var files = fileUpload.files;
+        var fileUpload = $("#file").get(0);
+        var files = fileUpload.files;
 
-            var data = new FormData();
+        var data = new FormData();
 
-            var imageData = $('#image-cropper').cropit('export', { type: 'image/jpeg', quality: 0.9 });
-            data.append(files[0].name, dataURItoBlob(imageData));
+        var imageData = $('#image-cropper').cropit('export', { type: 'image/jpeg', quality: 0.9 });
+        data.append(files[0].name, dataURItoBlob(imageData));
 
-            $.ajax({
-                url: '@Url.Action("Avatar", "Pets", new { id = Model.Id })',
+        $.ajax({
+            url: '@Url.Action("Avatar", "Pets", new { id = Model.Id })',
                 type: "POST",
                 data: data,
                 contentType: false,
@@ -116,5 +196,36 @@
             });
 
             evt.preventDefault();
-        });
+    });
+
+    $('#fine-uploader-gallery').fineUploader({
+        template: 'qq-template-gallery',
+        request: {
+            endpoint: '@Url.Action("Gallery", "Pets", new { id = Model.Id })'
+        },
+        session: {
+            endpoint: '@Url.Action("Gallery", "Pets", new { id = Model.Id })'
+        },
+        deleteFile: {
+            enabled: true,
+            forceConfirm: true,
+            endpoint: '@Url.Action("GalleryDelete", "Pets", new { id = Model.Id })',
+            confirmMessage: "Czy na pewno chcesz usunąć {filename}?",
+            method: 'POST'
+        },
+        thumbnails: {
+            placeholders: {
+                waitingPath: 'lib/fine-uploader/dist/placeholders/waiting-generic.png',
+                notAvailablePath: 'lib/fine-uploader/dist/placeholders/not_available-generic.png'
+            }
+        },
+        cors: {
+            expected: true,
+            sendCredentials: true
+        },
+        validation: {
+            allowedExtensions: ['jpeg', 'jpg', 'gif', 'png']
+        }
+    })
+</script>
 </script>
