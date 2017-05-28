@@ -19,17 +19,17 @@ namespace Toz.Dotnet.Core.Services
         public string PetBaseUri { get; set; }
         public string PetAvatarUri { get; set; }
         public string PetGalleryUri { get; set; }
-        public string NewsBaseUrl { get; set; }
+        public string NewsBaseUri { get; set; }
         public string NewsAvatarUri { get; set; }
 
         public FilesManagementService(IRestService restService, IOptions<AppSettings> appSettings)
         {
             _restService = restService;
             PetBaseUri = $"{appSettings.Value.BackendBaseUrl}{appSettings.Value.BackendPetsUrl}" + "/{id}";
-            PetAvatarUri = $"{PetAvatarUri}{appSettings.Value.BackendImagesUrl}";
+            PetAvatarUri = $"{PetBaseUri}{appSettings.Value.BackendImagesUrl}";
             PetGalleryUri = $"{PetBaseUri}{appSettings.Value.BackendGalleryUrl}";
-            NewsAvatarUri = $"{appSettings.Value.BackendBaseUrl}{appSettings.Value.BackendNewsUrl}" + "/{id}";
-            NewsAvatarUri = $"{NewsAvatarUri}{appSettings.Value.BackendImagesUrl}";
+            NewsBaseUri = $"{appSettings.Value.BackendBaseUrl}{appSettings.Value.BackendNewsUrl}" + "/{id}";
+            NewsAvatarUri = $"{NewsBaseUri}{appSettings.Value.BackendImagesUrl}";
         }
 
         public Image DownloadImage(string address)

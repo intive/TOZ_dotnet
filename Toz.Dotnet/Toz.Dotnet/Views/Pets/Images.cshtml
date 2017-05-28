@@ -21,6 +21,17 @@
         height: 250px;
         border: 1px solid black;
     }
+
+    input[type="file"] {
+        display: none;
+    }
+
+    .custom-file-upload {
+        border: 1px solid #ccc;
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+    }
 </style>
 
 <link rel="stylesheet" href="~/lib/fine-uploader/dist/fine-uploader-new.min.css">
@@ -54,8 +65,13 @@
                         <input type="range" class="cropit-image-zoom-input" />
 
                         <br />
+
+                        <label for="file" class=" btn btn-block btn-default">
+                            <i class="glyphicon glyphicon-upload"></i> @Localizer["Browse"]
+                        </label>
                         <input type="file" name="file" id="file" class="cropit-image-input" accept="image/png, image/jpeg, image/gif" />
                         <input type="hidden" name="image-data" class="hidden-image-data" />
+
                     </div>
                     <input type="button" class="btn btn-primary btn-block" id="SaveAvatar" value=@Localizer["Save"]>
                 </form>

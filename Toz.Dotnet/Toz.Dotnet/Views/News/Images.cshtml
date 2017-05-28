@@ -21,6 +21,17 @@
         height: 250px;
         border: 1px solid black;
     }
+
+    input[type="file"] {
+        display: none;
+    }
+
+    .custom-file-upload {
+        border: 1px solid #ccc;
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+    }
 </style>
 
 <div class="container-fluid center">
@@ -42,7 +53,10 @@
 
                 <br />
 
-                <input type="file" name="file" id="file" class="cropit-image-input" accept="image/png, image/jpeg, image/gif"/>
+                <label for="file" class=" btn btn-block btn-default">
+                    <i class="glyphicon glyphicon-upload"></i> @Localizer["Browse"]
+                </label>
+                <input type="file" name="file" id="file" class="cropit-image-input" accept="image/png, image/jpeg, image/gif" />
                 <input type="hidden" name="image-data" class="hidden-image-data" />
             </div>
             <input type="button" class="btn btn-primary btn-block" id="SaveAvatar" value=@Localizer["Save"]>
