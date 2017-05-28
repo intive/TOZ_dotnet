@@ -223,7 +223,7 @@ namespace Toz.Dotnet.Core.Services
         {
             // return Week if already in the cache:
             int indexSought = _currentWeekIndex + weekOffset;
-            if (indexSought >= 0 && indexSought < _cache.Count)
+            if (indexSought >= 0 && indexSought < _cache?.Count)
             {
                 return _cache[indexSought];
             }
