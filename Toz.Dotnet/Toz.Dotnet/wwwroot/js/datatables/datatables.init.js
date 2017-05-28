@@ -2,6 +2,7 @@
     $('#table').DataTable({
         "dom": 't<"panel-footer"p>',
         "pageLength": 8,
+        "stateSave": true,
         "language":
         {
             "processing": "Przetwarzanie...",
