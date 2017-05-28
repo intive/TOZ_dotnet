@@ -28,7 +28,7 @@ QUnit.module( "ajax", {
 
 //----------- jQuery.ajax()
 
-	testIframe(
+	testIframeWithCallback(
 		"XMLHttpRequest - Attempt to block tests because of dangling XHR requests (IE)",
 		"ajax/unreleasedXHR.html",
 		function( assert ) {
@@ -64,44 +64,6 @@ QUnit.module( "ajax", {
 			},
 			success: function() {
 				assert.ok( true, "success" );
-			},
-			complete: function() {
-				assert.ok( true, "complete" );
-			}
-		};
-	} );
-
-	ajaxTest( "jQuery.ajax() - execute js for crossOrigin when dataType option is provided", 3,
-		function( assert ) {
-			return {
-				create: function( options ) {
-					options.crossDomain = true;
-					options.dataType = "script";
-					return jQuery.ajax( url( "data/script.php?header=ecma" ), options );
-				},
-				success: function() {
-					assert.ok( true, "success" );
-				},
-				complete: function() {
-					assert.ok( true, "complete" );
-				}
-			};
-		}
-	);
-
-	ajaxTest( "jQuery.ajax() - do not execute js (crossOrigin)", 2, function( assert ) {
-		return {
-			create: function( options ) {
-				options.crossDomain = true;
-				return jQuery.ajax( url( "data/script.php" ), options );
-			},
-			success: function() {
-				assert.ok( true, "success" );
-			},
-			fail: function() {
-				if ( jQuery.support.cors === false ) {
-					assert.ok( true, "fail" );
-				}
 			},
 			complete: function() {
 				assert.ok( true, "complete" );
@@ -249,8 +211,9 @@ QUnit.module( "ajax", {
 				"Nullable": null,
 				"undefined": undefined
 
-				// Support: IE 9 - 11, Edge 12 - 13+
+				// Support: Firefox
 				// Not all browsers allow empty-string headers
+				// https://bugzilla.mozilla.org/show_bug.cgi?id=815299
 				//"Empty": ""
 			},
 			success: function( data, _, xhr ) {
@@ -327,12 +290,12 @@ QUnit.module( "ajax", {
 		};
 	} );
 
-	ajaxTest( "jQuery.ajax() - hash", 4, function( assert ) {
+	ajaxTest( "jQuery.ajax() - hash", 3, function( assert ) {
 		return [
 			{
 				url: "data/name.html#foo",
 				beforeSend: function( xhr, settings ) {
-					assert.equal( settings.url, "data/name.html#foo", "Make sure that the URL has its hash." );
+					assert.equal( settings.url, "data/name.html", "Make sure that the URL is trimmed." );
 					return false;
 				},
 				error: true
@@ -340,7 +303,7 @@ QUnit.module( "ajax", {
 			{
 				url: "data/name.html?abc#foo",
 				beforeSend: function( xhr, settings ) {
-					assert.equal( settings.url, "data/name.html?abc#foo", "Make sure that the URL has its hash." );
+					assert.equal( settings.url, "data/name.html?abc", "Make sure that the URL is trimmed." );
 					return false;
 				},
 				error: true
@@ -351,79 +314,7 @@ QUnit.module( "ajax", {
 					"test": 123
 				},
 				beforeSend: function( xhr, settings ) {
-					assert.equal( settings.url, "data/name.html?abc&test=123#foo", "Make sure that the URL has its hash." );
-					return false;
-				},
-				error: true
-			},
-			{
-				url: "data/name.html?abc#brownies",
-				data: {
-					"devo": "hat"
-				},
-				cache: false,
-				beforeSend: function( xhr, settings ) {
-					// Remove the random number, but ensure the cache-buster param is there
-					var url = settings.url.replace( /\d+/, "" );
-					assert.equal( url, "data/name.html?abc&devo=hat&_=#brownies", "Make sure that the URL has its hash." );
-					return false;
-				},
-				error: true
-			}
-		];
-	} );
-
-	ajaxTest( "jQuery.ajax() - traditional param encoding", 4, function( assert ) {
-		return [
-			{
-				url: "/",
-				traditional: true,
-				data: {
-					"devo": "hat",
-					"answer": 42,
-					"quux": "a space"
-				},
-				beforeSend: function( xhr, settings ) {
-					assert.equal( settings.url, "/?devo=hat&answer=42&quux=a%20space", "Simple case" );
-					return false;
-				},
-				error: true
-			},
-			{
-				url: "/",
-				traditional: true,
-				data: {
-					"a": [ 1, 2, 3 ],
-					"b[]": [ "b1", "b2" ]
-				},
-				beforeSend: function( xhr, settings ) {
-					assert.equal( settings.url, "/?a=1&a=2&a=3&b%5B%5D=b1&b%5B%5D=b2", "Arrays" );
-					return false;
-				},
-				error: true
-			},
-			{
-				url: "/",
-				traditional: true,
-				data: {
-					"a": [ [ 1, 2 ], [ 3, 4 ], 5 ]
-				},
-				beforeSend: function( xhr, settings ) {
-					assert.equal( settings.url, "/?a=1%2C2&a=3%2C4&a=5", "Nested arrays" );
-					return false;
-				},
-				error: true
-			},
-			{
-				url: "/",
-				traditional: true,
-				data: {
-					"a": [ "w", [ [ "x", "y" ], "z" ] ]
-				},
-				cache: false,
-				beforeSend: function( xhr, settings ) {
-					var url = settings.url.replace( /\d{3,}/, "" );
-					assert.equal( url, "/?a=w&a=x%2Cy%2Cz&_=", "Cache-buster" );
+					assert.equal( settings.url, "data/name.html?abc&test=123", "Make sure that the URL is trimmed." );
 					return false;
 				},
 				error: true
@@ -828,9 +719,8 @@ QUnit.module( "ajax", {
 		} ), "generic" );
 	} );
 
-	ajaxTest( "jQuery.ajax() - cache", 28, function( assert ) {
-		var re = /_=(.*?)(&|$)/g,
-			rootUrl = "data/text.php";
+	ajaxTest( "jQuery.ajax() - cache", 12, function( assert ) {
+		var re = /_=(.*?)(&|$)/g;
 
 		function request( url, title ) {
 			return {
@@ -838,11 +728,6 @@ QUnit.module( "ajax", {
 				cache: false,
 				beforeSend: function() {
 					var parameter, tmp;
-
-					// URL sanity check
-					assert.equal( this.url.indexOf( rootUrl ), 0, "root url not mangled: " + this.url );
-					assert.equal( /\&.*\?/.test( this.url ), false, "parameter delimiters in order" );
-
 					while ( ( tmp = re.exec( this.url ) ) ) {
 						assert.strictEqual( parameter, undefined, title + ": only one 'no-cache' parameter" );
 						parameter = tmp[ 1 ];
@@ -856,31 +741,27 @@ QUnit.module( "ajax", {
 
 		return [
 			request(
-				rootUrl,
-				"no query"
+				"data/text.php",
+				"no parameter"
 			),
 			request(
-				rootUrl + "?",
-				"empty query"
-			),
-			request(
-				rootUrl + "?pizza=true",
+				"data/text.php?pizza=true",
 				"1 parameter"
 			),
 			request(
-				rootUrl + "?_=tobereplaced555",
+				"data/text.php?_=tobereplaced555",
 				"_= parameter"
 			),
 			request(
-				rootUrl + "?pizza=true&_=tobereplaced555",
+				"data/text.php?pizza=true&_=tobereplaced555",
 				"1 parameter and _="
 			),
 			request(
-				rootUrl + "?_=tobereplaced555&tv=false",
+				"data/text.php?_=tobereplaced555&tv=false",
 				"_= and 1 parameter"
 			),
 			request(
-				rootUrl + "?name=David&_=tobereplaced555&washere=true",
+				"data/text.php?name=David&_=tobereplaced555&washere=true",
 				"2 parameters surrounding _="
 			)
 		];
@@ -1187,7 +1068,7 @@ QUnit.module( "ajax", {
 			},
 			success: function( text ) {
 				assert.strictEqual( typeof text, "string", "json wasn't auto-determined" );
-				var json = JSON.parse( text );
+				var json = jQuery.parseJSON( text );
 				assert.ok( json.length >= 2, "Check length" );
 				assert.strictEqual( json[ 0 ][ "name" ], "John", "Check JSON: first, name" );
 				assert.strictEqual( json[ 0 ][ "age" ], 21, "Check JSON: first, age" );
@@ -1226,48 +1107,6 @@ QUnit.module( "ajax", {
 			success: function( result ) {
 				assert.strictEqual( result, "" );
 			}
-		};
-	} );
-
-	ajaxTest( "jQuery.ajax() - data - x-www-form-urlencoded (gh-2658)", 1, function( assert ) {
-		return {
-			url: "bogus.html",
-			data: { devo: "A Beautiful World" },
-			type: "post",
-			beforeSend: function( _, s ) {
-				assert.strictEqual( s.data, "devo=A+Beautiful+World", "data is '+'-encoded" );
-				return false;
-			},
-			error: true
-		};
-	} );
-
-	ajaxTest( "jQuery.ajax() - data - text/plain (gh-2658)", 1, function( assert ) {
-		return {
-			url: "bogus.html",
-			data: { devo: "A Beautiful World" },
-			type: "post",
-			contentType: "text/plain",
-			beforeSend: function( _, s ) {
-				assert.strictEqual( s.data, "devo=A%20Beautiful%20World", "data is %20-encoded" );
-				return false;
-			},
-			error: true
-		};
-	} );
-
-	ajaxTest( "jQuery.ajax() - data - no processing ", 1, function( assert ) {
-		return {
-			url: "bogus.html",
-			data: { devo: "A Beautiful World" },
-			type: "post",
-			contentType: "x-special-sauce",
-			processData: false,
-			beforeSend: function( _, s ) {
-				assert.deepEqual( s.data, { devo: "A Beautiful World" }, "data is not processed" );
-				return false;
-			},
-			error: true
 		};
 	} );
 
@@ -1766,6 +1605,16 @@ if ( typeof window.ArrayBuffer === "undefined" || typeof new XMLHttpRequest().re
 }
 
 	QUnit.asyncTest( "#11743 - jQuery.ajax() - script, throws exception", 1, function( assert ) {
+
+		// Support: Android 2.3 only
+		// Android 2.3 doesn't fire the window.onerror handler, just accept the reality there.
+		if ( /android 2\.3/i.test( navigator.userAgent ) ) {
+			assert.ok( true, "Test skipped, Android 2.3 doesn't fire window.onerror for " +
+				"errors in dynamically included scripts" );
+			QUnit.start();
+			return;
+		}
+
 		var onerror = window.onerror;
 		window.onerror = function() {
 			assert.ok( true, "Exception thrown" );
@@ -1775,9 +1624,17 @@ if ( typeof window.ArrayBuffer === "undefined" || typeof new XMLHttpRequest().re
 		jQuery.ajax( {
 			url: "data/badjson.js",
 			dataType: "script",
-			throws: true
-		} );
-	} );
+			throws: true,
+			// Global events get confused by the exception
+			global: false,
+			success: function() {
+				assert.ok( false, "Success." );
+			},
+			error: function() {
+				assert.ok( false, "Error." );
+			}
+		});
+	});
 
 	jQuery.each( [ "method", "type" ], function( _, globalOption ) {
 		function request( assert, option ) {
@@ -1825,6 +1682,13 @@ if ( typeof window.ArrayBuffer === "undefined" || typeof new XMLHttpRequest().re
 				var parsedXML = jQuery( jQuery.parseXML( "<tab title=\"Added\">blibli</tab>" ) ).find( "tab" );
 				ajaxXML = jQuery( ajaxXML );
 				try {
+
+					// Android 2.3 doesn't automatically adopt nodes from foreign documents.
+					// (see the comment in test/manipulation.js)
+					// Support: Android 2.3
+					if ( /android 2\.3/i.test( navigator.userAgent ) ) {
+						parsedXML = jQuery( ajaxXML[ 0 ].adoptNode( parsedXML[ 0 ] ) );
+					}
 					ajaxXML.find( "infowindowtab" ).append( parsedXML );
 				} catch ( e ) {
 					assert.strictEqual( e, undefined, "error" );
@@ -1894,10 +1758,10 @@ if ( typeof window.ArrayBuffer === "undefined" || typeof new XMLHttpRequest().re
 		};
 	} );
 
-	testIframe(
+	testIframeWithCallback(
 		"#14379 - jQuery.ajax() on unload",
 		"ajax/onunload.html",
-		function( assert, jQuery, window, document, status ) {
+		function( status, assert ) {
 			assert.expect( 1 );
 			assert.strictEqual( status, "success", "Request completed" );
 		}
@@ -1916,21 +1780,22 @@ if ( typeof window.ArrayBuffer === "undefined" || typeof new XMLHttpRequest().re
 			done: function( data ) {
 				assert.ok( false, "done: " + data );
 			},
-			fail: function( jqXHR, status, error ) {
-				assert.ok( true, "exception caught: " + error );
-				assert.strictEqual( jqXHR.status, 0, "proper status code" );
-				assert.strictEqual( status, "error", "proper status" );
-			}
-		}, {
-			url: "http://" + externalHost + ":80q",
-			done: function( data ) {
-				assert.ok( false, "done: " + data );
-			},
-			fail: function( _, status, error ) {
-				assert.ok( true, "fail: " + status + " - " + error );
-			}
-		} ];
-	} );
+				fail: function( jqXHR, status, error ) {
+					assert.ok( true, "exception caught: " + error );
+					assert.strictEqual( jqXHR.status, 0, "proper status code" );
+					assert.strictEqual( status, "error", "proper status" );
+				}
+			}, {
+				url: "http://domain.org:80d",
+				done: function( data ) {
+					assert.ok( false, "done: " + data );
+				},
+				fail: function( _, status, error ) {
+					assert.ok( true, "fail: " + status + " - " + error );
+				}
+			} ];
+		}
+	);
 
 	ajaxTest( "gh-2587 - when content-type not xml, but looks like one", 1, function( assert ) {
 		return {
@@ -2324,17 +2189,6 @@ if ( typeof window.ArrayBuffer === "undefined" || typeof new XMLHttpRequest().re
 		jQuery( "#first" ).load( "data/test3.html   #superuser ", function() {
 			assert.strictEqual( jQuery( this ).children( "div" ).length, 1, "Verify that specific elements were injected" );
 			QUnit.start();
-		} );
-	} );
-
-	// Selector should be trimmed to avoid leading spaces (#14773)
-	// Selector should include any valid non-HTML whitespace (#3003)
-	QUnit.test( "jQuery.fn.load( URL_SELECTOR with non-HTML whitespace(#3003) )", function( assert ) {
-		assert.expect( 1 );
-		var done = assert.async();
-		jQuery( "#first" ).load( "data/test3.html   #whitespace\\\\xA0 ", function() {
-			assert.strictEqual( jQuery( this ).children( "div" ).length, 1, "Verify that specific elements were injected" );
-			done();
 		} );
 	} );
 

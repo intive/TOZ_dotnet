@@ -323,7 +323,7 @@ QUnit[ jQuery.find.compile ? "test" : "skip" ]( "filter() with positional select
 } );
 
 QUnit.test( "closest()", function( assert ) {
-	assert.expect( 14 );
+	assert.expect( 13 );
 
 	var jq;
 
@@ -344,12 +344,6 @@ QUnit.test( "closest()", function( assert ) {
 	// Test on disconnected node
 	assert.equal( jQuery( "<div><p></p></div>" ).find( "p" ).closest( "table" ).length, 0, "Make sure disconnected closest work." );
 
-	assert.deepEqual(
-		jQuery( "#firstp" ).closest( q( "qunit-fixture" ) ).get(),
-		q( "qunit-fixture" ),
-		"Non-string match target"
-	);
-
 	// Bug #7369
 	assert.equal( jQuery( "<div foo='bar'></div>" ).closest( "[foo]" ).length, 1, "Disconnected nodes with attribute selector" );
 	assert.equal( jQuery( "<div>text</div>" ).closest( "[lang]" ).length, 0, "Disconnected nodes with text and non-existent attribute selector" );
@@ -361,17 +355,10 @@ QUnit.test( "closest()", function( assert ) {
 } );
 
 QUnit[ jQuery.find.compile ? "test" : "skip" ]( "closest() with positional selectors", function( assert ) {
-	assert.expect( 3 );
+	assert.expect( 2 );
 
-	assert.deepEqual( jQuery( "#qunit-fixture" ).closest( "div:first" ).get(), [],
-		"closest(div:first)" );
-	assert.deepEqual( jQuery( "#qunit-fixture div" ).closest( "body:first div:last" ).get(), [],
-		"closest(body:first div:last)" );
-	assert.deepEqual(
-		jQuery( "#qunit-fixture div" ).closest( "body:first div:last", document ).get(),
-		[],
-		"closest(body:first div:last, document)"
-	);
+	assert.deepEqual( jQuery( "#qunit-fixture" ).closest( "div:first" ).get(), [], "closest(div:first)" );
+	assert.deepEqual( jQuery( "#qunit-fixture div" ).closest( "body:first div:last" ).get(), q( "fx-tests" ), "closest(body:first div:last)" );
 } );
 
 QUnit.test( "closest(jQuery)", function( assert ) {
@@ -393,31 +380,8 @@ QUnit.test( "closest(jQuery)", function( assert ) {
 QUnit[ jQuery.find.compile ? "test" : "skip" ]( "not(Selector)", function( assert ) {
 	assert.expect( 7 );
 	assert.equal( jQuery( "#qunit-fixture > p#ap > a" ).not( "#google" ).length, 2, "not('selector')" );
-
-	assert.deepEqual(
-		jQuery( "#qunit-fixture p" ).not( ".result" ).get(),
-		q(
-			"firstp",
-			"ap",
-			"sndp",
-			"en",
-			"sap",
-			"first"
-		),
-		"not('.class')"
-	);
-
-
-	assert.deepEqual(
-		jQuery( "#qunit-fixture p" ).not( "#ap, #sndp, .result" ).get(),
-		q(
-			"firstp",
-			"en",
-			"sap",
-			"first"
-		),
-		"not('selector, selector')"
-	);
+	assert.deepEqual( jQuery( "p" ).not( ".result" ).get(), q( "firstp", "ap", "sndp", "en", "sap", "first" ), "not('.class')" );
+	assert.deepEqual( jQuery( "p" ).not( "#ap, #sndp, .result" ).get(), q( "firstp", "en", "sap", "first" ), "not('selector, selector')" );
 
 	assert.deepEqual( jQuery( "#ap *" ).not( "code" ).get(), q( "google", "groups", "anchor1", "mark" ), "not('tag selector')" );
 	assert.deepEqual( jQuery( "#ap *" ).not( "code, #mark" ).get(), q( "google", "groups", "anchor1" ), "not('tag, ID selector')" );
@@ -463,36 +427,7 @@ QUnit.test( "not(Array)", function( assert ) {
 QUnit.test( "not(jQuery)", function( assert ) {
 	assert.expect( 1 );
 
-	assert.deepEqual(
-		jQuery( "#qunit-fixture p" ).not( jQuery( "#ap, #sndp, .result" ) ).get(),
-		q( "firstp", "en", "sap", "first" ),
-		"not(jQuery)"
-	);
-} );
-
-QUnit.test( "not(Selector) excludes non-element nodes (gh-2808)", function( assert ) {
-	assert.expect( 3 );
-
-	var mixedContents = jQuery( "#nonnodes" ).contents(),
-		childElements = q( "nonnodesElement" );
-
-	assert.deepEqual( mixedContents.not( "*" ).get(), [], "not *" );
-	assert.deepEqual( mixedContents.not( "[id=a],[id=b]" ).get(), childElements, "not [id=a],[id=b]" );
-	assert.deepEqual( mixedContents.not( "[id=a],*,[id=b]" ).get(), [], "not [id=a],*,[id=b]" );
-} );
-
-QUnit.test( "not(arraylike) passes non-element nodes (gh-3226)", function( assert ) {
-	assert.expect( 5 );
-
-	var mixedContents = jQuery( "<span id='nonnodesElement'>hi</span> there <!-- mon ami -->" ),
-		mixedLength = mixedContents.length,
-		firstElement = mixedContents.first();
-
-	assert.deepEqual( mixedContents.not( mixedContents ).get(), [], "not everything" );
-	assert.deepEqual( mixedContents.not( firstElement ).length, mixedLength - 1, "not firstElement" );
-	assert.deepEqual( mixedContents.not( [ firstElement[ 0 ].nextSibling ] ).length, mixedLength - 1, "not textnode array" );
-	assert.deepEqual( mixedContents.not( firstElement[ 0 ].nextSibling ).length, mixedLength - 1, "not textnode" );
-	assert.deepEqual( mixedContents.not( document.body ).get(), mixedContents.get(), "not with unmatched element" );
+	assert.deepEqual( jQuery( "p" ).not( jQuery( "#ap, #sndp, .result" ) ).get(), q( "firstp", "en", "sap", "first" ), "not(jQuery)" );
 } );
 
 QUnit.test( "has(Element)", function( assert ) {
@@ -742,58 +677,6 @@ QUnit.test( "contents()", function( assert ) {
 	assert.equal( c.length, 1, "Check node,textnode,comment contents is just one" );
 	assert.equal( c[ 0 ].nodeValue, "hi", "Check node,textnode,comment contents is just the one from span" );
 } );
-
-QUnit.test( "contents() for <template />", function( assert ) {
-    assert.expect( 4 );
-
-    jQuery( "#qunit-fixture" ).append(
-        "<template id='template'>" +
-        "    <div id='template-div0'>" +
-        "        <span>Hello, Web Component!</span>" +
-        "    </div>" +
-        "    <div id='template-div1'></div>" +
-        "    <div id='template-div2'></div>" +
-        "</template>"
-    );
-
-    var contents = jQuery( "#template" ).contents();
-    assert.equal( contents.length, 6, "Check template element contents" );
-
-    assert.equal( contents.find( "span" ).text(), "Hello, Web Component!", "Find span in template and check its text" );
-
-    jQuery( "<div id='templateTest' />" ).append(
-        jQuery( jQuery.map( contents, function( node ) {
-            return document.importNode( node, true );
-        } ) )
-    ).appendTo( "#qunit-fixture" );
-
-    contents = jQuery( "#templateTest" ).contents();
-    assert.equal( contents.length, 6, "Check cloned nodes of template element contents" );
-
-    assert.equal( contents.filter( "div" ).length, 3, "Count cloned elements from template" );
-} );
-
-QUnit[ "content" in document.createElement( "template" ) ? "test" : "skip" ](
-	"contents() for <template /> remains inert",
-	function( assert ) {
-        assert.expect( 2 );
-
-		Globals.register( "testScript" );
-		Globals.register( "testImgOnload" );
-
-        jQuery( "#qunit-fixture" ).append(
-            "<template id='template'>" +
-            "    <script>testScript = 1;</script>" +
-            "    <img src='data/1x1.jpg' onload='testImgOnload = 1' >" +
-            "</template>"
-        );
-
-        var content = jQuery( "#template" ).contents();
-
-        assert.strictEqual( window.testScript, true, "script in template isn't executed" );
-        assert.strictEqual( window.testImgOnload, true, "onload of image in template isn't executed" );
-	}
-);
 
 QUnit.test( "sort direction", function( assert ) {
 	assert.expect( 12 );
