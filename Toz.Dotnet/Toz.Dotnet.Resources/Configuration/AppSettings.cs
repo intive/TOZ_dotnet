@@ -18,6 +18,7 @@ namespace Toz.Dotnet.Resources.Configuration
         public string BackendBecomeVolunteerUrl { get; set; }
         public string BackendDonateInfoUrl { get; set; }
         public string BackendHelpersUrl { get; set; }
+        public string BackendCommentsUrl { get; set; }
 
         public List<string> BlockedControllers { get; set; }
         public string PolicyName { get; set; }
