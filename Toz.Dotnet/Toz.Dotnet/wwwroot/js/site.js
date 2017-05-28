@@ -49,9 +49,11 @@ function bindForm(dialog) {
     });
 }
 
-$('#search').keyup(function () {
-    $('#table').DataTable().search($(this).val()).draw();
-})
+$(document).ready(function () {
+    $('#search').keyup(function () {
+        $('#table').DataTable().search($(this).val()).draw();
+    });
+});
 
 jQuery.validator.setDefaults({
     highlight: function (element, errorClass, validClass) {
