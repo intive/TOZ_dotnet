@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\favicon.ico" />
     <Content Include="wwwroot\images\no-image.png" />
   </ItemGroup>
 

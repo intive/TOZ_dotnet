@@ -180,4 +180,10 @@
   <data name="Drop" xml:space="preserve">
     <value>Tu możesz upuścić pliki...</value>
   </data>
+  <data name="Avatar" xml:space="preserve">
+    <value>Awatar</value>
+  </data>
+  <data name="Gallery" xml:space="preserve">
+    <value>Galeria</value>
+  </data>
 </root>

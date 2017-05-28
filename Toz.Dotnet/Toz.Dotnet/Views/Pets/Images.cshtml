@@ -1,5 +1,5 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization
-@using Toz.Dotnet.Core.Interfaces
+﻿@using System.Runtime.InteropServices.ComTypes
+@using Microsoft.AspNetCore.Mvc.Localization
 
 @model Toz.Dotnet.Models.Pet
 @inject IViewLocalizer Localizer
@@ -43,8 +43,8 @@
         <legend class="pagetitlelegend">@Localizer["PageTitle"]</legend>
 
         <ul class="nav nav-tabs" id="tabContent">
-            <li class="active"><a href="#avatar" data-toggle="tab">Awatar</a></li>
-            <li><a href="#gallery" data-toggle="tab">Galeria</a></li>
+            <li class="active"><a href="#avatar" data-toggle="tab">@Localizer["Avatar"]</a></li>
+            <li><a href="#gallery" data-toggle="tab">@Localizer["Gallery"]</a></li>
         </ul>
 
         <div class="tab-content">
@@ -243,5 +243,4 @@
             allowedExtensions: ['jpeg', 'jpg', 'gif', 'png']
         }
     })
-</script>
 </script>
