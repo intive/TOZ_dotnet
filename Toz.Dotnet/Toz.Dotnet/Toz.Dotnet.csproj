@@ -41,17 +41,4 @@
   <ItemGroup>
     <Folder Include="Keys\" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Resources\Views\Helpers\Delete.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Delete.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\Views\Helpers\Delete.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Delete.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
 </Project>

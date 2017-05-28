@@ -1,5 +1,5 @@
 @using Microsoft.AspNetCore.Mvc.Localization
-@model Toz.Dotnet.Models.ViewModels.ReservationViewModel
+@model Toz.Dotnet.Models.Schedule.ViewModels.ReservationViewModel
 @inject IViewLocalizer Localizer
 
 @{
@@ -10,19 +10,19 @@
     <form class="form-horizontal" asp-controller="Schedule" asp-action="AddReservation" method="POST" enctype="multipart/form-data">
         <fieldset class="pagetitle">
             <legend class="pagetitlelegend">@Localizer["PageTitle"]</legend>
-            <input type="hidden" asp-for="SafeDateContainer" class="form-control" id="Date" />
-            <input type="hidden" asp-for="Token.TimeOfDay" class="form-control" id="TimeOfDay" />
+            <input type="hidden" asp-for="ReservationDate" class="form-control" id="Date" />
+            <input type="hidden" asp-for="TimeOfDay" class="form-control" id="TimeOfDay" />
 
             <div class="form-group row">
                 <label class="col-sm-2 control-label">@Localizer["Volunteer"]</label>
                 <div class="col-sm-10">
-                    <select asp-for="Token.VolunteerId"
+                    <select asp-for="VolunteerId"
                             class="form-control"
-                            asp-items="@Model.Token.Volunteers">
+                            asp-items="@Model.Volunteers">
                         <option disabled selected>@Localizer["SelectVolunteer"]</option>
                     </select>
                     <span class="glyphicon form-control-feedback"></span>
-                    <span class="control-label" asp-validation-for="Token.VolunteerId"></span>
+                    <span class="control-label" asp-validation-for="VolunteerId"></span>
                 </div>
             </div>
 
