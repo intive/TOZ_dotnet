@@ -4,11 +4,28 @@ using System.Net.Http;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models.Images;
 using System.Drawing;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using System.Threading;
+using Microsoft.Extensions.Options;
+using Toz.Dotnet.Resources.Configuration;
+using System.Threading.Tasks;
 
 namespace Toz.Dotnet.Core.Services
 {
     public class FilesManagementService : IFilesManagementService
     {
+        private readonly IRestService _restService;
+        public string PetAvatarUri { get; set; }
+        public string NewsAvatarUri { get; set; }
+
+        public FilesManagementService(IRestService restService, IOptions<AppSettings> appSettings)
+        {
+            _restService = restService;
+            PetAvatarUri = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendPetsUrl + "/{id}" + appSettings.Value.BackendImagesUrl;
+            NewsAvatarUri = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendNewsUrl + "/{id}" + appSettings.Value.BackendImagesUrl;
+        }
+
         public Image DownloadImage(string address)
         {
             HttpClient httpClient = new HttpClient();
@@ -37,6 +54,18 @@ namespace Toz.Dotnet.Core.Services
             {
                 return Image.FromStream(mStream);
             }
+        }
+
+        public async Task<bool> UploadPetAvatar(string id, string token, IEnumerable<IFormFile> files, CancellationToken cancelationToken = default(CancellationToken))
+        {
+            var address = PetAvatarUri.Replace("{id}", id);
+            return await _restService.ExecutePostMultipartAction(address, files, id, token, cancelationToken);
+        }
+
+        public async Task<bool> UploadNewsAvatar(string id, string token, IEnumerable<IFormFile> files, CancellationToken cancelationToken = default(CancellationToken))
+        {
+            var address = NewsAvatarUri.Replace("{id}", id);
+            return await _restService.ExecutePostMultipartAction(address, files, id, token, cancelationToken);
         }
     }
 }

@@ -106,6 +106,26 @@ namespace Toz.Dotnet.Controllers
             return PartialView(pet);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Avatar(string id, CancellationToken cancellationToken)
+        {
+            var files = Request.Form.Files;
+            if (await _filesManagementService.UploadPetAvatar(id, CurrentCookiesToken, files, cancellationToken))
+            {
+                return Json(new { success = true });
+            }
+
+            CheckUnexpectedErrors();
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Gallery(string id)
+        {
+            return Json(new { success = true });
+        }
+
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken)
         {
             return PartialView("Edit", await _petsManagementService.GetPet(id, CurrentCookiesToken,cancellationToken));
@@ -115,6 +135,8 @@ namespace Toz.Dotnet.Controllers
         {
             return PartialView("Images", await _petsManagementService.GetPet(id, CurrentCookiesToken, cancellationToken));
         }
+
+
 
 
         /*        public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)

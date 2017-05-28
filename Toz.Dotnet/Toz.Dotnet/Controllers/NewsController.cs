@@ -37,11 +37,11 @@ namespace Toz.Dotnet.Controllers
             List<News> news = await _newsManagementService.GetAllNews(CurrentCookiesToken, cancellationToken);
             foreach (var n in news)
             {
-                if (!string.IsNullOrEmpty(n.PhotoUrl))
+                if (!string.IsNullOrEmpty(n.ImageUrl))
                 {
                     try
                     {
-                        var downloadedImg = _filesManagementService.DownloadImage(_appSettings.Value.BaseUrl + n.PhotoUrl);
+                        var downloadedImg = _filesManagementService.DownloadImage(_appSettings.Value.BaseUrl + n.ImageUrl);
 
                         if (downloadedImg != null)
                         {
@@ -124,6 +124,19 @@ namespace Toz.Dotnet.Controllers
                 await _newsManagementService.DeleteNews(pet, CurrentCookiesToken, cancellationToken);
             }
 
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Avatar(string id, CancellationToken cancellationToken)
+        {
+            var files = Request.Form.Files;
+            if (await _filesManagementService.UploadNewsAvatar(id, CurrentCookiesToken, files, cancellationToken))
+            {
+                return Json(new { success = true });
+            }
+
+            CheckUnexpectedErrors();
             return RedirectToAction("Index");
         }
 
