@@ -111,6 +111,21 @@ namespace Toz.Dotnet.Tests.Helpers
                 Email = "testEmail@test.com",
                 Password = "SecretPassword"
             };
+
+            Helper = new Helper()
+            {
+                Name = "Mariusz",
+                Surname = "Wolonatriusz",
+                PhoneNumber = "123456789",
+                Email = "test@test.com",
+                Address = "Address",
+                Category = HelperCategory.Guardian,
+                Created = DateTime.Now,
+                Id = Guid.NewGuid().ToString(),
+                LastModified = DateTime.Now,
+                Notes = "notes"
+            };
+
         }
 
         public Pet Pet { get; }
@@ -121,6 +136,7 @@ namespace Toz.Dotnet.Tests.Helpers
         public HowToHelpInfo HowToHelpInfo { get; set; }
         public JwtToken JwtToken { get; set; }
         public Login Login { get; set; }
+        public Helper Helper { get; set; }
 
         public T DoShallowCopy<T>(T value) where T : new()
         {
