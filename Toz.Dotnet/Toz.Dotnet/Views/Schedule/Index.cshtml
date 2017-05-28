@@ -75,8 +75,8 @@
       
 <div class="panel panel-default">
     <div class="panel-body">
-        <input type="button" class="btn btn-primary btn-lg pull-left" id="Earlier" value=@Localizer["Earlier"] onclick="@("window.location.href='" + @Url.Action("Earlier", "Schedule") + "'");">
-        <input type="button" class="btn btn-primary btn-lg pull-right" id="Later" value=@Localizer["Later"] onclick="@("window.location.href='" + @Url.Action("Later", "Schedule") + "'");">
+        <input type="button" accesskey="e" class="btn btn-primary btn-lg pull-left" id="Earlier" value=@Localizer["Earlier"] onclick="@("window.location.href='" + @Url.Action("Earlier", "Schedule") + "'");">
+        <input type="button" accesskey="l" class="btn btn-primary btn-lg pull-right" id="Later" value=@Localizer["Later"] onclick="@("window.location.href='" + @Url.Action("Later", "Schedule") + "'");">
     </div>
 </div>
 

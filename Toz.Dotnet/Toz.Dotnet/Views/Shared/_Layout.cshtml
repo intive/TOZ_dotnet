@@ -77,7 +77,7 @@
                     <li><a asp-controller="Helpers" asp-action="Index">@Localizer["Helpers"]</a></li>
                     <li><a asp-controller="Schedule" asp-action="Index">@Localizer["Schedule"]</a></li>
                     <li><a asp-controller="Organization" asp-action="Info">@Localizer["OrganizationInfo"]</a></li>
-                    <li><a asp-controller="Proposals" asp-action="Index">@Localizer["Proposals"]</a></li>
+                    <li><a asp-controller="Proposals" asp-action="Index" asp-route-firstLoad="true">@Localizer["Proposals"]</a></li>
                     <li><a asp-controller="HowToHelp" asp-action="Info">@Localizer["HowToHelp"]</a></li>
                 }
                 </ul>

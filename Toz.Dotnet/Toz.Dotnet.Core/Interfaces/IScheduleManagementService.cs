@@ -10,10 +10,9 @@ namespace Toz.Dotnet.Core.Interfaces
 {
     public interface IScheduleManagementService
     {
-        Task<List<Week>> GetInitialSchedule(string token, CancellationToken cancellationToken = default(CancellationToken), int numberOfWeeks = 6);
-        Task<List<Week>> GetSchedule(int weekOffset, string token, CancellationToken cancelationToken = default(CancellationToken), int numberOfWeeks = 2);
-        Task<List<Week>> GetEarlierSchedule(string token, CancellationToken cancelationToken = default(CancellationToken), int numberOfWeeks = 2);
-        Task<List<Week>> GetLaterSchedule(string token, CancellationToken cancelationToken = default(CancellationToken), int numberOfWeeks = 2);
+        int WeekOffset { get; set; }
+        Task<List<Week>> PrepareSchedule(string token, CancellationToken cancellationToken = default(CancellationToken));
+        Task<List<Week>> GetSchedule(int offset, string token, CancellationToken cancelationToken = default(CancellationToken));
         Slot FindSlot(DateTime date, Period timeOfDay, CancellationToken cancellationToken = default(CancellationToken));
         Task<bool> CreateReservation(Slot slot, string userId, string token, CancellationToken cancellationToken = default(CancellationToken));
         Task<Reservation> GetReservation(string id, string token, CancellationToken cancelationToken = default(CancellationToken));
