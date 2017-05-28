@@ -32,67 +32,67 @@
         </div>
     </div>
     <div class="panel-body">
-        <table id="table" class="table table-striped table-bordered table-list dt-responsive compact" style="width:100%">
+        <table id="table" class="table table-striped table-bordered table-list dt-responsive compact">
             <thead>
-                <tr>
-                    <th>@Localizer["Name"]</th>
-                    <th>@Localizer["Type"]</th>
-                    <th>@Localizer["Sex"]</th>
-                    <th>@Localizer["Photo"]</th>
-                    <th>@Localizer["Description"]</th>
-                    <th>@Localizer["Address"]</th>
-                    <th>@Localizer["AddingTime"]</th>
-                    <th>@Localizer["LastEditTime"]</th>
-                    <th></th>
-                </tr>
+            <tr>
+                <th>@Localizer["Name"]</th>
+                <th>@Localizer["Type"]</th>
+                <th>@Localizer["Sex"]</th>
+                <th>@Localizer["Photo"]</th>
+                <th>@Localizer["Description"]</th>
+                <th>@Localizer["Address"]</th>
+                <th>@Localizer["AddingTime"]</th>
+                <th>@Localizer["LastEditTime"]</th>
+                <th></th>
+            </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td class="overflow-ellipsis">@item.Name</td>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
 
-                        @if (@item.Type == PetType.Dog)
-                        {
-                            <td>@Localizer["Dog"]</td>
-                        }
-                        else if (@item.Type == PetType.Cat)
-                        {
-                            <td>@Localizer["Cat"]</td>
-                        }
-                        else
-                        {
-                            <td>@Localizer["Unknown"]</td>
-                        }
+                    @if (@item.Type == PetType.Dog)
+                    {
+                        <td>@Localizer["Dog"]</td>
+                    }
+                    else if (@item.Type == PetType.Cat)
+                    {
+                        <td>@Localizer["Cat"]</td>
+                    }
+                    else
+                    {
+                        <td>@Localizer["Unknown"]</td>
+                    }
 
-                        @if (@item.Sex == PetSex.Male)
-                        {
-                            <td>@Localizer["Male"]</td>
-                        }
-                        else if (@item.Sex == PetSex.Female)
-                        {
-                            <td>@Localizer["Female"]</td>
-                        }
-                        else
-                        {
-                            <td>@Localizer["Unidentified"]</td>
-                        }
+                    @if (@item.Sex == PetSex.Male)
+                    {
+                        <td>@Localizer["Male"]</td>
+                    }
+                    else if (@item.Sex == PetSex.Female)
+                    {
+                        <td>@Localizer["Female"]</td>
+                    }
+                    else
+                    {
+                        <td>@Localizer["Unidentified"]</td>
+                    }
 
-                        <td><img src="data:image;base64,@Convert.ToBase64String(item.Photo)" alt="Pet photo" /></td>
-                        <td class="overflow-ellipsis">@item.Description</td>
-                        <td class="overflow-ellipsis">@item.Address</td>
-                        <td>@item.Created</td>
-                        @if (!@item.LastModified.HasValue)
-                        {
-                            <td>@Localizer["Lack"]</td>
-                        }
-                        else
-                        {
-                            <td>@item.LastModified</td>
-                        }
-                        <td class="center-column"><a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Edit","Pets")/@item.Id"><span class="glyphicon glyphicon-pencil"></span></a></td>
-                    </tr>
-                }
+                    <td><img src="data:image;base64,@Convert.ToBase64String(item.Photo)" alt="Pet photo" /></td>
+                    <td>@item.Description</td>
+                    <td>@item.Address</td>
+                    <td>@item.Created</td>
+                    @if (!@item.LastModified.HasValue)
+                    {
+                        <td>@Localizer["Lack"]</td>
+                    }
+                    else
+                    {
+                        <td>@item.LastModified</td>
+                    }
+                    <td class="center-column"><a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Edit","Pets")/@item.Id"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                </tr>
+            }
             </tbody>
         </table>
     </div>
