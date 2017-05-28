@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Moq;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models;
@@ -84,6 +86,11 @@ namespace Toz.Dotnet.Tests.Mocks
                 return false;
             }
             return true;
+        }
+
+        public Task<bool> ExecutePostMultipartAction(string address, IEnumerable<IFormFile> files, string id, string token, CancellationToken cancelationToken = default(CancellationToken))
+        {
+            throw new NotImplementedException();
         }
     }
 }
