@@ -7,11 +7,10 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models;
+using Toz.Dotnet.Models.ViewModels;
 using Toz.Dotnet.Models.EnumTypes;
 using Toz.Dotnet.Models.Schedule.ViewModels;
-using Toz.Dotnet.Models.ViewModels;
 using Toz.Dotnet.Resources.Configuration;
-using System.Globalization;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Toz.Dotnet.Authorization;
@@ -25,11 +24,11 @@ namespace Toz.Dotnet.Controllers
         private readonly IUsersManagementService _usersManagementService;
 
         public ScheduleController(
-            IScheduleManagementService scheduleManagementService, 
+            IScheduleManagementService scheduleManagementService,
             IUsersManagementService usersManagementService,
-            IStringLocalizer<ScheduleController> localizer, 
-            IOptions<AppSettings> appSettings, 
-            IBackendErrorsService backendErrorsService, 
+            IStringLocalizer<ScheduleController> localizer,
+            IOptions<AppSettings> appSettings,
+            IBackendErrorsService backendErrorsService,
             IAuthService authService) : base(backendErrorsService, localizer, appSettings, authService)
         {
             _scheduleManagementService = scheduleManagementService;
@@ -37,20 +36,20 @@ namespace Toz.Dotnet.Controllers
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
-        {     
-            List<Week> schedule = await _scheduleManagementService.GetInitialSchedule(CurrentCookiesToken, cancellationToken);
+        {
+            List<Week> schedule = await _scheduleManagementService.GetInitialSchedule(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
             return View(schedule);
         }
 
         public async Task<IActionResult> Earlier(CancellationToken cancellationToken)
         {
-            List<Week> earlierSchedule = await _scheduleManagementService.GetEarlierSchedule(CurrentCookiesToken, cancellationToken);
+            List<Week> earlierSchedule = await _scheduleManagementService.GetEarlierSchedule(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
             return RedirectToAction("Index", earlierSchedule);
         }
 
         public async Task<IActionResult> Later(CancellationToken cancellationToken)
         {
-            List<Week> laterSchedule = await _scheduleManagementService.GetLaterSchedule(CurrentCookiesToken, cancellationToken);
+            List<Week> laterSchedule = await _scheduleManagementService.GetLaterSchedule(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
             return RedirectToAction("Index", laterSchedule);
         }
 
@@ -66,19 +65,25 @@ namespace Toz.Dotnet.Controllers
                 return BadRequest();
             }
 
-           List<User> volunteers = (await _usersManagementService.GetAllUsers(CurrentCookiesToken, cancellationToken))
-                .Where(u => u.Roles.Contains(UserType.Volunteer))
-                .OrderBy(u => u.LastName)
-                .ToList();
+            List<User> volunteers = (await _usersManagementService.GetAllUsers(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
+                 .Where(u => u.Roles.Contains(UserType.Volunteer))
+                 .OrderBy(u => u.LastName)
+                 .ToList();
+
+            List<UserViewModel> listedUsers = new List<UserViewModel>();
+            foreach (var user in volunteers)
+            {
+                listedUsers.Add(new UserViewModel
+                {
+                    TheUser = user
+                });
+            }
 
             var viewModel = new ReservationViewModel()
             {
-                Token= new ReservationToken()
-                {
-                    TimeOfDay = timeOfDay,
-                    Volunteers = new SelectList(volunteers, "Id", "CombinedName")
-                },
-                SafeDateContainer = date.ToString(CultureInfo.CurrentCulture)
+                ReservationDate = date.ToString("yyyy-MM-dd"),
+                TimeOfDay = timeOfDay,
+                Volunteers = new SelectList(listedUsers, "TheUser.Id", "ReadableName")
             };
 
             return PartialView(viewModel);
@@ -88,20 +93,18 @@ namespace Toz.Dotnet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddReservation(ReservationViewModel viewModel, CancellationToken cancellationToken)
         {
-            var token = viewModel.Token;
-            var isValid = DateTime.TryParse(viewModel.SafeDateContainer, out DateTime tokenDate);
+            var isValid = DateTime.TryParse(viewModel.ReservationDate, out DateTime tokenDate);
             if (!isValid)
             {
-                ModelState.AddModelError("Date", $"Invalid date ({viewModel.SafeDateContainer})");
+                ModelState.AddModelError("Date", $"Invalid date ({viewModel.ReservationDate})");
             }
-            token.Date = tokenDate;
             if (ModelState.IsValid)
             {
-                Slot slot = _scheduleManagementService.FindSlot(token.Date, token.TimeOfDay);
+                Slot slot = _scheduleManagementService.FindSlot(tokenDate, viewModel.TimeOfDay);
 
-                if (await _scheduleManagementService.CreateReservation(slot, token.VolunteerId, CurrentCookiesToken, cancellationToken))
+                if (await _scheduleManagementService.CreateReservation(slot, viewModel.VolunteerId, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
                 {
-                    return Json(new {success = true});
+                    return Json(new { success = true });
                 }
                 CheckUnexpectedErrors();
             }
@@ -112,7 +115,7 @@ namespace Toz.Dotnet.Controllers
         {
             if (!string.IsNullOrEmpty(id))
             {
-                await _scheduleManagementService.DeleteReservation(id, CurrentCookiesToken, cancellationToken);
+                await _scheduleManagementService.DeleteReservation(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
             }
             return RedirectToAction("Index");
         }
