@@ -1,12 +1,10 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Toz.Dotnet.Core.Services
 @using Toz.Dotnet.Models.EnumTypes
-@model IEnumerable
-<Toz.Dotnet.Models.Pet>
+@model IEnumerable<Toz.Dotnet.Models.Pet>
     @inject IViewLocalizer Localizer
     @{
         ViewData["Title"] = @Localizer["PageTitle"];
-        var filesManagmentService = new FilesManagementService();
     }
     <div id='myModal' class='modal fade in'>
         <div class="modal-dialog">
@@ -94,7 +92,10 @@
                             {
                                 <td>@item.LastModified</td>
                             }
-                            <td class="center-column"><a class="data-modal btn btn-primary btn-sm" href="@Url.Action(" Edit","Pets")/@item.Id"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                            <td class="center-column">
+                                <a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Images","Pets")/@item.Id"><span class="glyphicon glyphicon-picture"></span></a>
+                                <a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Edit","Pets")/@item.Id"><span class="glyphicon glyphicon-pencil"></span></a>
+                            </td>
                         </tr>
                     }
                 </tbody>
