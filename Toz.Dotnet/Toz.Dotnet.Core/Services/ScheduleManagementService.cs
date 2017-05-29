@@ -54,6 +54,7 @@ namespace Toz.Dotnet.Core.Services
         {
             _restService = restService;
             _usersManagementService = usersManagementService;
+            _cache = new List<Week>();
             RequestUri = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendScheduleUrl;
         }
         
@@ -247,11 +248,11 @@ namespace Toz.Dotnet.Core.Services
 
             if (weekOffset < 0)
             {
-                _cache.Insert(0, newWeek);
+                _cache?.Insert(0, newWeek);
             }
             else
             {
-                _cache.Add(newWeek);
+                _cache?.Add(newWeek);
             }
 
             int daysFromDatum = weekOffset * DaysInWeek;
