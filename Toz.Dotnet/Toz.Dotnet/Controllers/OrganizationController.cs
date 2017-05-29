@@ -32,7 +32,7 @@ namespace Toz.Dotnet.Controllers
         {
             ViewData["EditMode"] = edit;
 
-            var organizationInfo = await _organizationManagementService.GetOrganizationInfo(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+            var organizationInfo = await _organizationManagementService.GetOrganizationInfo(CurrentCookiesToken, cancellationToken);
             if (organizationInfo != null)
             {
                 return View(organizationInfo);
@@ -48,7 +48,7 @@ namespace Toz.Dotnet.Controllers
             if (organization != null && ModelState.IsValid)
             {
                 organization.Contact.Website = new UriBuilder(organization.Contact.Website).Uri.ToString();
-                if (await _organizationManagementService.UpdateOrCreateInfo(organization, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
+                if (await _organizationManagementService.UpdateOrCreateInfo(organization, CurrentCookiesToken, cancellationToken))
                 {
                     return RedirectToAction("Info", new RouteValueDictionary(new { edit = false }));
                 }

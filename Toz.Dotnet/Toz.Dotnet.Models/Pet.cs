@@ -4,6 +4,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Toz.Dotnet.Models.EnumTypes;
 using Toz.Dotnet.Models.JsonConventers;
+using Toz.Dotnet.Models.Images;
+using System.Collections.Generic;
 
 namespace Toz.Dotnet.Models
 {
@@ -47,5 +49,8 @@ namespace Toz.Dotnet.Models
 
         [JsonProperty("imageUrl")]
         public string ImageUrl {get; set;}
+
+        [JsonProperty("gallery")]
+        public List<Photo> Gallery { get; set; }
     }
 }

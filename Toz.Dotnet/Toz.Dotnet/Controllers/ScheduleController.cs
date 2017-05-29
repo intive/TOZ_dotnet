@@ -24,11 +24,11 @@ namespace Toz.Dotnet.Controllers
         private readonly IUsersManagementService _usersManagementService;
 
         public ScheduleController(
-            IScheduleManagementService scheduleManagementService, 
+            IScheduleManagementService scheduleManagementService,
             IUsersManagementService usersManagementService,
-            IStringLocalizer<ScheduleController> localizer, 
-            IOptions<AppSettings> appSettings, 
-            IBackendErrorsService backendErrorsService, 
+            IStringLocalizer<ScheduleController> localizer,
+            IOptions<AppSettings> appSettings,
+            IBackendErrorsService backendErrorsService,
             IAuthService authService) : base(backendErrorsService, localizer, appSettings, authService)
         {
             _scheduleManagementService = scheduleManagementService;
@@ -36,7 +36,7 @@ namespace Toz.Dotnet.Controllers
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
-        {     
+        {
             List<Week> schedule = await _scheduleManagementService.GetInitialSchedule(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
             return View(schedule);
         }
@@ -65,10 +65,10 @@ namespace Toz.Dotnet.Controllers
                 return BadRequest();
             }
 
-           List<User> volunteers = (await _usersManagementService.GetAllUsers(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
-                .Where(u => u.Roles.Contains(UserType.Volunteer))
-                .OrderBy(u => u.LastName)
-                .ToList();
+            List<User> volunteers = (await _usersManagementService.GetAllUsers(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
+                 .Where(u => u.Roles.Contains(UserType.Volunteer))
+                 .OrderBy(u => u.LastName)
+                 .ToList();
 
             List<UserViewModel> listedUsers = new List<UserViewModel>();
             foreach (var user in volunteers)
@@ -104,7 +104,7 @@ namespace Toz.Dotnet.Controllers
 
                 if (await _scheduleManagementService.CreateReservation(slot, viewModel.VolunteerId, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
                 {
-                    return Json(new {success = true});
+                    return Json(new { success = true });
                 }
                 CheckUnexpectedErrors();
             }

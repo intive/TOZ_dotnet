@@ -8,32 +8,6 @@
     padding-right: 15px;
 }
 
-.btn-file {
-    position: relative;
-    overflow: hidden;
-}
-
-    .btn-file input[type=file] {
-        position: absolute;
-        top: 0;
-        right: 0;
-        font-size: 100px;
-        text-align: right;
-        filter: alpha(opacity=0);
-        opacity: 0;
-        outline: none;
-        background: white;
-        cursor: inherit;
-        display: block;
-    }
-
-#img-upload {
-    width: 480px;
-    align-items: center;
-    display: block;
-    margin: 0 auto;
-    padding-top: 10px;
-}
 select {
     overflow-y: hidden
 }
@@ -229,4 +203,16 @@ div.dataTables_paginate {
 .unhandled-error-span {
     color: #A94442;
     text-align: center;
+}
+
+#image-cropper {
+    width: 250px;
+    height: 350px;
+    margin: 0 auto;
+}
+
+.cropit-preview {
+    /* You can specify preview size in CSS */
+    width: 250px;
+    height: 250px;
 }
