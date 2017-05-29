@@ -69,7 +69,7 @@
                         <label for="file" class=" btn btn-block btn-default">
                             <i class="glyphicon glyphicon-upload"></i> @Localizer["Browse"]
                         </label>
-                        <input type="file" name="file" id="file" class="cropit-image-input" accept="image/png, image/jpeg, image/gif" />
+                        <input type="file" name="file" id="file" class="cropit-image-input" accept="image/*" />
                         <input type="hidden" name="image-data" class="hidden-image-data" />
 
                     </div>
@@ -182,7 +182,9 @@
     }
 
     $(function () {
-        $('#image-cropper').cropit();
+        $('#image-cropper').cropit({
+            smallImage: 'stretch'
+        });
     });
 
     $("#SaveAvatar").click(function (evt) {

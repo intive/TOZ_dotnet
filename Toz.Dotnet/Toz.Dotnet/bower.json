@@ -3,12 +3,12 @@
   "private": true,
   "dependencies": {
     "bootstrap": "v3.3.7",
+	"jquery": "2.2.4",
     "jquery-validation": "1.16.0",
     "jquery-validation-unobtrusive": "v3.2.6",
     "datatables-responsive": "2.1.1",
     "datatables-bootstrap": "1.0.0",
     "cropit": "v0.5.1",
-    "fine-uploader": "5.13.0",
-    "jQuery": "2.2.4"
+    "fine-uploader": "5.13.0"
   }
 }
