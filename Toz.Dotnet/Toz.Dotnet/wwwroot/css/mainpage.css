@@ -44,8 +44,27 @@ h6 {
 .tile.blue,
 .tile.red,
 .tile.orange,
+.tile.sea-green,
+.tile.brown,
 .tile.green {
     color: #fff;
+}
+
+
+.tile.brown {
+    background: #954535;
+}
+
+.tile.brown:hover {
+    background: #713428;
+}
+
+.tile.sea-green {
+    background: #4d804d;
+}
+
+.tile.sea-green:hover {
+    background: #305030;
 }
 
 .tile.purple {
