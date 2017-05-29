@@ -12,6 +12,5 @@ namespace Toz.Dotnet.Models.ViewModels
         public DateTime Created => TheComment.Created;
         public string UserIdentity => $"{TheUser.FirstName} {TheUser.LastName}";
         public string Contents => TheComment.Contents;
-        
     }
 }
