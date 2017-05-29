@@ -30,5 +30,7 @@ namespace Toz.Dotnet.Controllers
                 ViewData["UnhandledError"] = overallError;
             }
         }
+
+        protected string CurrentCookiesToken => AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true);
     }
 }

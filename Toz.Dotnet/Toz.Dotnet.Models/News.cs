@@ -42,8 +42,8 @@ namespace Toz.Dotnet.Models
         [JsonConverter(typeof(StringEnumConverter))]
         public NewsStatus Type {get; set;}
 
-        [JsonProperty("photoUrl")]
-        public string PhotoUrl {get; set; }
+        [JsonProperty("imageUrl")]
+        public string ImageUrl {get; set; }
 
         }
 }

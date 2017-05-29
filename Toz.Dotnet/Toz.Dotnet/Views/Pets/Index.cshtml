@@ -1,12 +1,12 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Toz.Dotnet.Core.Services
 @using Toz.Dotnet.Models.EnumTypes
+
 @model IEnumerable<Toz.Dotnet.Models.ViewModels.PetViewModel>
 @inject IViewLocalizer Localizer
 
 @{
     ViewData["Title"] = @Localizer["PageTitle"];
-    var filesManagmentService = new FilesManagementService();
 }
 
 <div id='myModal' class='modal fade in'>
@@ -15,19 +15,19 @@
             <div id='myModalContent'></div>
         </div>
     </div>
-</div>
-
-<div class="panel panel-default panel-table">
-    <div class="panel-heading">
-        <div class="row">
-            <div class="col col-xs-4">
-                <h3 class="panel-title">@Localizer["PageTitle"]</h3>
-            </div>
-            <div class="col col-xs-4">
-                <input id="search" type="text" class="search form-control" placeholder="@Localizer["SearchPlaceholder"]">
-            </div>
-            <div class="col col-xs-4 text-right">
-                <a class="data-modal btn btn-primary btn-sm btn-create" href="@Url.Action("Add","Pets")"><span class="glyphicon glyphicon-plus"></span></a>
+</div> 
+    <div class="panel panel-default panel-table">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col col-xs-4">
+                    <h3 class="panel-title">@Localizer["PageTitle"]</h3>
+                </div>
+                <div class="col col-xs-4">
+                    <input id="search" type="text" class="search form-control" placeholder="@Localizer["SearchPlaceholder"]">
+                </div>
+                <div class="col col-xs-4 text-right">
+                    <a class="data-modal btn btn-primary btn-sm btn-create" href="@Url.Action("Add","Pets")"><span class="glyphicon glyphicon-plus"></span></a>
+                </div>
             </div>
         </div>
     </div>
@@ -49,7 +49,7 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td class="overflow-ellipsis">@item.ThePet.Name</td>
+                        <td>@item.ThePet.Name</td>
 
                         @if (@item.ThePet.Type == PetType.Dog)
                         {
@@ -77,14 +77,25 @@
                             <td>@Localizer["Unidentified"]</td>
                         }
 
-                        <td><img src="data:image;base64,@Convert.ToBase64String(item.ThePet.Photo)" alt="Pet photo" /></td>
-                        <td class="overflow-ellipsis">@item.ThePet.Address</td>
+                        <td>
+                           @if (item.Photo != null)
+                           {
+                               <img src="data:image;base64,@Convert.ToBase64String(item.Photo)" alt="Pet photo" />
+                            }
+                            else
+                            {
+                                <img src="~/images/no-image.png" alt="Pet photo" />
+                            }
+                        </td>
+                        <td>@item.ThePet.Address</td>
                         <td>@item.ThePet.Created</td>
                         <td>@item.TheHelper.Address</td>
-                        <td class="center-column"><a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Edit","Pets")/@item.ThePet.Id"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                        <td class="center-column">
+                          <a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Images","Pets")/@item.ThePet.Id"><span class="glyphicon glyphicon-picture"></span></a>
+                          <a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Edit","Pets")/@item.ThePet.Id"><span class="glyphicon glyphicon-pencil"></span></a>
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-</div>

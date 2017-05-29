@@ -5,8 +5,8 @@ namespace Toz.Dotnet.Resources.Configuration
     public class AppSettings
     {
         public string[] AcceptPhotoTypes { get; set; }
-
-        public string BackendBaseUrl { get; set; }
+        public string BaseUrl { get; set; }
+        public string BackendBaseUrl { get; set;}
         public string BackendPetsUrl { get; set; }
         public string BackendNewsUrl { get; set; }
         public string BackendUsersUrl { get; set; }
@@ -18,6 +18,8 @@ namespace Toz.Dotnet.Resources.Configuration
         public string BackendBecomeVolunteerUrl { get; set; }
         public string BackendDonateInfoUrl { get; set; }
         public string BackendHelpersUrl { get; set; }
+        public string BackendGalleryUrl { get; set; }
+        public string BackendImagesUrl { get; set; }
 
         public List<string> BlockedControllers { get; set; }
         public string PolicyName { get; set; }

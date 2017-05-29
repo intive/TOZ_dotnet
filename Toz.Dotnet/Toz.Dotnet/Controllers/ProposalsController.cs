@@ -30,7 +30,7 @@ namespace Toz.Dotnet.Controllers
             {
                 ViewData["ActivationError"] = activationError;
             }
-            var proposals = await _proposalsManagementService.GetAllProposals(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+            var proposals = await _proposalsManagementService.GetAllProposals(CurrentCookiesToken, cancellationToken);
             return View(proposals.OrderByDescending(prop => prop.CreationTime));
         }
 
@@ -47,7 +47,7 @@ namespace Toz.Dotnet.Controllers
                 return PartialView(proposal);
             }
 
-            if (await _proposalsManagementService.CreateProposal(proposal, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
+            if (await _proposalsManagementService.CreateProposal(proposal, CurrentCookiesToken, cancellationToken))
             {
                 return Json(new { success = true });
             }
@@ -58,7 +58,7 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<IActionResult> Edit(string id, CancellationToken cancellationToken)
         {
-            return PartialView("Edit", await _proposalsManagementService.GetProposal(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken));
+            return PartialView("Edit", await _proposalsManagementService.GetProposal(id, CurrentCookiesToken, cancellationToken));
         }
 
         [HttpPost, ValidateAntiForgeryToken]
@@ -69,7 +69,7 @@ namespace Toz.Dotnet.Controllers
                 return PartialView(proposal);
             }
 
-            if (await _proposalsManagementService.UpdateProposal(proposal, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
+            if (await _proposalsManagementService.UpdateProposal(proposal, CurrentCookiesToken, cancellationToken))
             {
                 return Json(new { success = true });
             }
@@ -80,8 +80,8 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<IActionResult> Delete(string id, CancellationToken cancellationToken)
         {
-            var proposal = await _proposalsManagementService.GetProposal(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
-            if (proposal != null && await _proposalsManagementService.DeleteProposal(proposal, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
+            var proposal = await _proposalsManagementService.GetProposal(id, CurrentCookiesToken, cancellationToken);
+            if (proposal != null && await _proposalsManagementService.DeleteProposal(proposal, CurrentCookiesToken, cancellationToken))
             {
                 return Json(new { success = true });
             }
@@ -91,7 +91,7 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<IActionResult> Activate(string id, CancellationToken cancellationToken)
         {
-            var result = await _proposalsManagementService.SendActivationEmail(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+            var result = await _proposalsManagementService.SendActivationEmail(id, CurrentCookiesToken, cancellationToken);
             if (!result)
             {
                 TempData.Put<string>("ActivationError", StringLocalizer["FailedToSendActivationMail"]);

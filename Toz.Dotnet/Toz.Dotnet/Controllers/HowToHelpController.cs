@@ -30,8 +30,8 @@ namespace Toz.Dotnet.Controllers
         {
             ViewData["EditMode"] = edit;
 
-            var becomeVolunteerInfo = await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.BecomeVolunteer, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
-            var donateInfo = await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.Donate, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+            var becomeVolunteerInfo = await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.BecomeVolunteer, CurrentCookiesToken, cancellationToken);
+            var donateInfo = await _howToHelpInformationService.GetHelpInfo(HowToHelpInfoType.Donate, CurrentCookiesToken, cancellationToken);
             if (becomeVolunteerInfo != null && donateInfo != null)
             {
                 return View(new HowToHelpViewModel()
@@ -50,10 +50,10 @@ namespace Toz.Dotnet.Controllers
             if (howToHelpViewModel != null && ModelState.IsValid)
             {
                 var updateVolunteerInfoResult = await _howToHelpInformationService.UpdateOrCreateHelpInfo(
-                    howToHelpViewModel.BecomeVolunteerInfo, HowToHelpInfoType.BecomeVolunteer, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+                    howToHelpViewModel.BecomeVolunteerInfo, HowToHelpInfoType.BecomeVolunteer, CurrentCookiesToken, cancellationToken);
 
                 var updateDonateInfoResult = await _howToHelpInformationService.UpdateOrCreateHelpInfo(
-                    howToHelpViewModel.DonateInfo, HowToHelpInfoType.Donate, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+                    howToHelpViewModel.DonateInfo, HowToHelpInfoType.Donate, CurrentCookiesToken, cancellationToken);
 
                 if (updateDonateInfoResult && updateVolunteerInfoResult)
                 {
