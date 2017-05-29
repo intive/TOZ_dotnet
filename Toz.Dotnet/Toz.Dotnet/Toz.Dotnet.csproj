@@ -9,11 +9,6 @@
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Content Include="wwwroot\favicon.ico" />
-    <Content Include="wwwroot\images\no-image.png" />
-  </ItemGroup>
-
   <!--Libs references -->
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.2" />
