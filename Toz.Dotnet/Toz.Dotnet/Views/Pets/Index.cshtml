@@ -1,5 +1,4 @@
 @using Microsoft.AspNetCore.Mvc.Localization
-@using Toz.Dotnet.Core.Services
 @using Toz.Dotnet.Models.EnumTypes
 
 @model IEnumerable<Toz.Dotnet.Models.ViewModels.PetViewModel>
@@ -78,9 +77,9 @@
                         }
 
                         <td>
-                           @if (item.Photo != null)
+                           @if (item.ThePet.Photo != null)
                            {
-                               <img src="data:image;base64,@Convert.ToBase64String(item.Photo)" alt="Pet photo" />
+                               <img src="data:image;base64,@Convert.ToBase64String(item.ThePet.Photo)" alt="Pet photo" />
                             }
                             else
                             {

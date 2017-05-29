@@ -70,7 +70,7 @@ namespace Toz.Dotnet.Controllers
                     }
                 }
             }
-            return View(pets.OrderByDescending(x => x.Created).ThenByDescending(x => x.LastModified).ToList());
+            return View(viewModel.OrderByDescending(x => x.ThePet.Created).ThenByDescending(x => x.ThePet.LastModified));
         }
 
         [HttpPost]

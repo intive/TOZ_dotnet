@@ -117,7 +117,7 @@ namespace Toz.Dotnet.Controllers
                 await _scheduleManagementService.DeleteReservation(id,
                     AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { offset = _scheduleManagementService.WeekOffset });
             }
             CheckUnexpectedErrors();
             return BadRequest();
