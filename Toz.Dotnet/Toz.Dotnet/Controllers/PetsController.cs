@@ -10,8 +10,9 @@ using Toz.Dotnet.Resources.Configuration;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
-using Microsoft.AspNetCore.Authorization;
+using System.Net.Http;
 using Toz.Dotnet.Authorization;
+using Toz.Dotnet.Models.Images;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -19,24 +20,44 @@ namespace Toz.Dotnet.Controllers
     {
         private readonly IFilesManagementService _filesManagementService;
         private readonly IPetsManagementService _petsManagementService;
-
-        private static byte[] _lastAcceptPhoto;
-        private string _validationPhotoAlert;
+        private readonly IOptions<AppSettings> _appSettings;
 
         public PetsController(IFilesManagementService filesManagementService, IPetsManagementService petsManagementService,
-            IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService, IAuthService authService) : base(backendErrorsService, localizer, appSettings, authService)
+            IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings,
+            IBackendErrorsService backendErrorsService, IAuthService authService) : base(backendErrorsService, localizer, appSettings, authService)
         {
             _filesManagementService = filesManagementService;
             _petsManagementService = petsManagementService;
+            _appSettings = appSettings;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            List<Pet> pets = await _petsManagementService.GetAllPets(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true));
-            //todo add photo if will be avaialbe on backends
-            var img = _filesManagementService.DownloadImage(@"http://i.pinger.pl/pgr167/7dc36d63001e9eeb4f01daf3/kot%20ze%20shreka9.jpg");
-            var thumbnail = _filesManagementService.GetThumbnail(img);
-            pets.ForEach(pet => pet.Photo = _filesManagementService.ImageToByteArray(thumbnail)); // temporary
+            List<Pet> pets = await _petsManagementService.GetAllPets(CurrentCookiesToken, cancellationToken);
+            foreach (var pet in pets)
+            {
+                if (!string.IsNullOrEmpty(pet.ImageUrl))
+                {
+                    try
+                    {
+                        var downloadedImg = _filesManagementService.DownloadImage(_appSettings.Value.BaseUrl + pet.ImageUrl);
+
+                        if (downloadedImg != null)
+                        {
+                            var thumbnail = _filesManagementService.GetThumbnail(downloadedImg);
+                            pet.Photo = _filesManagementService.ImageToByteArray(thumbnail);
+                        }
+                    }
+                    catch (HttpRequestException)
+                    {
+                        pet.Photo = null;
+                    }
+                    catch (AggregateException)
+                    {
+                        pet.Photo = null;
+                    }
+                }
+            }
             return View(pets.OrderByDescending(x => x.Created).ThenByDescending(x => x.LastModified).ToList());
         }
 
@@ -44,37 +65,16 @@ namespace Toz.Dotnet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(
             [Bind("Name, Type, Sex, Description, Address")]
-            Pet pet, [Bind("Photo")] IFormFile photo, CancellationToken cancellationToken)
+            Pet pet, CancellationToken cancellationToken)
         {
-            bool result = ValidatePhoto(pet, photo);
-            pet.ImageUrl = "storage/a5/0d/4d/a50d4d4c-ccd2-4747-8dec-d6d7f521336e.jpg"; //temporary
-
-            if (result && ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                if (await _petsManagementService.CreatePet(pet, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true)))
+                if (await _petsManagementService.CreatePet(pet, CurrentCookiesToken, cancellationToken))
                 {
-                    _lastAcceptPhoto = null;
-                    _validationPhotoAlert = null;
                     return Json(new { success = true });
                 }
 
                 CheckUnexpectedErrors();
-                return PartialView(pet);
-            }
-
-            if (!result)
-            {
-                ViewData["ValidationPhotoAlert"] = _validationPhotoAlert;
-                if (_lastAcceptPhoto != null)
-                {
-                    pet.Photo = _lastAcceptPhoto;
-                    ViewData["SelectedPhoto"] = "PhotoAlertWithLastPhoto";
-                }
-                else
-                {
-                    ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
-                }
-
                 return PartialView(pet);
             }
 
@@ -91,20 +91,12 @@ namespace Toz.Dotnet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
             [Bind("Id, Name, Type, Sex, Description, Address, AddingTime")]
-            Pet pet, [Bind("Photo")] IFormFile photo, CancellationToken cancellationToken)
+            Pet pet, CancellationToken cancellationToken)
         {
-            //todo add photo if will be available on backends
-            _lastAcceptPhoto = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 }; //get photo from backend, if available
-            pet.ImageUrl = "storage/a5/0d/4d/a50d4d4c-ccd2-4747-8dec-d6d7f521336e.jpg"; //temporary
-
-            bool result = ValidatePhoto(pet, photo);
-
-            if (result && ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                if (await _petsManagementService.UpdatePet(pet, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true)))
+                if (await _petsManagementService.UpdatePet(pet, CurrentCookiesToken, cancellationToken))
                 {
-                    _lastAcceptPhoto = null;
-                    _validationPhotoAlert = null;
                     return Json(new { success = true });
                 }
 
@@ -112,29 +104,74 @@ namespace Toz.Dotnet.Controllers
                 return PartialView(pet);
             }
 
-            if (!result)
-            {
-                ViewData["ValidationPhotoAlert"] = _validationPhotoAlert;
-                if (_lastAcceptPhoto != null)
-                {
-                    pet.Photo = _lastAcceptPhoto;
-                    ViewData["SelectedPhoto"] = "PhotoAlertWithLastPhoto";
-                }
-                else
-                {
-                    ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
-                }
+            return PartialView(pet);
+        }
 
-                return PartialView(pet);
+        [HttpPost]
+        public async Task<IActionResult> Avatar(string id, CancellationToken cancellationToken)
+        {
+            var files = Request.Form.Files;
+            if (await _filesManagementService.UploadPetAvatar(id, CurrentCookiesToken, files, cancellationToken))
+            {
+                return Json(new { success = true });
             }
 
-            return PartialView(pet);
+            CheckUnexpectedErrors();
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Gallery(string id, CancellationToken cancellationToken)
+        {
+            Pet pet = await _petsManagementService.GetPet(id, CurrentCookiesToken, cancellationToken);
+            List<Photo> gallery = pet.Gallery;
+            List<FineUploader> json = new List<FineUploader>();
+
+            foreach (var photo in gallery)
+            {
+                json.Add(new FineUploader { UUID = photo.Id, Name = $"{photo.Id}.jpg", ThumbnailUrl = $"{_appSettings.Value.BaseUrl}{photo.FileUrl}" });
+            }
+
+            CheckUnexpectedErrors();
+            return Json(json);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Gallery(string id, string imageId, CancellationToken cancellationToken)
+        {
+            var files = Request.Form.Files;
+            if (await _filesManagementService.UploadPetGalleryImage(id, CurrentCookiesToken, files, cancellationToken))
+            {
+                return Json(new { success = true });
+            }
+
+            CheckUnexpectedErrors();
+            return Json(new { success = false });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> GalleryDelete(string id, CancellationToken cancellationToken)
+        {
+            var imageId = Request.Form["qquuid"].ToString();
+            if (await _filesManagementService.DeletePetGalleryImage(id, imageId, CurrentCookiesToken, cancellationToken))
+            {
+                return Json(new { success = true });
+            }
+
+            CheckUnexpectedErrors();
+            return Json(new { success = false });
         }
 
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken)
         {
-            return PartialView("Edit", await _petsManagementService.GetPet(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true)));
+            return PartialView("Edit", await _petsManagementService.GetPet(id, CurrentCookiesToken,cancellationToken));
         }
+
+        public async Task<ActionResult> Images(string id, CancellationToken cancellationToken)
+        {
+            return PartialView("Images", await _petsManagementService.GetPet(id, CurrentCookiesToken, cancellationToken));
+        }
+
+
 
 
         /*        public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)
@@ -147,38 +184,6 @@ namespace Toz.Dotnet.Controllers
 
                     return RedirectToAction("Index");
                 }*/
-
-        private bool IsAcceptedPhotoType(string photoType, string[] acceptedTypes)
-        {
-            return acceptedTypes.Any(type => type.Equals(photoType, StringComparison.OrdinalIgnoreCase));
-        }
-
-        private bool ValidatePhoto(Pet pet, IFormFile photo)
-        {
-            if (photo != null)
-            {
-                if (IsAcceptedPhotoType(photo.ContentType, AppSettings.AcceptPhotoTypes))
-                {
-                    if (photo.Length > default(long))
-                    {
-                        pet.Photo = _petsManagementService.ConvertPhotoToByteArray(photo.OpenReadStream());
-                        _lastAcceptPhoto = pet.Photo;
-                        return true;
-                    }
-
-                    _validationPhotoAlert = "EmptyFile";
-                    return false;
-                }
-
-                _validationPhotoAlert = "WrongFileType";
-                return false;
-            }
-            if (_lastAcceptPhoto != null)
-            {
-                pet.Photo = _lastAcceptPhoto;
-            }
-            return true;
-        }
     }
 
 }

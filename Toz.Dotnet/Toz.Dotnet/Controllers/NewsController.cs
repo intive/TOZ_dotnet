@@ -11,6 +11,7 @@ using Toz.Dotnet.Resources.Configuration;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
+using System.Net.Http;
 using Toz.Dotnet.Authorization;
 
 namespace Toz.Dotnet.Controllers
@@ -19,69 +20,69 @@ namespace Toz.Dotnet.Controllers
     {
         private readonly IFilesManagementService _filesManagementService;
         private readonly INewsManagementService _newsManagementService;
-
-        private static byte[] _lastAcceptPhoto;
-        private string _validationPhotoAlert;
+        private readonly IOptions<AppSettings> _appSettings;
 
         public NewsController(IFilesManagementService filesManagementService, INewsManagementService newsManagementService,
-            IStringLocalizer<NewsController> localizer, IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService, IAuthService authService) : base(backendErrorsService, localizer, appSettings, authService)
+            IStringLocalizer<NewsController> localizer, 
+            IOptions<AppSettings> appSettings, IBackendErrorsService backendErrorsService, IAuthService authService) 
+            : base(backendErrorsService, localizer ,appSettings, authService)
         {
             _filesManagementService = filesManagementService;
             _newsManagementService = newsManagementService;
+            _appSettings = appSettings;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            List<News> news = await _newsManagementService.GetAllNews(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true));
-            //todo add photo if will be avaialbe on backends
-            var img = _filesManagementService.DownloadImage(@"http://img.cda.pl/obr/thumbs/6adb80c33f5b55df46a481b57a61c64c.png_oooooooooo_273x.png");
-            var thumbnail = _filesManagementService.GetThumbnail(img);
-            news.ForEach(n => n.Photo = _filesManagementService.ImageToByteArray(thumbnail)); // temporary
+            List<News> news = await _newsManagementService.GetAllNews(CurrentCookiesToken, cancellationToken);
+            foreach (var n in news)
+            {
+                if (!string.IsNullOrEmpty(n.ImageUrl))
+                {
+                    try
+                    {
+                        var downloadedImg = _filesManagementService.DownloadImage(_appSettings.Value.BaseUrl + n.ImageUrl);
+
+                        if (downloadedImg != null)
+                        {
+                            var thumbnail = _filesManagementService.GetThumbnail(downloadedImg);
+                            n.Photo = _filesManagementService.ImageToByteArray(thumbnail);
+                        }
+                    }
+                    catch (HttpRequestException)
+                    {
+                        n.Photo = null;
+                    }
+                    catch (AggregateException)
+                    {
+                        n.Photo = null;
+                    }
+                }
+            }
             return View(news.OrderByDescending(x => x.Published ?? DateTime.MaxValue).ThenByDescending(x => x.Title).ToList());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(
-            [Bind("Title, Contents")]
-            News news, [Bind("Photo")] IFormFile photo, string status, CancellationToken cancellationToken)
+            [Bind("Title, Contents")] 
+            News news, string status, CancellationToken cancellationToken)
         {
-            bool result = ValidatePhoto(news, photo);
-            news.PhotoUrl = "storage/a5/0d/4d/a50d4d4c-ccd2-4747-8dec-d6d7f521336e.jpg";
-
             Enum.TryParse(status, out NewsStatus newsStatus);
             news.Type = newsStatus;
-
-            if (result && ModelState.IsValid)
+            
+            if (ModelState.IsValid)
             {
-                if (await _newsManagementService.CreateNews(news, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true)))
+                if (await _newsManagementService.CreateNews(news, CurrentCookiesToken, cancellationToken))
                 {
-                    _lastAcceptPhoto = null;
-                    _validationPhotoAlert = null;
                     return Json(new { success = true });
                 }
 
-                CheckUnexpectedErrors();
-                return PartialView(news);
+               CheckUnexpectedErrors(); 
             }
-            else
-            {
-                if (!result)
-                {
-                    ViewData["ValidationPhotoAlert"] = _validationPhotoAlert;
-                    if (_lastAcceptPhoto != null)
-                    {
-                        news.Photo = _lastAcceptPhoto;
-                        ViewData["SelectedPhoto"] = "PhotoAlertWithLastPhoto";
-                    }
-                    else
-                    {
-                        ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
-                    }
-                }
-                return PartialView(news);
-            }
-        }
+
+            return PartialView(news);
+        } 
 
         public IActionResult Add()
         {
@@ -91,95 +92,57 @@ namespace Toz.Dotnet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
-            [Bind("Id, Title, Contents, Status, PublishingTime, AddingTime, LastEditTime")]
-            News news, [Bind("Photo")] IFormFile photo, string status, CancellationToken cancellationToken)
+            [Bind("Id, Title, Contents, Status, PublishingTime, AddingTime, LastEditTime")] 
+            News news, string status, CancellationToken cancellationToken)
         {
-            //todo add photo if will be available on backends
-            _lastAcceptPhoto = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 }; //get photo from backend, if available
-
-            bool result = ValidatePhoto(news, photo);
-            news.PhotoUrl = "storage/a5/0d/4d/a50d4d4c-ccd2-4747-8dec-d6d7f521336e.jpg";
-
             Enum.TryParse(status, out NewsStatus newsStatus);
             news.Type = newsStatus;
 
-            if (result && ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                if (await _newsManagementService.UpdateNews(news, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true)))
+                if (await _newsManagementService.UpdateNews(news, CurrentCookiesToken, cancellationToken))
                 {
-                    _lastAcceptPhoto = null;
-                    _validationPhotoAlert = null;
                     return Json(new { success = true });
                 }
 
                 CheckUnexpectedErrors();
-
-                return PartialView(news);
             }
 
-            if (!result)
-            {
-                ViewData["ValidationPhotoAlert"] = _validationPhotoAlert;
-                if (_lastAcceptPhoto != null)
-                {
-                    news.Photo = _lastAcceptPhoto;
-                    ViewData["SelectedPhoto"] = "PhotoAlertWithLastPhoto";
-                }
-                else
-                {
-                    ViewData["SelectedPhoto"] = "PhotoAlertWithoutPhoto";
-                }
-            }
-            return PartialView(news);
+            return PartialView(news); 
+        } 
 
-        }
-
-        public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken)
+        public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken) 
         {
-            return PartialView("Edit", await _newsManagementService.GetNews(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true)));
+            return PartialView("Edit", await _newsManagementService.GetNews(id, CurrentCookiesToken, cancellationToken));
         }
 
         public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)
         {
-            var news = await _newsManagementService.GetNews(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
-            if (news != null)
+            var pet = await _newsManagementService.GetNews(id, CurrentCookiesToken, cancellationToken);
+            if(pet != null)
             {
-                await _newsManagementService.DeleteNews(news, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+                await _newsManagementService.DeleteNews(pet, CurrentCookiesToken, cancellationToken);
             }
 
             return RedirectToAction("Index");
         }
 
-        private bool IsAcceptedPhotoType(string photoType, string[] acceptTypes)
+        [HttpPost]
+        public async Task<IActionResult> Avatar(string id, CancellationToken cancellationToken)
         {
-            return acceptTypes.Any(type => type == photoType);
+            var files = Request.Form.Files;
+            if (await _filesManagementService.UploadNewsAvatar(id, CurrentCookiesToken, files, cancellationToken))
+            {
+                return Json(new { success = true });
+            }
+
+            CheckUnexpectedErrors();
+            return RedirectToAction("Index");
         }
 
-        private bool ValidatePhoto(News news, IFormFile photo)
+        public async Task<ActionResult> Images(string id, CancellationToken cancellationToken)
         {
-            if (photo != null)
-            {
-                if (IsAcceptedPhotoType(photo.ContentType, AppSettings.AcceptPhotoTypes))
-                {
-                    if (photo.Length > default(long))
-                    {
-                        news.Photo = _newsManagementService.ConvertPhotoToByteArray(photo.OpenReadStream());
-                        _lastAcceptPhoto = news.Photo;
-                        return true;
-                    }
-                    _validationPhotoAlert = "EmptyFile";
-                    return false;
-                }
-
-                _validationPhotoAlert = "WrongFileType";
-                return false;
-            }
-
-            if (_lastAcceptPhoto != null)
-            {
-                news.Photo = _lastAcceptPhoto;
-            }
-            return true;
+            return PartialView("Images", await _newsManagementService.GetNews(id, CurrentCookiesToken, cancellationToken));
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            List<User> users = await _usersManagementService.GetAllUsers(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+            List<User> users = await _usersManagementService.GetAllUsers(CurrentCookiesToken, cancellationToken);
             return View(users);
         }
 
@@ -41,7 +41,7 @@ namespace Toz.Dotnet.Controllers
         {
             if (user != null && ModelState.IsValid)
             {
-                if (await _usersManagementService.CreateUser(user, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
+                if (await _usersManagementService.CreateUser(user, CurrentCookiesToken, cancellationToken))
                 {
                     return Json(new { success = true });
                 }
@@ -54,7 +54,7 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken)
         {
-            return PartialView("Edit", await _usersManagementService.GetUser(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken));
+            return PartialView("Edit", await _usersManagementService.GetUser(id, CurrentCookiesToken, cancellationToken));
         }
 
         [HttpPost]
@@ -65,7 +65,7 @@ namespace Toz.Dotnet.Controllers
         {
             if (user != null && ModelState.IsValid)
             {
-                if (await _usersManagementService.UpdateUser(user, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
+                if (await _usersManagementService.UpdateUser(user, CurrentCookiesToken, cancellationToken))
                 {
                     return Json(new { success = true });
                 }

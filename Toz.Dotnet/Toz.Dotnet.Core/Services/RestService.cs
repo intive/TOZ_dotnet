@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Models.Errors;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace Toz.Dotnet.Core.Services
 {
@@ -27,6 +29,7 @@ namespace Toz.Dotnet.Core.Services
                 try
                 {
                     var response = await client.DeleteAsync(address, cancelationToken);
+
                     if (!response.IsSuccessStatusCode)
                     {
                         await PassJsonResponseToErrorService(response);
@@ -220,6 +223,35 @@ namespace Toz.Dotnet.Core.Services
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
             }
             return client;
+        }
+
+        public async Task<bool> ExecutePostMultipartAction(string address, IEnumerable<IFormFile> files, string id, string token, CancellationToken cancelationToken = default(CancellationToken))
+        {
+            using (var client = CreateHttpClient(token))
+            {
+                using (var multipartFormDataContent = new MultipartFormDataContent())
+                {
+                    multipartFormDataContent.Add(new StringContent("id"), id);
+
+                    foreach (var file in files) {
+                        byte[] data;
+                        using (var br = new BinaryReader(file.OpenReadStream()))
+                            data = br.ReadBytes((int)file.OpenReadStream().Length);
+
+                        ByteArrayContent bytes = new ByteArrayContent(data);
+
+                        multipartFormDataContent.Add(bytes, "file", file.FileName);
+                    }
+
+                    var response = await client.PostAsync(address, multipartFormDataContent);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        await PassJsonResponseToErrorService(response);
+                        return false;
+                    }
+                    return true;
+                }
+            }
         }
     }
 }
