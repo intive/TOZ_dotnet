@@ -22,8 +22,8 @@
                 <input type="text" id="search" class="search form-control" placeholder="@Localizer["SearchPlaceholder"]">
             </div>
             <div class="col col-xs-4 text-right">
-                <a class="btn btn-primary btn-sm btn-create" asp-controller="Comments" asp-action="DeletedList">@Localizer["DeletedComments"]</a>
-                
+                <a class="btn btn-primary btn-sm btn-create" asp-controller="Comments" asp-action="Index">@Localizer["ActiveComments"]</a>
+
             </div>
         </div>
     </div>
@@ -34,7 +34,6 @@
                     <th>@Localizer["CreationTime"]</th>
                     <th>@Localizer["NameAndSurname"]</th>
                     <th>@Localizer["Contents"]</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -44,9 +43,6 @@
                         <td>@item.Created</td>
                         <td>@item.UserIdentity</td>
                         <td>@item.Contents</td>
-                        <td class="center-column">
-                           <a class="data-modal btn btn-primary btn-sm" href="@Url.Action("DeleteModal","Comments")/@item.TheComment.Id"><span class="glyphicon glyphicon-trash"></span></a>
-                        </td>
                     </tr>
                 }
             </tbody>

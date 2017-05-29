@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Localization;
@@ -46,13 +45,32 @@ namespace Toz.Dotnet.Controllers
             return View(viewModels.OrderByDescending(x => x.Created).ToList());
         }
 
-        public IActionResult Delete(CancellationToken cancellationToken)
+        public async Task<IActionResult> DeletedList(CancellationToken cancellationToken)
         {
-            return PartialView("Delete");
+            List<Comment> comments = await _commentsManagementService.GetAllComments(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+            List<CommentViewModel> viewModels = new List<CommentViewModel>();
+
+            foreach (Comment comment in comments)
+            {
+                if (comment.State == CommentState.Active)
+                {
+                    continue;
+                }
+
+                User user = await _usersManagementService.GetUser(comment.UserUuid, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true));
+                viewModels.Add(new CommentViewModel() { TheUser = user, TheComment = comment });
+            }
+
+            return View(viewModels.OrderByDescending(x => x.Created).ToList());
+        }
+
+        public IActionResult DeleteModal(CancellationToken cancellationToken)
+        {
+            return PartialView("DeleteModal");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(string id, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteModal(string id, CancellationToken cancellationToken)
         {
             if (!string.IsNullOrEmpty(id) && await _commentsManagementService.DeleteComment(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
             {
@@ -60,9 +78,7 @@ namespace Toz.Dotnet.Controllers
             }
 
             CheckUnexpectedErrors();
-            return PartialView("Delete");
+            return PartialView("DeleteModal");
         }
-
-       
     }
 }
