@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.ViewModels;
+using Toz.Dotnet.Models.EnumTypes;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -33,11 +34,35 @@ namespace Toz.Dotnet.Controllers
 
             foreach(Comment comment in comments)
             {
+                if (comment.State == CommentState.Deleted)
+                {
+                    continue;
+                }
+
                 User user = await _usersManagementService.GetUser(comment.UserUuid, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true));
                 viewModels.Add(new CommentViewModel() { TheUser = user, TheComment = comment });
             }
 
             return View(viewModels.OrderByDescending(x => x.Created).ToList());
         }
+
+        public IActionResult Delete(CancellationToken cancellationToken)
+        {
+            return PartialView("Delete");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id, CancellationToken cancellationToken)
+        {
+            if (!string.IsNullOrEmpty(id) && await _commentsManagementService.DeleteComment(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
+            {
+                return Json(new { success = true });
+            }
+
+            CheckUnexpectedErrors();
+            return PartialView("Delete");
+        }
+
+       
     }
 }
