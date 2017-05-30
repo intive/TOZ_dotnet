@@ -3,7 +3,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "latest",
-	"jquery": "2.2.4",
+    "jquery": "2.2.4",
     "jquery-validation": "latest",
     "jquery-validation-unobtrusive": "latest",
     "datatables-responsive": "latest",
