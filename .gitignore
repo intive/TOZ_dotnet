@@ -247,4 +247,3 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 Toz.Dotnet/Toz.Dotnet/Keys/
-Toz.Dotnet/Toz.Dotnet/wwwroot/bower-libs/

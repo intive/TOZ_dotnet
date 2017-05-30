@@ -1,4 +1,4 @@
-var form = $('.form-horizontal')
+﻿var form = $('.form-horizontal')
     .removeData("validator")
     .removeData("unobtrusiveValidation");
 
