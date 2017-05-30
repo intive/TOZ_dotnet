@@ -33,6 +33,7 @@
                 <tr>
                     <th>@Localizer["CreationTime"]</th>
                     <th>@Localizer["NameAndSurname"]</th>
+                    <th>@Localizer["PetName"]</th>
                     <th>@Localizer["Contents"]</th>
                 </tr>
             </thead>
@@ -42,6 +43,16 @@
                     <tr>
                         <td>@item.Created</td>
                         <td>@item.UserIdentity</td>
+                        @{
+                            if (item.ThePet != null)
+                            {
+                                <td>@item.PetName</td>
+                            }
+                            else
+                            {
+                                <td> </td>
+                            }
+                        }
                         <td>@item.Contents</td>
                     </tr>
                 }

@@ -31,8 +31,9 @@
         <table id="table" class="table table-striped table-bordered table-list dt-responsive compact" style="width:100%">
             <thead>
                 <tr>
-                    <th>@Localizer["CreationTime"]</th>
+                    <th> @Localizer["CreationTime"]</th>
                     <th>@Localizer["NameAndSurname"]</th>
+                    <th>@Localizer["PetName"]</th>
                     <th>@Localizer["Contents"]</th>
                     <th></th>
                 </tr>
@@ -43,6 +44,17 @@
                     <tr>
                         <td>@item.Created</td>
                         <td>@item.UserIdentity</td>
+                        @{
+                            if (item.ThePet != null)
+                            {
+                                <td>@item.PetName</td>
+                            }
+                            else
+                            {
+                                <td> </td>
+                            }
+                        }
+                        
                         <td>@item.Contents</td>
                         <td class="center-column">
                            <a class="data-modal btn btn-primary btn-sm" href="@Url.Action("DeleteModal","Comments")/@item.TheComment.Id"><span class="glyphicon glyphicon-trash"></span></a>

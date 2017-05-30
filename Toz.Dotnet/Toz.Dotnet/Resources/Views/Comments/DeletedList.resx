@@ -132,6 +132,9 @@
   <data name="PageTitle" xml:space="preserve">
     <value>Usunięte komentarze</value>
   </data>
+  <data name="PetName" xml:space="preserve">
+    <value>Imię zwierzaka</value>
+  </data>
   <data name="SearchPlaceholder" xml:space="preserve">
     <value>Szukaj...</value>
   </data>

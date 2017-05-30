@@ -18,12 +18,14 @@ namespace Toz.Dotnet.Controllers
     {
         private readonly ICommentsManagementService _commentsManagementService;
         private readonly IUsersManagementService _usersManagementService;
+        private readonly IPetsManagementService _petsManagementService;
 
         public CommentsController(ICommentsManagementService commentsManagementService, IUsersManagementService usersManagementService,
-            IBackendErrorsService backendErrorsService, IStringLocalizer<CommentsController> localizer, IOptions<AppSettings> settings, IAuthService authService) : base(backendErrorsService, localizer, settings, authService)
+            IPetsManagementService petsManagementService, IBackendErrorsService backendErrorsService, IStringLocalizer<CommentsController> localizer, IOptions<AppSettings> settings, IAuthService authService) : base(backendErrorsService, localizer, settings, authService)
         {
             _commentsManagementService = commentsManagementService;
             _usersManagementService = usersManagementService;
+            _petsManagementService = petsManagementService;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
@@ -39,7 +41,8 @@ namespace Toz.Dotnet.Controllers
                 }
 
                 User user = await _usersManagementService.GetUser(comment.UserUuid, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true));
-                viewModels.Add(new CommentViewModel() { TheUser = user, TheComment = comment });
+                Pet pet = await _petsManagementService.GetPet(comment.PetUuid, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true));
+                viewModels.Add(new CommentViewModel() { TheUser = user, TheComment = comment, ThePet = pet });
             }
 
             return View(viewModels.OrderByDescending(x => x.Created).ToList());
@@ -58,7 +61,8 @@ namespace Toz.Dotnet.Controllers
                 }
 
                 User user = await _usersManagementService.GetUser(comment.UserUuid, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true));
-                viewModels.Add(new CommentViewModel() { TheUser = user, TheComment = comment });
+                Pet pet = await _petsManagementService.GetPet(comment.PetUuid, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true));
+                viewModels.Add(new CommentViewModel() { TheUser = user, TheComment = comment, ThePet = pet });
             }
 
             return View(viewModels.OrderByDescending(x => x.Created).ToList());
