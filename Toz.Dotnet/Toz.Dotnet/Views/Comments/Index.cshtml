@@ -5,6 +5,7 @@
 @{
     ViewData["Title"] = @Localizer["PageTitle"];
 }
+
 <div id='myModal' class='modal fade in'>
     <div class="modal-dialog">
         <div class="modal-content">
@@ -28,7 +29,7 @@
         </div>
     </div>
     <div class="panel-body">
-        <table id="table" class="table table-striped table-bordered table-list dt-responsive compact" style="width:100%">
+        <table id="commentsTable" class="table table-striped table-bordered table-list dt-responsive compact" style="width:100%">
             <thead>
                 <tr>
                     <th> @Localizer["CreationTime"]</th>
@@ -65,3 +66,5 @@
         </table>
     </div>
 </div>
+
+<script src="~/js/datatables/comments.datatables.init.js"></script>
