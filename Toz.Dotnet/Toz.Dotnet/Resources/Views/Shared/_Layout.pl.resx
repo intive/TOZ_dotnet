@@ -153,4 +153,7 @@
   <data name="Helpers" xml:space="preserve">
     <value>Pomocnicy</value>
   </data>
+  <data name="PetsStatus" xml:space="preserve">
+    <value>Statusy zwierzaków</value>
+  </data>
 </root>
