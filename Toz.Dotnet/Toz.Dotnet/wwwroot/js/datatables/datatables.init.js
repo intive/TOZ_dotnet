@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+$(document).ready(function () {
     $('#table').DataTable({
         "dom": 't<"panel-footer"p>',
         "pageLength": 8,

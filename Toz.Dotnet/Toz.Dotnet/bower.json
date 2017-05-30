@@ -2,13 +2,13 @@
   "name": "asp.net",
   "private": true,
   "dependencies": {
-    "bootstrap": "v3.3.7",
+    "bootstrap": "latest",
 	"jquery": "2.2.4",
-    "jquery-validation": "1.16.0",
-    "jquery-validation-unobtrusive": "v3.2.6",
-    "datatables-responsive": "2.1.1",
-    "datatables-bootstrap": "1.0.0",
-    "cropit": "v0.5.1",
-    "fine-uploader": "5.13.0"
+    "jquery-validation": "latest",
+    "jquery-validation-unobtrusive": "latest",
+    "datatables-responsive": "latest",
+    "datatables-bootstrap": "latest",
+    "cropit": "latest",
+    "fine-uploader": "latest"
   }
 }
