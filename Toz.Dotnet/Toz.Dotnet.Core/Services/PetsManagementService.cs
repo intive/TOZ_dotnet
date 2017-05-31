@@ -27,8 +27,7 @@ namespace Toz.Dotnet.Core.Services
         {
             string address = RequestUri;
             return await _restService.ExecuteGetAction<List<Pet>>(address, token, cancelationToken);
-        }
-		
+        }	
         
         public async Task<bool> UpdatePet(Pet pet, string token, CancellationToken cancelationToken = default(CancellationToken))
         {
@@ -36,7 +35,6 @@ namespace Toz.Dotnet.Core.Services
            return await _restService.ExecutePutAction(address, pet, token, cancelationToken);
         }
 
-        
         public async Task<bool> CreatePet(Pet pet, string token, CancellationToken cancelationToken = default(CancellationToken))
         {
             var address = RequestUri;

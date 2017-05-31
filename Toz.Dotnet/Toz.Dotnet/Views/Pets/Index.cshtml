@@ -1,7 +1,7 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Toz.Dotnet.Core.Services
 @using Toz.Dotnet.Models.EnumTypes
-@model IEnumerable<Toz.Dotnet.Models.Pet>
+@model IEnumerable<Toz.Dotnet.Models.ViewModels.PetViewModel>
     @inject IViewLocalizer Localizer
     @{
         ViewData["Title"] = @Localizer["PageTitle"];
@@ -35,10 +35,9 @@
                         <th>@Localizer["Type"]</th>
                         <th>@Localizer["Sex"]</th>
                         <th>@Localizer["Photo"]</th>
-                        <th>@Localizer["Description"]</th>
                         <th>@Localizer["Address"]</th>
                         <th>@Localizer["AddingTime"]</th>
-                        <th>@Localizer["LastEditTime"]</th>
+                        <th>@Localizer["PetsStatus"]</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -46,12 +45,12 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>@item.Name</td>
-                            @if (@item.Type == PetType.Dog)
+                            <td>@item.ThePet.Name</td>
+                            @if (@item.ThePet.Type == PetType.Dog)
                             {
                                 <td>@Localizer["Dog"]</td>
                             }
-                            else if (@item.Type == PetType.Cat)
+                            else if (@item.ThePet.Type == PetType.Cat)
                             {
                                 <td>@Localizer["Cat"]</td>
                             }
@@ -59,11 +58,11 @@
                             {
                                 <td>@Localizer["Unknown"]</td>
                             }
-                            @if (@item.Sex == PetSex.Male)
+                            @if (@item.ThePet.Sex == PetSex.Male)
                             {
                                 <td>@Localizer["Male"]</td>
                             }
-                            else if (@item.Sex == PetSex.Female)
+                            else if (@item.ThePet.Sex == PetSex.Female)
                             {
                                 <td>@Localizer["Female"]</td>
                             }
@@ -72,29 +71,21 @@
                                 <td>@Localizer["Unidentified"]</td>
                             }
                             <td>
-                                @if (item.Photo != null)
+                                @if (item.ThePet.Photo != null)
                                 {
-                                    <img src="data:image;base64,@Convert.ToBase64String(item.Photo)" alt="Pet photo" />
+                                    <img src="data:image;base64,@Convert.ToBase64String(item.ThePet.Photo)" alt="Pet photo" />
                                 }
                                 else
                                 {
                                     <img src="~/images/no-image.png" alt="Pet photo" />
                                 }
                             </td>
-                            <td>@item.Description</td>
-                            <td>@item.Address</td>
-                            <td>@item.Created</td>
-                            @if (!@item.LastModified.HasValue)
-                            {
-                                <td>@Localizer["Lack"]</td>
-                            }
-                            else
-                            {
-                                <td>@item.LastModified</td>
-                            }
+                            <td>@item.ThePet.Address</td>
+                            <td>@item.ThePet.Created</td>
+                            <td style="background: @item.ThePetStatus.RGB">@item.ThePetStatus.Name</td>
                             <td class="center-column">
-                                <a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Images","Pets")/@item.Id"><span class="glyphicon glyphicon-picture"></span></a>
-                                <a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Edit","Pets")/@item.Id"><span class="glyphicon glyphicon-pencil"></span></a>
+                                <a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Images","Pets")/@item.ThePet.Id"><span class="glyphicon glyphicon-picture"></span></a>
+                                <a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Edit","Pets")/@item.ThePet.Id"><span class="glyphicon glyphicon-pencil"></span></a>
                             </td>
                         </tr>
                     }

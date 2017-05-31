@@ -75,11 +75,7 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken)
         {
-            List<PetsStatus> petsStatus = await _petsStatusManagementService.GetAllStatus(CurrentCookiesToken, cancellationToken);
-            var status = petsStatus.Where(x => x.Id == id);
-
-            return PartialView("Edit", status.First());
-            //return PartialView("Edit", await _petsStatusManagementService.GetStatus(id, CurrentCookiesToken, cancellationToken));
+            return PartialView("Edit", await _petsStatusManagementService.GetStatus(id, CurrentCookiesToken, cancellationToken));
         }
 
         public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)

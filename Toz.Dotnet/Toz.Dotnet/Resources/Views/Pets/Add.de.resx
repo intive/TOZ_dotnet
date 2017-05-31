@@ -53,6 +53,7 @@
     value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
+
     mimetype: application/x-microsoft.net.object.bytearray.base64
     value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
@@ -116,68 +117,67 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-    <data name="PageTitle" xml:space="preserve">
-        <value>Tier hinzufüg</value>
-    </data>
-    <data name="Name" xml:space="preserve">
-        <value>Name</value>
-    </data>
-    <data name="Type" xml:space="preserve">
-        <value>Typ</value>
-    </data>
-    <data name="Sex" xml:space="preserve">
-        <value>Geschlecht</value>
-    </data>
-    <data name="Photo" xml:space="preserve">
-        <value>Foto</value>
-    </data>
-    <data name="Description" xml:space="preserve">
-        <value>Beschreibung</value>
-    </data>
-    <data name="Address" xml:space="preserve">
-        <value>Adresse</value>
-    </data>
-    <data name="Cat" xml:space="preserve">
-        <value>Katze</value>
-    </data>
-    <data name="Dog" xml:space="preserve">
-        <value>Hund</value>
-    </data>
-    <data name="Male" xml:space="preserve">
-        <value>Männlich</value>
-    </data>
-    <data name="Female" xml:space="preserve">
-        <value>Weiblich</value>
-    </data>
-    <data name="Unidentified" xml:space="preserve">
-        <value>Unbekannt</value>
-    </data>
-    <data name="Unknown" xml:space="preserve">
-        <value>Unbekannt</value>
-    </data>
-    <data name="Save" xml:space="preserve">
-        <value>Sparen</value>
-    </data>
-    <data name="Cancel" xml:space="preserve">
-        <value>Stornieren</value>
-    </data>
-    <data name="Browse" xml:space="preserve">
-        <value>Durchsuchen...</value>
-    </data>
-    <data name="WrongFileType" xml:space="preserve">
-        <value>Falscher Dateityp.</value>
-    </data>
-    <data name="EmptyFile" xml:space="preserve">
-        <value>Die Datei ist leer.</value>
-    </data>
-    <data name="NoFileSelected" xml:space="preserve">
-        <value>Keine Datei ausgewählt.</value>
-    </data>
-    <data name="PhotoAlertWithoutPhoto" xml:space="preserve">
-        <value>Click again "Save" button to save without photo.</value>
-    </data>
-    <data name="PhotoAlertWithLastPhoto" xml:space="preserve">
-        <value>Click again "Save" button to save last selected photo</value>
-    </data>
+  <data name="PageTitle" xml:space="preserve">
+    <value>Tier hinzufüg</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="Sex" xml:space="preserve">
+    <value>Geschlecht</value>
+  </data>
+  <data name="Photo" xml:space="preserve">
+    <value>Foto</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Beschreibung</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Adresse</value>
+  </data>
+  <data name="Cat" xml:space="preserve">
+    <value>Katze</value>
+  </data>
+  <data name="Dog" xml:space="preserve">
+    <value>Hund</value>
+  </data>
+  <data name="Male" xml:space="preserve">
+    <value>Männlich</value>
+  </data>
+  <data name="Female" xml:space="preserve">
+    <value>Weiblich</value>
+  </data>
+  <data name="Unidentified" xml:space="preserve">
+    <value>Unbekannt</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Unbekannt</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Sparen</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Stornieren</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>Durchsuchen...</value>
+  </data>
+  <data name="WrongFileType" xml:space="preserve">
+    <value>Falscher Dateityp.</value>
+  </data>
+  <data name="EmptyFile" xml:space="preserve">
+    <value>Die Datei ist leer.</value>
+  </data>
+  <data name="NoFileSelected" xml:space="preserve">
+    <value>Keine Datei ausgewählt.</value>
+  </data>
+  <data name="PhotoAlertWithoutPhoto" xml:space="preserve">
+    <value>Click again "Save" button to save without photo.</value>
+  </data>
+  <data name="PhotoAlertWithLastPhoto" xml:space="preserve">
+    <value>Click again "Save" button to save last selected photo</value>
+  </data>
 </root>

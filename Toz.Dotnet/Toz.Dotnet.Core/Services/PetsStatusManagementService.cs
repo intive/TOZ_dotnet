@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Resources.Configuration;
+using System.Linq;
 
 namespace Toz.Dotnet.Core.Services
 {
@@ -47,8 +48,9 @@ namespace Toz.Dotnet.Core.Services
 
         public async Task<PetsStatus> GetStatus(string id, string token, CancellationToken cancelationToken = default(CancellationToken))
         {
-            string address = $"{RequestUri}/{id}";
-            return await _restService.ExecuteGetAction<PetsStatus>(address, token, cancelationToken);
+            //:disappointed:
+            List<PetsStatus> statusList = await GetAllStatus(token, cancelationToken);
+            return statusList.Where(x => x.Id == id).First();
         }
     }
 }

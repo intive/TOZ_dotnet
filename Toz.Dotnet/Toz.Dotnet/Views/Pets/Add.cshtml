@@ -1,5 +1,5 @@
 @using Microsoft.AspNetCore.Mvc.Localization
-@model Toz.Dotnet.Models.Pet
+@model Toz.Dotnet.Models.ViewModels.PetViewModel
 @inject IViewLocalizer Localizer
 
 @{
@@ -13,49 +13,62 @@
             <div class="form-group row">
                 <label class="col-sm-2 control-label">@Localizer["Name"]</label>
                 <div class="col-sm-10">
-                    <input asp-for="Name" class="form-control" id="Name">
+                    <input asp-for="ThePet.Name" class="form-control" id="ThePet.Name">
                     <span class="glyphicon form-control-feedback"></span>
-                    <span asp-validation-for="Name" class="help-block"></span>
+                    <span asp-validation-for="ThePet.Name" class="help-block"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 control-label">@Localizer["Type"]</label>
                 <div class="col-sm-10">
-                    <select asp-for="Type" class="form-control" id="Type">
+                    <select asp-for="ThePet.Type" class="form-control" id="ThePet.Type">
                         <option value="0"></option>
                         <option value="1">@Localizer["Dog"]</option>
                         <option value="2">@Localizer["Cat"]</option>
                     </select>
                     <span class="glyphicon form-control-feedback"></span>
-                    <span asp-validation-for="Type" class="help-block"></span>
+                    <span asp-validation-for="ThePet.Type" class="help-block"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 control-label">@Localizer["Sex"]</label>
                 <div class="col-sm-10">
-                    <select asp-for="Sex" class="form-control" id="Sex">
+                    <select asp-for="ThePet.Sex" class="form-control" id="ThePet.Sex">
                         <option value="0"></option>
                         <option value="1">@Localizer["Male"]</option>
                         <option value="2">@Localizer["Female"]</option>
                     </select>
                     <span class="glyphicon form-control-feedback"></span>
-                    <span asp-validation-for="Sex"></span>
+                    <span asp-validation-for="ThePet.Sex"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 control-label">@Localizer["Description"]</label>
                 <div class="col-sm-10">
-                    <textarea asp-for="Description" class="form-control" id="Description" cols="10" rows="4" style="resize: vertical"></textarea>
+                    <textarea asp-for="ThePet.Description" class="form-control" id="ThePet.Description" cols="10" rows="4" style="resize: vertical"></textarea>
                     <span class="glyphicon form-control-feedback"></span>
-                    <span asp-validation-for="Description"></span>
+                    <span asp-validation-for="ThePet.Description"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 control-label">@Localizer["Address"]</label>
                 <div class="col-sm-10">
-                    <input asp-for="Address" class="form-control" id="Address">
+                    <input asp-for="ThePet.Address" class="form-control" id="ThePet.Address">
                     <span class="glyphicon form-control-feedback"></span>
-                    <span asp-validation-for="Address"></span>
+                    <span asp-validation-for="ThePet.Address"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["PetsStatus"]</label>
+                <div class="col-sm-10">
+                    <select asp-for="ThePet.PetsStatus"
+                            class="form-control"
+                            asp-items="@Model.TheStatusList">
+                        <option> </option>
+                    </select>
+                    <span class="glyphicon form-control-feedback"></span>
+                    <span class="control-label" asp-validation-for="ThePet.PetsStatus"></span>
                 </div>
             </div>
 

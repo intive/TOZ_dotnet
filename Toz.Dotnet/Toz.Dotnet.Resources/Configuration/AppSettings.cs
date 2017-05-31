@@ -21,6 +21,7 @@ namespace Toz.Dotnet.Resources.Configuration
         public string BackendGalleryUrl { get; set; }
         public string BackendImagesUrl { get; set; }
         public string BackendPetsStatusUrl { get; set; }
+        public string ThumbnailsBaseUrl { get; set; }
 
         public List<string> BlockedControllers { get; set; }
         public string PolicyName { get; set; }

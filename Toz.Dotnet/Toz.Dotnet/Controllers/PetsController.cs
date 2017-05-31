@@ -13,6 +13,8 @@ using System.Linq;
 using System.Net.Http;
 using Toz.Dotnet.Authorization;
 using Toz.Dotnet.Models.Images;
+using Toz.Dotnet.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -20,22 +22,35 @@ namespace Toz.Dotnet.Controllers
     {
         private readonly IFilesManagementService _filesManagementService;
         private readonly IPetsManagementService _petsManagementService;
+        private readonly IPetsStatusManagementService _petsStatusManagementService;
+
         private readonly IOptions<AppSettings> _appSettings;
 
         public PetsController(IFilesManagementService filesManagementService, IPetsManagementService petsManagementService,
-            IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings,
+            IPetsStatusManagementService petsStatusManagementService, IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings,
             IBackendErrorsService backendErrorsService, IAuthService authService) : base(backendErrorsService, localizer, appSettings, authService)
         {
             _filesManagementService = filesManagementService;
             _petsManagementService = petsManagementService;
+            _petsStatusManagementService = petsStatusManagementService;
             _appSettings = appSettings;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             List<Pet> pets = await _petsManagementService.GetAllPets(CurrentCookiesToken, cancellationToken);
+            List<PetViewModel> viewModel = new List<PetViewModel>();
+
             foreach (var pet in pets)
             {
+                viewModel.Add(new PetViewModel
+                {
+                    ThePet = pet,
+                    ThePetStatus = string.IsNullOrEmpty(pet.PetsStatus)
+                        ? new PetsStatus { Name = "(brak)" }
+                        : await _petsStatusManagementService.GetStatus(pet.PetsStatus, CurrentCookiesToken, cancellationToken)
+                });
+
                 if (!string.IsNullOrEmpty(pet.ImageUrl))
                 {
                     try
@@ -58,18 +73,16 @@ namespace Toz.Dotnet.Controllers
                     }
                 }
             }
-            return View(pets.OrderByDescending(x => x.Created).ThenByDescending(x => x.LastModified).ToList());
+            return View(viewModel.OrderByDescending(x => x.ThePet.Created).ThenByDescending(x => x.ThePet.LastModified));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(
-            [Bind("Name, Type, Sex, Description, Address")]
-            Pet pet, CancellationToken cancellationToken)
+        public async Task<IActionResult> Add(PetViewModel pet, CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
             {
-                if (await _petsManagementService.CreatePet(pet, CurrentCookiesToken, cancellationToken))
+                if (await _petsManagementService.CreatePet(pet.ThePet, CurrentCookiesToken, cancellationToken))
                 {
                     return Json(new { success = true });
                 }
@@ -82,20 +95,28 @@ namespace Toz.Dotnet.Controllers
 
         }
 
-        public IActionResult Add()
+        public async Task<IActionResult> Add(CancellationToken cancellationToken)
         {
-            return PartialView(new Pet());
+            List<PetsStatus> petsStatus = (await _petsStatusManagementService.GetAllStatus(CurrentCookiesToken, cancellationToken))
+                 .OrderBy(s => s.Name)
+                 .ToList();
+
+            PetViewModel pet = new PetViewModel
+            {
+                ThePet = new Pet(),
+                TheStatusList = new SelectList(petsStatus, "Id", "Name")
+            };
+
+            return PartialView(pet);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(
-            [Bind("Id, Name, Type, Sex, Description, Address, AddingTime")]
-            Pet pet, CancellationToken cancellationToken)
+        public async Task<IActionResult> Edit(PetViewModel pet, CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
             {
-                if (await _petsManagementService.UpdatePet(pet, CurrentCookiesToken, cancellationToken))
+                if (await _petsManagementService.UpdatePet(pet.ThePet, CurrentCookiesToken, cancellationToken))
                 {
                     return Json(new { success = true });
                 }
@@ -126,9 +147,10 @@ namespace Toz.Dotnet.Controllers
             List<Photo> gallery = pet.Gallery;
             List<FineUploader> json = new List<FineUploader>();
 
-            foreach (var photo in gallery)
+            for(int i = 0; i < gallery.Count; i++)
             {
-                json.Add(new FineUploader { UUID = photo.Id, Name = $"{photo.Id}.jpg", ThumbnailUrl = $"{_appSettings.Value.BaseUrl}{photo.FileUrl}" });
+                var photo = gallery[i];
+                json.Add(new FineUploader { UUID = photo.Id, Name = $"Zdjêcie {i+1}.jpg", ThumbnailUrl = $"{_appSettings.Value.ThumbnailsBaseUrl}{photo.FileUrl}" });
             }
 
             CheckUnexpectedErrors();
@@ -163,7 +185,17 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<ActionResult> Edit(string id, CancellationToken cancellationToken)
         {
-            return PartialView("Edit", await _petsManagementService.GetPet(id, CurrentCookiesToken,cancellationToken));
+            List<PetsStatus> petsStatus = (await _petsStatusManagementService.GetAllStatus(CurrentCookiesToken, cancellationToken))
+                 .OrderBy(s => s.Name)
+                 .ToList();
+
+            PetViewModel pet = new PetViewModel
+            {
+                ThePet = await _petsManagementService.GetPet(id, CurrentCookiesToken, cancellationToken),
+                TheStatusList = new SelectList(petsStatus, "Id", "Name")
+            };
+
+            return PartialView("Edit", pet);
         }
 
         public async Task<ActionResult> Images(string id, CancellationToken cancellationToken)
