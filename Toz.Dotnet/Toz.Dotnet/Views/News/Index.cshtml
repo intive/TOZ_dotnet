@@ -30,11 +30,11 @@
         <table id="table" class="table table-striped table-bordered table-list dt-responsive compact">
             <thead>
                 <tr>
-                    <th></th>
+                    <th>@Localizer["PublishingTime"]</th>
                     <th>@Localizer["Title"]</th>
                     <th>@Localizer["Photo"]</th>
                     <th>@Localizer["ShortBody"]</th>
-                    <th></th>
+                    <th>@Localizer["Status"]</th>
                     <th class="center-column"></th>
                 </tr>
             </thead>
@@ -42,7 +42,7 @@
                 @if (Model == null)
                 {
                     <tr>
-                        <td class="text-center" colspan="8">@Localizer["NoNews"]</td>
+                        <td class="text-center" colspan="6">@Localizer["NoNews"]</td>
                     </tr>
                 }
                 else

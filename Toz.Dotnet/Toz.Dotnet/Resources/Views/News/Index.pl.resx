@@ -162,4 +162,7 @@
   <data name="NoNews" xml:space="preserve">
     <value>(brak aktualności na liście)</value>
   </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
 </root>
