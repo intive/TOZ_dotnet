@@ -41,6 +41,11 @@ namespace Toz.Dotnet.Controllers
             List<Pet> pets = await _petsManagementService.GetAllPets(CurrentCookiesToken, cancellationToken);
             List<PetViewModel> viewModel = new List<PetViewModel>();
 
+            if (pets == null)
+            {
+                return View();
+            }
+
             foreach (var pet in pets)
             {
                 viewModel.Add(new PetViewModel

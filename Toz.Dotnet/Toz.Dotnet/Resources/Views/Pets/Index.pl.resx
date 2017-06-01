@@ -186,4 +186,7 @@
   <data name="PetsStatus" xml:space="preserve">
     <value>Status</value>
   </data>
+  <data name="NoPets" xml:space="preserve">
+    <value>(brak zwierząt na liście)</value>
+  </data>
 </root>
