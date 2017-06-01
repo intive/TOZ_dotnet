@@ -47,7 +47,7 @@ namespace Toz.Dotnet.Controllers
                 {
                     ThePet = pet,
                     ThePetStatus = string.IsNullOrEmpty(pet.PetsStatus)
-                        ? new PetsStatus { Name = "(brak)" }
+                        ? new PetsStatus { Name = StringLocalizer["Lack"] }
                         : await _petsStatusManagementService.GetStatus(pet.PetsStatus, CurrentCookiesToken, cancellationToken)
                 });
 

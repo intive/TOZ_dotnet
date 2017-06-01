@@ -132,4 +132,9 @@
   <ItemGroup>
     <Folder Include="Keys\" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Controllers\PetsController.pl.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>
