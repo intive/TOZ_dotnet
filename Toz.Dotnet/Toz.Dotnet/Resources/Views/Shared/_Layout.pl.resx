@@ -153,4 +153,7 @@
   <data name="Helpers" xml:space="preserve">
     <value>Pomocnicy</value>
   </data>
+  <data name="Comments" xml:space="preserve">
+    <value>Komentarze</value>
+  </data>
 </root>

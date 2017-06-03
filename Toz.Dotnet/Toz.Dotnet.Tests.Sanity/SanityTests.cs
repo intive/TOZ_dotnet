@@ -24,6 +24,7 @@ namespace Toz.Dotnet.Tests.Sanity
         private readonly IHowToHelpInformationService _howToHelpInformationService;
         private readonly IAccountManagementService _accountManagementService;
         private readonly IHelpersManagementService _helpersManagementService;
+        private readonly ICommentsManagementService _commentsManagementService;
         private JwtToken _token;
 
         public SanityTests()
@@ -37,6 +38,7 @@ namespace Toz.Dotnet.Tests.Sanity
             _howToHelpInformationService = ServiceProvider.Instance.Resolve<IHowToHelpInformationService>();
             _accountManagementService = ServiceProvider.Instance.Resolve<IAccountManagementService>();
             _helpersManagementService = ServiceProvider.Instance.Resolve<IHelpersManagementService>();
+            _commentsManagementService = ServiceProvider.Instance.Resolve<ICommentsManagementService>();
 
             _petsManagementService.RequestUri = RequestUriHelper.PetsUri;
             _newsManagementService.RequestUri = RequestUriHelper.NewsUri;
@@ -47,6 +49,7 @@ namespace Toz.Dotnet.Tests.Sanity
             _howToHelpInformationService.DonateInfoUrl = RequestUriHelper.HowToHelpUri;
             _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUri;
             _helpersManagementService.RequestUri = RequestUriHelper.HelpersUri;
+            _commentsManagementService.RequestUri = RequestUriHelper.CommentsUri;
         }
 
         [Fact]
@@ -224,6 +227,19 @@ namespace Toz.Dotnet.Tests.Sanity
             Assert.True(_helpersManagementService.DeleteHelper(helper.Id, _token.Jwt).Result);
             Assert.NotNull(_helpersManagementService.GetHelper(helper.Id, _token.Jwt).Result);
             Assert.True(_helpersManagementService.UpdateHelper(helper, _token.Jwt).Result);
+        }
+
+        [Fact]
+        public async void CommentsFunctinalityTest()
+        {
+            _token = await _accountManagementService.SignIn(TestingObjectProvider.Instance.Login);
+            Assert.NotNull(_token);
+
+            var comment = TestingObjectProvider.Instance.Comment;
+
+            Assert.NotNull(_commentsManagementService.GetAllComments(_token.Jwt).Result); 
+            Assert.True(_commentsManagementService.DeleteComment(comment.Id, _token.Jwt).Result);
+            Assert.NotNull(_helpersManagementService.GetHelper(comment.Id, _token.Jwt).Result);
         }
 
         public void Dispose()
