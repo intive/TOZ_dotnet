@@ -21,6 +21,7 @@ namespace Toz.Dotnet.Tests.Helpers
         public JwtToken JwtToken { get; set; }
         public Login Login { get; set; }
         public Helper Helper { get; set; }
+        public Comment Comment { get; set; }
 
         private TestingObjectProvider()
         {
@@ -144,6 +145,17 @@ namespace Toz.Dotnet.Tests.Helpers
                 LastModified = DateTime.Now,
                 Notes = "notes"
             };
+
+            Comment = new Comment()
+            {
+                Contents = "Bardzo ładny piesek",
+                Id = Guid.NewGuid().ToString(),
+                Created = DateTime.Now,
+                LastModified = DateTime.Now,
+                State = CommentState.Active,
+                PetUuid = Pet.Id,
+                UserUuid = User.Id
+            };
         }
 
         public T DoShallowCopy<T>(T value) where T : new()
@@ -156,6 +168,5 @@ namespace Toz.Dotnet.Tests.Helpers
             }
             return output;
         }
-
     }
 }

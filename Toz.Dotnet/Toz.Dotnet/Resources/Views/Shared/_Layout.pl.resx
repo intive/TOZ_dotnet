@@ -156,4 +156,7 @@
   <data name="PetsStatus" xml:space="preserve">
     <value>Statusy zwierzaków</value>
   </data>
+  <data name="Comments" xml:space="preserve">
+    <value>Komentarze</value>
+  </data>
 </root>

@@ -12,6 +12,7 @@ namespace Toz.Dotnet.Tests.Helpers
         public static string ProposalsUri { get; } = "https://notexistingapi.com/proposals";
         public static string HowToHelpUri { get; } = "https://notexistingapi.com/organization/howToHelp";
         public static string HelpersUri { get; } = "https://notexistingapi.com/helpers";
+        public static string CommentsUri { get; } = "https://notexistingapi.com/comments";
         public static string WrongUrl { get; } = "Thats not a Url!";
     }
 }
