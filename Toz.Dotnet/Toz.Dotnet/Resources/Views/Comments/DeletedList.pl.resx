@@ -117,20 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActiveComments" xml:space="preserve">
+    <value>Dodane komentarze</value>
+  </data>
+  <data name="Author" xml:space="preserve">
+    <value>Autor</value>
+  </data>
   <data name="Contents" xml:space="preserve">
     <value>Treść</value>
   </data>
   <data name="CreationTime" xml:space="preserve">
     <value>Czas dodania</value>
   </data>
-  <data name="DeletedComments" xml:space="preserve">
-    <value>Usunięte komentarze</value>
-  </data>
-  <data name="NameAndSurname" xml:space="preserve">
-    <value>Imię i nazwisko</value>
-  </data>
   <data name="PageTitle" xml:space="preserve">
-    <value>Dodane komentarze</value>
+    <value>Usunięte komentarze</value>
   </data>
   <data name="PetName" xml:space="preserve">
     <value>Imię zwierzaka</value>
