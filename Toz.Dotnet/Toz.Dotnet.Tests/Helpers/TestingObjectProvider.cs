@@ -11,6 +11,17 @@ namespace Toz.Dotnet.Tests.Helpers
         private static TestingObjectProvider _instance;
         public static TestingObjectProvider Instance => _instance ?? (_instance = new TestingObjectProvider());
 
+        public Pet Pet { get; }
+        public PetsStatus PetsStatus { get; }
+        public News News { get; }
+        public Organization Organization { get; }
+        public User User { get; }
+        public Proposal Proposal { get; }
+        public HowToHelpInfo HowToHelpInfo { get; set; }
+        public JwtToken JwtToken { get; set; }
+        public Login Login { get; set; }
+        public Helper Helper { get; set; }
+
         private TestingObjectProvider()
         {
             Pet = new Pet
@@ -24,6 +35,14 @@ namespace Toz.Dotnet.Tests.Helpers
                 Address = "Found in the jungle",
                 Created = DateTime.Now,
                 LastModified = DateTime.Now
+            };
+
+            PetsStatus = new PetsStatus()
+            {
+                Id = Guid.NewGuid().ToString(),
+                IsPublic = true,
+                Name = "testStatusName",
+                RGB = "#fc6dff"
             };
 
             User = new User
@@ -86,7 +105,7 @@ namespace Toz.Dotnet.Tests.Helpers
                     Phone = "123456789",
                     Website = "http://testwebsite.com"
                 },
-                
+
             };
 
             HowToHelpInfo = new HowToHelpInfo()
@@ -125,18 +144,7 @@ namespace Toz.Dotnet.Tests.Helpers
                 LastModified = DateTime.Now,
                 Notes = "notes"
             };
-
         }
-
-        public Pet Pet { get; }
-        public News News { get; }
-        public Organization Organization { get; }
-        public User User { get; }
-        public Proposal Proposal { get; }
-        public HowToHelpInfo HowToHelpInfo { get; set; }
-        public JwtToken JwtToken { get; set; }
-        public Login Login { get; set; }
-        public Helper Helper { get; set; }
 
         public T DoShallowCopy<T>(T value) where T : new()
         {

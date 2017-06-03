@@ -20,20 +20,18 @@ namespace Toz.Dotnet.Core.Services
             RequestUri = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendPetsUrl + appSettings.Value.BackendPetsStatusUrl;
         }
 
-		public async Task<List<PetsStatus>> GetAllStatus(string token, CancellationToken cancelationToken = default(CancellationToken))
+        public async Task<List<PetsStatus>> GetAllStatus(string token, CancellationToken cancelationToken = default(CancellationToken))
         {
             string address = RequestUri;
             return await _restService.ExecuteGetAction<List<PetsStatus>>(address, token, cancelationToken);
         }
-		
-        
+
         public async Task<bool> UpdateStatus(PetsStatus status, string token, CancellationToken cancelationToken = default(CancellationToken))
         {
-           var address = $"{RequestUri}/{status.Id}";
-           return await _restService.ExecutePutAction(address, status, token, cancelationToken);
+            var address = $"{RequestUri}/{status.Id}";
+            return await _restService.ExecutePutAction(address, status, token, cancelationToken);
         }
 
-        
         public async Task<bool> CreateStatus(PetsStatus status, string token, CancellationToken cancelationToken = default(CancellationToken))
         {
             var address = RequestUri;
