@@ -8,13 +8,11 @@ namespace Toz.Dotnet.Authorization
 {
     public class AuthService : IAuthService
     {
-        private IDataProtector _protector;
-        private AppSettings _appSettings;
+        private readonly IDataProtector _protector;
 
         public AuthService(IDataProtectionProvider provider, IOptions<AppSettings> appSettings)
         {
-            _appSettings = appSettings.Value;
-            _protector = provider.CreateProtector(_appSettings.DataProtectorName);
+            _protector = provider.CreateProtector("CustomDataProtector");
         }
 
         public void AddToCookie(HttpContext httpContext, string key, string value, CookieOptions cookieOptions)

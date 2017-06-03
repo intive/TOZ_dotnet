@@ -1,10 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
 @using Toz.Dotnet.Models.EnumTypes
 @model IEnumerable<Toz.Dotnet.Models.News>
-@inject IViewLocalizer Localizer
-@{
-    ViewData["Title"] = @Localizer["PageTitle"];
-}
+    @inject IViewLocalizer Localizer
+    @{
+        ViewData["Title"] = @Localizer["PageTitle"];
+    }
     <div id='myModal' class='modal fade in'>
         <div class="modal-dialog">
             <div class="modal-content">
@@ -26,7 +26,6 @@
                 </div>
             </div>
         </div>
-    </div>
         <div class="panel-body">
             <table id="table" class="table table-striped table-bordered table-list dt-responsive compact">
                 <thead>
@@ -40,65 +39,69 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr id="News_@Model.ToList().IndexOf(item)">
-                            @if (!@item.Published.HasValue)
+                @{
+                    var modelList = Model.ToList();
+                }
+                @foreach (var item in modelList)
+                {
+                    <tr id="News_@modelList.IndexOf(item)">
+                        @if (!@item.Published.HasValue)
+                        {
+                            <td>@Localizer["Lack"]</td>
+                        }
+                        else
+                        {
+                            <td>@item.Published</td>
+                        }
+                        <td style="word-wrap: break-word;">
+                            <div style="width: 200px; overflow: auto">@item.Title</div>
+                        </td>
+                        <td>
+                            @if (item.Photo != null)
                             {
-                                <td>@Localizer["Lack"]</td>
+                                <img src="data:image;base64,@Convert.ToBase64String(item.Photo)" alt="News photo"/>
                             }
                             else
                             {
-                                <td>@item.Published</td>
+                                <img src="~/images/no-image.png" alt="Pet photo"/>
                             }
-                            <td style="word-wrap:break-word;">
-                                <div style="width:200px;overflow:auto">@item.Title</div>
-                            </td>
-                            <td>
-                                @if (item.Photo != null)
-                                {
-                                    <img src="data:image;base64,@Convert.ToBase64String(item.Photo)" alt="News photo" />
-                                }
-                                else
-                                {
-                                    <img src="~/images/no-image.png" alt="Pet photo" />
-                                }
-                            </td>
-                            <td class="overflow-ellipsis">@item.Contents</td>
-                            @switch (item.Type)
+                        </td>
+                        <td class="overflow-ellipsis">@item.Contents</td>
+                        @switch (item.Type)
+                        {
+                            case NewsStatus.Unreleased:
                             {
-                                case NewsStatus.Unreleased:
-                                    {
-                                        <td>
-                                            <div class="unreleased">
-                                                <div class="glyphicon glyphicon-exclamation-sign"></div>
-                                                @Localizer["Unreleased"]
-                                            </div>
-                                        </td>
-                                        break;
-                                    }
-                                case NewsStatus.Archived:
-                                    {
-                                        <td>
-                                            <div class="archived">
-                                                <div class="glyphicon glyphicon-exclamation-sign"></div>
-                                                @Localizer["Archived"]
-                                            </div>
-                                        </td>
-                                        break;
-                                    }
-                                default:
-                                    {
-                                        <td></td>
-                                        break;
-                                    }
+                                <td>
+                                    <div class="unreleased">
+                                        <div class="glyphicon glyphicon-exclamation-sign"></div>
+                                        @Localizer["Unreleased"]
+                                    </div>
+                                </td>
+                                break;
                             }
-                            <td class="center-column">
-                                <a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Images","News")/@item.Id"><span class="glyphicon glyphicon-picture"></span></a>
-                                <a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Edit","News")/@item.Id"><span class="glyphicon glyphicon-pencil"></span></a>
-                            </td>
-                        </tr>
-                    }
+                            case NewsStatus.Archived:
+                            {
+                                <td>
+                                    <div class="archived">
+                                        <div class="glyphicon glyphicon-exclamation-sign"></div>
+                                        @Localizer["Archived"]
+                                    </div>
+                                </td>
+                                break;
+                            }
+                            default:
+                            {
+                                <td></td>
+                                break;
+                            }
+                        }
+                        <td class="center-column">
+                            <a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Images", "News")/@item.Id"><span class="glyphicon glyphicon-picture"></span></a>
+                            <a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Edit", "News")/@item.Id"><span class="glyphicon glyphicon-pencil"></span></a>
+                        </td>
+                    </tr>
+                }
                 </tbody>
             </table>
         </div>
+    </div>

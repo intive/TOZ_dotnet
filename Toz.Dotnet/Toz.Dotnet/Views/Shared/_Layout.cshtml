@@ -26,20 +26,16 @@
         <script src="~/lib/datatables/media/js/dataTables.bootstrap.js"></script>
         <link rel="stylesheet" href="~/lib/datatables/media/css/dataTables.bootstrap.css"/>
         <script src="~/js/site.js"></script>
+        <script src="~/lib/datatables-responsive/js/dataTables.responsive.js"></script>
+        <script src="~/lib/datatables-responsive/js/responsive.bootstrap.js"></script>
+        <script src="~/js/datatables/datatables.init.js"></script>
+        <link rel="stylesheet" href="~/lib/datatables-responsive/css/responsive.bootstrap.css"/>
     </environment>
    
     <environment names="Staging,Production">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"></script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"></script>
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only"
-              asp-fallback-test-property="position"
-              asp-fallback-test-value="absolute" />
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true"/>
         <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
@@ -47,13 +43,11 @@
         <script src="~/lib/datatables/media/js/dataTables.bootstrap.min.js"></script>
         <link rel="stylesheet" href="~/lib/datatables/media/css/dataTables.bootstrap.min.css"/>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>    
-    
-    <!-- Environment independent: -->
-    <script src="~/lib/datatables-responsive/js/dataTables.responsive.js"></script>
-    <script src="~/lib/datatables-responsive/js/responsive.bootstrap.js"></script>
-    <script src="~/js/datatables/datatables.init.js"></script>
-    <link rel="stylesheet" href="~/lib/datatables-responsive/css/responsive.bootstrap.css"/>
+        <script src="~/lib/datatables-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="~/lib/datatables-responsive/js/responsive.bootstrap.min.js"></script>
+        <script src="~/js/datatables/datatables.init.min.js"></script>
+        <link rel="stylesheet" href="~/lib/datatables-responsive/css/responsive.bootstrap.min.css"/>
+    </environment>
 </head>
 
 <body>
@@ -75,7 +69,8 @@
                     <li><a asp-controller="News" asp-action="Index">@Localizer["NewsList"]</a></li>
                     <li><a asp-controller="Users" asp-action="Index">@Localizer["Users"]</a></li>
                     <li><a asp-controller="Helpers" asp-action="Index">@Localizer["Helpers"]</a></li>
-                    <li><a asp-controller="Schedule" asp-action="Index" asp-route-firstLoad="true">@Localizer["Schedule"]</a></li>
+                    <li><a asp-controller="Comments" asp-action="Index">@Localizer["Comments"]</a></li>
+                    <li><a asp-controller="Schedule" asp-action="Index">@Localizer["Schedule"]</a></li>
                     <li><a asp-controller="Organization" asp-action="Info">@Localizer["OrganizationInfo"]</a></li>
                     <li><a asp-controller="Proposals" asp-action="Index">@Localizer["Proposals"]</a></li>
                     <li><a asp-controller="HowToHelp" asp-action="Info">@Localizer["HowToHelp"]</a></li>

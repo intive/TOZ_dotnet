@@ -126,6 +126,17 @@ namespace Toz.Dotnet.Tests.Helpers
                 Notes = "notes"
             };
 
+            Comment = new Comment()
+            {
+                Contents = "Bardzo ładny piesek",
+                Id = Guid.NewGuid().ToString(),
+                Created = DateTime.Now,
+                LastModified = DateTime.Now,
+                State = CommentState.Active,
+                PetUuid = Pet.Id,
+                UserUuid = User.Id
+            };
+
         }
 
         public Pet Pet { get; }
@@ -137,6 +148,7 @@ namespace Toz.Dotnet.Tests.Helpers
         public JwtToken JwtToken { get; set; }
         public Login Login { get; set; }
         public Helper Helper { get; set; }
+        public Comment Comment { get; set; }
 
         public T DoShallowCopy<T>(T value) where T : new()
         {
@@ -150,4 +162,5 @@ namespace Toz.Dotnet.Tests.Helpers
         }
 
     }
+
 }
