@@ -13,6 +13,7 @@ using System.Linq;
 using System.Net.Http;
 using Toz.Dotnet.Authorization;
 using Toz.Dotnet.Models.Images;
+using Toz.Dotnet.Models.ViewModels;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -20,22 +21,33 @@ namespace Toz.Dotnet.Controllers
     {
         private readonly IFilesManagementService _filesManagementService;
         private readonly IPetsManagementService _petsManagementService;
+        private readonly IHelpersManagementService _helpersManagementService;
         private readonly IOptions<AppSettings> _appSettings;
 
         public PetsController(IFilesManagementService filesManagementService, IPetsManagementService petsManagementService,
-            IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings,
+            IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings, IHelpersManagementService helpersManagementService,
             IBackendErrorsService backendErrorsService, IAuthService authService) : base(backendErrorsService, localizer, appSettings, authService)
         {
             _filesManagementService = filesManagementService;
             _petsManagementService = petsManagementService;
+            _helpersManagementService = helpersManagementService;
             _appSettings = appSettings;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             List<Pet> pets = await _petsManagementService.GetAllPets(CurrentCookiesToken, cancellationToken);
+            List<PetViewModel> viewModel = new List<PetViewModel>();
             foreach (var pet in pets)
             {
+                viewModel.Add(new PetViewModel
+                {
+                    ThePet = pet,
+                    TheHelper = string.IsNullOrEmpty(pet.HelperId)
+                        ? new Helper { Address = "TOZ" }
+                        : await _helpersManagementService.GetHelper(pet.HelperId, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken)
+                });
+            
                 if (!string.IsNullOrEmpty(pet.ImageUrl))
                 {
                     try
@@ -58,7 +70,7 @@ namespace Toz.Dotnet.Controllers
                     }
                 }
             }
-            return View(pets.OrderByDescending(x => x.Created).ThenByDescending(x => x.LastModified).ToList());
+            return View(viewModel.OrderByDescending(x => x.ThePet.Created).ThenByDescending(x => x.ThePet.LastModified));
         }
 
         [HttpPost]

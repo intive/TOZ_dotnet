@@ -53,6 +53,7 @@
     value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
+
     mimetype: application/x-microsoft.net.object.bytearray.base64
     value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
@@ -116,80 +117,81 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-
-  
-    <data name="Id" xml:space="preserve">
-        <value>ID</value>
-    </data>
-    <data name="PageTitle" xml:space="preserve">
-        <value>Edytuj zwierzaka</value>
-    </data>
-    <data name="Name" xml:space="preserve">
-        <value>Imię</value>
-    </data>
-    <data name="Type" xml:space="preserve">
-        <value>Typ</value>
-    </data>
-    <data name="Sex" xml:space="preserve">
-        <value>Płeć</value>
-    </data>
-    <data name="Photo" xml:space="preserve">
-        <value>Zdjęcie</value>
-    </data>
-    <data name="Description" xml:space="preserve">
-        <value>Opis</value>
-    </data>
-    <data name="Address" xml:space="preserve">
-        <value>Adres</value>
-    </data>
-    <data name="Cat" xml:space="preserve">
-        <value>Kot</value>
-    </data>
-    <data name="Dog" xml:space="preserve">
-        <value>Pies</value>
-    </data>
-    <data name="Male" xml:space="preserve">
-        <value>Samiec</value>
-    </data>
-    <data name="Female" xml:space="preserve">
-        <value>Samica</value>
-    </data>
-    <data name="Unknown" xml:space="preserve">
-        <value>Nieznany</value>
-    </data>
-    <data name="Unidentified" xml:space="preserve">
-        <value>Nieokreślona</value>
-    </data>
-    <data name="Save" xml:space="preserve">
-        <value>Zapisz</value>
-    </data>
-    <data name="Cancel" xml:space="preserve">
-        <value>Anuluj</value>
-    </data>
-    <data name="Delete" xml:space="preserve">
-        <value>Usuń</value>
-    </data>
-    <data name="Browse" xml:space="preserve">
-        <value>Wybierz...</value>
-    </data>
-    <data name="WrongFileType" xml:space="preserve">
-        <value>Zły typ pliku.</value>
-    </data>
-    <data name="EmptyFile" xml:space="preserve">
-        <value>Plik jest pusty.</value>
-    </data>
-    <data name="NoFileSelected" xml:space="preserve">
-        <value>Nie wybrano pliku.</value>
-    </data>
-    <data name="PhotoAlertWithoutPhoto" xml:space="preserve">
-        <value>Naciśnij ponownie przycisk "Zapisz",
+  <data name="Id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="PageTitle" xml:space="preserve">
+    <value>Edytuj zwierzaka</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Imię</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="Sex" xml:space="preserve">
+    <value>Płeć</value>
+  </data>
+  <data name="Photo" xml:space="preserve">
+    <value>Zdjęcie</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Pochodzenie</value>
+  </data>
+  <data name="Cat" xml:space="preserve">
+    <value>Kot</value>
+  </data>
+  <data name="Dog" xml:space="preserve">
+    <value>Pies</value>
+  </data>
+  <data name="Male" xml:space="preserve">
+    <value>Samiec</value>
+  </data>
+  <data name="Female" xml:space="preserve">
+    <value>Samica</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Nieznany</value>
+  </data>
+  <data name="Unidentified" xml:space="preserve">
+    <value>Nieokreślona</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Zapisz</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Anuluj</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Usuń</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>Wybierz...</value>
+  </data>
+  <data name="WrongFileType" xml:space="preserve">
+    <value>Zły typ pliku.</value>
+  </data>
+  <data name="EmptyFile" xml:space="preserve">
+    <value>Plik jest pusty.</value>
+  </data>
+  <data name="NoFileSelected" xml:space="preserve">
+    <value>Nie wybrano pliku.</value>
+  </data>
+  <data name="PhotoAlertWithoutPhoto" xml:space="preserve">
+    <value>Naciśnij ponownie przycisk "Zapisz",
         aby zapisać bez zdjęcia.</value>
-    </data>
-    <data name="PhotoAlertWithLastPhoto" xml:space="preserve">
-        <value>Naciśnij ponownie przycisk "Zapisz",
+  </data>
+  <data name="PhotoAlertWithLastPhoto" xml:space="preserve">
+    <value>Naciśnij ponownie przycisk "Zapisz",
         aby zapisać z ostatnio wybranym zdjęciem.</value>
-    </data>
-    <data name="Lack" xml:space="preserve">
-        <value>(brak)</value>
-    </data>
+  </data>
+  <data name="Lack" xml:space="preserve">
+    <value>(brak)</value>
+  </data>
+  <data name="CurrentPlace" xml:space="preserve">
+    <value>Miejsce pobytu</value>
+  </data>
 </root>

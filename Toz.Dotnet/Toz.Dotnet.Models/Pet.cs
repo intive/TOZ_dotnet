@@ -39,6 +39,9 @@ namespace Toz.Dotnet.Models
         [StringLength(35, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]
         public string Address {get; set;}
 
+        [JsonProperty("helperUuid")]
+        public string HelperId { get; set; }
+            
         [JsonProperty("created")]
         [JsonConverter(typeof(JsonDateTimeConventer))]
         public DateTime? Created  {get; set;}
@@ -46,6 +49,10 @@ namespace Toz.Dotnet.Models
         [JsonProperty("lastModified")]
         [JsonConverter(typeof(JsonDateTimeConventer))]
         public DateTime? LastModified {get; set;}
+
+        [JsonProperty("acceptanceDate")]
+        [JsonConverter(typeof(JsonDateTimeConventer))]
+        public DateTime? AcceptanceDate { get; set; }
 
         [JsonProperty("imageUrl")]
         public string ImageUrl {get; set;}

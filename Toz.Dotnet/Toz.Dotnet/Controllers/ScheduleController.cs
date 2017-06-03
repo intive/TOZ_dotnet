@@ -35,23 +35,23 @@ namespace Toz.Dotnet.Controllers
             _usersManagementService = usersManagementService;
         }
 
-        public async Task<IActionResult> Index(CancellationToken cancellationToken)
+        public async Task<IActionResult> Index(CancellationToken cancellationToken, int offset = 0, bool firstLoad = false)
         {
-            List<Week> schedule = await _scheduleManagementService.GetInitialSchedule(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
-            return View(schedule);
+            if (offset == 0 && firstLoad)
+            {
+                List<Week> schedule = await _scheduleManagementService.PrepareSchedule(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+                return View(schedule);
+            }
+            else
+            {
+                List<Week> schedule = await _scheduleManagementService.GetSchedule(offset, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+                return View(schedule);
+            }       
         }
 
-        public async Task<IActionResult> Earlier(CancellationToken cancellationToken)
-        {
-            List<Week> earlierSchedule = await _scheduleManagementService.GetEarlierSchedule(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
-            return RedirectToAction("Index", earlierSchedule);
-        }
-
-        public async Task<IActionResult> Later(CancellationToken cancellationToken)
-        {
-            List<Week> laterSchedule = await _scheduleManagementService.GetLaterSchedule(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
-            return RedirectToAction("Index", laterSchedule);
-        }
+        public IActionResult Earlier(CancellationToken cancellationToken) => RedirectToAction("Index", new { offset = --_scheduleManagementService.WeekOffset } );
+        
+        public IActionResult Later(CancellationToken cancellationToken) => RedirectToAction("Index", new { offset = ++_scheduleManagementService.WeekOffset } );
 
         public async Task<IActionResult> AddReservation(DateTime date, Period timeOfDay, CancellationToken cancellationToken)
         {
@@ -113,11 +113,14 @@ namespace Toz.Dotnet.Controllers
 
         public async Task<ActionResult> DeleteReservation(string id, CancellationToken cancellationToken)
         {
-            if (!string.IsNullOrEmpty(id))
+            if (!string.IsNullOrEmpty(id) &&
+                await _scheduleManagementService.DeleteReservation(id,
+                    AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
             {
-                await _scheduleManagementService.DeleteReservation(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
+                return RedirectToAction("Index", new { offset = _scheduleManagementService.WeekOffset });
             }
-            return RedirectToAction("Index");
+            CheckUnexpectedErrors();
+            return BadRequest();
         }
     }
 }
