@@ -183,6 +183,12 @@
   <data name="SearchPlaceholder" xml:space="preserve">
     <value>Szukaj...</value>
   </data>
+  <data name="PetsStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="NoPets" xml:space="preserve">
+    <value>(brak zwierząt na liście)</value>
+  </data>
   <data name="CurrentPlace" xml:space="preserve">
     <value>Miejsce pobytu</value>
   </data>

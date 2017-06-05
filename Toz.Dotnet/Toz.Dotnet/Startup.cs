@@ -54,6 +54,7 @@ namespace Toz.Dotnet
             services.TryAddSingleton<IAuthService, AuthService>();
             services.AddSingleton<IAccountManagementService, AccountManagementService>();
             services.AddSingleton<IHelpersManagementService, HelpersManagementService>();
+            services.AddSingleton<IPetsStatusManagementService, PetsStatusManagementService>();
             services.AddSingleton<ICommentsManagementService, CommentsManagementService>();
 
             services.AddSession();

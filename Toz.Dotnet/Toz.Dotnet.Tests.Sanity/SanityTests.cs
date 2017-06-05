@@ -16,6 +16,7 @@ namespace Toz.Dotnet.Tests.Sanity
     public class SanityTests : IDisposable
     {
         private readonly IPetsManagementService _petsManagementService;
+        private readonly IPetsStatusManagementService _petsStatusManagementService;
         private readonly INewsManagementService _newsManagementService;
         private readonly IUsersManagementService _userManagementService;
         private readonly IFilesManagementService _filesManagementService;
@@ -30,6 +31,7 @@ namespace Toz.Dotnet.Tests.Sanity
         public SanityTests()
         {
             _petsManagementService = ServiceProvider.Instance.Resolve<IPetsManagementService>();
+            _petsStatusManagementService = ServiceProvider.Instance.Resolve<IPetsStatusManagementService>();
             _newsManagementService = ServiceProvider.Instance.Resolve<INewsManagementService>();
             _userManagementService = ServiceProvider.Instance.Resolve<IUsersManagementService>();
             _filesManagementService = ServiceProvider.Instance.Resolve<IFilesManagementService>();
@@ -41,6 +43,7 @@ namespace Toz.Dotnet.Tests.Sanity
             _commentsManagementService = ServiceProvider.Instance.Resolve<ICommentsManagementService>();
 
             _petsManagementService.RequestUri = RequestUriHelper.PetsUri;
+            _petsStatusManagementService.RequestUri = RequestUriHelper.PetsStatusUri;
             _newsManagementService.RequestUri = RequestUriHelper.NewsUri;
             _userManagementService.RequestUri = RequestUriHelper.UsersUri;
             _organizationManagementService.RequestUri = RequestUriHelper.OrganizationInfoUri;
@@ -70,6 +73,21 @@ namespace Toz.Dotnet.Tests.Sanity
             Assert.IsType(typeof(NullReferenceException), exception?.InnerException);
 
             Assert.False(await _petsManagementService.CreatePet(null, _token.Jwt));
+        }
+
+        [Fact]
+        public async void PetsStatusFunctionalityTest()
+        {
+            _token = await _accountManagementService.SignIn(TestingObjectProvider.Instance.Login);
+
+            Assert.NotNull(_token);
+
+            var petStatus = TestingObjectProvider.Instance.PetsStatus;
+
+            Assert.NotNull(await _petsStatusManagementService.GetAllStatus(_token.Jwt));
+            Assert.True(await  _petsStatusManagementService.CreateStatus(petStatus, _token.Jwt));
+            Assert.True(await _petsStatusManagementService.DeleteStatus(petStatus, _token.Jwt));
+            Assert.True(await _petsStatusManagementService.UpdateStatus(petStatus, _token.Jwt));
         }
 
         [Fact]

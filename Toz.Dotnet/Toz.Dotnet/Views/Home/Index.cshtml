@@ -91,6 +91,15 @@
             </a>
         </div>
         <div class="col-sm-4">
+            <a asp-controller="PetsStatus" asp-action="Index">
+                <div class="tile orange">
+                    <div class="tile-icon"><img src="~/images/helping-white.png" /></div>
+                    <h3 class="title">@Localizer["PetsStatusTileTitle"]</h3>
+                    <p>@Localizer["PetsStatusTileDescription"]</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-4">
             <a asp-controller="Comments" asp-action="Index">
                 <div class="tile red">
                     <div class="tile-icon"><img src="~/images/comments-white.png" /></div>

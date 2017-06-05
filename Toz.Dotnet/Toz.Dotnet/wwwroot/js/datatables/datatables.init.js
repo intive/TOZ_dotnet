@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('#table').DataTable({
+    var tab = $('#table').DataTable({
         "dom": 't<"panel-footer"p>',
         "pageLength": 8,
         "searching": true,
@@ -35,4 +35,6 @@ $(document).ready(function () {
             }
         ]
     });
-    });
+
+    tab.search('').columns().search('').draw();
+});

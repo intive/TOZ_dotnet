@@ -185,6 +185,9 @@
     <value>Naciśnij ponownie przycisk "Zapisz",
         aby zapisać z ostatnio wybranym zdjęciem.</value>
   </data>
+  <data name="PetsStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
   <data name="CurrentPlace" xml:space="preserve">
     <value>Miejsce pobytu</value>
   </data>

@@ -23,13 +23,12 @@
                 <input type="text" id="search" class="search form-control" placeholder="@Localizer["SearchPlaceholder"]">
             </div>
             <div class="col col-xs-4 text-right">
-                <a class="btn btn-primary btn-sm btn-create" asp-controller="Comments" asp-action="DeletedList">@Localizer["DeletedComments"]</a>
-                
+                <a class="btn btn-primary btn-sm btn-create" asp-controller="Comments" asp-action="DeletedList">@Localizer["DeletedComments"]</a>           
             </div>
         </div>
     </div>
     <div class="panel-body">
-        <table id="commentsTable" class="table table-striped table-bordered table-list dt-responsive compact" style="width:100%">
+        <table id="table" class="table table-striped table-bordered table-list dt-responsive compact">
             <thead>
                 <tr>
                     <th> @Localizer["CreationTime"]</th>

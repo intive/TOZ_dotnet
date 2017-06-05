@@ -35,6 +35,12 @@ namespace Toz.Dotnet.Controllers
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             List<News> news = await _newsManagementService.GetAllNews(CurrentCookiesToken, cancellationToken);
+
+            if (news == null)
+            {
+                return View();
+            }
+
             foreach (var n in news)
             {
                 if (!string.IsNullOrEmpty(n.ImageUrl))

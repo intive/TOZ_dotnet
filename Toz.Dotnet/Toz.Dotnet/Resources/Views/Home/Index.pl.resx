@@ -147,6 +147,12 @@
   <data name="OrganizationTileTitle" xml:space="preserve">
     <value>Informacje o firmie</value>
   </data>
+  <data name="PetsStatusTileDescription" xml:space="preserve">
+    <value>Pozwala dodawać i edytować dostępne statusy zwierząt</value>
+  </data>
+  <data name="PetsStatusTileTitle" xml:space="preserve">
+    <value>Statusy zwierzaków</value>
+  </data>
   <data name="PetTileDescription" xml:space="preserve">
     <value>Pozwala przejrzeć listę zwierzaków</value>
   </data>

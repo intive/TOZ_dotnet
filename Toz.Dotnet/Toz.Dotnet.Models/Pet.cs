@@ -57,6 +57,9 @@ namespace Toz.Dotnet.Models
         [JsonProperty("imageUrl")]
         public string ImageUrl {get; set;}
 
+        [JsonProperty("petsStatus")]
+        public string PetsStatus { get; set; }
+
         [JsonProperty("gallery")]
         public List<Photo> Gallery { get; set; }
     }
