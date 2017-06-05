@@ -14,19 +14,19 @@
             <div id='myModalContent'></div>
         </div>
     </div>
-</div> 
-    <div class="panel panel-default panel-table">
-        <div class="panel-heading">
-            <div class="row">
-                <div class="col col-xs-4">
-                    <h3 class="panel-title">@Localizer["PageTitle"]</h3>
-                </div>
-                <div class="col col-xs-4">
-                    <input id="search" type="text" class="search form-control" placeholder="@Localizer["SearchPlaceholder"]">
-                </div>
-                <div class="col col-xs-4 text-right">
-                    <a class="data-modal btn btn-primary btn-sm btn-create" href="@Url.Action("Add","Pets")"><span class="glyphicon glyphicon-plus"></span></a>
-                </div>
+</div>
+
+<div class="panel panel-default panel-table">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col col-xs-4">
+                <h3 class="panel-title">@Localizer["PageTitle"]</h3>
+            </div>
+            <div class="col col-xs-4">
+                <input id="search" type="text" class="search form-control" placeholder="@Localizer["SearchPlaceholder"]">
+            </div>
+            <div class="col col-xs-4 text-right">
+                <a class="data-modal btn btn-primary btn-sm btn-create" href="@Url.Action("Add","Pets")"><span class="glyphicon glyphicon-plus"></span></a>
             </div>
         </div>
     </div>
@@ -40,7 +40,7 @@
                     <th>@Localizer["Photo"]</th>
                     <th>@Localizer["Address"]</th>
                     <th>@Localizer["AddingTime"]</th>
-                        
+                    <th>@Localizer["CurrentPlace"]</th>
                     <th>@Localizer["PetsStatus"]</th>
                     <th></th>
                 </tr>
@@ -49,7 +49,7 @@
                 @if (Model == null)
                 {
                     <tr>
-                        <td class="text-center" colspan="8">@Localizer["NoPets"]</td>
+                        <td class="text-center" colspan="9">@Localizer["NoPets"]</td>
                     </tr>
                 }
                 else
@@ -70,6 +70,7 @@
                             {
                                 <td>@Localizer["Unknown"]</td>
                             }
+
                             @if (@item.ThePet.Sex == PetSex.Male)
                             {
                                 <td>@Localizer["Male"]</td>
@@ -82,14 +83,15 @@
                             {
                                 <td>@Localizer["Unidentified"]</td>
                             }
+
                             <td>
                                 @if (item.ThePet.Photo != null)
                                 {
-                                    <img src="data:image;base64,@Convert.ToBase64String(item.ThePet.Photo)" alt="Pet photo"/>
+                                    <img src="data:image;base64,@Convert.ToBase64String(item.ThePet.Photo)" alt="Pet photo" />
                                 }
                                 else
                                 {
-                                    <img src="~/images/no-image.png" alt="Pet photo"/>
+                                    <img src="~/images/no-image.png" alt="Pet photo" />
                                 }
                             </td>
                             <td>@item.ThePet.Address</td>
@@ -97,12 +99,10 @@
                             <td>@item.TheHelper.Address</td>
                             @if (item.ThePetStatus.RGB != null)
                             {
-                                <td>
-                                    <div style="background-color: @item.ThePetStatus.RGB; display: inline-block; border: 3px solid black; border-radius: 8px; width: 25px; height: 25px;"></div> @item.ThePetStatus.Name</td>
+                                <td><div style="background-color: @item.ThePetStatus.RGB; display: inline-block; border: 3px solid black; border-radius: 8px; width: 25px; height: 25px;"></div> @item.ThePetStatus.Name</td>
                             }
                             else
                             {
-
                                 <td>@item.ThePetStatus.Name</td>
                             }
                             <td class="center-column">
@@ -112,6 +112,7 @@
                         </tr>
                     }
                 }
-                </tbody>
-            </table>
-        </div>
+            </tbody>
+        </table>
+    </div>
+</div>

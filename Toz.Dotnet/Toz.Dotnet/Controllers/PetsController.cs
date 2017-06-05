@@ -28,7 +28,7 @@ namespace Toz.Dotnet.Controllers
         private readonly IOptions<AppSettings> _appSettings;
 
         public PetsController(IFilesManagementService filesManagementService, IPetsManagementService petsManagementService,
-            IPetsStatusManagementService petsStatusManagementService, IHelpersManagementService helpersManagementService,, IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings,
+            IPetsStatusManagementService petsStatusManagementService, IHelpersManagementService helpersManagementService, IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings,
             IBackendErrorsService backendErrorsService, IAuthService authService) : base(backendErrorsService, localizer, appSettings, authService)
         {
             _filesManagementService = filesManagementService;
@@ -59,7 +59,6 @@ namespace Toz.Dotnet.Controllers
                     TheHelper = string.IsNullOrEmpty(pet.HelperId)
                         ? new Helper { Address = "TOZ" }
                         : await _helpersManagementService.GetHelper(pet.HelperId, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken)
-                    });
                 });
             
                 if (!string.IsNullOrEmpty(pet.ImageUrl))
