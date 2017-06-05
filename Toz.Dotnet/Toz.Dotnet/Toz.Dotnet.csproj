@@ -10,13 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="wwwroot\bower-libs\colorpicker\**" />
-    <Content Remove="wwwroot\bower-libs\colorpicker\**" />
-    <EmbeddedResource Remove="wwwroot\bower-libs\colorpicker\**" />
-    <None Remove="wwwroot\bower-libs\colorpicker\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="wwwroot\lib\mjaalnir-bootstrap-colorpicker\.bower.json">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
@@ -131,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Keys\" />
+    <Folder Include="wwwroot\lib\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Resources\Controllers\PetsController.pl.resx">

@@ -11,13 +11,11 @@ namespace Toz.Dotnet.Core.Services
 {
     public class PetsManagementService : IPetsManagementService
     {
-        private IRestService _restService;
-        private IFilesManagementService _filesManagementService;
+        private readonly IRestService _restService;
         public string RequestUri { get; set; }
 
-        public PetsManagementService(IFilesManagementService filesManagementService, IRestService restService, IOptions<AppSettings> appSettings)
+        public PetsManagementService(IRestService restService, IOptions<AppSettings> appSettings)
         {
-            _filesManagementService = filesManagementService;
             _restService = restService;
 
             RequestUri = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendPetsUrl;

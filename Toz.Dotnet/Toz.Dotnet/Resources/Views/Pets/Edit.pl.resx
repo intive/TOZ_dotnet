@@ -139,7 +139,7 @@
     <value>Opis</value>
   </data>
   <data name="Address" xml:space="preserve">
-    <value>Adres</value>
+    <value>Pochodzenie</value>
   </data>
   <data name="Cat" xml:space="preserve">
     <value>Kot</value>
@@ -193,5 +193,8 @@
   </data>
   <data name="PetsStatus" xml:space="preserve">
     <value>Status</value>
+  </data>
+  <data name="CurrentPlace" xml:space="preserve">
+    <value>Miejsce pobytu</value>
   </data>
 </root>

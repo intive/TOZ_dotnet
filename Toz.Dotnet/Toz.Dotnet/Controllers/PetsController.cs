@@ -23,16 +23,18 @@ namespace Toz.Dotnet.Controllers
         private readonly IFilesManagementService _filesManagementService;
         private readonly IPetsManagementService _petsManagementService;
         private readonly IPetsStatusManagementService _petsStatusManagementService;
+        private readonly IHelpersManagementService _helpersManagementService;
 
         private readonly IOptions<AppSettings> _appSettings;
 
         public PetsController(IFilesManagementService filesManagementService, IPetsManagementService petsManagementService,
-            IPetsStatusManagementService petsStatusManagementService, IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings,
+            IPetsStatusManagementService petsStatusManagementService, IHelpersManagementService helpersManagementService,, IStringLocalizer<PetsController> localizer, IOptions<AppSettings> appSettings,
             IBackendErrorsService backendErrorsService, IAuthService authService) : base(backendErrorsService, localizer, appSettings, authService)
         {
             _filesManagementService = filesManagementService;
             _petsManagementService = petsManagementService;
             _petsStatusManagementService = petsStatusManagementService;
+            _helpersManagementService = helpersManagementService;
             _appSettings = appSettings;
         }
 
@@ -53,9 +55,13 @@ namespace Toz.Dotnet.Controllers
                     ThePet = pet,
                     ThePetStatus = string.IsNullOrEmpty(pet.PetsStatus)
                         ? new PetsStatus { Name = StringLocalizer["Lack"] }
-                        : await _petsStatusManagementService.GetStatus(pet.PetsStatus, CurrentCookiesToken, cancellationToken)
+                        : await _petsStatusManagementService.GetStatus(pet.PetsStatus, CurrentCookiesToken, cancellationToken),
+                    TheHelper = string.IsNullOrEmpty(pet.HelperId)
+                        ? new Helper { Address = "TOZ" }
+                        : await _helpersManagementService.GetHelper(pet.HelperId, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken)
+                    });
                 });
-
+            
                 if (!string.IsNullOrEmpty(pet.ImageUrl))
                 {
                     try
@@ -155,7 +161,7 @@ namespace Toz.Dotnet.Controllers
             for(int i = 0; i < gallery.Count; i++)
             {
                 var photo = gallery[i];
-                json.Add(new FineUploader { UUID = photo.Id, Name = $"Zdjêcie {i+1}.jpg", ThumbnailUrl = $"{_appSettings.Value.ThumbnailsBaseUrl}{photo.FileUrl}" });
+                json.Add(new FineUploader { UUID = photo.Id, Name = $"Zdjï¿½cie {i+1}.jpg", ThumbnailUrl = $"{_appSettings.Value.ThumbnailsBaseUrl}{photo.FileUrl}" });
             }
 
             CheckUnexpectedErrors();
