@@ -8,6 +8,7 @@ using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Resources.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
+using Microsoft.Extensions.Caching.Memory;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.ViewModels;
 using Toz.Dotnet.Models.EnumTypes;
@@ -19,7 +20,12 @@ namespace Toz.Dotnet.Controllers
         private readonly ICommentsManagementService _commentsManagementService;
         private readonly IPetsManagementService _petsManagementService;
 
-        public CommentsController(ICommentsManagementService commentsManagementService, IPetsManagementService petsManagementService, IBackendErrorsService backendErrorsService, IStringLocalizer<CommentsController> localizer, IOptions<AppSettings> settings, IAuthService authService) : base(backendErrorsService, localizer, settings, authService)
+        public CommentsController(ICommentsManagementService commentsManagementService,
+            IPetsManagementService petsManagementService, 
+            IBackendErrorsService backendErrorsService, 
+            IStringLocalizer<CommentsController> localizer, 
+            IOptions<AppSettings> settings, IAuthService authService,
+            IMemoryCache memoryCache) : base(backendErrorsService, localizer, settings, authService, memoryCache)
         {
             _commentsManagementService = commentsManagementService;
             _petsManagementService = petsManagementService;
@@ -30,10 +36,16 @@ namespace Toz.Dotnet.Controllers
             var comments = await _commentsManagementService.GetAllComments(CurrentCookiesToken, cancellationToken);
             var viewModels = new List<CommentViewModel>();
             
-            foreach(Comment comment in comments.Where(c=> c.State == commentState))
+            foreach(var comment in comments.Where(c=> c.State == commentState))
             {
-                var pet = await _petsManagementService.GetPet(comment.PetUuid, CurrentCookiesToken, cancellationToken);
-                viewModels.Add(new CommentViewModel() { Comment = comment, PetName = pet?.Name });
+                var petName = GetFromCache<string>(comment.PetUuid);
+                if (petName == null)
+                {
+                    petName = (await _petsManagementService.GetPet(comment.PetUuid, CurrentCookiesToken, cancellationToken))?.Name;
+                    SetCache(comment.PetUuid, petName, CacheItemPriority.High);
+                }
+                
+                viewModels.Add(new CommentViewModel() { Comment = comment, PetName = petName });
             }
 
             return View(viewModels.OrderByDescending(x => x.Comment.Created).ToList());
