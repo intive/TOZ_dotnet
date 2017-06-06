@@ -32,7 +32,7 @@ namespace Toz.Dotnet.Models
         public byte [] Photo {get; set;}
 
         [JsonProperty("description")]
-        [StringLength(120, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]
+        [StringLength(1200, ErrorMessageResourceType = typeof(Resources.ModelsDataValidation), ErrorMessageResourceName = "MaxLength")]
         public string Description {get; set;}
 
         [JsonProperty("address")]
@@ -52,6 +52,7 @@ namespace Toz.Dotnet.Models
 
         [JsonProperty("acceptanceDate")]
         [JsonConverter(typeof(JsonDateTimeConventer))]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? AcceptanceDate { get; set; }
 
         [JsonProperty("imageUrl")]
