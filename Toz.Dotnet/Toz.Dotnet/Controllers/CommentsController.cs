@@ -17,55 +17,26 @@ namespace Toz.Dotnet.Controllers
     public class CommentsController : TozControllerBase<CommentsController>
     {
         private readonly ICommentsManagementService _commentsManagementService;
-        private readonly IUsersManagementService _usersManagementService;
         private readonly IPetsManagementService _petsManagementService;
 
-        public CommentsController(ICommentsManagementService commentsManagementService, IUsersManagementService usersManagementService,
-            IPetsManagementService petsManagementService, IBackendErrorsService backendErrorsService, IStringLocalizer<CommentsController> localizer, IOptions<AppSettings> settings, IAuthService authService) : base(backendErrorsService, localizer, settings, authService)
+        public CommentsController(ICommentsManagementService commentsManagementService, IPetsManagementService petsManagementService, IBackendErrorsService backendErrorsService, IStringLocalizer<CommentsController> localizer, IOptions<AppSettings> settings, IAuthService authService) : base(backendErrorsService, localizer, settings, authService)
         {
             _commentsManagementService = commentsManagementService;
-            _usersManagementService = usersManagementService;
             _petsManagementService = petsManagementService;
         }
 
-        public async Task<IActionResult> Index(CancellationToken cancellationToken)
+        public async Task<IActionResult> Index(CancellationToken cancellationToken, CommentState commentState = CommentState.Active)
         {
-            List<Comment> comments = await _commentsManagementService.GetAllComments(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
-            List<CommentViewModel> viewModels = new List<CommentViewModel>();
-
-            foreach(Comment comment in comments)
+            var comments = await _commentsManagementService.GetAllComments(CurrentCookiesToken, cancellationToken);
+            var viewModels = new List<CommentViewModel>();
+            
+            foreach(Comment comment in comments.Where(c=> c.State == commentState))
             {
-                if (comment.State == CommentState.Deleted)
-                {
-                    continue;
-                }
-
-                User user = await _usersManagementService.GetUser(comment.UserUuid, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true));
-                Pet pet = await _petsManagementService.GetPet(comment.PetUuid, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true));
-                viewModels.Add(new CommentViewModel() { TheUser = user, TheComment = comment, ThePet = pet });
+                var pet = await _petsManagementService.GetPet(comment.PetUuid, CurrentCookiesToken, cancellationToken);
+                viewModels.Add(new CommentViewModel() { Comment = comment, PetName = pet?.Name });
             }
 
-            return View(viewModels.OrderByDescending(x => x.Created).ToList());
-        }
-
-        public async Task<IActionResult> DeletedList(CancellationToken cancellationToken)
-        {
-            List<Comment> comments = await _commentsManagementService.GetAllComments(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
-            List<CommentViewModel> viewModels = new List<CommentViewModel>();
-
-            foreach (Comment comment in comments)
-            {
-                if (comment.State == CommentState.Active)
-                {
-                    continue;
-                }
-
-                User user = await _usersManagementService.GetUser(comment.UserUuid, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true));
-                Pet pet = await _petsManagementService.GetPet(comment.PetUuid, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true));
-                viewModels.Add(new CommentViewModel() { TheUser = user, TheComment = comment, ThePet = pet });
-            }
-
-            return View(viewModels.OrderByDescending(x => x.Created).ToList());
+            return View(viewModels.OrderByDescending(x => x.Comment.Created).ToList());
         }
 
         public IActionResult DeleteModal(CancellationToken cancellationToken)
@@ -76,7 +47,7 @@ namespace Toz.Dotnet.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteModal(string id, CancellationToken cancellationToken)
         {
-            if (!string.IsNullOrEmpty(id) && await _commentsManagementService.DeleteComment(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
+            if (!string.IsNullOrEmpty(id) && await _commentsManagementService.DeleteComment(id, CurrentCookiesToken, cancellationToken))
             {
                 return Json(new { success = true });
             }
