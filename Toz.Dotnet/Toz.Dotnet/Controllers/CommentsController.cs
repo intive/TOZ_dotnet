@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Localization;
@@ -42,7 +43,8 @@ namespace Toz.Dotnet.Controllers
                 if (petName == null)
                 {
                     petName = (await _petsManagementService.GetPet(comment.PetUuid, CurrentCookiesToken, cancellationToken))?.Name;
-                    SetCache(comment.PetUuid, petName, CacheItemPriority.High);
+                    TimeSpan? timeSpan = TimeSpan.FromMinutes(AppSettings.CacheExpirationTimeInMinutes);
+                    SetCache(comment.PetUuid, petName, CacheItemPriority.High, timeSpan);
                 }
                 
                 viewModels.Add(new CommentViewModel() { Comment = comment, PetName = petName });
