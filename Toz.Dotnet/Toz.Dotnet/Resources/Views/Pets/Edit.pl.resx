@@ -138,7 +138,7 @@
   <data name="Description" xml:space="preserve">
     <value>Opis</value>
   </data>
-  <data name="Address" xml:space="preserve">
+  <data name="Origin" xml:space="preserve">
     <value>Pochodzenie</value>
   </data>
   <data name="Cat" xml:space="preserve">
@@ -196,5 +196,14 @@
   </data>
   <data name="CurrentPlace" xml:space="preserve">
     <value>Miejsce pobytu</value>
+  </data>
+  <data name="AcceptanceDate" xml:space="preserve">
+    <value>Data przyjęcia</value>
+  </data>
+  <data name="Helper" xml:space="preserve">
+    <value>Pomocnik</value>
+  </data>
+  <data name="SelectHelper" xml:space="preserve">
+    <value>Wybierz pomocnika...</value>
   </data>
 </root>

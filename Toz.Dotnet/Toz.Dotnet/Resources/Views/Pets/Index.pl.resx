@@ -138,11 +138,11 @@
   <data name="Description" xml:space="preserve">
     <value>Opis</value>
   </data>
-  <data name="Address" xml:space="preserve">
+  <data name="Origin" xml:space="preserve">
     <value>Pochodzenie</value>
   </data>
-  <data name="AddingTime" xml:space="preserve">
-    <value>Dodano</value>
+  <data name="AcceptanceDate" xml:space="preserve">
+    <value>Data przyjęcia</value>
   </data>
   <data name="LastEditTime" xml:space="preserve">
     <value>Data modyfikacji</value>

@@ -120,4 +120,7 @@
   <data name="Lack" xml:space="preserve">
     <value>(brak)</value>
   </data>
+  <data name="Photo" xml:space="preserve">
+    <value>Zdjęcie</value>
+  </data>
 </root>
