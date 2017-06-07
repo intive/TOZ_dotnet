@@ -165,7 +165,7 @@ namespace Toz.Dotnet.Controllers
             for (int i = 0; i < gallery.Count; i++)
             {
                 var photo = gallery[i];
-                json.Add(new FineUploader { UUID = photo.Id, Name = $"Zdj�cie {i + 1}.jpg", ThumbnailUrl = $"{_appSettings.Value.ThumbnailsBaseUrl}{photo.FileUrl}" });
+                json.Add(new FineUploader { UUID = photo.Id, Name = $"{StringLocalizer["Photo"]} {i + 1}.jpg", ThumbnailUrl = $"{_appSettings.Value.ThumbnailsBaseUrl}{photo.FileUrl}" });
             }
 
             CheckUnexpectedErrors();
@@ -228,7 +228,6 @@ namespace Toz.Dotnet.Controllers
         //    {
         //        await _petsManagementService.DeletePet(pet);
         //    }
-
         //    return RedirectToAction("Index");
         //}
     }
