@@ -36,6 +36,6 @@ namespace Toz.Dotnet.Models
         public string AuthorName { get; set; }
 
         [JsonProperty("authorSurname")]
-        public string AuthroSurname { get; set; }
+        public string AuthorSurname { get; set; }
     }
 }

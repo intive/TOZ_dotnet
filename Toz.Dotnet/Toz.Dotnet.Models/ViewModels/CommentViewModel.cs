@@ -8,6 +8,6 @@ namespace Toz.Dotnet.Models.ViewModels
         public string PetName { get; set; }
         public CommentState CurrentState { get; set; }
 
-        public string UserIdentity => $"{Comment.AuthorName} {Comment.AuthroSurname}";
+        public string UserIdentity => $"{Comment.AuthorName} {Comment.AuthorSurname}";
     }
 }

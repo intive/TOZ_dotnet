@@ -30,7 +30,7 @@
                 else
                 {
                     <a class="btn btn-primary btn-sm btn-create" asp-controller="Comments" asp-action="Index" asp-route-commentState="Deleted">@Localizer["DeletedComments"]</a>
-                }                
+                }
             </div>
         </div>
     </div>
@@ -42,7 +42,10 @@
                     <th>@Localizer["Author"]</th>
                     <th>@Localizer["PetName"]</th>
                     <th>@Localizer["Contents"]</th>
-                    <th></th>
+                    @if (Model.FirstOrDefault(comment => comment.Comment.State == CommentState.Active) != null)
+                    {
+                        <th></th>
+                    }
                 </tr>
             </thead>
             <tbody>
@@ -51,14 +54,14 @@
                     <tr>
                         <td>@item.Comment.Created</td>
                         <td>@item.UserIdentity</td>
-                        <td>@item.PetName</td>        
+                        <td>@item.PetName</td>
                         <td>@item.Comment.Contents</td>
-                        <td class="center-column">
-                            @if (Model.FirstOrDefault(comment => comment.Comment.State == CommentState.Active) != null)
-                            {
+                        @if (Model.FirstOrDefault(comment => comment.Comment.State == CommentState.Active) != null)
+                        {
+                            <td class="center-column">
                                 <a class="data-modal btn btn-danger btn-sm" href="@Url.Action("DeleteModal", "Comments")/@item.Comment.Id"><span class="glyphicon glyphicon-trash"></span></a>
-                            }
-                        </td>
+                            </td>
+                        }
                     </tr>
                 }
             </tbody>
