@@ -31,5 +31,11 @@ namespace Toz.Dotnet.Models
         [JsonProperty("lastModified")]
         [JsonConverter(typeof(JsonDateTimeConventer))]
         public DateTime LastModified { get; set; }
+
+        [JsonProperty("authorName")]
+        public string AuthorName { get; set; }
+
+        [JsonProperty("authorSurname")]
+        public string AuthorSurname { get; set; }
     }
 }

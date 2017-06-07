@@ -23,7 +23,14 @@
                 <input type="text" id="search" class="search form-control" placeholder="@Localizer["SearchPlaceholder"]">
             </div>
             <div class="col col-xs-4 text-right">
-                <a class="btn btn-primary btn-sm btn-create" asp-controller="Comments" asp-action="DeletedList">@Localizer["DeletedComments"]</a>           
+                @if (Model.FirstOrDefault(comment => comment.Comment.State == CommentState.Deleted) != null)
+                {
+                    <a class="btn btn-primary btn-sm btn-create" asp-controller="Comments" asp-action="Index">@Localizer["ActiveComments"]</a>
+                }
+                else
+                {
+                    <a class="btn btn-primary btn-sm btn-create" asp-controller="Comments" asp-action="Index" asp-route-commentState="Deleted">@Localizer["DeletedComments"]</a>
+                }
             </div>
         </div>
     </div>
@@ -31,34 +38,30 @@
         <table id="table" class="table table-striped table-bordered table-list dt-responsive compact">
             <thead>
                 <tr>
-                    <th> @Localizer["CreationTime"]</th>
+                    <th>@Localizer["CreationTime"]</th>
                     <th>@Localizer["Author"]</th>
                     <th>@Localizer["PetName"]</th>
                     <th>@Localizer["Contents"]</th>
-                    <th></th>
+                    @if (Model.FirstOrDefault(comment => comment.Comment.State == CommentState.Active) != null)
+                    {
+                        <th></th>
+                    }
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.Created</td>
+                        <td>@item.Comment.Created</td>
                         <td>@item.UserIdentity</td>
-                        @{
-                            if (item.ThePet != null)
-                            {
-                                <td>@item.PetName</td>
-                            }
-                            else
-                            {
-                                <td> </td>
-                            }
+                        <td>@item.PetName</td>
+                        <td>@item.Comment.Contents</td>
+                        @if (Model.FirstOrDefault(comment => comment.Comment.State == CommentState.Active) != null)
+                        {
+                            <td class="center-column">
+                                <a class="data-modal btn btn-danger btn-sm" href="@Url.Action("DeleteModal", "Comments")/@item.Comment.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                            </td>
                         }
-                        
-                        <td>@item.Contents</td>
-                        <td class="center-column">
-                           <a class="data-modal btn btn-danger btn-sm" href="@Url.Action("DeleteModal","Comments")/@item.TheComment.Id"><span class="glyphicon glyphicon-trash"></span></a>
-                        </td>
                     </tr>
                 }
             </tbody>
