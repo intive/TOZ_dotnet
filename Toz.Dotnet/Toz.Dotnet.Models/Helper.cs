@@ -51,21 +51,5 @@ namespace Toz.Dotnet.Models
         [JsonProperty("lastModified")]
         [JsonConverter(typeof(JsonDateTimeConventer))]
         public DateTime LastModified { get; set; }
-
-        public string DisplayedName
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(Surname))
-                {
-                    return (string.IsNullOrEmpty(Address)) ? "" : Address;
-                }
-                else
-                {
-                    string fullName = (Name + " " + Surname).Trim();
-                    return (string.IsNullOrEmpty(Address)) ? fullName : fullName + ", " + Address;
-                }            
-            }
-        }
     }
 }

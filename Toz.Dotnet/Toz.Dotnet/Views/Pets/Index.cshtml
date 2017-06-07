@@ -8,10 +8,10 @@
     ViewData["Title"] = @Localizer["PageTitle"];
 }
 
-<div id="myModal" class="modal fade in">
+<div id='myModal' class='modal fade in'>
     <div class="modal-dialog">
         <div class="modal-content">
-            <div id="myModalContent"></div>
+            <div id='myModalContent'></div>
         </div>
     </div>
 </div>
@@ -38,10 +38,9 @@
                     <th>@Localizer["Type"]</th>
                     <th>@Localizer["Sex"]</th>
                     <th>@Localizer["Photo"]</th>
-                    <th>@Localizer["Origin"]</th>
-                    <th>@Localizer["AcceptanceDate"]</th>
+                    <th>@Localizer["Address"]</th>
+                    <th>@Localizer["AddingTime"]</th>
                     <th>@Localizer["CurrentPlace"]</th>
-                    <th>@Localizer["Description"]</th>
                     <th>@Localizer["PetsStatus"]</th>
                     <th></th>
                 </tr>
@@ -59,7 +58,6 @@
                     {
                         <tr>
                             <td>@item.ThePet.Name</td>
-
                             @if (@item.ThePet.Type == PetType.Dog)
                             {
                                 <td>@Localizer["Dog"]</td>
@@ -96,44 +94,9 @@
                                     <img src="~/images/no-image.png" alt="Pet photo" />
                                 }
                             </td>
-                            
-                            @if (string.IsNullOrEmpty(item.ThePet.Address))
-                            {
-                                <td>@Localizer["Lack"]</td>
-                            }
-                            else
-                            {
-                                <td>@item.ThePet.Address</td>
-                            }
-                            
-                            @if (item.ThePet.AcceptanceDate == null)
-                            {
-                                <td>@Localizer["Lack"]</td>
-                            }
-                            else
-                            {
-                                <td>@item.ThePet.AcceptanceDate</td>
-                            }
-
-                            @if(string.IsNullOrEmpty(item.TheHelper?.DisplayedName))
-                            {
-                                <td>@Localizer["Lack"]</td>
-                            }
-                            else
-                            {
-                                <td>@item.TheHelper.DisplayedName</td>
-                            }
-                       
-                            
-                            @if (string.IsNullOrEmpty(item.ThePet.Description))
-                            {
-                                <td>@Localizer["Lack"]</td>
-                            }
-                            else
-                            {
-                                <td>@item.ThePet.Description</td>
-                            }
-
+                            <td>@item.ThePet.Address</td>
+                            <td>@item.ThePet.Created</td>
+                            <td>@item.TheHelper.Address</td>
                             @if (item.ThePetStatus.RGB != null)
                             {
                                 <td><div style="background-color: @item.ThePetStatus.RGB; display: inline-block; border: 3px solid black; border-radius: 8px; width: 25px; height: 25px;"></div> @item.ThePetStatus.Name</td>

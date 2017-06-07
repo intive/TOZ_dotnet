@@ -10,7 +10,6 @@
     <form class="form-horizontal" asp-controller="Pets" asp-action="Add" method="POST" enctype="multipart/form-data">
         <fieldset class="pagetitle">
             <legend class="pagetitlelegend">@Localizer["PageTitle"]</legend>
-
             <div class="form-group row">
                 <label class="col-sm-2 control-label">@Localizer["Name"]</label>
                 <div class="col-sm-10">
@@ -19,7 +18,6 @@
                     <span asp-validation-for="ThePet.Name" class="help-block"></span>
                 </div>
             </div>
-
             <div class="form-group row">
                 <label class="col-sm-2 control-label">@Localizer["Type"]</label>
                 <div class="col-sm-10">
@@ -32,7 +30,6 @@
                     <span asp-validation-for="ThePet.Type" class="help-block"></span>
                 </div>
             </div>
-
             <div class="form-group row">
                 <label class="col-sm-2 control-label">@Localizer["Sex"]</label>
                 <div class="col-sm-10">
@@ -47,42 +44,11 @@
             </div>
 
             <div class="form-group row">
-                <label class="col-sm-2 control-label">@Localizer["Origin"]</label>
+                <label class="col-sm-2 control-label">@Localizer["Address"]</label>
                 <div class="col-sm-10">
                     <input asp-for="ThePet.Address" class="form-control" id="Address">
                     <span class="glyphicon form-control-feedback"></span>
                     <span asp-validation-for="ThePet.Address"></span>
-                </div>
-            </div>
-            
-            <div class="form-group row">
-                <label class="col-sm-2 control-label">@Localizer["AcceptanceDate"]</label>
-                <div class="col-sm-10">
-                    <input asp-for="ThePet.AcceptanceDate" class="form-control" id="AcceptanceDate">
-                    <span class="glyphicon form-control-feedback"></span>
-                    <span asp-validation-for="ThePet.AcceptanceDate" class="help-block"></span>
-                </div>
-            </div>
-            
-            <div class="form-group row">
-                <label class="col-sm-2 control-label">@Localizer["Helper"]</label>
-                <div class="col-sm-10">
-                    <select asp-for="ThePet.HelperId"
-                            class="form-control"
-                            asp-items="@Model.TheHelpersList">
-                        <option disabled selected>@Localizer["SelectHelper"]</option>
-                    </select>
-                    <span class="glyphicon form-control-feedback"></span>
-                    <span class="control-label" asp-validation-for="ThePet.HelperId"></span>
-                </div>
-            </div>
-            
-            <div class="form-group row">
-                <label class="col-sm-2 control-label">@Localizer["Description"]</label>
-                <div class="col-sm-10">
-                    <textarea asp-for="ThePet.Description" class="form-control" id="Description"></textarea>
-                    <span class="glyphicon form-control-feedback"></span>
-                    <span asp-validation-for="ThePet.Description" class="help-block"></span>
                 </div>
             </div>
 
