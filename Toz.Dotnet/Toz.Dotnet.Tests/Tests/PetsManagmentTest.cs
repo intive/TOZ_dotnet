@@ -148,7 +148,7 @@ namespace Toz.Dotnet.Tests.Tests
             }
             else if (property.Equals("Description"))
             {
-                pet.Description = new string('x', 310);
+                pet.Description = new string('x', 1201);
             }
 
             var context = new ValidationContext(pet, null, null);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.EnumTypes;
@@ -162,9 +163,9 @@ namespace Toz.Dotnet.Tests.Helpers
         {
             T output = new T();
             var properties = output.GetType().GetProperties();
-            foreach (PropertyInfo pi in properties)
+            foreach (var propertyInfo in properties.Where(prop=> prop.GetSetMethod() != null))
             {
-                pi.SetValue(output, pi.GetValue(value, null), null);
+                propertyInfo.SetValue(output, propertyInfo.GetValue(value, null), null);
             }
             return output;
         }
