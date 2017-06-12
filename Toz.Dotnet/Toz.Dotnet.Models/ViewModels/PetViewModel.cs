@@ -9,6 +9,5 @@ namespace Toz.Dotnet.Models.ViewModels
         public PetsStatus ThePetStatus { get; set; }
         public SelectList TheStatusList { get; set; }
         public Helper TheHelper { get; set; }
-        public SelectList TheHelpersList { get; set; }
     }
 }

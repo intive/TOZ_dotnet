@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Localization;
@@ -8,6 +9,7 @@ using Toz.Dotnet.Core.Interfaces;
 using Toz.Dotnet.Resources.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
+using Microsoft.Extensions.Caching.Memory;
 using Toz.Dotnet.Models;
 using Toz.Dotnet.Models.ViewModels;
 using Toz.Dotnet.Models.EnumTypes;
@@ -17,55 +19,38 @@ namespace Toz.Dotnet.Controllers
     public class CommentsController : TozControllerBase<CommentsController>
     {
         private readonly ICommentsManagementService _commentsManagementService;
-        private readonly IUsersManagementService _usersManagementService;
         private readonly IPetsManagementService _petsManagementService;
 
-        public CommentsController(ICommentsManagementService commentsManagementService, IUsersManagementService usersManagementService,
-            IPetsManagementService petsManagementService, IBackendErrorsService backendErrorsService, IStringLocalizer<CommentsController> localizer, IOptions<AppSettings> settings, IAuthService authService) : base(backendErrorsService, localizer, settings, authService)
+        public CommentsController(ICommentsManagementService commentsManagementService,
+            IPetsManagementService petsManagementService, 
+            IBackendErrorsService backendErrorsService, 
+            IStringLocalizer<CommentsController> localizer, 
+            IOptions<AppSettings> settings, IAuthService authService,
+            IMemoryCache memoryCache) : base(backendErrorsService, localizer, settings, authService, memoryCache)
         {
             _commentsManagementService = commentsManagementService;
-            _usersManagementService = usersManagementService;
             _petsManagementService = petsManagementService;
         }
 
-        public async Task<IActionResult> Index(CancellationToken cancellationToken)
+        public async Task<IActionResult> Index(CancellationToken cancellationToken, CommentState commentState = CommentState.Active)
         {
-            List<Comment> comments = await _commentsManagementService.GetAllComments(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
-            List<CommentViewModel> viewModels = new List<CommentViewModel>();
-
-            foreach(Comment comment in comments)
+            var comments = await _commentsManagementService.GetAllComments(CurrentCookiesToken, cancellationToken);
+            var viewModels = new List<CommentViewModel>();
+            
+            foreach(var comment in comments.Where(c=> c.State == commentState))
             {
-                if (comment.State == CommentState.Deleted)
+                var petName = GetFromCache<string>(comment.PetUuid);
+                if (petName == null)
                 {
-                    continue;
+                    petName = (await _petsManagementService.GetPet(comment.PetUuid, CurrentCookiesToken, cancellationToken))?.Name;
+                    TimeSpan? timeSpan = TimeSpan.FromMinutes(AppSettings.CacheExpirationTimeInMinutes);
+                    SetCache(comment.PetUuid, petName, CacheItemPriority.High, timeSpan);
                 }
-
-                User user = await _usersManagementService.GetUser(comment.UserUuid, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true));
-                Pet pet = await _petsManagementService.GetPet(comment.PetUuid, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true));
-                viewModels.Add(new CommentViewModel() { TheUser = user, TheComment = comment, ThePet = pet });
+                
+                viewModels.Add(new CommentViewModel() { Comment = comment, PetName = petName });
             }
 
-            return View(viewModels.OrderByDescending(x => x.Created).ToList());
-        }
-
-        public async Task<IActionResult> DeletedList(CancellationToken cancellationToken)
-        {
-            List<Comment> comments = await _commentsManagementService.GetAllComments(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
-            List<CommentViewModel> viewModels = new List<CommentViewModel>();
-
-            foreach (Comment comment in comments)
-            {
-                if (comment.State == CommentState.Active)
-                {
-                    continue;
-                }
-
-                User user = await _usersManagementService.GetUser(comment.UserUuid, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true));
-                Pet pet = await _petsManagementService.GetPet(comment.PetUuid, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true));
-                viewModels.Add(new CommentViewModel() { TheUser = user, TheComment = comment, ThePet = pet });
-            }
-
-            return View(viewModels.OrderByDescending(x => x.Created).ToList());
+            return View(viewModels.OrderByDescending(x => x.Comment.Created).ToList());
         }
 
         public IActionResult DeleteModal(CancellationToken cancellationToken)
@@ -76,7 +61,7 @@ namespace Toz.Dotnet.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteModal(string id, CancellationToken cancellationToken)
         {
-            if (!string.IsNullOrEmpty(id) && await _commentsManagementService.DeleteComment(id, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken))
+            if (!string.IsNullOrEmpty(id) && await _commentsManagementService.DeleteComment(id, CurrentCookiesToken, cancellationToken))
             {
                 return Json(new { success = true });
             }

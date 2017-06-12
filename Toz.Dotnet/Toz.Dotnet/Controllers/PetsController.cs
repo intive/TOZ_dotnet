@@ -15,8 +15,6 @@ using Toz.Dotnet.Authorization;
 using Toz.Dotnet.Models.Images;
 using Toz.Dotnet.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Toz.Dotnet.Models.EnumTypes;
-using Toz.Dotnet.Models.Schedule.ViewModels;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -62,7 +60,7 @@ namespace Toz.Dotnet.Controllers
                         ? new Helper { Address = "TOZ" }
                         : await _helpersManagementService.GetHelper(pet.HelperId, AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken)
                 });
-
+            
                 if (!string.IsNullOrEmpty(pet.ImageUrl))
                 {
                     try
@@ -113,13 +111,10 @@ namespace Toz.Dotnet.Controllers
                  .OrderBy(s => s.Name)
                  .ToList();
 
-            List<Helper> helpers = await _helpersManagementService.GetAllHelpers(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
-
             PetViewModel pet = new PetViewModel
             {
                 ThePet = new Pet(),
-                TheStatusList = new SelectList(petsStatus, "Id", "Name"),
-                TheHelpersList = new SelectList(helpers, "Id", "DisplayedName")
+                TheStatusList = new SelectList(petsStatus, "Id", "Name")
             };
 
             return PartialView(pet);
@@ -162,10 +157,10 @@ namespace Toz.Dotnet.Controllers
             List<Photo> gallery = pet.Gallery;
             List<FineUploader> json = new List<FineUploader>();
 
-            for (int i = 0; i < gallery.Count; i++)
+            for(int i = 0; i < gallery.Count; i++)
             {
                 var photo = gallery[i];
-                json.Add(new FineUploader { UUID = photo.Id, Name = $"{StringLocalizer["Photo"]} {i + 1}.jpg", ThumbnailUrl = $"{_appSettings.Value.ThumbnailsBaseUrl}{photo.FileUrl}" });
+                json.Add(new FineUploader { UUID = photo.Id, Name = $"Zdj�cie {i+1}.jpg", ThumbnailUrl = $"{_appSettings.Value.ThumbnailsBaseUrl}{photo.FileUrl}" });
             }
 
             CheckUnexpectedErrors();
@@ -204,13 +199,10 @@ namespace Toz.Dotnet.Controllers
                  .OrderBy(s => s.Name)
                  .ToList();
 
-            List<Helper> helpers = await _helpersManagementService.GetAllHelpers(AuthService.ReadCookie(HttpContext, AppSettings.CookieTokenName, true), cancellationToken);
-
             PetViewModel pet = new PetViewModel
             {
                 ThePet = await _petsManagementService.GetPet(id, CurrentCookiesToken, cancellationToken),
-                TheStatusList = new SelectList(petsStatus, "Id", "Name"),
-                TheHelpersList = new SelectList(helpers, "Id", "DisplayedName")
+                TheStatusList = new SelectList(petsStatus, "Id", "Name")
             };
 
             return PartialView("Edit", pet);
@@ -221,15 +213,19 @@ namespace Toz.Dotnet.Controllers
             return PartialView("Images", await _petsManagementService.GetPet(id, CurrentCookiesToken, cancellationToken));
         }
 
-        //public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)
-        //{
-        //    var pet = await _petsManagementService.GetPet(id);
-        //    if (pet != null)
-        //    {
-        //        await _petsManagementService.DeletePet(pet);
-        //    }
-        //    return RedirectToAction("Index");
-        //}
+
+
+
+        /*        public async Task<ActionResult> Delete(string id, CancellationToken cancellationToken)
+                {
+                    var pet = await _petsManagementService.GetPet(id);
+                    if(pet != null)
+                    {
+                        await _petsManagementService.DeletePet(pet);
+                    }
+
+                    return RedirectToAction("Index");
+                }*/
     }
 
 }
