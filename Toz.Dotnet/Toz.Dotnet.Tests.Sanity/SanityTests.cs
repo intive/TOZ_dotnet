@@ -182,15 +182,14 @@ namespace Toz.Dotnet.Tests.Sanity
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new List<Proposal>()
-                {
-                    TestingObjectProvider.Instance.DoShallowCopy(proposal)
-                });
-            restServiceMock.Setup(s => s.ExecuteGetAction<Proposal>(
+                .ReturnsAsync(new List<Proposal>() { proposal });
+
+            restServiceMock.Setup(s => s.ExecutePostAction<ActivationMessage>(
                     It.IsAny<string>(),
+                    It.IsAny<ActivationMessage>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
-                .ReturnsAsync(TestingObjectProvider.Instance.DoShallowCopy(proposal));
+                .ReturnsAsync(true);
 
             restServiceMock.Setup(s => s.ExecutePutAction<Proposal>(
                     It.IsAny<string>(),
