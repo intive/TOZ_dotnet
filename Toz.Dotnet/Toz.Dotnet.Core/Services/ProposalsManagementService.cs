@@ -61,7 +61,7 @@ namespace Toz.Dotnet.Core.Services
             }
             var activationMessage=  new ActivationMessage()
             {
-                Uuid = proposal.Id
+                ProposalId = proposal.Id
             };
             var isEmailSend =  await _restService.ExecutePostAction(ActivationRequestUri, activationMessage, token, cancellationToken);
             if (!isEmailSend)

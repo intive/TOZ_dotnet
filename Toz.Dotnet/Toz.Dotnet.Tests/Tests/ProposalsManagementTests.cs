@@ -132,11 +132,19 @@ namespace Toz.Dotnet.Tests.Tests
         public void TestOfProposalActivation()
         {
             var restServiceMock = new Mock<IRestService>();
-            restServiceMock.Setup(s => s.ExecuteGetAction<Proposal>(
+
+            restServiceMock.Setup(s => s.ExecuteGetAction<List<Proposal>>(
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
-                .ReturnsAsync(TestingObjectProvider.Instance.DoShallowCopy(_testingProposal));
+                .ReturnsAsync(new List<Proposal>(){_testingProposal});
+
+            restServiceMock.Setup(s => s.ExecutePostAction<ActivationMessage>(
+                    It.IsAny<string>(),
+                    It.IsAny<ActivationMessage>(),
+                    It.IsAny<string>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
 
             restServiceMock.Setup(s => s.ExecutePutAction<Proposal>(
                     It.IsAny<string>(),
