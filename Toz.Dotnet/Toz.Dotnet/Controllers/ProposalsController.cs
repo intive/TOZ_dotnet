@@ -31,7 +31,7 @@ namespace Toz.Dotnet.Controllers
                 ViewData["ActivationError"] = activationError;
             }
             var proposals = await _proposalsManagementService.GetAllProposals(CurrentCookiesToken, cancellationToken);
-            return View(proposals.OrderByDescending(prop => prop.CreationTime));
+            return View(proposals.OrderByDescending(prop => prop.CreationTime).ThenByDescending(prop=> prop.LastName));
         }
 
         public IActionResult Add()

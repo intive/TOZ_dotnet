@@ -54,12 +54,21 @@ namespace Toz.Dotnet.Core.Services
 
         public async Task<bool> SendActivationEmail(string id, string token, CancellationToken cancellationToken = new CancellationToken())
         {
-            var address = $"{ActivationRequestUri}/{id}";
-            var proposal =  await _restService.ExecuteGetAction<Proposal>(address, token, cancellationToken);
+            var proposal = await GetProposal(id, token, cancellationToken);
             if (proposal == null)
             {
                 return false;
             }
+            var activationMessage=  new ActivationMessage()
+            {
+                Uuid = proposal.Id
+            };
+            var isEmailSend =  await _restService.ExecutePostAction(ActivationRequestUri, activationMessage, token, cancellationToken);
+            if (!isEmailSend)
+            {
+                return false;
+            }
+            proposal.IsRead = true;
             return await UpdateProposal(proposal, token, cancellationToken);
         }
     }
