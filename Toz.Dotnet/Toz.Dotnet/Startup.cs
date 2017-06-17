@@ -24,8 +24,11 @@ namespace Toz.Dotnet
 {
     public class Startup
     {
+        private IHostingEnvironment _env;
+
         public Startup(IHostingEnvironment env)
         {
+            _env = env;
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -60,7 +63,7 @@ namespace Toz.Dotnet
             services.AddSession();
             services.AddMemoryCache();
 
-            services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo("Keys"));
+            services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(_env.WebRootPath + Path.DirectorySeparatorChar + "Keys"));
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("AdminOnly", policy => policy.RequireRole("TOZ", "SA"));
