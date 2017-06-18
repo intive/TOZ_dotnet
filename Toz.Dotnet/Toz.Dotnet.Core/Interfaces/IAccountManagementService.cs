@@ -9,7 +9,9 @@ namespace Toz.Dotnet.Core.Interfaces
 {
     public interface IAccountManagementService
     {
-        string RequestUri { get; set; }
+        string RequestUriJwt { get; set; }
+        string RequestUriForgetPassword { get; set; }
         Task<JwtToken> SignIn(Login login, CancellationToken cancelationToken = default(CancellationToken));
+        Task<bool> ForgotPassword(ForgotPassword forgotPassword, CancellationToken cancelationToken = default(CancellationToken));
     }
 }
