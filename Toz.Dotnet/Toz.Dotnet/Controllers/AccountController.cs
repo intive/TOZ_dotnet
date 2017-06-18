@@ -19,6 +19,7 @@ using Microsoft.Extensions.Options;
 using Toz.Dotnet.Authorization;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Routing;
+using System.Threading;
 
 namespace Toz.Dotnet.Controllers
 {
@@ -37,8 +38,13 @@ namespace Toz.Dotnet.Controllers
             return View(new Login());
         }
 
-        [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SignIn([Bind("Email", "Password")] Login login, string returnUrl = null)
         {
             await HttpContext.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -51,16 +57,9 @@ namespace Toz.Dotnet.Controllers
 
             if (jwtToken == null)
             {
-                var overallError = BackendErrorsService.UpdateModelState(ModelState);
-                if (!string.IsNullOrEmpty(overallError))
-                {
-                    TempData["UnhandledError"] = overallError;
-                }
-                else
-                {
-                    TempData["UnhandledError"] = "NotConnect";
-                }
-                return RedirectToAction("SignIn", new RouteValueDictionary(new { returnUrl = returnUrl }));
+                CheckUnexpectedErrors();
+                ViewData["ReturnUrl"] = returnUrl;
+                return View(login);
             }
 
             string serializedObject = JsonConvert.SerializeObject(login, Formatting.Indented, new JsonSerializerSettings
@@ -107,13 +106,32 @@ namespace Toz.Dotnet.Controllers
             }
         }
 
-
         public async Task<IActionResult> SignOut()
         {
             await HttpContext.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Response.Cookies.Delete(AppSettings.CookieTokenName);
             HttpContext.Response.Cookies.Delete(AppSettings.CookieRefreshName);
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword([Bind("Email")] ForgotPassword forgotPassword, CancellationToken cancellationToken)
+        {
+            if (ModelState.IsValid)
+            {
+                if (await _accountManagementService.ForgotPassword(forgotPassword))
+                {
+                    TempData["SendEmail"] = "SendEmail";
+                }
+                else
+                {
+                    CheckUnexpectedErrors();
+                    return View(forgotPassword);
+                }
+            }
+
+            return RedirectToAction("ForgotPassword");
         }
     }
 }
