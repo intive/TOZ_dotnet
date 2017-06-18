@@ -39,7 +39,6 @@
     <ProjectReference Include="../Toz.Dotnet.Resources/Toz.Dotnet.Resources.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Keys\" />
     <Folder Include="wwwroot\lib\" />
   </ItemGroup>
   <ItemGroup>
