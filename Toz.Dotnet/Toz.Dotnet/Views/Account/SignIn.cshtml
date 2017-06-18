@@ -29,14 +29,9 @@
                         <span asp-validation-for="Password"></span>
                     </div>
                 </div>
-                @{
-                    if (TempData["UnhandledError"] != null)
-                    {
-                        <div class="form-group row" style="text-align: center">
-                            <span class="unhandled-error-span">@Localizer[@TempData["UnhandledError"].ToString()]</span>
-                        </div>
-                    }
-                }
+                <div class="form-group row" style="text-align: center">
+                    <span class="unhandled-error-span">@ViewData["UnhandledError"]</span>
+                </div>
                 <div class="form-group row" style="text-align: center">
                     <a href="@Url.Action("ForgotPassword","Account")">@Localizer["ForgotPassword"]</a>
                 </div>
