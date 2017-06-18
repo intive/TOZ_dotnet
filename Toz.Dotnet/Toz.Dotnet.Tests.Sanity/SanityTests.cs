@@ -50,7 +50,7 @@ namespace Toz.Dotnet.Tests.Sanity
             _proposalsManagementService.RequestUri = RequestUriHelper.ProposalsUri;
             _howToHelpInformationService.BecomeVolunteerUrl = RequestUriHelper.HowToHelpUri;
             _howToHelpInformationService.DonateInfoUrl = RequestUriHelper.HowToHelpUri;
-            _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUri;
+            _accountManagementService.RequestUriJwt = RequestUriHelper.JwtTokenUri;
             _helpersManagementService.RequestUri = RequestUriHelper.HelpersUri;
             _commentsManagementService.RequestUri = RequestUriHelper.CommentsUri;
         }

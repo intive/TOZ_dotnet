@@ -24,7 +24,7 @@ namespace Toz.Dotnet.Tests.Tests
             _accountManagementService = ServiceProvider.Instance.Resolve<IAccountManagementService>();
             _howToHelpInformationService.BecomeVolunteerUrl = RequestUriHelper.OrganizationInfoUri;
             _howToHelpInformationService.DonateInfoUrl = RequestUriHelper.HowToHelpUri;
-            _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUri;
+            _accountManagementService.RequestUriJwt = RequestUriHelper.JwtTokenUri;
             _testingObject = TestingObjectProvider.Instance.HowToHelpInfo;
             _token = _accountManagementService.SignIn(TestingObjectProvider.Instance.Login).Result;
         }

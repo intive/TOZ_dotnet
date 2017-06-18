@@ -18,7 +18,7 @@ namespace Toz.Dotnet.Tests.Tests
             _petsStatusManagementService = ServiceProvider.Instance.Resolve<IPetsStatusManagementService>();
             _accountManagementService = ServiceProvider.Instance.Resolve<IAccountManagementService>();
             _petsStatusManagementService.RequestUri = RequestUriHelper.PetsStatusUri;
-            _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUri;
+            _accountManagementService.RequestUriJwt = RequestUriHelper.JwtTokenUri;
             _testingStatus = TestingObjectProvider.Instance.PetsStatus;
             _token = _accountManagementService.SignIn(TestingObjectProvider.Instance.Login).Result;
         }
