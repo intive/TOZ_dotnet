@@ -22,7 +22,7 @@ namespace Toz.Dotnet.Tests.Tests
             _helpersManagementService = ServiceProvider.Instance.Resolve<IHelpersManagementService>();
             _accountManagementService = ServiceProvider.Instance.Resolve<IAccountManagementService>();
             _helpersManagementService.RequestUri = RequestUriHelper.HelpersUri;
-            _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUri;
+            _accountManagementService.RequestUriJwt = RequestUriHelper.JwtTokenUri;
             _testingHelper = TestingObjectProvider.Instance.Helper;
             _token = _accountManagementService.SignIn(TestingObjectProvider.Instance.Login).Result;
         }

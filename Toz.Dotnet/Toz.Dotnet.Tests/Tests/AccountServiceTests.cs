@@ -15,7 +15,7 @@ namespace Toz.Dotnet.Tests.Tests
         public AccountServiceTests()
         {
             _accountManagementService = ServiceProvider.Instance.Resolve<IAccountManagementService>();
-            _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUri;
+            _accountManagementService.RequestUriJwt = RequestUriHelper.JwtTokenUri;
             _testingLogin = TestingObjectProvider.Instance.Login;
         }
 
@@ -28,7 +28,7 @@ namespace Toz.Dotnet.Tests.Tests
         [Fact]
         public void TestRequestedUriNotEmpty()
         {
-            Assert.True(!string.IsNullOrEmpty(_accountManagementService.RequestUri));
+            Assert.True(!string.IsNullOrEmpty(_accountManagementService.RequestUriJwt));
         }
 
         [Fact]
@@ -40,9 +40,9 @@ namespace Toz.Dotnet.Tests.Tests
         [Fact]
         public void TestOfSignInWithWrongUrl()
         {
-            _accountManagementService.RequestUri = RequestUriHelper.WrongUrl;
+            _accountManagementService.RequestUriJwt = RequestUriHelper.WrongUrl;
             Assert.Null(_accountManagementService.SignIn(_testingLogin).Result);
-            _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUri;
+            _accountManagementService.RequestUriJwt = RequestUriHelper.JwtTokenUri;
         }
 
         [Fact]

@@ -20,7 +20,7 @@ namespace Toz.Dotnet.Tests.Tests
             _commentsManagementService = ServiceProvider.Instance.Resolve<ICommentsManagementService>();
             _accountManagementService = ServiceProvider.Instance.Resolve<IAccountManagementService>();
             _commentsManagementService.RequestUri = RequestUriHelper.CommentsUri;
-            _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUri;
+            _accountManagementService.RequestUriJwt = RequestUriHelper.JwtTokenUri;
             _testingComment = TestingObjectProvider.Instance.Comment;
             _token = _accountManagementService.SignIn(TestingObjectProvider.Instance.Login).Result;
         }

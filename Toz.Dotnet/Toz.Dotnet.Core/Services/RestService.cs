@@ -65,7 +65,7 @@ namespace Toz.Dotnet.Core.Services
             }
         }
 
-        public async Task<bool> ExecutePostAction<T>(string address, T obj, string token, CancellationToken cancelationToken = default(CancellationToken)) where T : class
+        public async Task<bool> ExecutePostAction<T>(string address, T obj, string token = default(string), CancellationToken cancelationToken = default(CancellationToken)) where T : class
         {
             if (obj == null)
             {

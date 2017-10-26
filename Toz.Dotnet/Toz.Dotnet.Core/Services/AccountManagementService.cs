@@ -13,17 +13,24 @@ namespace Toz.Dotnet.Core.Services
     public class AccountManagementService : IAccountManagementService
     {
         private readonly IRestService _restService;
-        public string RequestUri { get; set; }
+        public string RequestUriJwt { get; set; }
+        public string RequestUriForgetPassword { get; set; }
 
         public AccountManagementService(IRestService restService, IOptions<AppSettings> appSettings)
         {
             _restService = restService;
-            RequestUri = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendJwtUrl;
+            RequestUriJwt = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendJwtUrl;
+            RequestUriForgetPassword = appSettings.Value.BackendBaseUrl + appSettings.Value.BackendForgotPasswordUrl;
         }
 
         public async Task<JwtToken> SignIn(Login login, CancellationToken cancelationToken = default(CancellationToken))
         {
-            return await _restService.ExecutePostAction<JwtToken, Login>(RequestUri, login, cancelationToken: cancelationToken);
+            return await _restService.ExecutePostAction<JwtToken, Login>(RequestUriJwt, login, cancelationToken: cancelationToken);
+        }
+
+        public async Task<bool> ForgotPassword(ForgotPassword forgotPassword, CancellationToken cancelationToken = default(CancellationToken))
+        {
+            return await _restService.ExecutePostAction<ForgotPassword>(RequestUriForgetPassword, forgotPassword, cancelationToken: cancelationToken);
         }
     }
 }

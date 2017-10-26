@@ -21,7 +21,7 @@ namespace Toz.Dotnet.Tests.Tests
             _newsManagementService = ServiceProvider.Instance.Resolve<INewsManagementService>();
             _accountManagementService = ServiceProvider.Instance.Resolve<IAccountManagementService>();
             _newsManagementService.RequestUri = RequestUriHelper.NewsUri;
-            _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUri;
+            _accountManagementService.RequestUriJwt = RequestUriHelper.JwtTokenUri;
             _testingNews = TestingObjectProvider.Instance.News;
             _token = _accountManagementService.SignIn(TestingObjectProvider.Instance.Login).Result;
         }

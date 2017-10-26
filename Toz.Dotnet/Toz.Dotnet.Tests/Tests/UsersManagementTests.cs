@@ -21,7 +21,7 @@ namespace Toz.Dotnet.Tests.Tests
             _userManagementService = ServiceProvider.Instance.Resolve<IUsersManagementService>();
             _accountManagementService = ServiceProvider.Instance.Resolve<IAccountManagementService>();
             _userManagementService.RequestUri = RequestUriHelper.UsersUri;
-            _accountManagementService.RequestUri = RequestUriHelper.JwtTokenUri;
+            _accountManagementService.RequestUriJwt = RequestUriHelper.JwtTokenUri;
             _testUser = TestingObjectProvider.Instance.User;
             _token = _accountManagementService.SignIn(TestingObjectProvider.Instance.Login).Result;
         }
