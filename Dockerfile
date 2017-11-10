@@ -15,6 +15,7 @@ RUN apt-get update \
         libunwind8 \
         libuuid1 \
         zlib1g \
+        unzip \
     && rm -rf /var/lib/apt/lists/*
 
 # Install .NET Core SDK
@@ -27,15 +28,20 @@ RUN curl -SL $DOTNET_SDK_DOWNLOAD_URL --output dotnet.tar.gz \
     && ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
 
 
-COPY Toz.Dotnet /app
-WORKDIR /app/Toz.Dotnet
+COPY libs /app
+WORKDIR /app
 
-RUN ["dotnet","restore"]
-RUN ["dotnet", "--info"]
-RUN ["dotnet", "build"]
-RUN ["dotnet", "publish"]
+run ["ls"]
+run ["unzip", "publish.zip"]
+
+WORKDIR /app/publish
+
+#RUN ["dotnet","restore"]
+#RUN ["dotnet", "--info"]
+#RUN ["dotnet", "build"]
+#RUN ["dotnet", "publish"]
 
 EXPOSE 5000/tcp
 ENV ASPNETCORE_URLS http://*:5000/admin
 
-CMD ["dotnet", "bin/Release/PublishOutput/Toz.Dotnet.dll"]
+CMD ["dotnet", "./Toz.Dotnet.dll"]
