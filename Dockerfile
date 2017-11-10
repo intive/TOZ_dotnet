@@ -18,8 +18,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Install .NET Core SDK
-ENV DOTNET_SDK_VERSION 1.0.3
-ENV DOTNET_SDK_DOWNLOAD_URL https://dotnetcli.blob.core.windows.net/dotnet/Sdk/$DOTNET_SDK_VERSION/dotnet-dev-debian-x64.$DOTNET_SDK_VERSION.tar.gz
+ENV DOTNET_SDK_DOWNLOAD_URL https://download.microsoft.com/download/E/7/8/E782433E-7737-4E6C-BFBF-290A0A81C3D7/dotnet-dev-debian-x64.1.0.4.tar.gz
 
 RUN curl -SL $DOTNET_SDK_DOWNLOAD_URL --output dotnet.tar.gz \
     && mkdir -p /usr/share/dotnet \
@@ -34,8 +33,9 @@ WORKDIR /app/Toz.Dotnet
 RUN ["dotnet","restore"]
 RUN ["dotnet", "--info"]
 RUN ["dotnet", "build"]
+RUN ["dotnet", "publish"]
 
 EXPOSE 5000/tcp
 ENV ASPNETCORE_URLS http://*:5000/admin
 
-CMD ["dotnet", "run"]
+CMD ["dotnet", "bin/Release/PublishOutput/Toz.Dotnet.dll"]
