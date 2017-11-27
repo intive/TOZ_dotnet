@@ -1,0 +1,83 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@model Toz.Dotnet.Models.ViewModels.PetViewModel
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Localizer["PageTitle"];
+}
+
+<div class="container-fluid center">
+    <form class="form-horizontal" asp-controller="Pets" asp-action="Edit" method="POST" enctype="multipart/form-data">
+        <fieldset class="pagetitle">
+            <legend class="pagetitlelegend">@Localizer["PageTitle"]</legend>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["Id"]</label>
+                <div class="col-sm-10">
+                    <input asp-for="ThePet.Id" class="form-control" id="Id" readonly>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["Name"]</label>
+                <div class="col-sm-10">
+                    <input asp-for="ThePet.Name" class="form-control" id="Name">
+                    <span class="glyphicon form-control-feedback"></span>
+                    <span asp-validation-for="ThePet.Name"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["Type"]</label>
+                <div class="col-sm-10">
+                    <select asp-for="ThePet.Type" class="form-control" id="Type">
+                        <option value="0"></option>
+                        <option value="1">@Localizer["Dog"]</option>
+                        <option value="2">@Localizer["Cat"]</option>
+                    </select>
+                    <span class="glyphicon form-control-feedback"></span>
+                    <span asp-validation-for="ThePet.Type"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["Sex"]</label>
+                <div class="col-sm-10">
+                    <select asp-for="ThePet.Sex" class="form-control" id="Sex">
+                        <option value="0"></option>
+                        <option value="1">@Localizer["Male"]</option>
+                        <option value="2">@Localizer["Female"]</option>
+                    </select>
+                    <span class="glyphicon form-control-feedback"></span>
+                    <span asp-validation-for="ThePet.Sex"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["Address"]</label>
+                <div class="col-sm-10">
+                    <input asp-for="ThePet.Address" class="form-control" id="Address">
+                    <span class="glyphicon form-control-feedback"></span>
+                    <span asp-validation-for="ThePet.Address"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 control-label">@Localizer["PetsStatus"]</label>
+                <div class="col-sm-10">
+                    <select asp-for="ThePet.PetsStatus"
+                            class="form-control"
+                            asp-items="@Model.TheStatusList">
+                        <option> </option>
+                    </select>
+                    <span class="glyphicon form-control-feedback"></span>
+                    <span class="control-label" asp-validation-for="ThePet.PetsStatus"></span>
+                </div>
+            </div>
+            
+            <div class="form-group row" style="text-align: center">
+                <span class="unhandled-error-span">@ViewData["UnhandledError"]</span>
+            </div>
+
+            <input type="button" class="btn btn-warning btn-block" id="Cancel" data-dismiss="modal" value=@Localizer["Cancel"]>
+            <input type="submit" class="btn btn-primary btn-block" id="Save" value=@Localizer["Save"]>
+        </fieldset>
+    </form>
+</div>
+
+<script src="~/js/modal.scripts.js"></script>

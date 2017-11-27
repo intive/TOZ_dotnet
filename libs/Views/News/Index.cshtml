@@ -1,0 +1,115 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Toz.Dotnet.Models.EnumTypes
+@model IEnumerable<Toz.Dotnet.Models.News>
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["PageTitle"];
+}
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default panel-table">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col col-xs-4">
+                <h3 class="panel-title">@Localizer["PageTitle"]</h3>
+            </div>
+            <div class="col col-xs-4">
+                <input type="text" id="search" class="search form-control" placeholder="@Localizer["SearchPlaceholder"]">
+            </div>
+            <div class="col col-xs-4 text-right">
+                <a class="data-modal btn btn-primary btn-sm btn-create" href="@Url.Action("Add","News")"><span class="glyphicon glyphicon-plus"></span></a>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <table id="table" class="table table-striped table-bordered table-list dt-responsive compact">
+            <thead>
+                <tr>
+                    <th>@Localizer["PublishingTime"]</th>
+                    <th>@Localizer["Title"]</th>
+                    <th>@Localizer["Photo"]</th>
+                    <th>@Localizer["ShortBody"]</th>
+                    <th>@Localizer["Status"]</th>
+                    <th class="center-column"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model == null)
+                {
+                    <tr>
+                        <td class="text-center" colspan="6">@Localizer["NoNews"]</td>
+                    </tr>
+                }
+                else
+                {
+                    var modelList = Model.ToList();
+                    foreach (var item in modelList)
+                    {
+                        <tr id="News_@modelList.IndexOf(item)">
+                            @if (!@item.Published.HasValue)
+                            {
+                                <td>@Localizer["Lack"]</td>
+                            }
+                            else
+                            {
+                                <td>@item.Published</td>
+                            }
+                            <td style="word-wrap: break-word;">
+                                <div style="width: 200px; overflow: auto">@item.Title</div>
+                            </td>
+                            <td>
+                                @if (item.Photo != null)
+                                {
+                                    <img src="data:image;base64,@Convert.ToBase64String(item.Photo)" alt="News photo" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/no-image.png" alt="Pet photo" />
+                                }
+                            </td>
+                            <td class="overflow-ellipsis">@item.Contents</td>
+                            @switch (item.Type)
+                            {
+                                case NewsStatus.Unreleased:
+                                    {
+                                        <td>
+                                            <div class="unreleased">
+                                                <div class="glyphicon glyphicon-exclamation-sign"></div>
+                                                @Localizer["Unreleased"]
+                                            </div>
+                                        </td>
+                                        break;
+                                    }
+                                case NewsStatus.Archived:
+                                    {
+                                        <td>
+                                            <div class="archived">
+                                                <div class="glyphicon glyphicon-exclamation-sign"></div>
+                                                @Localizer["Archived"]
+                                            </div>
+                                        </td>
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        <td></td>
+                                        break;
+                                    }
+                            }
+                            <td class="center-column">
+                                <a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Images", "News")/@item.Id"><span class="glyphicon glyphicon-picture"></span></a>
+                                <a class="data-modal btn btn-primary btn-sm" href="@Url.Action("Edit", "News")/@item.Id"><span class="glyphicon glyphicon-pencil"></span></a>
+                            </td>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

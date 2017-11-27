@@ -1,0 +1,22 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@model Toz.Dotnet.Models.PetsStatus
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["Title"];
+}
+
+<div class="container-fluid center">
+    <form class="form-horizontal" asp-controller="PetsStatus" asp-action="Delete" method="POST" enctype="multipart/form-data">
+        <fieldset class="pagetitle">
+            <legend class="pagetitlelegend">@Localizer["Question"]</legend>
+            <div class="form-group row" style="text-align: center">
+                <span class="unhandled-error-span">@ViewData["UnhandledError"]</span>
+            </div>
+            <div class="text-center">
+                <input type="button" class="visible-lg-inline-block btn btn-warning btn-default" style="margin: 0 20px; width: 20%" id="Cancel" data-dismiss="modal" value=@Localizer["Cancel"]>
+                <input type="submit" class="visible-lg-inline-block btn btn-primary btn-danger" style="margin: 0 20px; width: 20%" id="Save" value=@Localizer["DeleteConfirm"]>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<script src="~/js/modal.scripts.js"></script>

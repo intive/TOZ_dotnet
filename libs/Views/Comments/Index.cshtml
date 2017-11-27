@@ -1,0 +1,72 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Toz.Dotnet.Models.EnumTypes
+@model IEnumerable<Toz.Dotnet.Models.ViewModels.CommentViewModel>
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["PageTitle"];
+}
+
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default panel-table">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col col-xs-4">
+                <h3 class="panel-title">@Localizer["PageTitle"]</h3>
+            </div>
+            <div class="col col-xs-4">
+                <input type="text" id="search" class="search form-control" placeholder="@Localizer["SearchPlaceholder"]">
+            </div>
+            <div class="col col-xs-4 text-right">
+                @if (Model.FirstOrDefault(comment => comment.Comment.State == CommentState.Deleted) != null)
+                {
+                    <a class="btn btn-primary btn-sm btn-create" asp-controller="Comments" asp-action="Index">@Localizer["ActiveComments"]</a>
+                }
+                else
+                {
+                    <a class="btn btn-primary btn-sm btn-create" asp-controller="Comments" asp-action="Index" asp-route-commentState="Deleted">@Localizer["DeletedComments"]</a>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <table id="table" class="table table-striped table-bordered table-list dt-responsive compact">
+            <thead>
+                <tr>
+                    <th>@Localizer["CreationTime"]</th>
+                    <th>@Localizer["Author"]</th>
+                    <th>@Localizer["PetName"]</th>
+                    <th>@Localizer["Contents"]</th>
+                    @if (Model.FirstOrDefault(comment => comment.Comment.State == CommentState.Active) != null)
+                    {
+                        <th></th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Comment.Created</td>
+                        <td>@item.UserIdentity</td>
+                        <td>@item.PetName</td>
+                        <td>@item.Comment.Contents</td>
+                        @if (Model.FirstOrDefault(comment => comment.Comment.State == CommentState.Active) != null)
+                        {
+                            <td class="center-column">
+                                <a class="data-modal btn btn-danger btn-sm" href="@Url.Action("DeleteModal", "Comments")/@item.Comment.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="~/js/datatables/comments.datatables.init.js"></script>

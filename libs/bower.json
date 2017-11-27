@@ -1,0 +1,18 @@
+{
+  "name": "asp.net",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "latest",
+    "jquery": "2.2.4",
+    "jquery-validation": "latest",
+    "jquery-validation-unobtrusive": "latest",
+    "datatables-responsive": "latest",
+    "datatables-bootstrap": "latest",
+    "cropit": "latest",
+    "fine-uploader": "latest",
+    "mjaalnir-bootstrap-colorpicker": "mjolnic-bootstrap-colorpicker#v1.0.0"
+  },
+  "resolutions": {
+    "jquery": ">=1.7.0"
+  }
+}
