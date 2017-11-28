@@ -1,3 +1,9 @@
 ﻿{
-  "server.urls": "http://localhost:5000/admin"
+  "server.urls": "http://localhost:5001/admin"
 }
+
+    //server {
+    //listen 5000;
+    //location /admin {
+    //    proxy_pass http://localhost:5001/admin;
+    //}
